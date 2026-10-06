@@ -182,6 +182,12 @@ input,select,textarea{font:inherit;font-size:max(16px,1em);color:var(--ink);back
 .tripcard .t span{font-size:13px;color:var(--muted)}
 .tripcard .w{font-family:var(--display);font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--accent-ink)}
 
+.note-in{width:100%;min-height:80px;resize:vertical;line-height:1.4}
+.note{padding:10px 12px;border-radius:12px;background:var(--bg);display:flex;flex-direction:column;gap:6px}
+.note-t{white-space:pre-wrap;overflow-wrap:anywhere}
+.note-f{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.note-f .lockmark{padding:0 4px}
+.note-save{min-height:40px;padding:0 16px;margin-left:6px}
 footer{margin-top:28px;text-align:center;font-size:12px;color:var(--muted)}
 
 /* bottom nav */
@@ -385,8 +391,8 @@ nav.tabs button{font-size:11.5px}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded */
-const APP_VERSION = "3.1";
-const APP_UPDATED = "Oct 6, 2026, 2:40 PM";
+const APP_VERSION = "3.3";
+const APP_UPDATED = "Oct 6, 2026, 2:55 PM";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -519,7 +525,11 @@ if(!state){ const t = newTrip(PRESETS[0]); state = {v:2, updatedAt:0, activeTrip
 });
 
 const trip = () => state.trips.find(t => t.id === state.activeTripId) || state.trips[0];
-const dayType = t => { t.curDate = today(); return t.days[t.curDate] || t.lastType || "domino"; };
+/* which game this phone is showing is kept on this phone only, so a sync from the other phone can never switch it */
+const VIEW_KEY = LS_KEY + ":view";
+let viewType = {}; try { viewType = JSON.parse(localStorage.getItem(VIEW_KEY) || "{}") || {}; } catch(e){}
+function setViewType(t, type){ viewType[t.id] = type; try { localStorage.setItem(VIEW_KEY, JSON.stringify(viewType)); } catch(e){} }
+const dayType = t => { t.curDate = today(); return viewType[t.id] || t.days[t.curDate] || t.lastType || "domino"; };
 
 const SYNC_KEY = LS_KEY + ":synced";      // last copy this device knows the cloud has
 function saveLocal(){ try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e){} }
@@ -611,10 +621,10 @@ function pushCloud(){
 function showState(next){
   state = next; saveLocal();
   const a = document.activeElement;
-  if(a && a.tagName === "INPUT" && a.closest("#view")){ pendingRemoteRender = true; return; }
+  if(a && /^(INPUT|TEXTAREA)$/.test(a.tagName) && a.closest("#view")){ pendingRemoteRender = true; return; }
   const y = window.scrollY; render(); window.scrollTo(0, y);
 }
-document.addEventListener("focusout", () => { if(pendingRemoteRender){ setTimeout(() => { const a = document.activeElement; if(!(a && a.tagName==="INPUT")){ pendingRemoteRender = false; render(); } }, 50); } });
+document.addEventListener("focusout", () => { if(pendingRemoteRender){ setTimeout(() => { const a = document.activeElement; if(!(a && /^(INPUT|TEXTAREA)$/.test(a.tagName))){ pendingRemoteRender = false; render(); } }, 50); } });
 
 
 // First time a device meets the shared scorebook: line up its own copies of
@@ -1078,9 +1088,66 @@ function tripRecord(x, cur){
           : `<p class="ts-empty">No ports added for this trip.</p>`}
       </div>
     </details>
+    ${notesPanel(x)}
   </div>`;
 }
 document.addEventListener("toggle", e => { const d = e.target; if(d.matches && d.matches("[data-tripsum]")) openTripRecords[d.dataset.tripsum] = d.open; }, true);
+
+/* ---------- trip notes: a drop-down under each trip; each note can be changed for 48 hours, then locks ---------- */
+const openNotes = {}, noteDraft = {};
+let editingNote = null, editDraft = "";
+const noteList = x => Object.values(x.notes || {}).filter(n => n && n.text).sort((a,b) => (b.at||0) - (a.at||0));
+const noteWhen = ts => new Date(ts).toLocaleDateString(undefined, {month:"short", day:"numeric", year:"numeric"}) + " · " + new Date(ts).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+function notesPanel(x){
+  const list = noteList(x);
+  return `<details class="tripsum notes" data-notes="${x.id}" ${openNotes[x.id] ? "open" : ""}>
+    <summary>Notes${list.length ? ` · ${list.length}` : ""}<span class="chev" aria-hidden="true">▾</span></summary>
+    <div class="ts-body">
+      <label class="sr" for="note-${x.id}">New note for ${esc(x.name)}</label>
+      <textarea class="note-in" id="note-${x.id}" data-notedraft="${x.id}" rows="3" placeholder="Write a note for this trip…">${esc(noteDraft[x.id] || "")}</textarea>
+      <button type="button" class="btn primary b3d" data-addnote="${x.id}">Add note</button>
+      ${list.length ? list.map(n => editingNote === n.id ? `
+        <div class="note">
+          <textarea class="note-in" data-noteedit="${n.id}" rows="3" aria-label="Edit note">${esc(editDraft)}</textarea>
+          <div class="note-f"><span></span><span><button type="button" class="xbtn" data-cancelnote>Cancel</button><button type="button" class="btn primary b3d note-save" data-savenote="${x.id}|${n.id}">Save</button></span></div>
+        </div>` : `
+        <div class="note">
+          <div class="note-t">${esc(n.text)}</div>
+          <div class="note-f"><span>${esc(noteWhen(n.at))}${n.editedAt ? " · edited" : ""}</span>${isLocked(n.at)
+            ? `<span class="lockmark" title="Locked after 48 hours. Unlock in Save As.">🔒</span>`
+            : `<span><button type="button" class="xbtn" data-editnote="${x.id}|${n.id}">Edit</button><button type="button" class="xbtn" data-delnote="${x.id}|${n.id}">Delete</button></span>`}</div>
+        </div>`).join("") : `<p class="ts-empty">No notes yet.</p>`}
+    </div>
+  </details>`;
+}
+document.addEventListener("toggle", e => { const d = e.target; if(d.matches && d.matches("[data-notes]")) openNotes[d.dataset.notes] = d.open; }, true);
+document.addEventListener("input", e => {
+  const el = e.target;
+  if(el.dataset && el.dataset.notedraft) noteDraft[el.dataset.notedraft] = el.value;
+  if(el.dataset && el.dataset.noteedit) editDraft = el.value;
+});
+document.addEventListener("click", e => {
+  const tripOf = id => state.trips.find(x => x.id === id);
+  const add = e.target.closest("[data-addnote]");
+  if(add){
+    const x = tripOf(add.dataset.addnote), text = (noteDraft[x.id] || "").trim(); if(!x) return;
+    if(!text){ const f = document.getElementById("note-" + x.id); if(f) f.focus(); return; }
+    const id = uid(); x.notes = x.notes || {}; x.notes[id] = {id, text, at:Date.now()};
+    noteDraft[x.id] = ""; openNotes[x.id] = true; commit(); render(); return;
+  }
+  const ed = e.target.closest("[data-editnote]");
+  if(ed){ const [tid, nid] = ed.dataset.editnote.split("|"), n = (tripOf(tid)?.notes || {})[nid]; if(!n || isLocked(n.at)) return;
+    editingNote = nid; editDraft = n.text; render(); const f = document.querySelector(`[data-noteedit="${nid}"]`); if(f) f.focus(); return; }
+  if(e.target.closest("[data-cancelnote]")){ editingNote = null; render(); return; }
+  const sv = e.target.closest("[data-savenote]");
+  if(sv){ const [tid, nid] = sv.dataset.savenote.split("|"), n = (tripOf(tid)?.notes || {})[nid]; if(!n) return;
+    const text = editDraft.trim(); editingNote = null;
+    if(text && text !== n.text){ n.text = text; n.editedAt = Date.now(); commit(); }
+    render(); return; }
+  const dl = e.target.closest("[data-delnote]");
+  if(dl){ const [tid, nid] = dl.dataset.delnote.split("|"), x = tripOf(tid), n = (x?.notes || {})[nid]; if(!n || isLocked(n.at)) return;
+    sheet("Delete this note?", esc(n.text.length > 80 ? n.text.slice(0,80) + "…" : n.text), "Delete note", () => { delete x.notes[nid]; commit(); render(); }, true); }
+});
 
 
 /* ---------- route map pictures supplied for specific sailings ---------- */
@@ -1533,7 +1600,7 @@ document.addEventListener("click", e => {
   if(tb){ tab = tb.dataset.tab; render(); window.scrollTo(0,0); return; }
 
   const ty = e.target.closest("[data-type]");
-  if(ty){ const t = trip(); t.days[t.curDate] = ty.dataset.type; t.lastType = ty.dataset.type; keepBanner=false; commit(); render(); return; }
+  if(ty){ const t = trip(); setViewType(t, ty.dataset.type); t.days[t.curDate] = ty.dataset.type; t.lastType = ty.dataset.type; keepBanner=false; commit(); render(); return; }
 
   const ta = e.target.closest("[data-typeadd]");
   if(ta){ typedAdd(+ta.dataset.typeadd); return; }
