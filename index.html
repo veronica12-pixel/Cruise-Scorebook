@@ -236,6 +236,8 @@ nav.tabs button[aria-current="page"]{color:var(--on-pastel);background:linear-gr
 .sync-line i{width:10px;height:10px;border-radius:50%;margin-top:6px;flex:none;background:var(--line)}
 .sync-line.ok i{background:var(--mint-edge)} .sync-line.wait i{background:var(--peach-edge)}
 .sync-line span{min-width:0} .sync-line small{display:block;color:var(--muted);font-size:12px}
+.appver{font-size:11px;color:var(--muted);margin-top:2px;font-variant-numeric:tabular-nums}
+.save-ver{margin:0;font-size:12px;color:var(--muted);text-align:center}
 .save-status{min-height:1.2em;font-size:13px;color:var(--accent-ink);margin:0}
 
 
@@ -279,10 +281,15 @@ nav.tabs button[aria-current="page"]{color:var(--on-pastel);background:linear-gr
 .port-t{min-width:0} .port-t b{display:block;font-family:var(--display);font-size:17px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap} .port-t span{font-size:13px;color:var(--muted)}
 .port-avg{min-width:58px;padding:6px 8px;border-radius:12px;text-align:center;background:var(--tc);box-shadow:0 3px 0 var(--te);color:var(--on-pastel)}
 .port-avg b{display:block;font-family:var(--display);font-size:22px;line-height:1} .port-avg span{font-size:11px;opacity:.7}
-.port-rates{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.rate{min-width:0;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 6px 6px 10px;border-radius:12px;background:var(--ps);border:2px solid var(--pc)}
-.rate span{font-weight:700;font-size:13px;color:var(--pd);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
-.rate select{min-height:40px;padding:4px 8px;font-weight:800;font-size:17px;border-color:var(--pc);flex:none}
+.port-rates{display:flex;flex-direction:column;gap:8px}
+.rate{min-width:0;padding:8px 10px 10px;border-radius:12px;background:var(--ps);border:2px solid var(--pc)}
+.rate-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px}
+.rate-h span{font-weight:700;font-size:14px;color:var(--pd);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.rate-h b{font-family:var(--display);font-size:15px;color:var(--pd)}
+.rate-nums{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+.rn{min-height:34px;padding:0;border-radius:9px;border:none;background:var(--surface);color:var(--pd);font-weight:700;font-size:14px;font-variant-numeric:tabular-nums;box-shadow:0 2px 0 var(--pc);touch-action:manipulation}
+.rn[aria-pressed="true"]{background:var(--pe);color:var(--on-pastel);box-shadow:0 2px 0 var(--pd);transform:translateY(-1px)}
+.rn:active{transform:translateY(2px);box-shadow:none}
 .port .xbtn{align-self:flex-end}
 .port-kind{display:inline-block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent-ink);background:var(--accent-soft);padding:1px 7px;border-radius:999px;margin-bottom:2px}
 .port-note{align-self:flex-end;font-size:12px;color:var(--muted)}
@@ -318,6 +325,7 @@ nav.tabs button{font-size:11.5px}
 .ts-ports td small{display:block;font-size:11px;color:var(--muted)}
 .ts-ports tfoot td{font-weight:700;border-top:2px solid var(--line)}
 .ts-avg{display:inline-block;min-width:34px;text-align:center;padding:2px 6px;border-radius:8px;background:var(--tc);color:var(--on-pastel);font-weight:800}
+.ts-rate{width:100%;min-height:44px}
 .ts-empty{margin:0;font-size:13px;color:var(--muted)}
 
 @media (max-width:360px){.tilebtn{font-size:19px;min-height:50px}.player{padding:10px 10px 14px}}
@@ -329,7 +337,7 @@ nav.tabs button{font-size:11.5px}
 <div class="wrap">
   <header class="trip" id="tripHead"></header>
   <main id="view"></main>
-  <footer><button type="button" class="copyright" id="copyright-trigger" aria-haspopup="dialog">© 2026 Thor<span class="syncdot" id="syncdot" aria-hidden="true"></span></button></footer>
+  <footer><button type="button" class="copyright" id="copyright-trigger" aria-haspopup="dialog">© 2026 Thor<span class="syncdot" id="syncdot" aria-hidden="true"></span></button><div class="appver" id="appver"></div></footer>
 </div>
 
 <nav class="tabs" aria-label="Sections"><div class="in">
@@ -347,6 +355,9 @@ nav.tabs button{font-size:11.5px}
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
 <script>
 (function(){
+/* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded */
+const APP_VERSION = "1.6";
+const APP_UPDATED = "Oct 6, 2026, 8:10 AM";
 const LS_KEY = "domino-scorebook-v1";
 const QCARD = `<svg viewBox="0 0 100 140">
   <rect x="3" y="3" width="94" height="134" rx="10" fill="#FFFDF8" stroke="#3B3551" stroke-width="3"/>
@@ -395,7 +406,7 @@ const blankScala = () => ({s1:0, s2:0, log:[]});
 function newTrip(p){
   p = p || {};
   const t = {id:uid(), name:p.name||"New cruise", ship:p.ship||"", from:p.from||"", to:p.to||"", start:p.start||"", end:p.end||"",
-          p1:"AT", p2:"Player 2", target:150, limit:101, games:[], days:{}, lastType:"domino", curDate:today(),
+          p1:"Alessandra", p2:"Kirk", target:150, limit:101, games:[], days:{}, lastType:"domino", curDate:today(),
           cur:{s1:0, s2:0, log:[]}, scala:blankScala(), ports:[]};
   ensureEndPorts(t);
   loadItinerary(t);
@@ -409,6 +420,8 @@ function migrate(s){
     t.scala = t.scala || blankScala(); if(!Array.isArray(t.scala.log)) t.scala.log = [];
     t.games.forEach(g => { g.type = g.type || "domino"; });
     t.ports = Array.isArray(t.ports) ? t.ports : [];
+    if(!t.p1 || t.p1 === "AT") t.p1 = "Alessandra";
+    if(!t.p2 || t.p2 === "Player 2") t.p2 = "Kirk";
     ensureEndPorts(t);
     if(loadItinerary(t)) s.updatedAt = Math.max(s.updatedAt||0, 1);
   });
@@ -683,8 +696,8 @@ function renderTrips(){
       <label for="f-end">Trip ends<input type="date" id="f-end" data-f="end" value="${esc(t.end)}"></label>
       <label class="full" for="f-from">Departure port<input id="f-from" data-f="from" value="${esc(t.from)}" placeholder="Departure port"></label>
       <label class="full" for="f-to">Arrival port<input id="f-to" data-f="to" value="${esc(t.to)}" placeholder="Arrival port"></label>
-      <label for="f-p1">Player 1<input id="f-p1" data-f="p1" value="${esc(t.p1)}" maxlength="18"></label>
-      <label for="f-p2">Player 2<input id="f-p2" data-f="p2" value="${esc(t.p2)}" maxlength="18"></label>
+      <label for="f-p1">Player 1<input id="f-p1" data-f="p1" value="${esc(t.p1)}" maxlength="18" placeholder="Alessandra"></label>
+      <label for="f-p2">Player 2<input id="f-p2" data-f="p2" value="${esc(t.p2)}" maxlength="18" placeholder="Kirk"></label>
     </div>
     <div class="section-h"><h2>All trips</h2><button class="btn b3d" data-act="newtrip">New trip</button></div>
     <div id="presetBox"></div>
@@ -777,7 +790,6 @@ function renderPorts(){
   const cruise = avg(ports.map(portAvg)), a1 = avg(ports.map(p=>p.s1)), a2 = avg(ports.map(p=>p.s2));
   const rated = ports.filter(p => portAvg(p) !== null);
   const best = rated.length ? rated.reduce((m,p) => portAvg(p) > portAvg(m) ? p : m) : null;
-  const opts = v => `<option value="">–</option>` + [1,2,3,4,5,6,7,8,9,10].map(n => `<option value="${n}" ${v===n?"selected":""}>${n}</option>`).join("");
   $("#view").innerHTML = `
     <div class="cruise-card tone-${scoreTone(cruise)}">
       <div class="eyebrow">Cruise score</div>
@@ -789,6 +801,7 @@ function renderPorts(){
       </div>
     </div>
     <div class="section-h"><h2>Ports of call</h2><span class="eyebrow">${ports.length} stop${ports.length===1?"":"s"}</span></div>
+    <p class="rulehint" style="margin:-2px 0 12px">Each of you taps a score from 1 to 10 for every port. Tap the same number again to clear it.</p>
     ${ports.length ? ports.map((pt,i) => { const pa = portAvg(pt); return `
       <div class="port">
         <div class="port-top">
@@ -797,8 +810,11 @@ function renderPorts(){
           <div class="port-avg tone-${scoreTone(pa)}"><b class="num">${fmt1(pa)}</b><span>avg</span></div>
         </div>
         <div class="port-rates">
-          <label class="rate p1" for="r1-${pt.id}"><span>${esc(t.p1)}</span><select id="r1-${pt.id}" data-rate="${pt.id}" data-who="1">${opts(pt.s1)}</select></label>
-          <label class="rate p2" for="r2-${pt.id}"><span>${esc(t.p2)}</span><select id="r2-${pt.id}" data-rate="${pt.id}" data-who="2">${opts(pt.s2)}</select></label>
+          ${[1,2].map(w => { const v = w===1 ? pt.s1 : pt.s2, nm = w===1 ? t.p1 : t.p2; return `
+          <div class="rate p${w}" role="group" aria-label="${esc(nm)}'s score for ${esc(pt.name)}">
+            <div class="rate-h"><span>${esc(nm)}</span><b class="num">${v ?? "Tap a score"}</b></div>
+            <div class="rate-nums">${[1,2,3,4,5,6,7,8,9,10].map(n => `<button type="button" class="rn" data-rate="${pt.id}" data-who="${w}" data-n="${n}" aria-pressed="${v===n}" aria-label="${n}">${n}</button>`).join("")}</div>
+          </div>`; }).join("")}
         </div>
         ${pt.kind ? `<span class="port-note">Change it on the Trips tab</span>` : `<button class="xbtn" data-delport="${pt.id}">Remove port</button>`}
       </div>`; }).join("") : `<div class="empty">No ports yet. Add your first stop below.</div>`}
@@ -821,11 +837,12 @@ function addPort(){
 }
 document.addEventListener("input", e => { if(e.target.id === "port-name") portDraft.name = e.target.value; if(e.target.id === "port-date") portDraft.date = e.target.value; });
 document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.id === "port-name"){ e.preventDefault(); addPort(); } });
-document.addEventListener("change", e => {
-  const el = e.target; if(!el.dataset || !el.dataset.rate) return;
-  const pt = trip().ports.find(p => p.id === el.dataset.rate); if(!pt) return;
-  pt[el.dataset.who === "1" ? "s1" : "s2"] = el.value === "" ? null : +el.value;
-  commit(); render();
+document.addEventListener("click", e => {
+  const b = e.target.closest(".rn[data-rate]"); if(!b) return;
+  const pt = trip().ports.find(p => p.id === b.dataset.rate); if(!pt) return;
+  const k = b.dataset.who === "1" ? "s1" : "s2", n = +b.dataset.n;
+  pt[k] = pt[k] === n ? null : n;          // tap the same number again to clear it
+  const y = window.scrollY; commit(); render(); window.scrollTo(0, y);
 });
 
 
@@ -848,6 +865,7 @@ function tripRecord(x, cur){
           <div class="g-domino">${gameIcon("domino","tsico")}<span>Domino</span><b class="num"><i class="c1">${kd.w1}</i>–<i class="c2">${kd.w2}</i></b></div>
           <div class="g-scala">${gameIcon("scala","tsico")}<span>Scala 40</span><b class="num"><i class="c1">${ks.w1}</i>–<i class="c2">${ks.w2}</i></b></div>
         </div>
+        <button type="button" class="btn primary b3d ts-rate" data-rateports="${x.id}">Rate these ports</button>
         <div class="ts-h"><span>Ports of call</span><span>${cruise!==null?`Cruise score <b>${fmt1(cruise)}</b>/10`:"Not rated yet"}</span></div>
         ${ports.length ? `<table class="ts-ports"><thead><tr><th>Port</th><th class="c1">${esc(x.p1)}</th><th class="c2">${esc(x.p2)}</th><th>Avg</th></tr></thead><tbody>
           ${ports.map(pt => `<tr><td><b>${esc(pt.name)}</b>${pt.date?`<small>${esc(fmtDate(pt.date,{month:"short",day:"numeric"}))}</small>`:""}</td><td class="num">${pt.s1??"–"}</td><td class="num">${pt.s2??"–"}</td><td class="num"><span class="ts-avg tone-${scoreTone(portAvg(pt))}">${fmt1(portAvg(pt))}</span></td></tr>`).join("")}
@@ -926,6 +944,7 @@ function showSaveAs(){
       <div class="save-row"><button type="button" class="btn primary b3d" id="saveHtml">Save as HTML</button><button type="button" class="btn primary b3d" id="saveJson">Save as JSON</button></div>
     </section>
     <p class="save-status" id="saveStatus" role="status"></p>
+    <p class="save-ver">Version ${APP_VERSION} · updated ${APP_UPDATED}</p>
   </div></div>`;
   renderSyncBits();
   const close = () => { root.innerHTML = ""; };
@@ -999,6 +1018,9 @@ document.addEventListener("click", e => {
   if(dp){ const t = trip(), pt = t.ports.find(x => x.id === dp.dataset.delport); if(!pt) return;
     sheet(`Remove ${pt.name}?`, "Its scores come off the cruise average.", "Remove port", () => { t.ports = t.ports.filter(x => x.id !== pt.id); commit(); render(); }, true); return; }
 
+  const rp = e.target.closest("[data-rateports]");
+  if(rp){ state.activeTripId = rp.dataset.rateports; tab = "ports"; commit(); render(); window.scrollTo(0,0); return; }
+
   const tc = e.target.closest("[data-trip]");
   if(tc){ state.activeTripId = tc.dataset.trip; commit(); render(); return; }
 
@@ -1057,6 +1079,7 @@ document.addEventListener("keydown", e => { if(e.key==="Escape"){ $("#sheetRoot"
 
 (async () => { try { if(navigator.wakeLock) await navigator.wakeLock.request("screen"); } catch(e){} })();
 
+document.getElementById("appver").textContent = "Version " + APP_VERSION + " · updated " + APP_UPDATED;
 render();
 initCloud();
 renderSyncBits();
