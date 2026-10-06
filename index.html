@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cruise Scorebook</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20180%20180%22%3E%0A%20%20%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23E9DAFB%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23C7A6EC%22/%3E%3C/linearGradient%3E%3C/defs%3E%0A%20%20%3Crect%20width%3D%22180%22%20height%3D%22180%22%20fill%3D%22url%28%23g%29%22/%3E%0A%20%20%3Cg%20transform%3D%22translate%2853%2040%29%20rotate%288%2038%2070%29%20scale%28.78%29%22%3E%0A%20%20%20%20%3Crect%20x%3D%229%22%20y%3D%2211%22%20width%3D%2294%22%20height%3D%22134%22%20rx%3D%2210%22%20fill%3D%22%23A485CB%22%20opacity%3D%22.6%22/%3E%0A%20%20%3C/g%3E%0A%20%20%3Cg%20transform%3D%22translate%2851%2035%29%20rotate%288%2038%2070%29%20scale%28.78%29%22%3E%0A%20%20%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%2294%22%20height%3D%22134%22%20rx%3D%2210%22%20fill%3D%22%23FFFDF8%22%20stroke%3D%22%233B3551%22%20stroke-width%3D%223%22/%3E%0A%20%20%3Crect%20x%3D%2211%22%20y%3D%2211%22%20width%3D%2278%22%20height%3D%22118%22%20rx%3D%226%22%20fill%3D%22%23FDEDF1%22/%3E%0A%20%20%3Cg%20fill%3D%22%23D6455D%22%20font-family%3D%22Georgia%2C%20%27Times%20New%20Roman%27%2C%20serif%22%20font-weight%3D%22700%22%3E%0A%20%20%20%20%3Ctext%20x%3D%2216%22%20y%3D%2234%22%20font-size%3D%2224%22%20text-anchor%3D%22middle%22%3EQ%3C/text%3E%0A%20%20%20%20%3Cpath%20d%3D%22M16%2039c-2.6-3-7-1.2-7%202.2%200%203.3%204.4%205.6%207%208.6%202.6-3%207-5.3%207-8.6%200-3.4-4.4-5.2-7-2.2z%22/%3E%0A%20%20%20%20%3Cg%20transform%3D%22rotate%28180%2050%2070%29%22%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2216%22%20y%3D%2234%22%20font-size%3D%2224%22%20text-anchor%3D%22middle%22%3EQ%3C/text%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M16%2039c-2.6-3-7-1.2-7%202.2%200%203.3%204.4%205.6%207%208.6%202.6-3%207-5.3%207-8.6%200-3.4-4.4-5.2-7-2.2z%22/%3E%0A%20%20%20%20%3C/g%3E%0A%20%20%3C/g%3E%0A%20%20%3Cpath%20d%3D%22M34%2050l6%209%2010-13%2010%2013%206-9%203%2017H31z%22%20fill%3D%22%23FFD36E%22%20stroke%3D%22%233B3551%22%20stroke-width%3D%222.4%22%20stroke-linejoin%3D%22round%22/%3E%0A%20%20%3Ccircle%20cx%3D%2234%22%20cy%3D%2249%22%20r%3D%222.6%22%20fill%3D%22%23FFD36E%22%20stroke%3D%22%233B3551%22%20stroke-width%3D%221.8%22/%3E%0A%20%20%3Ccircle%20cx%3D%2250%22%20cy%3D%2245%22%20r%3D%222.6%22%20fill%3D%22%23FFD36E%22%20stroke%3D%22%233B3551%22%20stroke-width%3D%221.8%22/%3E%0A%20%20%3Ccircle%20cx%3D%2266%22%20cy%3D%2249%22%20r%3D%222.6%22%20fill%3D%22%23FFD36E%22%20stroke%3D%22%233B3551%22%20stroke-width%3D%221.8%22/%3E%0A%20%20%3Cpath%20d%3D%22M50%2078c-6-7-18-3.5-18%205%200%208.5%2011%2014%2018%2022%207-8%2018-13.5%2018-22%200-8.5-12-12-18-5z%22%20fill%3D%22%23D6455D%22%20stroke%3D%22%233B3551%22%20stroke-width%3D%222.4%22%20stroke-linejoin%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M39%2084c1-3%204-4.5%207-4%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.75%22/%3E%0A%3C/g%3E%0A%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAQAElEQVR4nOx9CXwb1bX3nUWyLNmWbMuSbNlZoUkIgYSQkKQkgTx2QsNSKFC2r4XS0uZHoUDZwtIWKFDIo/SVlLCUPspaWmhCKXzsS0hISELISnZbXiRrsSxZu2beXWZGo5GcWLETXTdzot/NX0cjWXPu0bnnnHvuvXzXthTDMACTKAIZQizq/MOcz0IEXyOEmDms8w93Pos1BekLwFoDVFjnH+Z8pmtbGsikUqA80vmHJ58FxIhAfQGSvhCs83U+07U1jfQGmRKiLjrWsYRZESNpvNGxjlUYWQ74nIw6DGB0rGMF42gFMNhdZXSsYzVmOrekgE46FSMWt4yKo2MdS5goh6g0yn86X+ezcl4MqUsOA6DzdT7TsRn5HMQ7JaRjHUvRipIjQ+OMjnWswthyiLKq6K3eqlrJ5wA4sBVxm8M6//DmMx2bUjgjJimMjPEFOv/w5isZUnxFDgOdr/OZ9o0prDuYcJkHkJ/o/MOczwLJ/UD1YfgKGev8w54PLUcS6KRTMWKxOWEUF1XHOlYw0/51ktgRvdVbTUuiFfm5qHpN5x/2fMbzdVKChHSsYxmzstqImKtjHecw49mgRys6FSelnkNv9VbbMm3QcoiitEIS2xMd65hgVkYik+PqWMcIM21fQZ9DlEcZRsc6VjDxOcg6OGa443givn3Xjmgk+h9wLzRgpm19Aj2T1WU44kQy+dry11atWenzdxOVt5gtLofL0eBshP/sDU5IDa5am2343mNZMNO6PoHm74ftqr0v1q1+9q/PhsIhsD8yGozuRneDvQHqjRPpjcvhcNpr7frKx/4wUg4wbOnz1St+/+TjBJ93walHfmtUo6uB41ivL9Du8XnaOj3t3va2rkikr79PMBgMDrvD0eBwu9wQIHvjgGbGAXRCyrEujms9SMGHOIzwxs2b7lv8G3gPk6ccteienzid9v5uMhqNtbV2ejxd7R6vp80Lgcfj7QmF9yEXqCWuBmeTq8kORyWM3Y1Nw0s+g8dQOYal5RAE4bqbrwtHwmPGtjzx5D0WixmUSIlE0tPahRUF6Uo7Uh2fzxfo73qWZe119dB3cULT4nC6Glwuh9PR4DIaDOA/lJi96+KkZhBFt0AcLnj12tWLlyyuqDC++OqjDkc9GDravasNWZf2rvY2b3s7MjOdHd37uL7WVgftihOORo5GJwZNzqYKY8XwkmdRzGPvA5CMmLalmP/2B+/Ajpn57SlDqxmQRo9pgQ81J5vNdrR3t2Mbg9UF+TEdHd2ZTAa+GuoJwseW7VvUb7HWWB12JxqbkNJA/9flcrpgDDW85MyLuYzYsGmDocDmbZtgH8ybN6N4DwsiesBhk2PAoInjuJYRLvjQ8Ds6fMS6dLR7W9u68MDkTaXQBnzh3jB8bN/1jfp6S6VZVhQ4KsEhCQ1PthobtXLmlbxHfgto5u9t9xBxTzrmSG1PZkUhngEZIcfBKsKwaM9VDGDLgqGgpiYHfEwDkxQO/G7+7iC2LlBvkCtDjE2sLw5f7YvHdu3dBR/qD4Eh0txZc2fPnAMdGtrkzOz9kkQr4jBq3/7g7ede+jN0ON776Dm1oMWMIEbTA+pYrcawQ2Jj+qNQMAxVpA1ZFznA9ngjvVH1NTOmzrz2ih9VmEz0yJmXEVBxacc+nxdK093s1PSBGM8MsLfQR2Xw74Q8I/8xsmmBSjOkGlNbZ4WPoyd9S83s64vt3dOxbu3mTz7+cuPX36z88vNOX+ctP7u51lZLiZzZnD1hmOGCu7q7QKFyQCcjK4LBENIYQUxlxURW7MsIkZTQkxTCKSGahk/FREZMZ9GANbg/ohAMv4+aeMT3L//OkqX3/m7xrZCzt23PnQ8sCvX0UCJnNPpKeVP8QxoW2OtDytHszvMQxawADgYRjUnLGhNNC+ECjckOVmNmzDz2/gdvZFkGBj7L31lGiZx5IMUwojzQDAPciZXD3ZKzHNmeXu+fXo1v3ZnpiRjsdenuYOW40ZZjJljnnsBWWcCQkzIqYQ8nb1RCLZABCwY8Ls2ZO+27F57xystvvfvxu+eeeW6VpbrscsaWg+iLCIYF9nV3E9DcLFmOlMe74wd3hj9YCRh21MO3w8eYx+42H3Wk7/l/7Ln9oVR7Fzg0NBAbg0alfo3MpZefw/NcOp1e9vY/AQUyl/fnIHeXd6eU8onDAZByOMkL7Q8/LcRQrNh43RXQbEDAWavrFpxmv+ictC+w985HstF+J94OOhXRmJTQmyzqO9vtteMnjIVg6/ZtNMg//7wV1XXU8n3dKFSBw7OrsQGCvvVbE9t2QwBNhemIkarbBNXTj4GtEI/3vPMJoIqg+UhmhWJRt72hFv3HUCF/7XkrOa+EVr7Pj5SjZUQTuYHo6q8JMB05Kl/OwNgozbzHt2wHFBK0KMmshgeNBwBqD6Cc8mdVebHh0XZ1++B/zbI3mtixlwDT2FEaQWdxXhIg40Hp2pxC5Yj0ohHQaDDSIG35vBUcvQwL3OXFoUqTEqpI8QBfZwX5lI3GJBCjtSxBEDWMtrZO2DbYHTTInJUyYoDB6jIMsJdkwFqUJIckX66yEuRTslWaguFt1WCYEJyLga3T7qRB5jhakfJigH4cCAbSGeTHNbsly6G4Gtl4XCPo+De7CYC+KqCT8tPzMKHeG0YTLtXm2kwmW3aZs1Jlh+SV0I6JNwqQzyFZjrpzTiYg1dqeJ3dBiKxYC/9njAbrvFmATmLzlKNtbycBvGBq3eGL9SXKK/Nhdt4KSZwrcSwkg8tuv3Q+BMHl76nzGaG3PsyEeiCwXzSfr7MBKonJVw44W0uAvc4pZIXO1mAkHC+jzHkgWRKgsir04i4/ClUamxycqibDfvl3DFYbzIfuWnhP1fRjDbU1mWhf+N3PoHmsP/+Muvn/Bail/GHF04ZUv8pczbMwAw9EQfR2hCpMBoORL4vMefytiA9CoArTx5em3FryptwYAdTMnQEfMKwN/f9PAq+jCkKYJB15380kYUotofkXFbV7kOWosypl9OjeQ/6oo8lWFvmrzlshJKowfXwv9jkUb1QieaYeZkgbr7nE0ICqSrPhSOyrvLpOGim/Js2DlaPWqlTFovuK9MbS6UxZ5K86bwUA+nFnVwfIi2MRCakUDEykCTaea771J6wZrVTw/uW1yOoNgGbKr1ckcSyxHKR/8P2DWB9K4h16mZMaUqkIiHIcDoflODanHOH3P+96/AUhjtJctWee5Lj8AjhfX3vGnKSnK+MPdixeWj1zatPCqwCFlO+NplLpUBCts6q31iuawUgtWxaZQ+UQ5bWRtLfeXBwrDSup1s6Oh55R5AsjlN7P12Z7esnTunNOGXn/LYBayvdG9+6RQnGb1c7kaQYA0irWQy1zVsqLaVoRUMjv6paUwy1XcsQ27wD5pGgGpOCydxO72wCtpI1j26RSBLvNnhtTcMtybFnkrzpvRR5vgJiLaqjikwyYq9GuxLH7TWCkO7yAWiqW5DCbLBVGk+ZCA4/v95DLX8qQkuhFhQGFfCmObc45HFXHH210O0H/ZJRn9ikkjeVobyPeqHYBH7xxg9FQFvkPp/NWpDhWpRxQt13XXAT6obrvnFrRQq9yaDNgHpTfQ3Fs/qDCG1BCrCzyZ6VZFmJP6MadXhLH5pkK85SJDZcuKJR8/bmnF+UPkOBf3Lm7TRAOTkU7+RP5tce5ODbfHeV5rlwy5/FIg20Lo7Iz0hUU8SPRSCKJ4lXNigSYAYMWAgauvR+vIgzT6Bbn1ZeYxo4AB0q793oW3vxAb29fpcl4+qkn3nDd5ZpU5hAQy6g/E8ax/u4gIMqh0gzYGo24j8ohf5w+F1VeCcj3UKjh+wI+IsfmfMtBLnNdfXFyd1uyraP2jJMcl50HU2GgH3rvw1UffbqmLxabNvXo751/RtFeX/7WxzyTvO+n9Tva0s/+8/0pk8afPGc6GFriiocqdTXY51CNLLwxl8U+xPIfNuetdPkk8bmbNZYDWX44L99y58KWu653XPXdfWjGtu177v3tE4bsdquh7Y9LX/77P98tetmq1evnTDHNnWr+4bnWOpth2449YKipvzi2zqbdnwj6HOWSOU+qSRkpkFFhyvjdAeSNNjjqjcbcTjpI02WvAM60ma37qfha/u+PRjSa7r4GXRaOZlesWn/BglMLLzNbzOu/CXmDmTWbk8Ge9PhvjQZDTsXiWKOhAoaymgt53lAu+eP9OQDZr0O+DihXUMT3dpNQJW8rN5TJAyVQIpGKJ4VkSsxkhdbO5JSpxdMkFcaKLe2pC25CpTdNjQ1zZk0telk2K2zdvrvCYBg7pqVUp6RoHGu3NRReaazgck7IoZU/L2fEgGRVcpguPlGOgjGlJN0A586f9+4HK86/qR0KIxwRLzz3tMJrfnnX4q82bhvTYrj4lKr7nw1FIn2JeNJs0Raortuw9bZ7FsdiaEps0lFHLv7tLWqTtn/S+Bx41rDWWjCmoCESXVkW+bN5XklBSw9fTnLke6NCacoxccLYWTOm9ETEnl6hwV53xJi8iCaTydyy6NHPv/jqiBbDktucZ8+p/v5ZNZFo7On//UfhR734yrIjW5i3/6cJ+q1fb97+CS5JHDhp49g25G5LGTCpc1DDG3MRw6GXP6vkxfC30baU8NOpVCSKJk2aNZajROWA9PWm7dBgThln6vYHNT16+72/X7l6w8Qxxj/e6rBUohjhqvk1tmru1dffafVoF9xu/mb3lG8ZLZXczGNMLMsEgj1g4MTmlfnA4cnbhfakq6uxazJgKHFePvnL9RyqSIZC3IHTX6BAOUq1HHAs6AlHZk8xXX1eDXz6/MvLCD+VTN1460NQM44ea1x8U4O5Upq7geAafOUTT72k+ahGp2P5J33vfxG798mgIIizTpgMBk7aOFaqKyZlPmr1IJajXPKXMqTEB6EWK/OxI0blp8NL9Dk+/Hg1bGGMOnmcadxIw9Zv9qxetxEmoG5a9Mia9ZuhZjz6iwazKa8CZ/4cS7OD/2zl+tVrNyrMOMzHJZL+nsxdSwKfrk9c9f0Fzfuc4tEQ2RZFIU+bdHfQcoiy7wlwazDwZZS/6rwV9HUoxSSOrau3FcSxJSgHvP6jz1ZDD2/OFORd/mABWiH35/994+Y7f7d+wzaoGY/d7NBoBkCFfMz1l6Kg5tHH/5LFORXY3nb3f+9FP3f03aZPPeYHl58HSqJ8y9GOvVGO5dCeHFgnyMsMTnKUUf5kraxiTyjFvsIpN8WrHjBBtzEY6p020URGjW9PrhztNkDmug3bjhtfATWjwlg8HJ15TOXxEyraO31vvPk+fPrg4qfXfrVlZKPhT3c45NxzaVSQAUN3Z69Dtkc9pkiWo3zyV+0JJs/FARWmhO/Fi6fd+UmOUseUjz5ZA9uTj88FpZefhbJhx02o+N3P7f1pBqGFFyPj8dRzrz3yh+f+/e5n9lrusZsb6q0oFUs2Hi2N2CJxLPJG84mXUr1lkz8vZccYYk9UACncygAAEABJREFUmCa+N6Ct5ACy6zRwglMqsJ09Oaccp820wG4+eozRaNzPzqRjW4znzLUs+6jvjeUfVJvZx26y221cKIzWyCeTKVAiifm7QXn6qeTgeLa88kf1Z8p+HaIoY6xGlPBTqVQPPk5FM+VWkuXYtHWnzx+cNrGiuipv5uW48ab9agaha861GrF1efgG+8hGI0CJVPQ0WarlyJ+PhR5MVyeJY7XKYazgyyt/daQEclgE9PC9fmk+1u0+8DhWHlNKPlxBoTor9+sf15srmaPHVhAO8V2SqRI3/8hXxc4On4BvpLZgyo3j8Lo3jMsif3l/DpEkaSUMVLjsfJ+8CZh29/FSlOPDT7+ArbWK7ewe8Ea2BQR9WJg90zCTidIsh9Yb9ShxbL1GDgYjX17587IpIUwJAxUuO98bRJbDaq3WHqoy4GEFpi+7vOgglTv+RzpOBcYabgc3qpFvcvAjnAa3k3fW8aB0MpuYZKpEn0MTx3qkOLbGgmcBVXLANWDllD8vrVOQ8h40YmI5NOtjSzIb9XW2hddesmOXp6PL197h8wdCezvT8LHiq7zLjhhhaLLzI1y8u4FvcfHNTgP0Ovf9yUYDEy/RIdVmwKTqQDQfq7l3I64rLqP85fNWKG59OAPm1qQgSyzuvPC80xWcTmdg0gJqSWdXNwQdBHu7d7Sm4UP9rsoKptnJtziRorQ4+GYX3+LgbDU5GwMNf09kUJbDIy2ertfcNc9xeIajnJIfBuet+Px5O8QREgdR+gszS6NGNI0qWLXg9fnbO7s7OrztUGk6fF1ef6unc3trYjvSmNy2QVBjRjXxTQ0GqDS+UMlfQxPHSisSasgqt9xvlzewclRZNsnTft5KNpsNhPygcFgZ5B74xcjpsMPHccdOUDN7e/uIdYFDkqcdGRs4OG3Z3bNld87GwHk7Y4VxQH+DYTRlQWRYsSHLge9aamHinC+7/KXqc6IpQHFFpPKg8vOVfZ40wwoJtw4B1dRYampGTxg3WsPf09oBFaXN0wUdmoFqBtCOKZ0d3SSOxRmwPDmQMp/yyp+X69CB6rUcLjvfW7AJmEQHajn8/hCcYl2zblO4N8pxbF2dtdFpnzl98kS8r/TAiQxMM6cfW9K7mGJ7LgCpkiNPDnDsK7v8afc5yIoEs7nSqikeLl05YED7+J9efP+jVYUv/eXFZSNbmu65/SdjR7eAg0qa0lHsjcI7tVXXKr9a0nLyWqby+hzY65ENNW3Y50e/rREjG/NEXHoB2I6drT+76f5YPFEJmClGbgzHjuE4F8cGBKEtK64XhC/aOn56432/XrRw2nET4VzaP5a9BzPucNSAPqnNWuNudEw8auzkSeNPOH4SGAxxRRyOuhpcV0wGSrk1oBUJZZZ/8fNWyPBHA59YDk3ivFTlgJ39qweXQM2YzHOXVVZYVZstuZCKgGkATGGZp+PJ2+597MpLznnz3x934Lo9KJ1mjguHwuv9wfVfb/3ry29Cd/XGhVeOaHaBAyJ0NJiKlDhWfQkKaDgWkpRvKJ/8eeyIiMQdkTBQHJTy86VKDm0cC0qiN/71AfQfW1j2WouJzw8WFDreiJaHLIkll/75NfgUqtE5lUY3y3L4+oggbMhk30uk13615cpr71h0y4/mzT0BlE7aOFayHGrlQHIgSY6yy19et6JyShAxgAY+nLHsxrlzTdF5qQ7HZ5+vgy20GWrNMB8zvmrGlApsA7K90ejajVPf//zUTHZFKnOp2TTdmJdNr2bZbxvZWQZ+VTrzXDz1qwf/BHP5JQ8xhXFsW/EVCQYjR4P8WTkjBoBkVDCJgAZ+ICQdyqQ5608sxXQkk6mvNm6rZZgxhlwuvHbBqQ2Xn1d55Cg4tZsJhfl6W+V4FK1cZDb9t61KoxkKwa6dYTRcYTIKgvDg4mekX9vAKd/h8PkCaJtA+GUKJuthHEuD/KmOVnKbWQ9iLVMqnYYWqFblZ1imTqo58XghmfI99XJyD948Hwa1A85VzKwwfJhO7wqEvly/+fgpE8GAqcBsyPOxhWuZjFT0C9XnrRBvFEb8dfX56xZLUY4qPJfbp/qVV01DJzgFXlomaQbAJTex+MA/c4YBmZbtO1tBSZQ/i0ccDimO1VzIcjTInwe5yVo5zlZzysonlmPkaHee5Eo05lD65kqTL5aATmU1Dhb8Ly+HA0ps4zfgQMmKbUAqNQRTbrbqOlYJYSSDDlAlBwXyZ6XXyJdiVJgCvuyNDjY3euykcdDLgp6m9AGhcPSLr8CgiChHaXVDTLFZFWm3FuVTcSSJd8Qrv/ypPm/FW2xFglh6BmzB2fNg++kBlIn3Q5szSC1aSlnIhEhb5oM3s66ul7oDSJ1CNgGjQf5Un7fi9aN1gto4tvS5+pnTj3Haa7sEcdVQ6EdGFL9IZYwGfs63jy/pjSDfcpBdaaHlEEm8ILcwyUGJ/OXdBAGQubTgYChA9Nc9uCQH7hTmfLxJy0uxZN+g94B7LZ6CvuuJs6aazaYS3sbn5UYDgZASx2pGezhZT0lfsEDOjmF7ImMglp2vimMHte0CoYvOP33MKHcUgFfiJS8zUdPqVObdVLrSVHHNlReU9EaNw9Gei2NzO52TFp2uQoH8keXA6sqIOdVlcl+zrHxfCIkPxrENjvwcUfZAfvocx/3qjp/BsWBFOrM+fYAF6FAznu5DOxrefdt17iZHaW/W7tYiKUdt4UI3kpKhoF+kfZNJRoxgoMJl5HdL1YH587HigZgNQiNaGn95ww8heKov4c1mS337h4nUk7FElgGXfW/+rBNKK+NAlJ/kIBkwa1Uty2qXVKEyHwrkD0SKz1uR4tiWwTocajp13szz5v9XEoAn+hLpUvTs7/HkXxNoPJp/5klXX3k+KJ2KzqpINT4gr1dYTo5Wyt0XUoZUCnRpwt4AOZRpUOtjC2nhjy+ZOH5MuyA+N7CTiKOC+Fg0/lYyDYOIXyy88pbrryr8rRel+I49vStVOwcV23ZBqg5UbDtg4DBKT1/A+8xVeVCFvX5yuPBQWg6AjDZ//90/t1mrV6XhFPx+nNPN6cxdkdjGTHZks2vpH+5ZcPbJYCAkiKF/fdB616PeJS+kfX6JmW852lpxXTGacpN+sJgt4l1HaemL3Hkr5A4owT294Qw5lEmbHgWDp9ramgfu+TnP8S/Fk5v6cU7TgvhiLLG4LxERxYsvOPOZJ34zwArCxM7WXTfc6/vLawBO3SYSngeXZHujGrPR09Mbw1M5eNsF6a5Jy/E8PX3B5uIZmlpSHQgK49hBDyuEJk4Ye+cvfwR/zUtiia6C8GdXJnt3NPZ+KmOvs/3+4Vuvu+Z7BsOAFktGPl2z965H0l6/wkm1d7U/tITJ/9r5cSy+a7mF3ig9vaBkSBmQy44xQATl5XcHUZWe+nBhiYZuucq8OdMvu+jshAge64srmTHopf4tlvhtNN4tiGeceuLzSx+YPGn8AD8w8tmajj/8GRTEQdD58P/tX2oO2a0F4DhWWcWE7TmD9uSgQP6EzyprI4H8LRUtLiPfR3ZryY9j0cXikCkHpGv+33dPnDHFL4hL8V6z3qxwXyT+dipjs9U88sBNt//i6sK9afsjMZ3uXPpif6/6//ZWcrdHeUri2GqLFQ5tqntHrQFaDgrkT/jE51DyYozKypWT3x0sUjrKHFBudB8Ew8tFv7y2ydWwKZN9ti/+m2isXRBguPv80vunTTm6pI/KRuNiov+NOgQx/N5K5Zl0uHCNepUb7hWyIoEC+RM+2Z+DkXNkMgZMefndATSsNLsHOx+7X6qsNN1z23UwOl2RziYBc/P1Vy265drq6ipQIvHWaoPLvo8LMuGIgqUlkJI3KiqeIKorpkP+hC+fLEdZ6wuSOPagr4+FNH7c6F8svKKuzvrQr28858yTQOkkptKxbTsbf3QZXy/VdBkbHZrDCW2nzFKwvFylDmsGUFrewFPVC2jXqcL1C+XF0VhUPpRpsJP1AySoEwemFoTCH6/yv/pmNhwxNrtqZk+vmjKxatqxqU5v5+PPJds6TGNGNFx1rvnYceTivr5YbxjOAMqzKspvlwGkxoeevpDPW5G4VODuftbHHoxhZUjIdsqJ1jkndCx+KrpuU8rTZai3Vc+aWjHCPerh29HLRpY15/bWbdsrbWaN93kiAwsp5ZB2HaWnL3JzK7L65q4oF5/Mxx7UOHbIiTEaXD+9gsMLegPL30vubc+9xBSfj623OSSXA0iOB7QcNMhf4bOyNyQPNDlcNj7ZzLqxycGp1hMMeRw75JTY3WaoxX5GJuv57RPdL7we27oTrdzkNDudI4fDUlkN41igviER78lBYFnlr/Dz1kcQhVFzysKX52PzN7MWALWqIaYzXUtfRMdTMkzN7GmWqZMYjo2sXN92z2LT2JEj7l3I2a3KxUocq/0UhiGVHGWXv9LyqrwYNoAYq9tDz/dJ87FDPOV28Kj7hTfIwaX1559hv/BswqyeNjngdvlfWb7r+vvG/HERJ28hIa1IKFzlhtbHUiF/hc+qMjDyeAPy2kPP78Y+hyaOFcWDFqsMjjKBUOjtjyBgKyvrF+SdC1Z72mzpgmUfKEw5ji2y0zkl8lf4bC57iscbCQNQLn48keiL9YFihwsDKim2aTvAUzOVR45i8o95Y6ssxGAE3/yYbBuRSqVDwTBAU251ms8h87Fll7+aj89bASSXDmjAuflY7eHCgE6Ky6fOmo4cVfiqSI5oCYUzPegYMrIcAaCFbtoTuzieoa0vlN0EifjLj7tD8k7nB7pByiEmIS5VlBkdRdLnQl+MAA6vY1AOF65XMmByS3LnVPWFfN4KesbQgP0hNKvS2NTA5UeAmi3DKSK5apAtmMJFZWDEahsMjAltp9+Okxxmk6XCaMo3HMDA87T1BStlxFS+Ce4EsVx84niaTAXrhSr2s9N0ucg0UlrnLRYUHca37SLAPOkIAqTdWqrJfsWIsARQvMDyHA3yV/NZEsmIuRwZoxiYsvCNBvQLi8e1GyIgNTYfyN71B5tq5kwHuF482aE9XjSy4ksCLMdJ23h4PGjQtMmr3ADRDFRxjrYAo0H+ar6UdQGyx1d2bKpAxjlWrDScMXJslQEYBlT8fciIq7LY5s2EILp6g7qkI9XeBadaIDA46mvPnE2YchyrXeWG18diTFNf5M5bUbjyVy4Pf9yo8VBz4bzl1xuK7Z/Bs6zFwNoq2GojBEwlDzUGqUtZPRLnDy+GuS84Abv37kd73v44G+mLbd7e/rsn0fdtqGte9BMWbyAD41h/dxAUX+WWW6tSXvmr+bnzVpTsmDwbVB5+va1h6sQT1mxcufiRZ5957gHQH3FwnopRhm2JYC4hK6Jbha0gkqfgkFD9BWdaTzohumZj7OutvSvWQA/UdMRI6ymz6i88TUl+KKFKkU3ADBwl8lfzeVKdJopSFSEN+PTZZ0Pl+Gbbnt/86o+33/njAS4iQsSiHfC0GpPTFaCojvT7GFLi6+tsp4oXrQkAAAbsSURBVM+BD4XDVHCMau+5fSgHS2ZVKOsLVsqu4+hFlS8DZeQ3NjSfNXcBfP7vf32y6I7HekJhMBiC2sKzcPRhTBxj4aHXwlqNrBUNTNDDZSph/7GAZw7KwKRZ5daB4liT0QRDWc2FKI6lRv4KH8fWxWbkyss/a86CKnP1K289/9EHX8DHhKPGzpg5uWWEy+12wtla7T7oB0AM6jmG45RnEmXRYESGJJGMSoOoMEL+kIrIchXkcCg2XG45jsNRAy3yJ5j4HGIu+yG9BsrOn3P8vBqL7Zm/PyEI2S2bd8KHIuXqagucloPTtu5mZ3MzaV3aHQcPjPpzZQRAdAUdAkS8mf3pDGMxaDhtHlQDZqvGY0pujAcojGWok7+IakjlNQuMrMa5safc/MkTjnvghse2792yafuG3Z5dgXB3OoMSTZFI39bNO7eq1AWgU1iNI0c2NbkdxLpAdXE3O5xOOxg8IVcGe234Ry4xxZzzC7Igz5VhGdbEF4bcnlZkOerlXUdFUbpz3mCgU/48eU3KlMkYqHB5+RazefKEqUeOOCrcg4py++LRYCQQCvt7IsFQrz/Y6w9Fgokkmr9IJVPbv9kDH5ouGTnKDbVkxAikN3CmF+oNBGDwxJACXOgv4Gf7u3zP7nYvXibprJcyqop94sjB0/TJfxic8QbbTEYgZthcWWWprGp2jFQP2alUAhqVnkgg2BsMRfyhcCAUCfTFpXUicCIUPlaAdUo/wQEezt3g8QgZGDIwQY3h+YOYgX3n7c8AcjyNR7SM17gc+MQuQKHkVSdSU92iCRcyyhe2RqOpsaEFPtSdkc6kg0hjsIGJBHqgxvT6I7Fe+IPIZrMwqsSBZW43UigLp6se64rL3eJ0N5GxyVnCEV39E5xve/VltFx23KijWVZ1zjRuOZYFAFAoeVzjmitAphSjVIeo9fD33Ro4g7O+yVnXpOZnhExPOBiM+pGuRANBNDwFeqM9AvQ2RbGr0w8fa1ZvVPerHaY4kcY4oHVxo1EJKk1jSfsIwqmAm254MB5HmfWjRh8rKYXqW+G1TIBC+TNr3wiVKvdD30YiMeiEHrzPD/T4w0RXoiFkb3oDgd7uffS3zVaDfJcmB4qukdL0G2BDr3nxo89t2rgd4mlHzT5lxvzCv97oakArD+mTPPPl60FpFk6aFVRakR5+JpPp9gXxk8J7EA8Sv6c32BMNIl3BGhOCTyOBTLbfbW7NlkoYLjU2IhsD3Zpun7/N492wfit59eRpZ82YNLfw78IxBQ5ndMqfWft6qFBQhKjih0K9xDKXlyJ9YejHoIip1w8NTLAXOr/+VHpfXwx6oLOnnOaqdxd91Wjk6+21dMp/eEQrsK2qMieTKQGV8pZoHIe0rbZYqy01La7Ran4sHglizxfpDYyue/3dIS/UhlFNR4wbebSjzrWPzyyaG6WkhcMK9jkIFX55mvjZTDYQ6MlmKV2jcGBUXW2uqpKnWiiTv7RWFrsfUgxDPFUK+fBHZrfb8KEC8jXDv+Wk+R0a5c8r2VP8lHYMkwQN9rpUKp1OQyc1iyiD/skjpnr0HB4YH0tOqcyHjc+hbg0w0Wg0qDlQVYSskEln4X9ZhEUIpSwwoLpludyZ9bS10ukN2KiIwxejMjuOqzAaldlSyMc2RUhnslBhsoJAFIi8T7bqTHmx0WDgGJZa2Ur1HADI3P8gzHGobreiwqjmo9FIEPFoJGTI0ATtjACAfA22qIcImyoraJYhj5UYeyJ4wPmPx1hh4G9WnmPDnSUIItIToilCFqlMhhiZ3HsPAmZMpgqaZUXjnmCHHrMs9GMMRqNRzYc5FawxSF2I3sCBCemLKAzJ362utsC/S7N8mDWvBVU/IaDjfWNUPZjNprHfK8B/WG0ElHoRS/ocqBkWi5ny+5WjFeIjEYwHHZ1flI8K+jhU+CGKBoUPRyVBQBoDfZk01hZocUToAxeLl+Cba6ot2BOi/X6hz4G4ANsTHR8YZliGY9AWX7DzK1WKkMFGJgPHp6zAoEw5TNOwMKSSP4H2+8K7ohZMzOntkLQ8y/KmigotHwyX78+s/lsQ6KRTMaL0vBW9paGVz7cl0UsOA52v83PnrTDKmgUxV7Gu8w9nvrSDHcBcHetYjaU9wfBTRsc6VmPmi1cCQCedihGLVARZEkQSFlVY5x/GfJb4IIhL0jNABIwK6/zDmC/XkMppMRXW+Yc7X94TDOSukLHOP9z5eoZUb/tteXmuVmqBCuv8w5yPLIc8o5/TGoJ1/mHOZ1a+BPMcIhppJNKxjiWsnEgtYqaOdZzDvC4FHfeHWXmuBeBWxgyj83W+fFYlGmdULdYdnX+Y89FeW3KVB8CthHW+zmc+fwFtjqmTToX0fwAAAP//EUg2VQAAAAZJREFUAwC96iQfge9EDAAAAABJRU5ErkJggg==">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Scorebook">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: one-screen phone app — trip strip, game switch, two side-by-side player columns of raised pastel buttons, bottom-pinned tab bar */
+:root{
+  --bg:#F6F1FB; --surface:#FFFFFF; --ink:#3B3551; --muted:#7A7390; --line:#E7E0F1;
+  --accent:#C7A6EC; --accent-edge:#A485CB; --accent-soft:#F1E8FC; --accent-ink:#6A4B93;
+  --peach:#FFD5B5; --peach-edge:#E6B18A;
+  --p1:#F9C3D0; --p1-edge:#DD98AB; --p1-soft:#FDEDF1; --p1-ink:#A4465E;
+  --p2:#A9E2EA; --p2-edge:#7CC1CC; --p2-soft:#E6F7F9; --p2-ink:#226F7B;
+  --mint:#C3EAD6; --mint-edge:#93C9AE;
+  --on-pastel:#2F2A42; --hi:rgba(255,255,255,.75); --drop:rgba(80,60,120,.16);
+  --display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --nav-h:66px;
+  padding-top:env(safe-area-inset-top,0px);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1F1C2C; --surface:#2B2741; --ink:#F2EDFA; --muted:#B4ACC9; --line:#3C3657;
+  --accent:#B697DE; --accent-edge:#8467AE; --accent-soft:#372E4F; --accent-ink:#DCC9F5;
+  --peach:#EDBE98; --peach-edge:#B98965;
+  --p1:#E9A8B9; --p1-edge:#B47286; --p1-soft:#3F2737; --p1-ink:#F7C1CF;
+  --p2:#8ED2DA; --p2-edge:#5B9EA7; --p2-soft:#1F3A42; --p2-ink:#AAE8EE;
+  --mint:#A5D6BD; --mint-edge:#6FA389;
+  --hi:rgba(255,255,255,.35); --drop:rgba(0,0,0,.35); color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#1F1C2C; --surface:#2B2741; --ink:#F2EDFA; --muted:#B4ACC9; --line:#3C3657;
+  --accent:#B697DE; --accent-edge:#8467AE; --accent-soft:#372E4F; --accent-ink:#DCC9F5;
+  --peach:#EDBE98; --peach-edge:#B98965;
+  --p1:#E9A8B9; --p1-edge:#B47286; --p1-soft:#3F2737; --p1-ink:#F7C1CF;
+  --p2:#8ED2DA; --p2-edge:#5B9EA7; --p2-soft:#1F3A42; --p2-ink:#AAE8EE;
+  --mint:#A5D6BD; --mint-edge:#6FA389;
+  --hi:rgba(255,255,255,.35); --drop:rgba(0,0,0,.35); color-scheme:dark;}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:560px;margin:0 auto;padding-inline:16px;padding-block:12px calc(var(--nav-h) + 24px + env(safe-area-inset-bottom,0px))}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:700}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent-ink);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* the 3D button: pastel face, glossy top, solid darker edge underneath; pressing sinks it */
+.b3d{--face:var(--accent);--edge:var(--accent-edge);
+  position:relative;border:none;border-radius:14px;color:var(--on-pastel);font-weight:700;
+  background:linear-gradient(180deg,var(--hi) 0%,rgba(255,255,255,0) 55%),var(--face);
+  box-shadow:inset 0 -2px 0 rgba(0,0,0,.06),0 5px 0 var(--edge),0 9px 14px var(--drop);
+  transform:translateY(0);transition:transform .07s ease,box-shadow .07s ease}
+.b3d:active:not(:disabled){transform:translateY(4px);box-shadow:inset 0 -1px 0 rgba(0,0,0,.06),0 1px 0 var(--edge),0 2px 4px var(--drop)}
+.b3d:disabled{opacity:.45;cursor:default}
+/* keep the full tap area under the finger while the button sinks */
+.b3d::before{content:"";position:absolute;left:0;right:0;top:-6px;bottom:-6px;border-radius:inherit}
+.b3d:active:not(:disabled)::before{top:-10px;bottom:-2px}
+
+/* trip strip */
+.trip{display:flex;flex-direction:column;gap:6px;padding-block:6px 14px;border-bottom:2px dotted var(--line);margin-bottom:14px}
+.trip{position:relative;padding-right:96px}
+.badges{position:absolute;right:4px;top:2px;display:flex;align-items:flex-start}
+.dtile{width:30px;height:auto;margin:10px -6px 0 0;transform:rotate(-14deg);position:relative;z-index:1;filter:drop-shadow(0 4px 0 var(--accent-edge)) drop-shadow(0 6px 10px var(--drop));transition:transform .25s}
+.dtile:hover{transform:rotate(-2deg) scale(1.06)}
+.qcard{width:54px;height:auto;transform:rotate(8deg);filter:drop-shadow(0 4px 0 var(--accent-edge)) drop-shadow(0 6px 10px var(--drop));transition:transform .25s}
+.qcard:hover{transform:rotate(-4deg) scale(1.06)}
+.trip h1{font-size:22px;font-weight:800;line-height:1.15;min-width:0}
+.route{display:flex;flex-wrap:wrap;align-items:center;gap:6px;color:var(--muted);font-size:14px}
+.route b{color:var(--ink);font-weight:700}
+.dayrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+input,select{font:inherit;color:var(--ink);background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:8px 10px;min-height:44px;max-width:100%}
+
+/* game switch */
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.seg button{min-height:50px;font-family:var(--display);font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px;--face:var(--surface);--edge:var(--line);color:var(--muted)}
+.seg button[aria-pressed="true"]{--face:var(--accent);--edge:var(--accent-edge);color:var(--on-pastel)}
+.seg svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
+.seg svg.qmini{width:18px;height:26px;stroke:none;fill:initial;transform:rotate(-6deg)}
+.seg svg.dmini{width:14px;height:28px;transform:rotate(-10deg)}
+.rulehint{font-size:13px;color:var(--muted);margin:-4px 0 12px}
+
+/* players */
+.board{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.player{min-width:0;display:flex;flex-direction:column;gap:10px;padding:12px 12px 16px;border-radius:20px;background:var(--ps);border:2px solid var(--pc)}
+.p1{--pc:var(--p1);--pe:var(--p1-edge);--ps:var(--p1-soft);--pd:var(--p1-ink)}
+.p2{--pc:var(--p2);--pe:var(--p2-edge);--ps:var(--p2-soft);--pd:var(--p2-ink)}
+.pname{font-family:var(--display);font-weight:700;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--pd)}
+.score{font-family:var(--display);font-weight:800;font-size:clamp(46px,15vw,68px);line-height:.95;color:var(--pd);font-variant-numeric:tabular-nums}
+.togo{font-size:12px;color:var(--muted);min-height:1.4em}
+.meter{height:8px;border-radius:999px;background:var(--surface);overflow:hidden;box-shadow:inset 0 1px 2px var(--drop)}
+.meter span{display:block;height:100%;border-radius:999px;background:var(--pe)}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px 8px;padding-bottom:4px}
+.tilebtn{min-height:54px;font-family:var(--display);font-weight:800;font-size:22px;display:flex;align-items:center;justify-content:center;--face:var(--pc);--edge:var(--pe)}
+.tilebtn .plus{font-size:15px;opacity:.65;margin-right:1px}
+.onebtn{min-height:46px;font-size:18px;--face:var(--surface);--edge:var(--line);color:var(--pd)}
+.onebtn.plus1{--face:var(--mint);--edge:var(--mint-edge);color:var(--on-pastel)}
+.ones{display:grid;grid-template-columns:1fr 1.4fr;gap:8px;padding-bottom:4px}
+.typein{display:grid;grid-template-columns:1fr auto;gap:6px;padding-bottom:4px}
+.typein input{width:100%;min-width:0;font-size:18px;font-weight:700;text-align:center;border-color:var(--pc)}
+.typein .onebtn{padding:0 12px}
+.pwins{font-size:13px;color:var(--muted);border-top:2px dotted var(--pc);padding-top:8px}
+.pwins b{color:var(--pd);font-family:var(--display);font-size:16px}
+.flash{animation:flash .35s ease}
+@keyframes flash{0%{transform:scale(1.1)}100%{transform:scale(1)}}
+
+.actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;padding-bottom:5px}
+.btn{min-height:50px;padding:0 18px;--face:var(--surface);--edge:var(--line);color:var(--ink)}
+.btn.primary{--face:var(--accent);--edge:var(--accent-edge);color:var(--on-pastel);flex:1}
+.btn.danger{--face:var(--p2);--edge:var(--p2-edge);color:var(--on-pastel)}
+.target{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:14px;color:var(--muted)}
+.target select{min-height:40px;padding:4px 8px}
+
+.banner{margin-top:14px;padding:14px;border-radius:18px;background:var(--peach);color:var(--on-pastel);display:flex;flex-direction:column;gap:12px;box-shadow:0 5px 0 var(--peach-edge)}
+.banner h3{font-size:18px}
+.banner .row{display:flex;gap:10px;padding-bottom:5px}
+
+.log{margin-top:14px;font-size:13px;display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:3px 10px;border-radius:999px;font-variant-numeric:tabular-nums;font-weight:700}
+.chip.c1{background:var(--p1-soft);color:var(--p1-ink)} .chip.c2{background:var(--p2-soft);color:var(--p2-ink)}
+
+/* tally + games */
+.tally{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:16px;border-radius:20px;background:var(--surface);border:2px solid var(--line);margin-bottom:10px}
+.tally .side{min-width:0;text-align:center;padding:10px 6px;border-radius:14px}
+.tally .side:first-child{color:var(--p1-ink);background:var(--p1-soft)} .tally .side:last-child{color:var(--p2-ink);background:var(--p2-soft)}
+.tally .big{font-family:var(--display);font-weight:800;font-size:48px;line-height:1;font-variant-numeric:tabular-nums}
+.tally .who{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tally .dash{font-family:var(--display);font-size:28px;color:var(--muted)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.split div{padding:10px 12px;border-radius:14px;background:var(--accent-soft);min-width:0}
+.split b{display:block;font-family:var(--display);font-size:20px;font-variant-numeric:tabular-nums;color:var(--accent-ink)}
+.split span{font-size:12px;color:var(--muted)}
+.sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:12px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;padding-bottom:4px}
+.filters button{padding:6px 14px;font-size:13px;border-radius:999px;--face:var(--surface);--edge:var(--line);color:var(--muted)}
+.filters button[aria-pressed="true"]{--face:var(--accent);--edge:var(--accent-edge);color:var(--on-pastel)}
+.section-h{display:flex;justify-content:space-between;align-items:center;margin:18px 0 10px;gap:10px;flex-wrap:wrap}
+.section-h h2{font-size:18px}
+.day{margin-bottom:12px}
+.day .eyebrow{margin-bottom:6px}
+.game{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border:2px solid var(--line);border-radius:14px;margin-bottom:6px}
+.game .n{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.game .res{min-width:0;font-variant-numeric:tabular-nums;font-size:15px}
+.game .res b{font-family:var(--display)}
+.game .res small{display:block;font-size:12px;color:var(--muted)}
+.pill{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap;color:var(--on-pastel)}
+.pill.w1{background:var(--p1)} .pill.w2{background:var(--p2)} .pill.tie{background:var(--peach)}
+.xbtn{border:none;background:none;color:var(--muted);font-size:13px;text-decoration:underline;padding:4px}
+.empty{padding:22px 16px;text-align:center;color:var(--muted);border:2px dashed var(--line);border-radius:16px}
+
+/* trips */
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form .full{grid-column:1/-1}
+.form label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);font-weight:700;min-width:0}
+.form input{width:100%}
+.presets{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 14px}
+.preset{padding:9px 12px;font-size:13px;text-align:left;font-weight:400;--face:var(--peach);--edge:var(--peach-edge)}
+.preset b{font-weight:700}
+.tripcard{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 14px;margin-bottom:12px;width:100%;text-align:left;font-weight:400;--face:var(--surface);--edge:var(--line);color:var(--ink)}
+.tripcard.active{--face:var(--accent-soft);--edge:var(--accent)}
+.tripcard .t{min-width:0}
+.tripcard .t b{display:block;font-family:var(--display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tripcard .t span{font-size:13px;color:var(--muted)}
+.tripcard .w{font-family:var(--display);font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--accent-ink)}
+
+footer{margin-top:28px;text-align:center;font-size:12px;color:var(--muted)}
+
+/* bottom nav */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--surface);border-top:2px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -6px 16px var(--drop)}
+nav.tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;height:var(--nav-h);padding:6px 10px 10px}
+nav.tabs button{border:none;border-radius:14px;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;font-weight:700;color:var(--muted)}
+nav.tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8}
+nav.tabs button[aria-current="page"]{color:var(--on-pastel);background:linear-gradient(180deg,var(--hi),rgba(255,255,255,0) 55%),var(--accent);box-shadow:0 4px 0 var(--accent-edge)}
+
+/* confirm sheet */
+.scrim{position:fixed;inset:0;background:rgba(40,30,60,.4);z-index:10;display:flex;align-items:flex-end;justify-content:center}
+.sheet{width:100%;max-width:560px;background:var(--surface);border-radius:22px 22px 0 0;padding:20px 16px calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
+.sheet p{margin:0;color:var(--muted)}
+.sheet .row{display:flex;gap:10px;padding-bottom:5px}
+.sheet .row .btn{flex:1}
+
+
+/* winner celebration */
+.party{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(40,30,60,.45)}
+.party canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.trophy-card{position:relative;width:100%;max-width:360px;border-radius:28px;padding:26px 20px 22px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;
+  background:linear-gradient(180deg,var(--hi),rgba(255,255,255,0) 45%),var(--pc);color:var(--on-pastel);
+  box-shadow:0 8px 0 var(--pe),0 18px 40px var(--drop);animation:pop .45s cubic-bezier(.2,1.4,.4,1)}
+.trophy-card.tie{--pc:var(--peach);--pe:var(--peach-edge)}
+.trophy-card svg{width:84px;height:84px;filter:drop-shadow(0 4px 0 var(--pe))}
+.trophy-card .eyebrow{color:var(--on-pastel);opacity:.7}
+.trophy-card h2{font-size:34px;font-weight:800;line-height:1.05}
+.trophy-card .final{font-family:var(--display);font-weight:800;font-size:26px;font-variant-numeric:tabular-nums}
+.trophy-card .final small{display:block;font-family:var(--body);font-weight:700;font-size:13px;opacity:.75}
+.trophy-card .series{margin-top:4px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.55);font-weight:700;font-size:14px;font-variant-numeric:tabular-nums}
+.trophy-card .btn{margin-top:10px;width:100%;--face:var(--surface);--edge:var(--pe);color:var(--ink)}
+@keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.trophy-card{animation:none}}
+
+
+/* copyright trigger + Save As popup */
+.copyright{border:none;background:none;color:var(--muted);font:inherit;font-size:12px;cursor:pointer;padding:6px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+.copyright:hover{color:var(--ink);background:var(--accent-soft)}
+.syncdot{width:7px;height:7px;border-radius:50%;background:var(--line)}
+.syncdot.ok{background:var(--mint-edge)} .syncdot.wait{background:var(--peach-edge)} .syncdot.off{background:var(--line)}
+.save-sheet{max-height:88vh;overflow:auto}
+.save-h{display:flex;justify-content:space-between;align-items:center}
+.save-h h3{font-size:22px}
+.xclose{border:none;background:var(--accent-soft);color:var(--ink);width:36px;height:36px;border-radius:50%;font-size:22px;line-height:1}
+.save-sec{display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:2px dotted var(--line)}
+.save-sec .eyebrow{margin:0}
+.save-help{margin:0;font-size:14px;color:var(--muted)}
+.save-row{display:flex;gap:10px;flex-wrap:wrap;padding-bottom:5px}
+.save-row .btn{flex:1;min-width:130px}
+.sync-line{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--bg)}
+.sync-line i{width:10px;height:10px;border-radius:50%;margin-top:6px;flex:none;background:var(--line)}
+.sync-line.ok i{background:var(--mint-edge)} .sync-line.wait i{background:var(--peach-edge)}
+.sync-line span{min-width:0} .sync-line small{display:block;color:var(--muted);font-size:12px}
+.import-ok{padding:12px;border-radius:12px;background:var(--peach);color:var(--on-pastel)}
+.import-ok p{margin:0 0 10px;color:var(--on-pastel)}
+.save-status{min-height:1.2em;font-size:13px;color:var(--accent-ink);margin:0}
+
+@media (max-width:360px){.tilebtn{font-size:19px;min-height:50px}.player{padding:10px 10px 14px}}
+@media (prefers-reduced-motion:reduce){.flash{animation:none}.b3d{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="trip" id="tripHead"></header>
+  <main id="view"></main>
+  <footer><button type="button" class="copyright" id="copyright-trigger" aria-haspopup="dialog">© 2026 Thor<span class="syncdot" id="syncdot" aria-hidden="true"></span></button></footer>
+</div>
+
+<nav class="tabs" aria-label="Sections"><div class="in">
+  <button data-tab="score" aria-current="page"><svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><line x1="6" y1="12" x2="18" y2="12"/><circle cx="12" cy="7.2" r=".9"/><circle cx="9.5" cy="15.5" r=".9"/><circle cx="14.5" cy="18" r=".9"/></svg>Score</button>
+  <button data-tab="games"><svg viewBox="0 0 24 24"><path d="M7 4h10v4a5 5 0 0 1-10 0z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/><path d="M12 13v4M8 21h8M9.5 17h5"/></svg>Wins</button>
+  <button data-tab="trips"><svg viewBox="0 0 24 24"><path d="M3 15h18l-2.5 4.5h-13z"/><path d="M6 15V9h10l2 6"/><path d="M9 9V6h4v3"/></svg>Trips</button>
+</div></nav>
+
+<div id="sheetRoot"></div>
+<div id="partyRoot"></div>
+<div id="saveRoot"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+<script>
+(function(){
+const LS_KEY = "domino-scorebook-v1";
+const QCARD = `<svg viewBox="0 0 100 140">
+  <rect x="3" y="3" width="94" height="134" rx="10" fill="#FFFDF8" stroke="#3B3551" stroke-width="3"/>
+  <rect x="11" y="11" width="78" height="118" rx="6" fill="#FDEDF1"/>
+  <g fill="#D6455D" font-family="Georgia, 'Times New Roman', serif" font-weight="700">
+    <text x="16" y="34" font-size="24" text-anchor="middle">Q</text>
+    <path d="M16 39c-2.6-3-7-1.2-7 2.2 0 3.3 4.4 5.6 7 8.6 2.6-3 7-5.3 7-8.6 0-3.4-4.4-5.2-7-2.2z"/>
+    <g transform="rotate(180 50 70)">
+      <text x="16" y="34" font-size="24" text-anchor="middle">Q</text>
+      <path d="M16 39c-2.6-3-7-1.2-7 2.2 0 3.3 4.4 5.6 7 8.6 2.6-3 7-5.3 7-8.6 0-3.4-4.4-5.2-7-2.2z"/>
+    </g>
+  </g>
+  <path d="M34 50l6 9 10-13 10 13 6-9 3 17H31z" fill="#FFD36E" stroke="#3B3551" stroke-width="2.4" stroke-linejoin="round"/>
+  <circle cx="34" cy="49" r="2.6" fill="#FFD36E" stroke="#3B3551" stroke-width="1.8"/>
+  <circle cx="50" cy="45" r="2.6" fill="#FFD36E" stroke="#3B3551" stroke-width="1.8"/>
+  <circle cx="66" cy="49" r="2.6" fill="#FFD36E" stroke="#3B3551" stroke-width="1.8"/>
+  <path d="M50 78c-6-7-18-3.5-18 5 0 8.5 11 14 18 22 7-8 18-13.5 18-22 0-8.5-12-12-18-5z" fill="#D6455D" stroke="#3B3551" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M39 84c1-3 4-4.5 7-4" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".75"/>
+</svg>`;
+const DOMINO = `<svg viewBox="0 0 60 120"><rect x="3" y="3" width="54" height="114" rx="9" fill="#FFFDF8" stroke="#3B3551" stroke-width="3"/><line x1="10" y1="60" x2="50" y2="60" stroke="#3B3551" stroke-width="2.5" stroke-linecap="round"/><circle cx="30" cy="60" r="3.2" fill="#FFD36E" stroke="#3B3551" stroke-width="1.6"/><g fill="#D6455D"><circle cx="17" cy="17" r="5"/><circle cx="43" cy="17" r="5"/><circle cx="30" cy="31" r="5"/><circle cx="17" cy="45" r="5"/><circle cx="43" cy="45" r="5"/></g><g fill="#2A9AA8"><circle cx="17" cy="77" r="5"/><circle cx="30" cy="89" r="5"/><circle cx="43" cy="101" r="5"/></g></svg>`;
+const GAMES = {domino:"Domino", scala:"Scala 40"};
+const ICON = {
+  domino:DOMINO.replace('<svg ','<svg class="qmini dmini" aria-hidden="true" '),
+  scala:QCARD.replace('<svg ','<svg class="qmini" aria-hidden="true" ')
+};
+const PRESETS = [
+  {name:"South Pacific crossing", ship:"Princess", from:"Auckland, New Zealand", to:"Los Angeles, California", start:"2026-11-09", end:"2026-12-03"},
+  {name:"Perth cruise", ship:"", from:"Perth, Australia", to:"", start:"", end:""},
+  {name:"Mediterranean", ship:"Enchanted Princess", from:"Civitavecchia (Rome), Italy", to:"", start:"2027-11-20", end:""}
+];
+const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4);
+const today = () => { const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); };
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmtDate = (iso, opts) => { if(!iso) return ""; const [y,m,d]=iso.split("-").map(Number); if(!y||!m||!d) return iso; return new Date(y,m-1,d).toLocaleDateString(undefined, opts || {weekday:"short", month:"short", day:"numeric"}); };
+const fmtRange = (a,b) => { if(!a && !b) return "Dates not set"; if(a && !b) return "From " + fmtDate(a,{month:"short",day:"numeric",year:"numeric"}); if(!a) return "Until " + fmtDate(b,{month:"short",day:"numeric",year:"numeric"}); return fmtDate(a,{month:"short",day:"numeric"}) + " – " + fmtDate(b,{month:"short",day:"numeric",year:"numeric"}); };
+
+const blankScala = () => ({s1:0, s2:0, log:[]});
+function newTrip(p){
+  p = p || {};
+  return {id:uid(), name:p.name||"New cruise", ship:p.ship||"", from:p.from||"", to:p.to||"", start:p.start||"", end:p.end||"",
+          p1:"AT", p2:"Player 2", target:150, limit:101, games:[], days:{}, lastType:"domino", curDate:today(),
+          cur:{s1:0, s2:0, log:[]}, scala:blankScala()};
+}
+function migrate(s){
+  s.trips.forEach(t => {
+    t.days = t.days || {}; t.lastType = t.lastType || "domino"; t.limit = t.limit || 101;
+    t.curDate = t.curDate || (t.cur && t.cur.date) || today();
+    t.cur = t.cur || {s1:0,s2:0,log:[]};
+    t.scala = t.scala || blankScala(); if(!Array.isArray(t.scala.log)) t.scala.log = [];
+    t.games.forEach(g => { g.type = g.type || "domino"; });
+  });
+  return s;
+}
+
+/* ---------- state + storage ---------- */
+let state = null, tab = "score", gameFilter = "all", keepBanner = false;
+try { const raw = localStorage.getItem(LS_KEY); if(raw){ const s = JSON.parse(raw); if(s && Array.isArray(s.trips) && s.trips.length) state = migrate(s); } } catch(e){}
+if(!state){ const t = newTrip(PRESETS[0]); state = {v:2, updatedAt:0, activeTripId:t.id, trips:[t]}; }
+
+const trip = () => state.trips.find(t => t.id === state.activeTripId) || state.trips[0];
+const dayType = t => { t.curDate = today(); return t.days[t.curDate] || t.lastType || "domino"; };
+
+function saveLocal(){ try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e){} }
+function commit(){
+  state.updatedAt = Date.now();
+  saveLocal();
+  pushCloud();
+}
+
+/* ---------- phone <-> computer sync ----------
+   Same Firebase Realtime Database project as the License Plates app, under
+   its own top-level node ("cruiseScorebook") so the apps never collide.
+   This device always keeps a local copy first; the cloud copy is shared by
+   every device that opens the scorebook, and the newest save wins. */
+const FB_CONFIG = {
+  apiKey: ["AIzaSyDWceP3CnO43wj6", "xSu_FQ2jQ9N-LVxSKr8"].join(""),
+  authDomain: "household-tasks-cb3ca.firebaseapp.com",
+  databaseURL: "https://household-tasks-cb3ca-default-rtdb.firebaseio.com",
+  projectId: "household-tasks-cb3ca",
+  storageBucket: "household-tasks-cb3ca.firebasestorage.app",
+  messagingSenderId: "719926406482",
+  appId: "1:719926406482:web:28ccdd630bea4531079e8b"
+};
+const CLOUD_ROOT = "cruiseScorebook";
+const CLIENT_ID = Math.random().toString(36).slice(2) + Date.now().toString(36);
+const cloud = {ref:null, ok:false, online:false, lastSync:0, error:"", timer:null, writing:false, again:false};
+let pendingRemoteRender = false;
+
+function pushCloud(){
+  if(!cloud.ref) return;
+  clearTimeout(cloud.timer);
+  cloud.timer = setTimeout(async () => {
+    if(cloud.writing){ cloud.again = true; return; }
+    cloud.writing = true;
+    try{
+      await cloud.ref.set({state: JSON.stringify(state), updatedAt: state.updatedAt, writer: CLIENT_ID});
+      cloud.ok = true; cloud.error = ""; cloud.lastSync = Date.now();
+    }catch(e){ cloud.ok = false; cloud.error = "Couldn't reach the cloud. Saved on this device."; }
+    cloud.writing = false; renderSyncBits();
+    if(cloud.again){ cloud.again = false; pushCloud(); }
+  }, 500);
+}
+function applyRemote(remote, updatedAt){
+  state = migrate(remote); state.updatedAt = updatedAt; saveLocal();
+  const a = document.activeElement;
+  if(a && a.tagName === "INPUT" && a.closest("#view")){ pendingRemoteRender = true; return; }
+  render();
+}
+document.addEventListener("focusout", () => { if(pendingRemoteRender){ setTimeout(() => { const a = document.activeElement; if(!(a && a.tagName==="INPUT")){ pendingRemoteRender = false; render(); } }, 50); } });
+function initCloud(){
+  try{
+    if(!window.firebase || !firebase.initializeApp) { cloud.error = "Sync isn't available here. Scores are saved on this device."; return; }
+    if(!firebase.apps.length) firebase.initializeApp(FB_CONFIG);
+    const db = firebase.database();
+    cloud.ref = db.ref(CLOUD_ROOT);
+    db.ref(".info/connected").on("value", snap => { cloud.online = !!snap.val(); renderSyncBits(); });
+    cloud.ref.on("value", snap => {
+      cloud.ok = true; cloud.error = "";
+      const v = snap.val();
+      let remote = null;
+      if(v && v.state){ try { remote = JSON.parse(v.state); } catch(e){} }
+      if(remote && Array.isArray(remote.trips) && remote.trips.length && (v.updatedAt||0) > (state.updatedAt||0)){
+        applyRemote(remote, v.updatedAt);
+      } else if((state.updatedAt||0) > ((v && v.updatedAt)||0)){
+        pushCloud();
+      }
+      cloud.lastSync = Date.now();
+      renderSyncBits();
+    }, err => {
+      cloud.ok = false; cloud.error = "The cloud refused the connection. Scores are saved on this device.";
+      renderSyncBits();
+    });
+  }catch(e){ cloud.ok = false; cloud.error = "Sync isn't available here. Scores are saved on this device."; }
+}
+function syncLabel(){
+  if(cloud.ok && cloud.online) return {cls:"ok", text:"Synced with your other devices", sub: cloud.lastSync ? "Last synced " + new Date(cloud.lastSync).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}) : ""};
+  if(cloud.ref && !cloud.online && !cloud.error) return {cls:"wait", text:"Offline. Saving on this device", sub:"It syncs again when you're back online."};
+  return {cls:"off", text:"Saved on this device only", sub: cloud.error};
+}
+function renderSyncBits(){
+  const d = document.getElementById("syncdot"); if(d) d.className = "syncdot " + syncLabel().cls;
+  const box = document.getElementById("syncStatus");
+  if(box){ const l = syncLabel(); box.className = "sync-line " + l.cls; box.innerHTML = `<i></i><span><b>${esc(l.text)}</b>${l.sub?`<small>${esc(l.sub)}</small>`:""}</span>`; }
+}
+
+/* ---------- rendering ---------- */
+const $ = s => document.querySelector(s);
+function tally(t, type){
+  let w1=0,w2=0,ties=0,n=0;
+  t.games.forEach(g => { if(type && type!=="all" && g.type!==type) return; n++; g.winner===1?w1++:g.winner===2?w2++:ties++; });
+  return {w1,w2,ties,n};
+}
+function renderHead(){
+  const t = trip();
+  const route = (t.from || t.to)
+    ? `<b>${esc(t.from||"Departure port?")}</b><span aria-hidden="true">→</span><b>${esc(t.to||"Arrival port?")}</b>`
+    : `<span>Add ports on the Trips tab</span>`;
+  $("#tripHead").innerHTML = `
+    <div class="badges" aria-hidden="true">${DOMINO.replace('<svg ','<svg class="dtile" ')}${QCARD.replace('<svg ','<svg class="qcard" ')}</div>
+    <div class="eyebrow">${esc(t.ship ? t.ship + " · " : "")}${esc(fmtRange(t.start,t.end))}</div>
+    <h1>${esc(t.name)}</h1>
+    <div class="route">${route}</div>`;
+}
+
+function scoreTop(t, type){
+  t.curDate = today();
+  const gameNo = t.games.filter(g => g.date === t.curDate && g.type === type).length + 1;
+  return `
+    <div class="dayrow">
+      <span class="eyebrow num">${esc(fmtDate(t.curDate,{weekday:"long",month:"short",day:"numeric"}))} · ${GAMES[type]} game ${gameNo}</span>
+    </div>
+    <div class="seg" role="group" aria-label="Today's game">
+      ${Object.keys(GAMES).map(k => `<button class="b3d" data-type="${k}" aria-pressed="${k===type}">${ICON[k]}${GAMES[k]}</button>`).join("")}
+    </div>`;
+}
+
+function renderDomino(){
+  const t = trip(), c = t.cur, tl = tally(t,"domino");
+  const reached = t.target && (c.s1 >= t.target || c.s2 >= t.target);
+  const col = (n) => {
+    const s = n===1?c.s1:c.s2, name = n===1?t.p1:t.p2, wins = n===1?tl.w1:tl.w2;
+    const togo = t.target ? Math.max(0, t.target - s) : null;
+    return `<section class="player p${n}" aria-label="${esc(name)}">
+      <div class="pname">${esc(name)}</div>
+      <div class="score" id="sc${n}">${s}</div>
+      ${t.target ? `<div class="meter" aria-hidden="true"><span style="width:${Math.min(100, s/t.target*100)}%"></span></div>` : ""}
+      <div class="togo">${togo === null ? "" : togo === 0 ? "Reached " + t.target : togo + " to go"}</div>
+      <div class="typein" data-typein="${n}" data-g="domino">
+        <label class="sr" for="in${n}">Points for ${esc(name)}</label>
+        <input id="in${n}" type="text" inputmode="numeric" pattern="[0-9]*" enterkeyhint="done" autocomplete="off" min="0" max="500" placeholder="pts">
+        <button type="button" class="onebtn plus1 b3d" data-typeadd="${n}">Add</button>
+      </div>
+      <div class="tiles">
+        ${[5,10,15,20].map(v => `<button class="tilebtn b3d" data-add="${n}" data-v="${v}" aria-label="Add ${v} to ${esc(name)}"><span class="plus">+</span>${v}</button>`).join("")}
+      </div>
+      <div class="ones">
+        <button class="onebtn b3d" data-add="${n}" data-v="-1" aria-label="Subtract 1 from ${esc(name)}">−1</button>
+        <button class="onebtn plus1 b3d" data-add="${n}" data-v="1" aria-label="Add 1 to ${esc(name)}">+1</button>
+      </div>
+      <div class="pwins">Domino wins this trip <b class="num">${wins}</b></div>
+    </section>`;
+  };
+  const winnerName = c.s1 === c.s2 ? null : (c.s1 > c.s2 ? t.p1 : t.p2);
+  $("#view").innerHTML = scoreTop(t,"domino") + `
+    <div class="board">${col(1)}${col(2)}</div>
+    ${reached && !keepBanner ? `<div class="banner" role="status"><h3>${winnerName ? esc(winnerName) + " reached " + t.target : "Both reached " + t.target}</h3><div class="row"><button class="btn primary b3d" data-act="end">Record the win</button><button class="btn b3d" data-act="keep">Keep playing</button></div></div>` : ""}
+    <div class="actions">
+      <button class="btn primary b3d" data-act="end" ${c.s1||c.s2 ? "" : "disabled"}>End game${winnerName ? " · " + esc(winnerName) + " wins" : ""}</button>
+      <button class="btn b3d" data-act="undo" ${c.log.length ? "" : "disabled"}>Undo</button>
+      <button class="btn b3d" data-act="reset" ${c.s1||c.s2 ? "" : "disabled"}>Clear</button>
+    </div>
+    <div class="target"><label for="target">Play to</label>
+      <select id="target">${[100,150,200,250,300,0].map(v=>`<option value="${v}" ${t.target===v?"selected":""}>${v?v+" points":"No limit"}</option>`).join("")}</select>
+    </div>
+    ${c.log.length ? `<div class="log" aria-label="Points this game">${c.log.slice(-14).map(e=>`<span class="chip c${e.p}">${e.v>0?"+":"−"}${Math.abs(e.v)} ${esc(e.p===1?t.p1:t.p2)}</span>`).join("")}</div>` : ""}
+  `;
+}
+
+function renderScala(){
+  const t = trip(), sc = t.scala, tl = tally(t,"scala"), L = t.limit || 101;
+  const out = sc.s1 >= L || sc.s2 >= L;
+  const col = (n) => {
+    const s = n===1?sc.s1:sc.s2, name = n===1?t.p1:t.p2, wins = n===1?tl.w1:tl.w2;
+    const left = Math.max(0, L - s);
+    return `<section class="player p${n}" aria-label="${esc(name)}">
+      <div class="pname">${esc(name)}</div>
+      <div class="score" id="sc${n}">${s}</div>
+      <div class="meter" aria-hidden="true"><span style="width:${Math.min(100, s/L*100)}%"></span></div>
+      <div class="togo">${s >= L ? "Reached " + L : left + " before " + L}</div>
+      <div class="typein" data-typein="${n}">
+        <label class="sr" for="in${n}">Points for ${esc(name)}</label>
+        <input id="in${n}" type="text" inputmode="numeric" pattern="[0-9]*" enterkeyhint="done" autocomplete="off" min="0" max="500" placeholder="pts">
+        <button type="button" class="onebtn plus1 b3d" data-typeadd="${n}">Add</button>
+      </div>
+      <div class="tiles">
+        ${[1,5,10,25].map(v => `<button class="tilebtn b3d" data-sadd="${n}" data-v="${v}" aria-label="Add ${v} to ${esc(name)}"><span class="plus">+</span>${v}</button>`).join("")}
+      </div>
+      <button class="onebtn b3d" data-sadd="${n}" data-v="-1" aria-label="Subtract 1 from ${esc(name)}">−1</button>
+      <div class="pwins">Scala 40 wins this trip <b class="num">${wins}</b></div>
+    </section>`;
+  };
+  const leader = sc.s1===sc.s2 ? null : (sc.s1 < sc.s2 ? t.p1 : t.p2);
+  const outName = sc.s1>=L ? t.p1 : t.p2, winName = sc.s1>=L ? t.p2 : t.p1;
+  $("#view").innerHTML = scoreTop(t,"scala") + `
+    <p class="rulehint">Type the points each player makes and tap Add. Totals build up until someone reaches ${L}. That player is out and the other wins.</p>
+    <div class="board">${col(1)}${col(2)}</div>
+    ${out ? `<div class="banner" role="status"><h3>${sc.s1>=L && sc.s2>=L ? "Both players reached " + L : esc(outName) + " reached " + L + " · " + esc(winName) + " wins"}</h3><div class="row"><button class="btn primary b3d" data-act="end">Record the win</button></div></div>` : ""}
+    <div class="actions">
+      <button class="btn primary b3d" data-act="end" ${sc.log.length ? "" : "disabled"}>End game${leader ? " · " + esc(leader) + " wins" : ""}</button>
+      <button class="btn b3d" data-act="sundo" ${sc.log.length ? "" : "disabled"}>Undo</button>
+      <button class="btn b3d" data-act="reset" ${sc.log.length ? "" : "disabled"}>Clear</button>
+    </div>
+    <div class="target"><label for="limit">Game ends at</label>
+      <select id="limit">${[101,151,201].map(v=>`<option value="${v}" ${L===v?"selected":""}>${v} points</option>`).join("")}</select>
+    </div>
+    ${sc.log.length ? `<div class="log" aria-label="Points this game">${sc.log.slice(-20).map(e=>`<span class="chip c${e.p}">${e.v>0?"+":"−"}${Math.abs(e.v)} ${esc(e.p===1?t.p1:t.p2)}</span>`).join("")}</div>` : ""}
+  `;
+}
+function dominoAdd(n, v){
+  const t = trip(), key = n===1?"s1":"s2";
+  const nv = Math.max(0, t.cur[key] + v);
+  if(nv === t.cur[key]) return;
+  t.cur.log.push({p:n, v:nv - t.cur[key]}); t.cur[key] = nv;
+  if(t.cur.log.length > 300) t.cur.log = t.cur.log.slice(-300);
+  keepBanner = false; commit(); render();
+  const el = $("#sc"+n); if(el) el.classList.add("flash");
+}
+function scalaAdd(n, v){
+  const t = trip(), sc = t.scala, key = n===1?"s1":"s2";
+  const nv = Math.max(0, sc[key] + v);
+  if(nv === sc[key]) return;
+  sc.log.push({p:n, v:nv - sc[key]}); sc[key] = nv;
+  if(sc.log.length > 300) sc.log = sc.log.slice(-300);
+  commit(); render();
+  const el = $("#sc"+n); if(el) el.classList.add("flash");
+}
+
+function renderGames(){
+  const t = trip(), tl = tally(t,"all"), td = tally(t,"domino"), ts = tally(t,"scala");
+  let all1=0, all2=0, allG=0; state.trips.forEach(x => { const k = tally(x,"all"); all1+=k.w1; all2+=k.w2; allG+=k.n; });
+  const shown = t.games.map((g,i)=>({...g,n:i+1})).filter(g => gameFilter==="all" || g.type===gameFilter);
+  const byDay = {}; shown.forEach(g => { (byDay[g.date] = byDay[g.date] || []).push(g); });
+  const days = Object.keys(byDay).sort().reverse();
+  $("#view").innerHTML = `
+    <div class="eyebrow" style="margin-bottom:8px">Games won this trip</div>
+    <div class="tally">
+      <div class="side"><div class="big">${tl.w1}</div><div class="who">${esc(t.p1)}</div></div>
+      <div class="dash">–</div>
+      <div class="side"><div class="big">${tl.w2}</div><div class="who">${esc(t.p2)}</div></div>
+    </div>
+    <div class="split">
+      <div><span>Domino</span><b>${td.w1} – ${td.w2}</b><span>${td.n} played${td.ties?` · ${td.ties} tied`:""}</span></div>
+      <div><span>Scala 40</span><b>${ts.w1} – ${ts.w2}</b><span>${ts.n} played${ts.ties?` · ${ts.ties} tied`:""}</span></div>
+    </div>
+    ${state.trips.length>1?`<div class="sub num">All trips: ${esc(t.p1)} ${all1}, opponents ${all2} (${allG} games)</div>`:""}
+    <div class="section-h"><h2>Games by day</h2>
+      <div class="filters" role="group" aria-label="Show">${[["all","All"],["domino","Domino"],["scala","Scala 40"]].map(([k,l])=>`<button class="b3d" data-filter="${k}" aria-pressed="${gameFilter===k}">${l}</button>`).join("")}</div>
+    </div>
+    ${days.length ? days.map(d => {
+      const list = byDay[d]; const d1 = list.filter(g=>g.winner===1).length, d2 = list.filter(g=>g.winner===2).length;
+      const types = [...new Set(list.map(g=>GAMES[g.type]))].join(" & ");
+      return `<div class="day"><div class="eyebrow num">${esc(fmtDate(d,{weekday:"long",month:"short",day:"numeric"}))} · ${esc(types)} · ${d1}–${d2}</div>
+      ${list.slice().reverse().map(g => `<div class="game">
+        <span class="n">#${g.n}</span>
+        <span class="res">${esc(t.p1)} <b>${g.s1}</b> · ${esc(t.p2)} <b>${g.s2}</b><small>${GAMES[g.type]}${g.type==="scala"?" · low score wins":""}</small></span>
+        <span style="display:flex;align-items:center;gap:4px">${g.winner===0?`<span class="pill tie">Tie</span>`:`<span class="pill w${g.winner}">${esc(g.winner===1?t.p1:t.p2)}</span>`}<button class="xbtn" data-del="${g.id}" aria-label="Delete game ${g.n}">Delete</button></span>
+      </div>`).join("")}</div>`;
+    }).join("") : `<div class="empty">No finished games here yet. Score a game on the Score tab and tap <b>End game</b> to record who won.</div>`}
+  `;
+}
+
+function renderTrips(){
+  const t = trip();
+  $("#view").innerHTML = `
+    <div class="section-h" style="margin-top:0"><h2>Trip details</h2></div>
+    <div class="form">
+      <label class="full" for="f-name">Where we're going<input id="f-name" data-f="name" value="${esc(t.name)}" placeholder="e.g. South Pacific crossing"></label>
+      <label class="full" for="f-ship">Ship<input id="f-ship" data-f="ship" value="${esc(t.ship)}" placeholder="Ship name"></label>
+      <label for="f-start">Trip starts<input type="date" id="f-start" data-f="start" value="${esc(t.start)}"></label>
+      <label for="f-end">Trip ends<input type="date" id="f-end" data-f="end" value="${esc(t.end)}"></label>
+      <label class="full" for="f-from">Departure port<input id="f-from" data-f="from" value="${esc(t.from)}" placeholder="Departure port"></label>
+      <label class="full" for="f-to">Arrival port<input id="f-to" data-f="to" value="${esc(t.to)}" placeholder="Arrival port"></label>
+      <label for="f-p1">Player 1<input id="f-p1" data-f="p1" value="${esc(t.p1)}" maxlength="18"></label>
+      <label for="f-p2">Player 2<input id="f-p2" data-f="p2" value="${esc(t.p2)}" maxlength="18"></label>
+    </div>
+    <div class="section-h"><h2>All trips</h2><button class="btn b3d" data-act="newtrip">New trip</button></div>
+    <div id="presetBox"></div>
+    ${state.trips.slice().sort((a,b)=>(b.start||"").localeCompare(a.start||"")).map(x => { const k = tally(x,"all"); return `
+      <button class="tripcard b3d ${x.id===t.id?"active":""}" data-trip="${x.id}" aria-pressed="${x.id===t.id}">
+        <span class="t"><b>${esc(x.name)}</b><span>${esc(fmtRange(x.start,x.end))}${x.from?` · ${esc(x.from)}`:""}</span></span>
+        <span class="w">${k.w1}–${k.w2}</span>
+      </button>`; }).join("")}
+    ${state.trips.length > 1 ? `<button class="btn danger b3d" style="margin-top:12px" data-act="deltrip">Delete this trip</button>` : ""}
+  `;
+}
+
+function render(){
+  renderHead();
+  document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-current", b.dataset.tab===tab ? "page" : "false"));
+  if(tab==="score"){ dayType(trip())==="scala" ? renderScala() : renderDomino(); }
+  else if(tab==="games") renderGames(); else renderTrips();
+}
+
+/* ---------- confirm sheet ---------- */
+function sheet(title, text, okLabel, onOk, danger){
+  const root = $("#sheetRoot");
+  root.innerHTML = `<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shT">
+    <h3 id="shT">${esc(title)}</h3>${text?`<p>${text}</p>`:""}
+    <div class="row"><button class="btn b3d" data-close>Cancel</button><button class="btn b3d ${danger?"danger":"primary"}" id="shOk">${esc(okLabel)}</button></div>
+  </div></div>`;
+  const close = () => root.innerHTML = "";
+  root.querySelectorAll("[data-close]").forEach(el => el.addEventListener("click", e => { if(e.target===el) close(); }));
+  $("#shOk").addEventListener("click", () => { close(); onOk(); });
+  $("#shOk").focus();
+}
+
+
+/* ---------- winner celebration ---------- */
+const TROPHY = '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 8h24v14a12 12 0 0 1-24 0z" fill="#FFE08A" stroke="#3B3551" stroke-width="2.5" stroke-linejoin="round"/><path d="M20 12h-8a8 8 0 0 0 9 10M44 12h8a8 8 0 0 1-9 10" fill="none" stroke="#3B3551" stroke-width="2.5" stroke-linecap="round"/><path d="M27 34h10l-1 10h-8z" fill="#FFE08A" stroke="#3B3551" stroke-width="2.5" stroke-linejoin="round"/><rect x="18" y="44" width="28" height="9" rx="3" fill="#C7A6EC" stroke="#3B3551" stroke-width="2.5"/><path d="M26 15l3 3 6-7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/></svg>';
+function celebrate(t, g){
+  const root = $("#partyRoot"), tl = tally(t, g.type), name = g.winner===1 ? t.p1 : g.winner===2 ? t.p2 : null;
+  const sameDay = t.games.filter(x => x.date===g.date && x.type===g.type).length;
+  root.innerHTML = `<div class="party" data-party><canvas></canvas>
+    <div class="trophy-card ${g.winner ? "p"+g.winner : "tie"}" role="dialog" aria-modal="true" aria-labelledby="winT">
+      ${TROPHY}
+      <div class="eyebrow">${GAMES[g.type]} · game ${sameDay} today</div>
+      <h2 id="winT">${name ? esc(name) + " wins!" : "It's a tie!"}</h2>
+      <div class="final">${g.s1} – ${g.s2}<small>${esc(t.p1)} – ${esc(t.p2)}${g.type==="scala"?" · low score wins":""}</small></div>
+      <div class="series">This trip in ${GAMES[g.type]}: ${esc(t.p1)} ${tl.w1} · ${esc(t.p2)} ${tl.w2}</div>
+      <button class="btn b3d" data-party-close>Play again</button>
+    </div></div>`;
+  const close = () => { root.innerHTML = ""; };
+  root.querySelector("[data-party-close]").addEventListener("click", close);
+  root.querySelector("[data-party]").addEventListener("click", e => { if(e.target.matches("[data-party]")) close(); });
+  root.querySelector("[data-party-close]").focus();
+  if(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const cv = root.querySelector("canvas"), ctx = cv.getContext("2d"), dpr = window.devicePixelRatio || 1;
+  const W = cv.clientWidth, H = cv.clientHeight; cv.width = W*dpr; cv.height = H*dpr; ctx.scale(dpr,dpr);
+  const css = getComputedStyle(document.documentElement);
+  const main = g.winner===1 ? css.getPropertyValue("--p1") : g.winner===2 ? css.getPropertyValue("--p2") : css.getPropertyValue("--peach");
+  const cols = [main, main, css.getPropertyValue("--accent"), css.getPropertyValue("--mint"), "#FFE08A", "#FFFFFF"].map(c => c.trim());
+  const bits = Array.from({length:120}, () => ({x:Math.random()*W, y:-20-Math.random()*H*0.6, vx:(Math.random()-.5)*2.2, vy:2+Math.random()*3.2,
+    r:Math.random()*6.28, vr:(Math.random()-.5)*.25, w:6+Math.random()*7, h:4+Math.random()*5, c:cols[Math.floor(Math.random()*cols.length)]}));
+  const t0 = performance.now();
+  (function frame(now){
+    if(!cv.isConnected) return;
+    const age = now - t0; ctx.clearRect(0,0,W,H);
+    bits.forEach(b => { b.x += b.vx; b.y += b.vy; b.vy += .03; b.r += b.vr;
+      ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(b.r); ctx.globalAlpha = Math.max(0, 1 - Math.max(0, age-3200)/800);
+      ctx.fillStyle = b.c; ctx.fillRect(-b.w/2,-b.h/2,b.w,b.h); ctx.restore(); });
+    if(age < 4000) requestAnimationFrame(frame); else ctx.clearRect(0,0,W,H);
+  })(t0);
+}
+
+
+/* ---------- Save As… popup (opened from the © line) ---------- */
+function backupJSON(){ return JSON.stringify(state, null, 2); }
+function triggerDownload(filename, content, mime){
+  try{
+    const url = URL.createObjectURL(new Blob([content], {type:mime}));
+    const a = document.createElement("a"); a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+    setSaveStatus("Download started. Check your Downloads folder.");
+  }catch(e){ setSaveStatus("This window can't download files. Open the scorebook file in Safari or Chrome and try again."); }
+}
+function setSaveStatus(msg){ const el = document.getElementById("saveStatus"); if(el) el.textContent = msg; }
+function stamp(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function showSaveAs(){
+  const root = document.getElementById("saveRoot");
+  if(root.firstChild) return;
+  root.innerHTML = `<div class="scrim" id="saveScrim"><div class="sheet save-sheet" role="dialog" aria-modal="true" aria-labelledby="saveT">
+    <div class="save-h"><h3 id="saveT">Save As…</h3><button type="button" class="xclose" id="saveClose" aria-label="Close">×</button></div>
+    <section class="save-sec">
+      <p class="eyebrow">Phone and computer sync</p>
+      <div id="syncStatus" class="sync-line"></div>
+      <div class="save-row"><button type="button" class="btn b3d" id="syncNow">Sync now</button></div>
+    </section>
+    <section class="save-sec">
+      <p class="eyebrow">Download a copy</p>
+      <p class="save-help">HTML saves the app itself. JSON saves your trips and games.</p>
+      <div class="save-row"><button type="button" class="btn primary b3d" id="saveHtml">Save as HTML</button><button type="button" class="btn primary b3d" id="saveJson">Save as JSON</button></div>
+    </section>
+    <section class="save-sec">
+      <p class="eyebrow">Import from JSON</p>
+      <p class="save-help">If your phone and computer fall out of sync, save JSON on the device with the latest games, then import it here on the other one.</p>
+      <input id="importFile" type="file" accept="application/json,.json" hidden>
+      <div class="save-row"><button type="button" class="btn b3d" id="importBtn">Import JSON file</button></div>
+      <div id="importConfirm"></div>
+    </section>
+    <p class="save-status" id="saveStatus" role="status"></p>
+  </div></div>`;
+  renderSyncBits();
+  const close = () => { root.innerHTML = ""; };
+  document.getElementById("saveClose").addEventListener("click", close);
+  document.getElementById("saveScrim").addEventListener("click", e => { if(e.target.id === "saveScrim") close(); });
+  document.getElementById("syncNow").addEventListener("click", () => {
+    if(!cloud.ref){ setSaveStatus(cloud.error || "Sync isn't available here."); return; }
+    state.updatedAt = Date.now(); saveLocal(); pushCloud(); setSaveStatus("Sending this device's scores to the cloud…");
+    setTimeout(() => setSaveStatus(cloud.ok ? "Synced." : (cloud.error || "Still trying to reach the cloud.")), 2500);
+  });
+  document.getElementById("saveHtml").addEventListener("click", () => {
+    const html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML.replace(/<div id="saveRoot">[\s\S]*?<\/div>\s*<script/, '<div id="saveRoot"></div>\n<script');
+    triggerDownload("Cruise_Scorebook.html", html, "text/html");
+  });
+  document.getElementById("saveJson").addEventListener("click", () => triggerDownload("cruise-scorebook-" + stamp() + ".json", backupJSON(), "application/json"));
+  document.getElementById("importBtn").addEventListener("click", () => document.getElementById("importFile").click());
+  document.getElementById("importFile").addEventListener("change", async e => {
+    const file = e.target.files[0]; if(!file) return;
+    let data = null;
+    try { data = JSON.parse(await file.text()); } catch(err){ setSaveStatus("Couldn't read that file. Choose a .json file saved from the scorebook."); return; }
+    if(!data || !Array.isArray(data.trips) || !data.trips.length){ setSaveStatus("That doesn't look like a scorebook backup."); return; }
+    const games = data.trips.reduce((n,t) => n + (t.games ? t.games.length : 0), 0);
+    document.getElementById("importConfirm").innerHTML = `<div class="import-ok"><p>Replace everything on this device with <b>${data.trips.length} trip${data.trips.length===1?"":"s"}</b> and <b>${games} game${games===1?"":"s"}</b> from this file?</p><div class="save-row"><button type="button" class="btn b3d" id="impNo">Cancel</button><button type="button" class="btn danger b3d" id="impYes">Replace</button></div></div>`;
+    document.getElementById("impNo").addEventListener("click", () => { document.getElementById("importConfirm").innerHTML = ""; e.target.value = ""; });
+    document.getElementById("impYes").addEventListener("click", () => {
+      state = migrate(data); if(!state.trips.find(t => t.id === state.activeTripId)) state.activeTripId = state.trips[0].id;
+      commit(); render(); document.getElementById("importConfirm").innerHTML = ""; setSaveStatus("Restored. Your other devices will update in a moment.");
+    });
+  });
+  document.getElementById("saveClose").focus();
+}
+(function wireCopyright(){
+  const trig = document.getElementById("copyright-trigger");
+  trig.addEventListener("click", showSaveAs);
+  let hoverTimer = null;
+  const canHover = window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if(canHover){
+    trig.addEventListener("mouseenter", () => { hoverTimer = setTimeout(showSaveAs, 450); });
+    trig.addEventListener("mouseleave", () => clearTimeout(hoverTimer));
+  }
+})();
+
+/* ---------- actions ---------- */
+function endGame(){
+  const t = trip(), type = dayType(t);
+  if(type === "domino"){
+    const c = t.cur, winner = c.s1===c.s2 ? 0 : (c.s1>c.s2 ? 1 : 2);
+    t.games.push({id:uid(), type, date:t.curDate, s1:c.s1, s2:c.s2, winner});
+    t.cur = {s1:0, s2:0, log:[]};
+  } else {
+    const sc = t.scala, winner = sc.s1===sc.s2 ? 0 : (sc.s1<sc.s2 ? 1 : 2);
+    t.games.push({id:uid(), type, date:t.curDate, s1:sc.s1, s2:sc.s2, winner, hands:sc.log.length});
+    t.scala = blankScala();
+  }
+  t.days[t.curDate] = type;
+  keepBanner = false; commit(); render();
+  celebrate(t, t.games[t.games.length-1]);
+}
+function winnerText(t, type){
+  if(type==="domino"){ const c=t.cur; return c.s1===c.s2 ? "a tie" : (c.s1>c.s2?t.p1:t.p2) + " wins"; }
+  const sc=t.scala; return sc.s1===sc.s2 ? "a tie" : (sc.s1<sc.s2?t.p1:t.p2) + " wins";
+}
+
+document.addEventListener("click", e => {
+  const tb = e.target.closest("nav.tabs button");
+  if(tb){ tab = tb.dataset.tab; render(); window.scrollTo(0,0); return; }
+
+  const ty = e.target.closest("[data-type]");
+  if(ty){ const t = trip(); t.days[t.curDate] = ty.dataset.type; t.lastType = ty.dataset.type; keepBanner=false; commit(); render(); return; }
+
+  const ta = e.target.closest("[data-typeadd]");
+  if(ta){ typedAdd(+ta.dataset.typeadd); return; }
+
+  const add = e.target.closest("[data-add]");
+  if(add){ dominoAdd(+add.dataset.add, +add.dataset.v); return; }
+
+  const sa = e.target.closest("[data-sadd]");
+  if(sa){ scalaAdd(+sa.dataset.sadd, +sa.dataset.v); return; }
+
+  const fl = e.target.closest("[data-filter]");
+  if(fl){ gameFilter = fl.dataset.filter; renderGames(); return; }
+
+  const del = e.target.closest("[data-del]");
+  if(del){
+    const t = trip(), g = t.games.find(x => x.id===del.dataset.del); if(!g) return;
+    sheet("Delete this game?", `${GAMES[g.type]}: ${esc(t.p1)} ${g.s1} · ${esc(t.p2)} ${g.s2} on ${esc(fmtDate(g.date))}. The win comes off the tally.`, "Delete game", () => { t.games = t.games.filter(x => x.id!==g.id); commit(); render(); }, true);
+    return;
+  }
+
+  const tc = e.target.closest("[data-trip]");
+  if(tc){ state.activeTripId = tc.dataset.trip; commit(); render(); return; }
+
+  const pr = e.target.closest("[data-preset]");
+  if(pr){ const t = newTrip(PRESETS[+pr.dataset.preset]); const cur = trip(); t.p1 = cur.p1; t.p2 = cur.p2; state.trips.push(t); state.activeTripId = t.id; commit(); render(); return; }
+
+  const act = e.target.closest("[data-act]");
+  if(!act) return;
+  const t = trip(), a = act.dataset.act, type = dayType(t);
+  if(a==="end"){
+    const sc = type==="domino" ? t.cur : t.scala;
+    sheet(`End this ${GAMES[type]} game?`, `${esc(t.p1)} ${sc.s1} · ${esc(t.p2)} ${sc.s2} — recorded as ${esc(winnerText(t,type))}.`, "Record game", endGame);
+  }
+  else if(a==="keep"){ keepBanner = true; render(); }
+  else if(a==="undo"){ const last = t.cur.log.pop(); if(last){ const k = last.p===1?"s1":"s2"; t.cur[k] = Math.max(0, t.cur[k]-last.v); commit(); render(); } }
+  else if(a==="sundo"){ const sc=t.scala, last=sc.log.pop(); if(last){ const k = last.p===1?"s1":"s2"; sc[k] = Math.max(0, sc[k]-last.v); commit(); render(); } }
+  else if(a==="reset"){
+    sheet("Clear both scores?", `This ${GAMES[type]} game goes back to zero. Finished games stay in the tally.`, "Clear scores", () => {
+      if(type==="domino") t.cur = {s1:0,s2:0,log:[]}; else t.scala = blankScala();
+      keepBanner=false; commit(); render(); }, true);
+  }
+  else if(a==="newtrip"){
+    const used = new Set(state.trips.map(x => x.name+"|"+x.start));
+    $("#presetBox").innerHTML = `<div class="eyebrow">Start from one of your cruises, or a blank trip</div><div class="presets">
+      ${PRESETS.map((p,i) => used.has(p.name+"|"+p.start) ? "" : `<button class="preset b3d" data-preset="${i}"><b>${esc(p.name)}</b><br>${esc(p.ship?p.ship+" · ":"")}${esc(p.from)}${p.start?" · "+esc(fmtDate(p.start,{month:"short",day:"numeric",year:"numeric"})):""}</button>`).join("")}
+      <button class="preset b3d" data-act="blanktrip"><b>Blank trip</b><br>Fill in the details</button></div>`;
+  }
+  else if(a==="blanktrip"){ const nt = newTrip(); nt.p1=t.p1; nt.p2=t.p2; state.trips.push(nt); state.activeTripId = nt.id; commit(); render(); setTimeout(()=>{ const f=$("#f-name"); if(f){ f.focus(); f.select(); } }, 0); }
+  else if(a==="deltrip"){ sheet(`Delete “${t.name}”?`, `Its ${t.games.length} recorded game${t.games.length===1?"":"s"} will be removed too.`, "Delete trip", () => { state.trips = state.trips.filter(x => x.id!==t.id); state.activeTripId = state.trips[0].id; commit(); render(); }, true); }
+});
+
+let typingTimer = null;
+document.addEventListener("input", e => {
+  const el = e.target, t = trip();
+  if(el.dataset && el.dataset.f){ t[el.dataset.f] = el.value; clearTimeout(typingTimer); typingTimer = setTimeout(() => { commit(); renderHead(); }, 400); }
+});
+document.addEventListener("change", e => {
+  const el = e.target, t = trip();
+  if(el.id === "target"){ t.target = +el.value; keepBanner=false; commit(); render(); }
+  else if(el.id === "limit"){ t.limit = +el.value; commit(); render(); }
+  else if(el.dataset && el.dataset.f){ t[el.dataset.f] = el.value; commit(); renderHead(); }
+});
+function typedAdd(n){
+  const box = document.querySelector(`[data-typein="${n}"]`); if(!box) return;
+  const inp = box.querySelector("input"), v = parseInt(String(inp.value).replace(/[^0-9]/g,""), 10);
+  if(!v || v <= 0){ inp.value = ""; inp.focus(); return; }
+  if(box.dataset.g === "domino") dominoAdd(n, v); else scalaAdd(n, v);
+}
+document.addEventListener("keydown", e => {
+  if(e.key === "Enter" && e.target.closest && e.target.closest("[data-typein]")){
+    e.preventDefault(); typedAdd(+e.target.closest("[data-typein]").dataset.typein);
+  }
+});
+document.addEventListener("keydown", e => { if(e.key==="Escape"){ $("#sheetRoot").innerHTML=""; $("#partyRoot").innerHTML=""; $("#saveRoot").innerHTML=""; } });
+
+(async () => { try { if(navigator.wakeLock) await navigator.wakeLock.request("screen"); } catch(e){} })();
+
+render();
+initCloud();
+renderSyncBits();
+})();
+</script>
+</body>
+</html>
