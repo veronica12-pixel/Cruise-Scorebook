@@ -356,8 +356,8 @@ nav.tabs button{font-size:11.5px}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded */
-const APP_VERSION = "1.6";
-const APP_UPDATED = "Oct 6, 2026, 8:10 AM";
+const APP_VERSION = "1.7";
+const APP_UPDATED = "Oct 6, 2026, 8:27 AM";
 const LS_KEY = "domino-scorebook-v1";
 const QCARD = `<svg viewBox="0 0 100 140">
   <rect x="3" y="3" width="94" height="134" rx="10" fill="#FFFDF8" stroke="#3B3551" stroke-width="3"/>
@@ -616,12 +616,12 @@ function renderScala(){
       <div class="pwins">Scala 40 wins this trip <b class="num">${wins}</b></div>
     </section>`;
   };
-  const leader = sc.s1===sc.s2 ? null : (sc.s1 < sc.s2 ? t.p1 : t.p2);
-  const outName = sc.s1>=L ? t.p1 : t.p2, winName = sc.s1>=L ? t.p2 : t.p1;
+  const leader = sc.s1===sc.s2 ? null : (sc.s1 > sc.s2 ? t.p1 : t.p2);
+  const winName = sc.s1===sc.s2 ? null : (sc.s1 > sc.s2 ? t.p1 : t.p2);
   $("#view").innerHTML = scoreTop(t,"scala") + `
-    <p class="rulehint">Type the points each player makes and tap Add. Totals build up until someone reaches ${L}. That player is out and the other wins.</p>
+    <p class="rulehint">Type the points each player makes and tap Add. The first to reach ${L} wins.</p>
     <div class="board">${col(1)}${col(2)}</div>
-    ${out ? `<div class="banner" role="status"><h3>${sc.s1>=L && sc.s2>=L ? "Both players reached " + L : esc(outName) + " reached " + L + " · " + esc(winName) + " wins"}</h3><div class="row"><button class="btn primary b3d" data-act="end">Record the win</button></div></div>` : ""}
+    ${out ? `<div class="banner" role="status"><h3>${winName ? esc(winName) + " reached " + L + " and wins!" : "Both players reached " + L + " · it's a tie"}</h3><div class="row"><button class="btn primary b3d" data-act="end">Record the win</button></div></div>` : ""}
     <div class="actions">
       <button class="btn primary b3d" data-act="end" ${sc.log.length ? "" : "disabled"}>End game${leader ? " · " + esc(leader) + " wins" : ""}</button>
       <button class="btn b3d" data-act="sundo" ${sc.log.length ? "" : "disabled"}>Undo</button>
@@ -887,7 +887,7 @@ function celebrate(t, g){
       ${TROPHY}
       <div class="eyebrow">${GAMES[g.type]} · game ${sameDay} today</div>
       <h2 id="winT">${name ? esc(name) + " wins!" : "It's a tie!"}</h2>
-      <div class="final">${g.s1} – ${g.s2}<small>${esc(t.p1)} – ${esc(t.p2)}${g.type==="scala"?" · low score wins":""}</small></div>
+      <div class="final">${g.s1} – ${g.s2}<small>${esc(t.p1)} – ${esc(t.p2)}</small></div>
       <div class="series">This trip in ${GAMES[g.type]}: ${esc(t.p1)} ${tl.w1} · ${esc(t.p2)} ${tl.w2}</div>
       <button class="btn b3d" data-party-close>Play again</button>
     </div></div>`;
@@ -975,7 +975,7 @@ function endGame(){
     t.games.push({id:uid(), type, date:t.curDate, s1:c.s1, s2:c.s2, winner});
     t.cur = {s1:0, s2:0, log:[]};
   } else {
-    const sc = t.scala, winner = sc.s1===sc.s2 ? 0 : (sc.s1<sc.s2 ? 1 : 2);
+    const sc = t.scala, winner = sc.s1===sc.s2 ? 0 : (sc.s1>sc.s2 ? 1 : 2);
     t.games.push({id:uid(), type, date:t.curDate, s1:sc.s1, s2:sc.s2, winner, hands:sc.log.length});
     t.scala = blankScala();
   }
@@ -985,7 +985,7 @@ function endGame(){
 }
 function winnerText(t, type){
   if(type==="domino"){ const c=t.cur; return c.s1===c.s2 ? "a tie" : (c.s1>c.s2?t.p1:t.p2) + " wins"; }
-  const sc=t.scala; return sc.s1===sc.s2 ? "a tie" : (sc.s1<sc.s2?t.p1:t.p2) + " wins";
+  const sc=t.scala; return sc.s1===sc.s2 ? "a tie" : (sc.s1>sc.s2?t.p1:t.p2) + " wins";
 }
 
 document.addEventListener("click", e => {
