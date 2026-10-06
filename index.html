@@ -21,6 +21,8 @@
   --p1:#F9C3D0; --p1-edge:#DD98AB; --p1-soft:#FDEDF1; --p1-ink:#A4465E;
   --p2:#A9E2EA; --p2-edge:#7CC1CC; --p2-soft:#E6F7F9; --p2-ink:#226F7B;
   --mint:#C3EAD6; --mint-edge:#93C9AE;
+  --dom:#FFE9A8; --dom-edge:#E2C163; --dom-soft:#FFF8E1; --dom-ink:#7A5A0E;
+  --sca:#DCC8F7; --sca-edge:#B095DA; --sca-soft:#F4EDFD; --sca-ink:#5E3F8C;
   --on-pastel:#2F2A42; --hi:rgba(255,255,255,.75); --drop:rgba(80,60,120,.16);
   --display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
@@ -34,6 +36,8 @@
   --p1:#E9A8B9; --p1-edge:#B47286; --p1-soft:#3F2737; --p1-ink:#F7C1CF;
   --p2:#8ED2DA; --p2-edge:#5B9EA7; --p2-soft:#1F3A42; --p2-ink:#AAE8EE;
   --mint:#A5D6BD; --mint-edge:#6FA389;
+  --dom:#E8CD7C; --dom-edge:#AE9142; --dom-soft:#3A3220; --dom-ink:#F6DE94;
+  --sca:#BFA5E6; --sca-edge:#8467AE; --sca-soft:#33294A; --sca-ink:#DCCBF7;
   --hi:rgba(255,255,255,.35); --drop:rgba(0,0,0,.35); color-scheme:dark;}}
 :root[data-theme="dark"]{
   --bg:#1F1C2C; --surface:#2B2741; --ink:#F2EDFA; --muted:#B4ACC9; --line:#3C3657;
@@ -42,6 +46,8 @@
   --p1:#E9A8B9; --p1-edge:#B47286; --p1-soft:#3F2737; --p1-ink:#F7C1CF;
   --p2:#8ED2DA; --p2-edge:#5B9EA7; --p2-soft:#1F3A42; --p2-ink:#AAE8EE;
   --mint:#A5D6BD; --mint-edge:#6FA389;
+  --dom:#E8CD7C; --dom-edge:#AE9142; --dom-soft:#3A3220; --dom-ink:#F6DE94;
+  --sca:#BFA5E6; --sca-edge:#8467AE; --sca-soft:#33294A; --sca-ink:#DCCBF7;
   --hi:rgba(255,255,255,.35); --drop:rgba(0,0,0,.35); color-scheme:dark;}
 
 *{box-sizing:border-box}
@@ -136,23 +142,41 @@ input,select{font:inherit;color:var(--ink);background:var(--surface);border:2px 
 .tally .big{font-family:var(--display);font-weight:800;font-size:48px;line-height:1;font-variant-numeric:tabular-nums}
 .tally .who{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tally .dash{font-family:var(--display);font-size:28px;color:var(--muted)}
-.split{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
-.split div{padding:10px 12px;border-radius:14px;background:var(--accent-soft);min-width:0}
-.split b{display:block;font-family:var(--display);font-size:20px;font-variant-numeric:tabular-nums;color:var(--accent-ink)}
-.split span{font-size:12px;color:var(--muted)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.g-domino{--gc:var(--dom);--ge:var(--dom-edge);--gs:var(--dom-soft);--gi:var(--dom-ink)}
+.g-scala{--gc:var(--sca);--ge:var(--sca-edge);--gs:var(--sca-soft);--gi:var(--sca-ink)}
+.gbox{min-width:0;padding:12px;border-radius:18px;background:var(--gs);border:2px solid var(--gc);box-shadow:0 4px 0 var(--ge);display:flex;flex-direction:column;gap:4px}
+.gbox-h{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;color:var(--gi)}
+.gbox-h .gico{width:22px;height:32px;flex:none;transform:rotate(-8deg)}
+.g-domino .gbox-h .gico{width:16px}
+.gbox-score{display:flex;align-items:baseline;justify-content:space-between;font-family:var(--display);font-weight:800;font-size:36px;line-height:1.05;font-variant-numeric:tabular-nums;padding-inline:4px}
+.gbox-score .w1{color:var(--p1-ink)} .gbox-score .w2{color:var(--p2-ink)} .gbox-score .dash{font-size:22px;color:var(--muted)}
+.gbox-names{display:flex;justify-content:space-between;gap:6px;font-size:12px;font-weight:700}
+.gbox-names span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gbox-names span:first-child{color:var(--p1-ink)} .gbox-names span:last-child{color:var(--p2-ink);text-align:right}
+.gbox-foot{font-size:12px;color:var(--muted);border-top:2px dotted var(--gc);padding-top:6px;margin-top:2px}
 .sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:12px}
 .filters{display:flex;gap:8px;flex-wrap:wrap;padding-bottom:4px}
 .filters button{padding:6px 14px;font-size:13px;border-radius:999px;--face:var(--surface);--edge:var(--line);color:var(--muted)}
+.filters button{display:inline-flex;align-items:center;gap:6px}
+.filters .fico{width:11px;height:18px;transform:rotate(-8deg)}
 .filters button[aria-pressed="true"]{--face:var(--accent);--edge:var(--accent-edge);color:var(--on-pastel)}
+.filters .f-domino[aria-pressed="true"]{--face:var(--dom);--edge:var(--dom-edge)}
+.filters .f-scala[aria-pressed="true"]{--face:var(--sca);--edge:var(--sca-edge)}
 .section-h{display:flex;justify-content:space-between;align-items:center;margin:18px 0 10px;gap:10px;flex-wrap:wrap}
 .section-h h2{font-size:18px}
 .day{margin-bottom:12px}
 .day .eyebrow{margin-bottom:6px}
-.game{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border:2px solid var(--line);border-radius:14px;margin-bottom:6px}
+.game{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:10px 12px;background:var(--gs);border:2px solid var(--gc);border-radius:14px;margin-bottom:8px}
+.gbadge{display:flex;flex-direction:column;align-items:center;gap:2px;width:34px}
+.gbadge .rico{width:20px;height:30px;transform:rotate(-8deg)}
+.g-domino .gbadge .rico{width:15px}
+.gname{display:block;font-size:12px;font-weight:700;color:var(--gi);margin-bottom:1px}
+.gend{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.game .res .pair{white-space:nowrap;margin-right:8px}
 .game .n{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
 .game .res{min-width:0;font-variant-numeric:tabular-nums;font-size:15px}
 .game .res b{font-family:var(--display)}
-.game .res small{display:block;font-size:12px;color:var(--muted)}
 .pill{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap;color:var(--on-pastel)}
 .pill.w1{background:var(--p1)} .pill.w2{background:var(--p2)} .pill.tie{background:var(--peach)}
 .xbtn{border:none;background:none;color:var(--muted);font-size:13px;text-decoration:underline;padding:4px}
@@ -229,6 +253,29 @@ nav.tabs button[aria-current="page"]{color:var(--on-pastel);background:linear-gr
 .import-ok{padding:12px;border-radius:12px;background:var(--peach);color:var(--on-pastel)}
 .import-ok p{margin:0 0 10px;color:var(--on-pastel)}
 .save-status{min-height:1.2em;font-size:13px;color:var(--accent-ink);margin:0}
+
+
+/* per-player points drop-downs */
+.pts-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;align-items:start}
+.pts-head{display:none}
+.pts{min-width:0;border-radius:16px;background:var(--ps);border:2px solid var(--pc);box-shadow:0 4px 0 var(--pe);overflow:hidden}
+.pts summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:0 6px;align-items:center;padding:10px 12px;min-height:52px}
+.pts summary::-webkit-details-marker{display:none}
+.pts-name{font-family:var(--display);font-weight:700;color:var(--pd);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:15px}
+.pts-count{grid-column:1;font-size:12px;color:var(--muted)}
+.chev{grid-column:2;grid-row:1 / span 2;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--pc);color:var(--on-pastel);font-size:14px;transition:transform .2s}
+.pts[open] .chev{transform:rotate(180deg)}
+.pts summary:focus-visible{outline:3px solid var(--accent-ink);outline-offset:-3px;border-radius:14px}
+.pts-list{list-style:none;margin:0;padding:4px 10px 10px;max-height:260px;overflow:auto;border-top:2px dotted var(--pc)}
+.pts-list li{display:grid;grid-template-columns:1.6em 1fr auto;align-items:baseline;gap:6px;padding:6px 2px;border-bottom:1px solid var(--surface);font-variant-numeric:tabular-nums}
+.pts-list li:last-child{border-bottom:none}
+.pts-list li.pts-hd{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700;padding-top:8px}
+.pts-list li:nth-child(2) .pts-t{color:var(--pd)}
+.pts-i{font-size:11px;color:var(--muted)}
+.pts-v{font-weight:700;color:var(--pd)} .pts-v.neg{color:var(--muted)}
+.pts-t{font-family:var(--display);font-weight:800;font-size:17px;color:var(--ink)}
+.pts-empty{margin:0;padding:8px 12px 12px;font-size:13px;color:var(--muted);border-top:2px dotted var(--pc)}
+@media (prefers-reduced-motion:reduce){.chev{transition:none}}
 
 @media (max-width:360px){.tilebtn{font-size:19px;min-height:50px}.player{padding:10px 10px 14px}}
 @media (prefers-reduced-motion:reduce){.flash{animation:none}.b3d{transition:none}}
@@ -470,7 +517,7 @@ function renderDomino(){
     <div class="target"><label for="target">Play to</label>
       <select id="target">${[100,150,200,250,300,0].map(v=>`<option value="${v}" ${t.target===v?"selected":""}>${v?v+" points":"No limit"}</option>`).join("")}</select>
     </div>
-    ${c.log.length ? `<div class="log" aria-label="Points this game">${c.log.slice(-14).map(e=>`<span class="chip c${e.p}">${e.v>0?"+":"−"}${Math.abs(e.v)} ${esc(e.p===1?t.p1:t.p2)}</span>`).join("")}</div>` : ""}
+    ${pointsPanels(t, c.log)}
   `;
 }
 
@@ -511,7 +558,7 @@ function renderScala(){
     <div class="target"><label for="limit">Game ends at</label>
       <select id="limit">${[101,151,201].map(v=>`<option value="${v}" ${L===v?"selected":""}>${v} points</option>`).join("")}</select>
     </div>
-    ${sc.log.length ? `<div class="log" aria-label="Points this game">${sc.log.slice(-20).map(e=>`<span class="chip c${e.p}">${e.v>0?"+":"−"}${Math.abs(e.v)} ${esc(e.p===1?t.p1:t.p2)}</span>`).join("")}</div>` : ""}
+    ${pointsPanels(t, sc.log)}
   `;
 }
 function dominoAdd(n, v){
@@ -533,35 +580,34 @@ function scalaAdd(n, v){
   const el = $("#sc"+n); if(el) el.classList.add("flash");
 }
 
+function gameIcon(type, cls){ return (type==="scala" ? QCARD : DOMINO).replace('<svg ','<svg class="'+cls+'" aria-hidden="true" '); }
 function renderGames(){
-  const t = trip(), tl = tally(t,"all"), td = tally(t,"domino"), ts = tally(t,"scala");
+  const t = trip();
   let all1=0, all2=0, allG=0; state.trips.forEach(x => { const k = tally(x,"all"); all1+=k.w1; all2+=k.w2; allG+=k.n; });
   const shown = t.games.map((g,i)=>({...g,n:i+1})).filter(g => gameFilter==="all" || g.type===gameFilter);
   const byDay = {}; shown.forEach(g => { (byDay[g.date] = byDay[g.date] || []).push(g); });
   const days = Object.keys(byDay).sort().reverse();
+  const box = type => { const k = tally(t,type); return `<div class="gbox g-${type}">
+      <div class="gbox-h">${gameIcon(type,"gico")}<span>${GAMES[type]}</span></div>
+      <div class="gbox-score"><span class="w1">${k.w1}</span><span class="dash">–</span><span class="w2">${k.w2}</span></div>
+      <div class="gbox-names"><span>${esc(t.p1)}</span><span>${esc(t.p2)}</span></div>
+      <div class="gbox-foot">${k.n} played${k.ties?` · ${k.ties} tied`:""}</div>
+    </div>`; };
   $("#view").innerHTML = `
     <div class="eyebrow" style="margin-bottom:8px">Games won this trip</div>
-    <div class="tally">
-      <div class="side"><div class="big">${tl.w1}</div><div class="who">${esc(t.p1)}</div></div>
-      <div class="dash">–</div>
-      <div class="side"><div class="big">${tl.w2}</div><div class="who">${esc(t.p2)}</div></div>
-    </div>
-    <div class="split">
-      <div><span>Domino</span><b>${td.w1} – ${td.w2}</b><span>${td.n} played${td.ties?` · ${td.ties} tied`:""}</span></div>
-      <div><span>Scala 40</span><b>${ts.w1} – ${ts.w2}</b><span>${ts.n} played${ts.ties?` · ${ts.ties} tied`:""}</span></div>
-    </div>
+    <div class="split">${box("domino")}${box("scala")}</div>
     ${state.trips.length>1?`<div class="sub num">All trips: ${esc(t.p1)} ${all1}, opponents ${all2} (${allG} games)</div>`:""}
     <div class="section-h"><h2>Games by day</h2>
-      <div class="filters" role="group" aria-label="Show">${[["all","All"],["domino","Domino"],["scala","Scala 40"]].map(([k,l])=>`<button class="b3d" data-filter="${k}" aria-pressed="${gameFilter===k}">${l}</button>`).join("")}</div>
+      <div class="filters" role="group" aria-label="Show">${[["all","All"],["domino","Domino"],["scala","Scala 40"]].map(([k,l])=>`<button class="b3d f-${k}" data-filter="${k}" aria-pressed="${gameFilter===k}">${k!=="all"?gameIcon(k,"fico"):""}${l}</button>`).join("")}</div>
     </div>
     ${days.length ? days.map(d => {
       const list = byDay[d]; const d1 = list.filter(g=>g.winner===1).length, d2 = list.filter(g=>g.winner===2).length;
       const types = [...new Set(list.map(g=>GAMES[g.type]))].join(" & ");
       return `<div class="day"><div class="eyebrow num">${esc(fmtDate(d,{weekday:"long",month:"short",day:"numeric"}))} · ${esc(types)} · ${d1}–${d2}</div>
-      ${list.slice().reverse().map(g => `<div class="game">
-        <span class="n">#${g.n}</span>
-        <span class="res">${esc(t.p1)} <b>${g.s1}</b> · ${esc(t.p2)} <b>${g.s2}</b><small>${GAMES[g.type]}${g.type==="scala"?" · low score wins":""}</small></span>
-        <span style="display:flex;align-items:center;gap:4px">${g.winner===0?`<span class="pill tie">Tie</span>`:`<span class="pill w${g.winner}">${esc(g.winner===1?t.p1:t.p2)}</span>`}<button class="xbtn" data-del="${g.id}" aria-label="Delete game ${g.n}">Delete</button></span>
+      ${list.slice().reverse().map(g => `<div class="game g-${g.type}">
+        <span class="gbadge">${gameIcon(g.type,"rico")}<span class="n">#${g.n}</span></span>
+        <span class="res"><span class="gname">${GAMES[g.type]}</span><span class="pair">${esc(t.p1)} <b>${g.s1}</b></span> <span class="pair">${esc(t.p2)} <b>${g.s2}</b></span></span>
+        <span class="gend">${g.winner===0?`<span class="pill tie">Tie</span>`:`<span class="pill w${g.winner}">${esc(g.winner===1?t.p1:t.p2)}</span>`}<button class="xbtn" data-del="${g.id}" aria-label="Delete game ${g.n}">Delete</button></span>
       </div>`).join("")}</div>`;
     }).join("") : `<div class="empty">No finished games here yet. Score a game on the Score tab and tap <b>End game</b> to record who won.</div>`}
   `;
@@ -612,6 +658,23 @@ function sheet(title, text, okLabel, onOk, danger){
   $("#shOk").focus();
 }
 
+
+
+/* per-player points drop-downs */
+const openPanels = {1:false, 2:false};
+function pointsPanels(t, log){
+  const tot = {1:0, 2:0}, rows = {1:[], 2:[]};
+  log.forEach(e => { tot[e.p] += e.v; rows[e.p].push({v:e.v, total:tot[e.p]}); });
+  const panel = n => {
+    const name = n===1 ? t.p1 : t.p2, list = rows[n];
+    return `<details class="pts p${n}" data-panel="${n}" ${openPanels[n] ? "open" : ""}>
+      <summary><span class="pts-name">${esc(name)}</span><span class="pts-count">Points · ${list.length ? list.length + (list.length===1?" entry":" entries") : "none yet"}</span><span class="chev" aria-hidden="true">▾</span></summary>
+      ${list.length ? `<ol class="pts-list"><li class="pts-hd" aria-hidden="true"><span></span><span>Added</span><span>Total</span></li>${list.map((r,i) => `<li><span class="pts-i">${i+1}</span><span class="pts-v ${r.v<0?"neg":""}">${r.v>0?"+":"−"}${Math.abs(r.v)}</span><span class="pts-t">${r.total}</span></li>`).reverse().join("")}</ol>` : `<p class="pts-empty">No points added yet.</p>`}
+    </details>`;
+  };
+  return `<div class="pts-wrap"><div class="pts-head"><span>#</span><span>Points</span><span>Total</span></div>${panel(1)}${panel(2)}</div>`;
+}
+document.addEventListener("toggle", e => { const d = e.target; if(d.matches && d.matches("[data-panel]")) openPanels[d.dataset.panel] = d.open; }, true);
 
 /* ---------- winner celebration ---------- */
 const TROPHY = '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 8h24v14a12 12 0 0 1-24 0z" fill="#FFE08A" stroke="#3B3551" stroke-width="2.5" stroke-linejoin="round"/><path d="M20 12h-8a8 8 0 0 0 9 10M44 12h8a8 8 0 0 1-9 10" fill="none" stroke="#3B3551" stroke-width="2.5" stroke-linecap="round"/><path d="M27 34h10l-1 10h-8z" fill="#FFE08A" stroke="#3B3551" stroke-width="2.5" stroke-linejoin="round"/><rect x="18" y="44" width="28" height="9" rx="3" fill="#C7A6EC" stroke="#3B3551" stroke-width="2.5"/><path d="M26 15l3 3 6-7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/></svg>';
