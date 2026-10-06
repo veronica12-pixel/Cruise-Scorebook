@@ -784,12 +784,6 @@ function showSaveAs(){
 (function wireCopyright(){
   const trig = document.getElementById("copyright-trigger");
   trig.addEventListener("click", showSaveAs);
-  let hoverTimer = null;
-  const canHover = window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches;
-  if(canHover){
-    trig.addEventListener("mouseenter", () => { hoverTimer = setTimeout(showSaveAs, 450); });
-    trig.addEventListener("mouseleave", () => clearTimeout(hoverTimer));
-  }
 })();
 
 /* ---------- actions ---------- */
