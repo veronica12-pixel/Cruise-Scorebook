@@ -5,7 +5,7 @@
    - Fonts and the sync library: saved copies are used, refreshed in the background.
    - Live sync traffic and place lookups are never stored here.
    Change VERSION whenever a new index.html is uploaded. */
-const VERSION = "2.0";
+const VERSION = "2.3";
 const CACHE = "cruise-scorebook-" + VERSION;
 const CORE = [
   "./",
