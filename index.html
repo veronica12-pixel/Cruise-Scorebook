@@ -76,6 +76,19 @@ input,select,textarea{font:inherit;font-size:max(16px,1em);color:var(--ink);back
 .seg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .seg button{min-height:50px;font-family:var(--display);font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px;--face:var(--surface);--edge:var(--line);color:var(--muted)}
 .seg button[aria-pressed="true"]{--face:var(--accent);--edge:var(--accent-edge);color:var(--on-pastel)}
+.seg .s-domino[aria-pressed="true"]{--face:var(--dom);--edge:var(--dom-edge)}
+.seg .s-scala[aria-pressed="true"]{--face:var(--sca);--edge:var(--sca-edge)}
+.seg button[aria-pressed="false"]{opacity:.6;font-size:14px;font-family:var(--body)}
+/* the whole Score screen takes the color of the game being played */
+body[data-game="domino"]{background:var(--dom-soft)}
+body[data-game="scala"]{background:var(--sca-soft)}
+.nowplaying{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:18px;margin-bottom:12px;background:var(--gc);border:2px solid var(--ge);box-shadow:0 4px 0 var(--ge);color:var(--on-pastel)}
+.nowplaying .npico{width:26px;height:40px;flex:none;transform:rotate(-8deg)}
+.nowplaying.g-domino .npico{width:20px}
+.np-t{display:flex;flex-direction:column;line-height:1.05;min-width:0;flex:1}
+.np-t small{font-size:11px;text-transform:uppercase;letter-spacing:.09em;font-weight:700;opacity:.7}
+.np-t b{font-family:var(--display);font-weight:800;font-size:26px}
+.np-to{font-weight:700;font-size:13px;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.6);white-space:nowrap}
 .seg svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
 .seg svg.qmini{width:18px;height:26px;stroke:none;fill:initial;transform:rotate(-6deg)}
 .seg svg.dmini{width:14px;height:28px;transform:rotate(-10deg)}
@@ -207,20 +220,41 @@ nav.tabs button[aria-current="page"]{color:var(--on-pastel);background:linear-gr
 
 /* winner celebration */
 .party{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(40,30,60,.45)}
-.party canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.party canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5}
 .trophy-card{position:relative;width:100%;max-width:360px;border-radius:28px;padding:26px 20px 22px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;
   background:linear-gradient(180deg,var(--hi),rgba(255,255,255,0) 45%),var(--pc);color:var(--on-pastel);
   box-shadow:0 8px 0 var(--pe),0 18px 40px var(--drop);animation:pop .45s cubic-bezier(.2,1.4,.4,1)}
 .trophy-card.tie{--pc:var(--peach);--pe:var(--peach-edge)}
-.trophy-card svg{width:84px;height:84px;filter:drop-shadow(0 4px 0 var(--pe))}
+.trophy-card .trophy{width:92px;height:92px;margin-top:-4px;filter:drop-shadow(0 3px 0 rgba(60,40,90,.18)) drop-shadow(0 0 12px rgba(255,231,163,.8))}
 .trophy-card .eyebrow{color:var(--on-pastel);opacity:.7}
+.wingame{display:inline-flex;align-items:center;gap:8px;padding:6px 16px 6px 10px;border-radius:999px;background:var(--gs);border:2px solid var(--gc);box-shadow:0 3px 0 var(--ge);color:var(--gi);font-family:var(--display);font-weight:800;font-size:20px}
+.wingame .wgico{width:18px;height:28px;transform:rotate(-8deg)}
+.wingame.g-domino .wgico{width:14px}
 .trophy-card h2{font-size:34px;font-weight:800;line-height:1.05}
 .trophy-card .final{font-family:var(--display);font-weight:800;font-size:26px;font-variant-numeric:tabular-nums}
 .trophy-card .final small{display:block;font-family:var(--body);font-weight:700;font-size:13px;opacity:.75}
-.trophy-card .series{margin-top:4px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.55);font-weight:700;font-size:14px;font-variant-numeric:tabular-nums}
+.trophy-card .series{width:100%;margin-top:4px;border-radius:16px;background:rgba(255,255,255,.55);padding:8px 10px 10px;display:flex;flex-direction:column;gap:6px;font-variant-numeric:tabular-nums}
+.series-h{font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;opacity:.75}
+.series-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.series-row div{min-width:0;display:flex;justify-content:space-between;align-items:baseline;gap:6px;padding:6px 10px;border-radius:12px;border:2px solid rgba(47,42,66,.12)}
+.series-row .a{background:var(--p1-soft)} .series-row .k{background:var(--p2-soft)}
+.series-row span{font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.series-row b{font-family:var(--display);font-weight:800;font-size:22px;line-height:1}
+.series-row .lead{border-color:rgba(47,42,66,.45)}
+/* cards or dominoes tossed all around the popup */
+.stage{position:relative;width:100%;max-width:310px;display:flex;justify-content:center}
+.stage .trophy-card{z-index:1}
+.scatter{position:absolute;inset:0;pointer-events:none}
+.scatter.front{z-index:2}
+.scatter svg{position:absolute;width:42px;height:84px;filter:drop-shadow(0 4px 0 rgba(60,40,90,.25));animation:toss .55s cubic-bezier(.2,1.3,.4,1) both}
+.scatter.front svg{width:30px;height:60px}
+.scatter.cards svg{width:54px;height:76px}
+.scatter.cards.front svg{width:42px;height:59px}
+.scatter.cards svg.star{width:82px;height:115px;filter:drop-shadow(0 5px 0 rgba(60,40,90,.3)) drop-shadow(0 0 14px rgba(255,211,110,.9))}
+@keyframes toss{0%{opacity:0;translate:0 40px;scale:.5}100%{opacity:1}}
 .trophy-card .btn{margin-top:10px;width:100%;--face:var(--surface);--edge:var(--pe);color:var(--ink)}
 @keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
-@media (prefers-reduced-motion:reduce){.trophy-card{animation:none}}
+@media (prefers-reduced-motion:reduce){.trophy-card,.scatter svg{animation:none}}
 
 
 /* copyright trigger + Save As popup */
@@ -390,9 +424,9 @@ nav.tabs button{font-size:11.5px}
 <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
 <script>
 (function(){
-/* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded */
-const APP_VERSION = "3.3";
-const APP_UPDATED = "Oct 6, 2026, 2:55 PM";
+/* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
+const APP_VERSION = "3.8";
+const APP_UPDATED = "Oct 6, 2026, 2:42 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -482,7 +516,7 @@ const blankScala = () => ({s1:0, s2:0, log:[]});
 function newTrip(p, fixedId){
   p = p || {};
   const t = {id:fixedId||uid(), name:p.name||"New cruise", ship:p.ship||"", from:p.from||"", to:p.to||"", start:p.start||"", end:p.end||"",
-          p1:"Alessandra", p2:"Kirk", target:101, limit:150, rulesV:2, games:[], days:{}, lastType:"domino", curDate:today(),
+          p1:"Alessandra", p2:"Kirk", target:150, limit:101, rulesV:3, games:[], days:{}, lastType:"domino", curDate:today(),
           cur:{s1:0, s2:0, log:[]}, scala:blankScala(), ports:[]};
   ensureEndPorts(t);
   loadItinerary(t);
@@ -490,8 +524,8 @@ function newTrip(p, fixedId){
 }
 function migrate(s){
   s.trips.forEach(t => {
-    t.days = t.days || {}; t.lastType = t.lastType || "domino"; t.limit = t.limit || 150;
-    if(!t.rulesV){ t.target = 101; t.limit = 150; t.rulesV = 2; }   // Domino ends at 101, Scala 40 at 150
+    t.days = t.days || {}; t.lastType = t.lastType || "domino"; t.limit = t.limit || 101;
+    if(!t.rulesV || t.rulesV < 3){ t.target = 150; t.limit = 101; t.rulesV = 3; }   // Domino ends at 150, Scala 40 at 101
     t.curDate = t.curDate || (t.cur && t.cur.date) || today();
     t.cur = t.cur || {s1:0,s2:0,log:[]};
     t.scala = t.scala || blankScala(); if(!Array.isArray(t.scala.log)) t.scala.log = [];
@@ -742,8 +776,13 @@ function scoreTop(t, type){
     <div class="dayrow">
       <span class="eyebrow num">${esc(fmtDate(t.curDate,{weekday:"long",month:"short",day:"numeric"}))} · ${GAMES[type]} game ${gameNo}</span>
     </div>
+    <div class="nowplaying g-${type}" role="status">
+      ${gameIcon(type,"npico")}
+      <div class="np-t"><small>Now playing</small><b>${GAMES[type]}</b></div>
+      <span class="np-to">to ${type === "domino" ? (t.target || "no limit") : (t.limit || 101)}</span>
+    </div>
     <div class="seg" role="group" aria-label="Today's game">
-      ${Object.keys(GAMES).map(k => `<button class="b3d" data-type="${k}" aria-pressed="${k===type}">${ICON[k]}${GAMES[k]}</button>`).join("")}
+      ${Object.keys(GAMES).map(k => `<button class="b3d s-${k}" data-type="${k}" aria-pressed="${k===type}">${ICON[k]}${k===type ? GAMES[k] : "Switch to " + GAMES[k]}</button>`).join("")}
     </div>`;
 }
 
@@ -783,14 +822,14 @@ function renderDomino(){
       <button class="btn b3d" data-act="reset" ${c.s1||c.s2 ? "" : "disabled"}>Clear</button>
     </div>
     <div class="target"><label for="target">Play to</label>
-      <select id="target">${[101,150,200,250,300,0].map(v=>`<option value="${v}" ${t.target===v?"selected":""}>${v?v+" points":"No limit"}</option>`).join("")}</select>
+      <select id="target">${[150,101,200,250,300,0].map(v=>`<option value="${v}" ${t.target===v?"selected":""}>${v?v+" points":"No limit"}</option>`).join("")}</select>
     </div>
     ${pointsPanels(t, c.log)}
   `;
 }
 
 function renderScala(){
-  const t = trip(), sc = t.scala, tl = tally(t,"scala"), L = t.limit || 150;
+  const t = trip(), sc = t.scala, tl = tally(t,"scala"), L = t.limit || 101;
   const out = sc.s1 >= L || sc.s2 >= L;
   const col = (n) => {
     const s = n===1?sc.s1:sc.s2, name = n===1?t.p1:t.p2, wins = n===1?tl.w1:tl.w2;
@@ -824,7 +863,7 @@ function renderScala(){
       <button class="btn b3d" data-act="reset" ${sc.log.length ? "" : "disabled"}>Clear</button>
     </div>
     <div class="target"><label for="limit">Game ends at</label>
-      <select id="limit">${[150,101,151,201].map(v=>`<option value="${v}" ${L===v?"selected":""}>${v} points</option>`).join("")}</select>
+      <select id="limit">${[101,151,201].map(v=>`<option value="${v}" ${L===v?"selected":""}>${v} points</option>`).join("")}</select>
     </div>
     ${pointsPanels(t, sc.log)}
   `;
@@ -846,7 +885,7 @@ function scalaAdd(n, v){
   if(nv === sc[key]) return;
   sc.log.push({p:n, v:nv - sc[key]}); sc[key] = nv;
   if(sc.log.length > 300) sc.log = sc.log.slice(-300);
-  const L = t.limit || 150;
+  const L = t.limit || 101;
   if(sc.s1 >= L || sc.s2 >= L){ endGame(); return; }   // game over: record it and announce the winner
   commit(); render();
   const el = $("#sc"+n); if(el) el.classList.add("flash");
@@ -916,6 +955,7 @@ function renderTrips(){
 function render(){
   renderHead();
   document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-current", b.dataset.tab===tab ? "page" : "false"));
+  document.body.dataset.game = tab === "score" ? dayType(trip()) : "";
   if(tab==="score"){ dayType(trip())==="scala" ? renderScala() : renderDomino(); }
   else if(tab==="games") renderGames(); else if(tab==="ports"){ renderPorts(); fillCoords(trip()); loadLand(); drawPortsMap(); } else renderTrips();
 }
@@ -1456,40 +1496,121 @@ function playTieChime(){
 }
 
 /* ---------- winner celebration ---------- */
-const TROPHY = '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 8h24v14a12 12 0 0 1-24 0z" fill="#FFE08A" stroke="#3B3551" stroke-width="2.5" stroke-linejoin="round"/><path d="M20 12h-8a8 8 0 0 0 9 10M44 12h8a8 8 0 0 1-9 10" fill="none" stroke="#3B3551" stroke-width="2.5" stroke-linecap="round"/><path d="M27 34h10l-1 10h-8z" fill="#FFE08A" stroke="#3B3551" stroke-width="2.5" stroke-linejoin="round"/><rect x="18" y="44" width="28" height="9" rx="3" fill="#C7A6EC" stroke="#3B3551" stroke-width="2.5"/><path d="M26 15l3 3 6-7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/></svg>';
+/* ---------- winner popup: trophy, scattered cards or dominoes, falling confetti ---------- */
+/* a playing card in the app's style */
+function cardSVG(rank, suit){
+  const red = suit === "♥" || suit === "♦", ink = red ? "#D6455D" : "#3B3551";
+  return `<svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+    <rect x="3" y="3" width="94" height="134" rx="10" fill="#FFFDF8" stroke="#3B3551" stroke-width="3"/>
+    <rect x="11" y="11" width="78" height="118" rx="6" fill="${red ? "#FDEDF1" : "#EEF0F8"}"/>
+    <g fill="${ink}" font-family="Georgia, serif" font-weight="700" text-anchor="middle">
+      <text x="20" y="36" font-size="24">${rank}</text><text x="20" y="58" font-size="20">${suit}</text>
+      <g transform="rotate(180 50 70)"><text x="20" y="36" font-size="24">${rank}</text><text x="20" y="58" font-size="20">${suit}</text></g>
+      <text x="50" y="86" font-size="46">${suit}</text>
+    </g></svg>`;
+}
+/* a domino tile with pips */
+const PIPS = {0:[],1:[[30,30]],2:[[17,17],[43,43]],3:[[17,17],[30,30],[43,43]],4:[[17,17],[43,17],[17,43],[43,43]],
+  5:[[17,17],[43,17],[30,30],[17,43],[43,43]],6:[[17,15],[43,15],[17,30],[43,30],[17,45],[43,45]]};
+function tileSVG(a, b){
+  const dots = (n, dy, col) => PIPS[n].map(([x,y]) => `<circle cx="${x}" cy="${y+dy}" r="5.2" fill="${col}"/>`).join("");
+  return `<svg viewBox="0 0 60 120" xmlns="http://www.w3.org/2000/svg">
+    <rect x="3" y="3" width="54" height="114" rx="9" fill="#FFFDF8" stroke="#3B3551" stroke-width="3"/>
+    <line x1="10" y1="60" x2="50" y2="60" stroke="#3B3551" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="30" cy="60" r="3.2" fill="#FFD36E" stroke="#3B3551" stroke-width="1.6"/>
+    ${dots(a, 0, "#D6455D")}${dots(b, 60, "#2A9AA8")}</svg>`;
+}
+/* Option A: polished gold cup inside a laurel wreath */
+const LAUREL = side => { const leaves = [0,1,2,3,4,5].map(i => { const a = 200 - i*24, rad = a*Math.PI/180, x = 60 + Math.cos(rad)*44, y = 66 + Math.sin(rad)*44;
+  return `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="9" ry="4.2" transform="rotate(${(a+70).toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})"/>`; }).join("");
+  return `<g fill="url(#trlf)" stroke="#5E7A3A" stroke-width="1" ${side ? 'transform="matrix(-1 0 0 1 120 0)"' : ""}>${leaves}</g>`; };
+const TROPHY_A = `<svg class="trophy" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="trgd" x1="0" x2="1"><stop offset="0" stop-color="#B8862B"/><stop offset=".35" stop-color="#FFE7A3"/><stop offset=".55" stop-color="#F2C14E"/><stop offset="1" stop-color="#A9761E"/></linearGradient>
+    <linearGradient id="trgv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF1C4"/><stop offset="1" stop-color="#C8922F"/></linearGradient>
+    <linearGradient id="trlf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A9C77A"/><stop offset="1" stop-color="#6E8F45"/></linearGradient>
+  </defs>
+  ${LAUREL(false)}${LAUREL(true)}
+  <path d="M38 30h44v18c0 13-10 22-22 22s-22-9-22-22z" fill="url(#trgd)" stroke="#7A5512" stroke-width="1.6"/>
+  <path d="M38 34c-10 0-14 4-14 9 0 7 7 12 16 13M82 34c10 0 14 4 14 9 0 7-7 12-16 13" fill="none" stroke="url(#trgd)" stroke-width="4" stroke-linecap="round"/>
+  <ellipse cx="60" cy="30" rx="22" ry="3.4" fill="#FFF1C4" stroke="#7A5512" stroke-width="1.4"/>
+  <path d="M46 38c0 9 4 16 9 19" fill="none" stroke="#FFFBEA" stroke-width="2.6" stroke-linecap="round" opacity=".8"/>
+  <path d="M60 41l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z" fill="#FFFBEA" opacity=".95"/>
+  <path d="M55 70h10l-1.5 12h-7z" fill="url(#trgd)" stroke="#7A5512" stroke-width="1.4"/>
+  <rect x="46" y="82" width="28" height="5" rx="2" fill="url(#trgv)" stroke="#7A5512" stroke-width="1.4"/>
+  <rect x="42" y="87" width="36" height="12" rx="2.5" fill="#3B3551"/>
+  <rect x="50" y="90.5" width="20" height="5" rx="1" fill="url(#trgd)"/>
+</svg>`;
+/* where each domino lands around the banner: [left %, top %, turn in degrees, tile] */
+const BEHIND = [[-4,-5,-28,[6,6]],[24,-9,14,[5,3]],[52,-10,-6,[4,4]],[80,-8,24,[6,1]],[104,-3,-38,[2,5]],
+  [-9,22,78,[3,3]],[-8,48,-64,[1,6]],[-9,76,96,[5,5]],[108,26,-82,[4,2]],[109,52,68,[6,3]],[107,80,-98,[0,4]],
+  [6,101,32,[2,2]],[38,104,-14,[5,6]],[66,103,18,[1,1]],[96,99,-30,[3,4]]];
+const FRONT = [[3,10,-20,[6,4]],[95,12,26,[1,3]],[4,92,18,[4,6]],[96,90,-22,[2,6]]];
+const Q = "QUEEN";
+const CARDS_BEHIND = [[-4,-4,-26,["A","♠"]],[24,-8,12,["Q","♥"]],[78,-7,-16,["K","♦"]],[104,-2,34,["J","♣"]],
+  [-9,22,-74,["10","♥"]],[-8,48,80,[Q]],[-9,76,-96,["7","♠"]],[108,24,72,["Q","♥"]],[109,50,-66,["K","♣"]],[107,78,94,["A","♥"]],
+  [6,101,-30,["J","♦"]],[38,104,16,[Q]],[66,103,-12,["9","♠"]],[96,99,28,["Q","♥"]]];
+const CARDS_FRONT = [[3,10,-18,["Q","♥"]],[96,11,22,["A","♦"]],[4,91,16,["K","♥"]],[96,90,-20,[Q]]];
+const CARD_STAR = [[50,1,-6,[Q]]];   // the big crowned Queen of Hearts at the top
+function cardFace([r,s]){ return r === Q ? QCARD : cardSVG(r,s); }
+function scatterCards(list, cls, star){
+  return `<div class="scatter cards ${cls}">${list.map(([x,y,deg,c], i) => cardFace(c).replace('<svg ',
+    `<svg ${star ? 'class="star" ' : ""}style="left:${x}%;top:${y}%;transform:translate(-50%,-50%) rotate(${deg}deg);animation-delay:${(star ? 0.5 : i*0.045).toFixed(2)}s" `)).join("")}</div>`;
+}
+function scatter(list, cls){
+  return `<div class="scatter ${cls}">${list.map(([x,y,deg,[a,b]], i) => tileSVG(a,b).replace('<svg ',
+    `<svg style="left:${x}%;top:${y}%;transform:translate(-50%,-50%) rotate(${deg}deg);animation-delay:${(i*0.045).toFixed(2)}s" `)).join("")}</div>`;
+}
+function imgOf(svg){ if(!/xmlns=/.test(svg)) svg = svg.replace("<svg ", '<svg xmlns="http://www.w3.org/2000/svg" '); const im = new Image(); im.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg); return im; }
+const CARD_IMGS = [imgOf(QCARD), ...[["A","♠"],["Q","♥"],["K","♥"],["J","♠"],["Q","♥"],["7","♣"]].map(([r,s]) => imgOf(cardSVG(r,s))), imgOf(QCARD)];
+const TILE_IMGS = [[6,6],[3,5],[1,4],[2,2],[6,0],[4,5]].map(([a,b]) => imgOf(tileSVG(a,b)));
+
 function celebrate(t, g){
   const root = $("#partyRoot"), tl = tally(t, g.type), name = g.winner===1 ? t.p1 : g.winner===2 ? t.p2 : null;
-  const sameDay = t.games.filter(x => x.date===g.date && x.type===g.type).length;
-  root.innerHTML = `<div class="party" data-party><canvas></canvas>
-    <div class="trophy-card ${g.winner ? "p"+g.winner : "tie"}" role="dialog" aria-modal="true" aria-labelledby="winT">
-      ${TROPHY}
-      <div class="eyebrow">${GAMES[g.type]} · game ${sameDay} today</div>
-      <h2 id="winT">${name ? esc(name) + " wins!" : "It's a tie!"}</h2>
+  const sameDay = t.games.filter(x => x.date===g.date && x.type===g.type).length, scala = g.type === "scala";
+  const card = `<div class="trophy-card ${g.winner ? "p"+g.winner : "tie"}" role="dialog" aria-modal="true" aria-labelledby="winT">
+      ${scala ? '<div style="height:40px" aria-hidden="true"></div>' : ""}
+      ${TROPHY_A.replace('<svg ', '<svg aria-hidden="true" ')}
+      <div class="wingame g-${g.type}">${gameIcon(g.type,"wgico")}<span>${GAMES[g.type]}</span></div>
+      <h2 id="winT">${name ? esc(name) + " wins " + GAMES[g.type] + "!" : GAMES[g.type] + " ends in a tie!"}</h2>
+      <div class="eyebrow">Game ${sameDay} of ${GAMES[g.type]} today</div>
       <div class="final">${g.s1} – ${g.s2}<small>${esc(t.p1)} – ${esc(t.p2)}</small></div>
-      <div class="series">This trip in ${GAMES[g.type]}: ${esc(t.p1)} ${tl.w1} · ${esc(t.p2)} ${tl.w2}</div>
+      <div class="series">
+        <div class="series-h">This trip in ${GAMES[g.type]}</div>
+        <div class="series-row"><div class="a ${tl.w1 > tl.w2 ? "lead" : ""}"><span>${esc(t.p1)}</span><b>${tl.w1}</b></div><div class="k ${tl.w2 > tl.w1 ? "lead" : ""}"><span>${esc(t.p2)}</span><b>${tl.w2}</b></div></div>
+      </div>
       <button class="btn b3d" data-party-close>Play again</button>
-    </div></div>`;
+    </div>`;
+  const stage = scala
+    ? `<div class="stage">${scatterCards(CARDS_BEHIND,"back")}${card}${scatterCards(CARDS_FRONT,"front")}${scatterCards(CARD_STAR,"front",true)}</div>`
+    : `<div class="stage">${scatter(BEHIND,"back")}${card}${scatter(FRONT,"front")}</div>`;
+  root.innerHTML = `<div class="party" data-party>${stage}<canvas></canvas></div>`;
   if(g.winner) playJackpot(); else playTieChime();
   const close = () => { root.innerHTML = ""; };
   root.querySelector("[data-party-close]").addEventListener("click", close);
   root.querySelector("[data-party]").addEventListener("click", e => { if(e.target.matches("[data-party]")) close(); });
   root.querySelector("[data-party-close]").focus();
   if(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  // confetti mixed with little cards or dominoes, falling in front of the popup
   const cv = root.querySelector("canvas"), ctx = cv.getContext("2d"), dpr = window.devicePixelRatio || 1;
-  const W = cv.clientWidth, H = cv.clientHeight; cv.width = W*dpr; cv.height = H*dpr; ctx.scale(dpr,dpr);
+  const W = cv.clientWidth, H = cv.clientHeight; cv.width = W*dpr; cv.height = H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
   const css = getComputedStyle(document.documentElement);
   const main = g.winner===1 ? css.getPropertyValue("--p1") : g.winner===2 ? css.getPropertyValue("--p2") : css.getPropertyValue("--peach");
-  const cols = [main, main, css.getPropertyValue("--accent"), css.getPropertyValue("--mint"), "#FFE08A", "#FFFFFF"].map(c => c.trim());
-  const bits = Array.from({length:120}, () => ({x:Math.random()*W, y:-20-Math.random()*H*0.6, vx:(Math.random()-.5)*2.2, vy:2+Math.random()*3.2,
-    r:Math.random()*6.28, vr:(Math.random()-.5)*.25, w:6+Math.random()*7, h:4+Math.random()*5, c:cols[Math.floor(Math.random()*cols.length)]}));
+  const cols = [main, main, css.getPropertyValue("--accent"), scala ? css.getPropertyValue("--sca") : css.getPropertyValue("--dom"), "#FFE08A", "#FFFFFF"].map(c => c.trim());
+  const pics = scala ? CARD_IMGS : TILE_IMGS;
+  const bits = Array.from({length:120}, (_,i) => { const pic = i % 4 === 0;
+    return {x:Math.random()*W, y:-30-Math.random()*H*0.7, vx:(Math.random()-.5)*2.2, vy:pic ? 1.6+Math.random()*1.6 : 2+Math.random()*3.2,
+      r:Math.random()*6.28, vr:(Math.random()-.5)*(pic ? .08 : .25), img:pic ? pics[i % pics.length] : null,
+      w:pic ? (scala ? 26 : 16) : 6+Math.random()*7, h:pic ? 34 : 4+Math.random()*5, c:cols[i % cols.length]}; });
   const t0 = performance.now();
   (function frame(now){
     if(!cv.isConnected) return;
     const age = now - t0; ctx.clearRect(0,0,W,H);
-    bits.forEach(b => { b.x += b.vx; b.y += b.vy; b.vy += .03; b.r += b.vr;
-      ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(b.r); ctx.globalAlpha = Math.max(0, 1 - Math.max(0, age-3200)/800);
-      ctx.fillStyle = b.c; ctx.fillRect(-b.w/2,-b.h/2,b.w,b.h); ctx.restore(); });
-    if(age < 4000) requestAnimationFrame(frame); else ctx.clearRect(0,0,W,H);
+    bits.forEach(b => { b.x += b.vx; b.y += b.vy; b.vy += .025; b.r += b.vr;
+      ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(b.r); ctx.globalAlpha = Math.max(0, 1 - Math.max(0, age-4200)/800);
+      if(b.img && b.img.complete && b.img.naturalWidth) ctx.drawImage(b.img, -b.w/2, -b.h/2, b.w, b.h); else { ctx.fillStyle = b.c; ctx.fillRect(-b.w/2,-b.h/2,b.w,b.h); }
+      ctx.restore(); });
+    if(age < 5000) requestAnimationFrame(frame); else ctx.clearRect(0,0,W,H);
   })(t0);
 }
 
