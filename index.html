@@ -220,6 +220,11 @@ nav.tabs button[aria-current="page"]{color:var(--on-pastel);background:linear-gr
 /* copyright trigger + Save As popup */
 .copyright{border:none;background:none;color:var(--muted);font:inherit;font-size:12px;cursor:pointer;padding:6px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
 .copyright:hover{color:var(--ink);background:var(--accent-soft)}
+.lockicon{font-size:13px;line-height:1}
+.copyright.is-unlocked{background:var(--dom);color:var(--on-pastel)}
+.lockbtn.unlocked{--face:var(--dom);--edge:var(--dom-edge);color:var(--on-pastel)}
+.lockmark{font-size:15px;padding:4px 6px}
+.rn:disabled{opacity:.55;box-shadow:none;cursor:default}
 .syncdot{width:7px;height:7px;border-radius:50%;background:var(--line)}
 .syncdot.ok{background:var(--mint-edge)} .syncdot.wait{background:var(--peach-edge)} .syncdot.off{background:var(--line)}
 .save-scrim{align-items:center;padding:16px}
@@ -328,6 +333,17 @@ nav.tabs button{font-size:11.5px}
 .ts-rate{width:100%;min-height:44px}
 .ts-empty{margin:0;font-size:13px;color:var(--muted)}
 
+
+/* ports map */
+.mapcard{position:relative;margin:4px 0 6px;border-radius:20px;overflow:hidden;border:2px solid var(--p2);box-shadow:0 5px 0 var(--p2-edge);background:var(--p2-soft)}
+.mapcard canvas{display:block;width:100%;height:auto;cursor:pointer}
+.mapnote{position:absolute;left:10px;bottom:8px;font-size:12px;color:var(--p2-ink);background:rgba(255,255,255,.8);padding:2px 8px;border-radius:999px}
+.mapnote:empty{display:none}
+.resetports{width:100%;margin-top:6px}
+.maplegend{margin:10px 2px 4px;font-size:12px;color:var(--muted)}
+.port.flashport{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.port{transition:box-shadow .3s,border-color .3s}
+
 @media (max-width:360px){.tilebtn{font-size:19px;min-height:50px}.player{padding:10px 10px 14px}}
 @media (prefers-reduced-motion:reduce){.flash{animation:none}.b3d{transition:none}}
 </style>
@@ -337,7 +353,7 @@ nav.tabs button{font-size:11.5px}
 <div class="wrap">
   <header class="trip" id="tripHead"></header>
   <main id="view"></main>
-  <footer><button type="button" class="copyright" id="copyright-trigger" aria-haspopup="dialog">© 2026 Thor<span class="syncdot" id="syncdot" aria-hidden="true"></span></button><div class="appver" id="appver"></div></footer>
+  <footer><button type="button" class="copyright" id="copyright-trigger" aria-haspopup="dialog"><span class="lockicon" id="lockicon" aria-hidden="true">🔒</span>© 2026 Thor<span class="syncdot" id="syncdot" aria-hidden="true"></span></button><div class="appver" id="appver"></div></footer>
 </div>
 
 <nav class="tabs" aria-label="Sections"><div class="in">
@@ -356,8 +372,12 @@ nav.tabs button{font-size:11.5px}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded */
-const APP_VERSION = "1.8";
-const APP_UPDATED = "Oct 6, 2026, 8:45 AM";
+const APP_VERSION = "2.2";
+const APP_UPDATED = "Oct 6, 2026, 11:30 AM";
+/* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
+const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
+let editingUnlocked = false;                       // this device only; resets when the app is reopened
+const isLocked = ts => !editingUnlocked && !!ts && (Date.now() - ts) > LOCK_MS;
 const LS_KEY = "domino-scorebook-v1";
 const QCARD = `<svg viewBox="0 0 100 140">
   <rect x="3" y="3" width="94" height="134" rx="10" fill="#FFFDF8" stroke="#3B3551" stroke-width="3"/>
@@ -388,6 +408,21 @@ const PRESETS = [
   {name:"Perth cruise", ship:"", from:"Perth, Australia", to:"", start:"", end:""},
   {name:"Mediterranean", ship:"Enchanted Princess", from:"Civitavecchia (Rome), Italy", to:"", start:"2027-11-20", end:""}
 ];
+/* where known ports are, so they can be pinned on the map without internet */
+const PORT_COORDS = {
+  "auckland":[-36.84,174.76], "tauranga":[-37.64,176.18], "suva":[-18.14,178.44], "dravuni island":[-18.77,178.52], "dravuni":[-18.77,178.52],
+  "papeete":[-17.54,-149.57], "moorea":[-17.53,-149.83], "honolulu":[21.31,-157.86], "kahului":[20.89,-156.47], "hilo":[19.72,-155.08],
+  "los angeles":[33.74,-118.27], "san pedro":[33.74,-118.27], "civitavecchia":[42.09,11.79], "rome":[42.09,11.79],
+  "perth":[-32.05,115.74], "fremantle":[-32.05,115.74], "brisbane":[-27.38,153.17], "sydney":[-33.86,151.21]
+};
+const PORT_ZONES = {
+  "auckland":"Pacific/Auckland","tauranga":"Pacific/Auckland","suva":"Pacific/Fiji","dravuni island":"Pacific/Fiji","dravuni":"Pacific/Fiji",
+  "papeete":"Pacific/Tahiti","moorea":"Pacific/Tahiti","honolulu":"Pacific/Honolulu","kahului":"Pacific/Honolulu","hilo":"Pacific/Honolulu",
+  "los angeles":"America/Los_Angeles","san pedro":"America/Los_Angeles","civitavecchia":"Europe/Rome","rome":"Europe/Rome",
+  "perth":"Australia/Perth","fremantle":"Australia/Perth","brisbane":"Australia/Brisbane","sydney":"Australia/Sydney"
+};
+const HOME_ZONE = "America/New_York";   // Tampa
+const placeKey = name => (name||"").toLowerCase().split(",")[0].replace(/\(.*?\)/g,"").trim();
 /* published itineraries: stops between departure and arrival, loaded once per trip */
 const ITINERARIES = [{
   match: t => t.start === "2026-11-09" && /auckland/i.test(t.from||""),
@@ -418,10 +453,11 @@ function migrate(s){
     t.curDate = t.curDate || (t.cur && t.cur.date) || today();
     t.cur = t.cur || {s1:0,s2:0,log:[]};
     t.scala = t.scala || blankScala(); if(!Array.isArray(t.scala.log)) t.scala.log = [];
-    t.games.forEach(g => { g.type = g.type || "domino"; });
+    t.games.forEach(g => { g.type = g.type || "domino"; if(!g.createdAt) g.createdAt = Date.now(); });
     t.ports = Array.isArray(t.ports) ? t.ports : [];
     if(!t.p1 || t.p1 === "AT") t.p1 = "Alessandra";
     if(!t.p2 || t.p2 === "Player 2") t.p2 = "Kirk";
+    t.ports.forEach(p => { if(!p.ratedAt && (p.s1 != null || p.s2 != null)) p.ratedAt = Date.now(); });
     ensureEndPorts(t);
     if(loadItinerary(t)) s.updatedAt = Math.max(s.updatedAt||0, 1);
   });
@@ -592,7 +628,9 @@ function onCloudValue(raw){
 }
 function initCloud(){
   try{
-    if(!window.firebase || !firebase.initializeApp) { cloud.code = "no-script"; cloud.error = "This window can't reach the sync service. Open the scorebook link in Safari or Chrome with internet on."; return; }
+    if(!window.firebase || !firebase.initializeApp) {
+      if(!navigator.onLine){ cloud.code = ""; cloud.error = "You're offline. Everything is saved on this device and syncs when you're back online."; return; }
+      cloud.code = "no-script"; cloud.error = "This window can't reach the sync service. Open the scorebook link in Safari or Chrome with internet on."; return; }
     if(!firebase.apps.length) firebase.initializeApp(FB_CONFIG);
     const db = firebase.database();
     cloud.ref = db.ref(CLOUD_ROOT);
@@ -606,7 +644,7 @@ function initCloud(){
 }
 function syncLabel(){
   if(cloud.ok && cloud.online) return {cls:"ok", text:"Synced with your other devices", sub: cloud.lastSync ? "Last synced " + new Date(cloud.lastSync).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}) : ""};
-  if(cloud.ref && !cloud.online && !cloud.error) return {cls:"wait", text:"Offline. Saving on this device", sub:"It syncs again when you're back online."};
+  if((cloud.ref && !cloud.online && !cloud.error) || (!navigator.onLine && !cloud.code)) return {cls:"wait", text:"Offline. Saving on this device", sub:"It syncs again when you're back online."};
   return {cls:"off", text:"Saved on this device only", sub: cloud.error + (cloud.code ? " [" + cloud.code + "]" : "")};
 }
 function renderSyncBits(){
@@ -774,7 +812,7 @@ function renderGames(){
       ${list.slice().reverse().map(g => `<div class="game g-${g.type}">
         <span class="gbadge">${gameIcon(g.type,"rico")}<span class="n">#${g.n}</span></span>
         <span class="res"><span class="gname">${GAMES[g.type]}</span><span class="pair">${esc(t.p1)} <b>${g.s1}</b></span> <span class="pair">${esc(t.p2)} <b>${g.s2}</b></span></span>
-        <span class="gend">${g.winner===0?`<span class="pill tie">Tie</span>`:`<span class="pill w${g.winner}">${esc(g.winner===1?t.p1:t.p2)}</span>`}<button class="xbtn" data-del="${g.id}" aria-label="Delete game ${g.n}">Delete</button></span>
+        <span class="gend">${g.winner===0?`<span class="pill tie">Tie</span>`:`<span class="pill w${g.winner}">${esc(g.winner===1?t.p1:t.p2)}</span>`}${isLocked(g.createdAt) ? `<span class="lockmark" title="Locked after 48 hours. Unlock in Save As.">🔒</span>` : `<button class="xbtn" data-del="${g.id}" aria-label="Delete game ${g.n}">Delete</button>`}</span>
       </div>`).join("")}</div>`;
     }).join("") : `<div class="empty">No finished games here yet. Score a game on the Score tab and tap <b>End game</b> to record who won.</div>`}
   `;
@@ -805,7 +843,7 @@ function render(){
   renderHead();
   document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-current", b.dataset.tab===tab ? "page" : "false"));
   if(tab==="score"){ dayType(trip())==="scala" ? renderScala() : renderDomino(); }
-  else if(tab==="games") renderGames(); else if(tab==="ports") renderPorts(); else renderTrips();
+  else if(tab==="games") renderGames(); else if(tab==="ports"){ renderPorts(); fillCoords(trip()); loadLand(); drawPortsMap(); } else renderTrips();
 }
 
 /* ---------- confirm sheet ---------- */
@@ -848,7 +886,7 @@ function loadItinerary(t){
   t.ports = Array.isArray(t.ports) ? t.ports : [];
   const have = new Set(t.ports.map(p => (p.name||"").toLowerCase().split(",")[0].trim()));
   it.stops.forEach(([name, date], i) => {
-    if(!have.has(name.toLowerCase().split(",")[0].trim())) t.ports.push({id:uid(), name, date, s1:null, s2:null, order:i});
+    if(!have.has(name.toLowerCase().split(",")[0].trim())){ const k = PORT_COORDS[placeKey(name)]; t.ports.push({id:uid(), name, date, s1:null, s2:null, order:i, lat:k?k[0]:null, lon:k?k[1]:null}); }
   });
   if(!t.ship || t.ship === "Princess") t.ship = it.ship;
   t.itineraries = [...(t.itineraries||[]), it.key];
@@ -895,24 +933,27 @@ function renderPorts(){
         <div class="p2"><span>${esc(t.p2)}</span><b class="num">${fmt1(a2)}</b></div>
       </div>
     </div>
+    <div class="mapcard"><canvas id="portsMap" role="img" aria-label="World map with a pin and name for each port"></canvas><div class="mapnote" id="mapNote"></div></div>
+    <p class="maplegend">Top numbers: time-zone bands compared with Tampa. Next to each name: the real difference from Tampa on the day you\'re in port.</p>
     <div class="section-h"><h2>Ports of call</h2><span class="eyebrow">${ports.length} stop${ports.length===1?"":"s"}</span></div>
     <p class="rulehint" style="margin:-2px 0 12px">Each of you taps a score from 1 to 10 for every port. Tap the same number again to clear it.</p>
     ${ports.length ? ports.map((pt,i) => { const pa = portAvg(pt); return `
-      <div class="port">
+      <div class="port" id="port-${pt.id}">
         <div class="port-top">
           <span class="port-n num">${i+1}</span>
           <div class="port-t">${pt.kind?`<span class="port-kind">${pt.kind==="start"?"Departure":"Arrival"}</span>`:""}<b>${esc(pt.name)}</b><span>${pt.date ? esc(fmtDate(pt.date,{weekday:"short",month:"short",day:"numeric"})) : "No date"}</span></div>
           <div class="port-avg tone-${scoreTone(pa)}"><b class="num">${fmt1(pa)}</b><span>avg</span></div>
         </div>
         <div class="port-rates">
-          ${[1,2].map(w => { const v = w===1 ? pt.s1 : pt.s2, nm = w===1 ? t.p1 : t.p2; return `
+          ${(() => { const lk = isLocked(pt.ratedAt); return [1,2].map(w => { const v = w===1 ? pt.s1 : pt.s2, nm = w===1 ? t.p1 : t.p2; return `
           <div class="rate p${w}" role="group" aria-label="${esc(nm)}'s score for ${esc(pt.name)}">
             <div class="rate-h"><span>${esc(nm)}</span><b class="num">${v ?? "Tap a score"}</b></div>
-            <div class="rate-nums">${[1,2,3,4,5,6,7,8,9,10].map(n => `<button type="button" class="rn" data-rate="${pt.id}" data-who="${w}" data-n="${n}" aria-pressed="${v===n}" aria-label="${n}">${n}</button>`).join("")}</div>
-          </div>`; }).join("")}
+            <div class="rate-nums">${[1,2,3,4,5,6,7,8,9,10].map(n => `<button type="button" class="rn" data-rate="${pt.id}" data-who="${w}" data-n="${n}" aria-pressed="${v===n}" aria-label="${n}" ${lk?"disabled":""}>${n}</button>`).join("")}</div>
+          </div>`; }).join(""); })()}
         </div>
-        ${pt.kind ? `<span class="port-note">Change it on the Trips tab</span>` : `<button class="xbtn" data-delport="${pt.id}">Remove port</button>`}
+        ${isLocked(pt.ratedAt) ? `<span class="port-note">🔒 Scores locked after 48 hours. Unlock in Save As (tap © 2026 Thor).</span>` : pt.kind ? `<span class="port-note">Change it on the Trips tab</span>` : `<button class="xbtn" data-delport="${pt.id}">Remove port</button>`}
       </div>`; }).join("") : `<div class="empty">No ports yet. Add your first stop below.</div>`}
+    ${ports.some(p => p.s1 != null || p.s2 != null) ? `<button type="button" class="btn danger b3d resetports" data-act="resetports">Reset all port scores</button>` : ""}
     <div class="addport">
       <h3>Add a port</h3>
       <div class="form">
@@ -935,8 +976,10 @@ document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.id 
 document.addEventListener("click", e => {
   const b = e.target.closest(".rn[data-rate]"); if(!b) return;
   const pt = trip().ports.find(p => p.id === b.dataset.rate); if(!pt) return;
+  if(isLocked(pt.ratedAt)) return;
   const k = b.dataset.who === "1" ? "s1" : "s2", n = +b.dataset.n;
   pt[k] = pt[k] === n ? null : n;          // tap the same number again to clear it
+  if(!pt.ratedAt && (pt.s1 != null || pt.s2 != null)) pt.ratedAt = Date.now();
   const y = window.scrollY; commit(); render(); window.scrollTo(0, y);
 });
 
@@ -972,6 +1015,277 @@ function tripRecord(x, cur){
 }
 document.addEventListener("toggle", e => { const d = e.target; if(d.matches && d.matches("[data-tripsum]")) openTripRecords[d.dataset.tripsum] = d.open; }, true);
 
+
+/* ---------- Ports map: world outline + a pin and name for every port ---------- */
+const LAND_KEY = "cruise-scorebook-land-v1";
+let LAND = null, landLoading = false;
+try { const r = localStorage.getItem(LAND_KEY); if(r) LAND = JSON.parse(r); } catch(e){}
+function topoRings(topo){
+  const tf = topo.transform, arcs = topo.arcs.map(a => { let x = 0, y = 0; return a.map(([dx,dy]) => { x += dx; y += dy; return tf ? [x*tf.scale[0]+tf.translate[0], y*tf.scale[1]+tf.translate[1]] : [dx,dy]; }); });
+  const ring = ids => { const out = []; ids.forEach((i,k) => { let a = i >= 0 ? arcs[i] : arcs[~i].slice().reverse(); if(k) a = a.slice(1); a.forEach(pt => out.push([Math.round(pt[0]*100)/100, Math.round(pt[1]*100)/100])); }); return out; };
+  const rings = [];
+  const walk = g => { if(g.type === "GeometryCollection") g.geometries.forEach(walk);
+    else if(g.type === "Polygon") g.arcs.forEach(r => rings.push(ring(r)));
+    else if(g.type === "MultiPolygon") g.arcs.forEach(poly => poly.forEach(r => rings.push(ring(r)))); };
+  walk(topo.objects.land);
+  return rings;
+}
+function loadLand(){
+  if(LAND || landLoading || !navigator.onLine) return;
+  landLoading = true;
+  fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json").then(r => r.json()).then(topo => {
+    LAND = topoRings(topo);
+    try { localStorage.setItem(LAND_KEY, JSON.stringify(LAND)); } catch(e){}
+    if(tab === "ports") drawPortsMap();
+  }).catch(() => {}).finally(() => { landLoading = false; });
+}
+// fill in map positions: known ports right away, others looked up by name when online
+let geoBusy = false;
+function fillCoords(t){
+  let changed = false;
+  t.ports.forEach(p => { if(p.lat == null){ const k = PORT_COORDS[placeKey(p.name)]; if(k){ p.lat = k[0]; p.lon = k[1]; changed = true; } } });
+  if(changed) setTimeout(commit, 0);
+  const missing = t.ports.find(p => p.lat == null && !p.geoTried);
+  if(missing && !geoBusy && navigator.onLine){
+    geoBusy = true; missing.geoTried = true;
+    fetch("https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(missing.name), {headers:{"Accept":"application/json"}})
+      .then(r => r.json()).then(res => { if(res && res[0]){ missing.lat = Math.round(+res[0].lat*100)/100; missing.lon = Math.round(+res[0].lon*100)/100; commit(); if(tab === "ports") render(); } })
+      .catch(() => {}).finally(() => { geoBusy = false; if(tab === "ports") setTimeout(() => fillCoords(trip()), 1200); });
+  }
+}
+let mapHits = [], lineBoxes = [];
+function drawPortsMap(){
+  const cv = document.getElementById("portsMap"); if(!cv) return;
+  const t = trip(), ports = sortPorts(t.ports).map((p,i) => ({p, n:i+1})).filter(x => x.p.lat != null);
+  const note = document.getElementById("mapNote");
+  if(!ports.length){ cv.hidden = true; if(note) note.textContent = "Pins appear once your ports have a location."; return; }
+  cv.hidden = false;
+  // keep the route continuous across the date line
+  let prev = null; ports.forEach(x => { let L = x.p.lon; if(prev !== null){ while(L-prev > 180) L -= 360; while(L-prev < -180) L += 360; } prev = L; x.x = L; x.y = x.p.lat; });
+  let x0 = Math.min(...ports.map(q=>q.x)), x1 = Math.max(...ports.map(q=>q.x)), y0 = Math.min(...ports.map(q=>q.y)), y1 = Math.max(...ports.map(q=>q.y));
+  const padX = Math.max(6, (x1-x0)*0.14), padY = Math.max(5, (y1-y0)*0.14);
+  x0 -= padX; x1 += padX; y0 -= padY; y1 += padY;
+  // a comfortable phone shape: not too tall, not too flat
+  let ratio = (y1-y0)/(x1-x0);
+  if(ratio > 1.15){ const w = (y1-y0)/1.15, m = (x0+x1)/2; x0 = m-w/2; x1 = m+w/2; ratio = 1.15; }
+  if(ratio < 0.6){ const h = (x1-x0)*0.6, m = (y0+y1)/2; y0 = m-h/2; y1 = m+h/2; ratio = 0.6; }
+  const W = 720, H = Math.round(W*ratio), dpr = window.devicePixelRatio || 1;
+  cv.width = W*dpr; cv.height = H*dpr; const c = cv.getContext("2d"); c.setTransform(dpr,0,0,dpr,0,0);
+  const X = l => (l-x0)/(x1-x0)*W, Y = a => (y1-a)/(y1-y0)*H;
+  const css = getComputedStyle(document.documentElement), col = n => css.getPropertyValue(n).trim();
+  // sea
+  c.fillStyle = col("--p2-soft"); c.fillRect(0,0,W,H);
+  const BAND = 34;   // strip at the top for the time-zone labels
+  drawZones(c, X, x0, x1, W, H, BAND, col);
+  // land
+  if(LAND){
+    c.fillStyle = "#F4EEDA"; c.strokeStyle = "#CDBF94"; c.lineWidth = 1.4; c.lineJoin = "round";
+    LAND.forEach(r => {
+      let u = [], pv = null; r.forEach(([L,a]) => { if(pv !== null){ while(L-pv > 180) L -= 360; while(L-pv < -180) L += 360; } pv = L; u.push([L,a]); });
+      const lo = Math.min(...u.map(q=>q[0])), hi = Math.max(...u.map(q=>q[0])), la = Math.min(...u.map(q=>q[1])), ha = Math.max(...u.map(q=>q[1]));
+      if(ha < y0 || la > y1) return;
+      [-720,-360,0,360,720].forEach(k => { if(hi+k < x0 || lo+k > x1) return;
+        c.beginPath(); u.forEach(([L,a],i) => { const x = X(L+k), y = Y(a); i ? c.lineTo(x,y) : c.moveTo(x,y); }); c.closePath(); c.fill(); c.stroke(); });
+    });
+  }
+  lineBoxes = [];
+  drawLatLines(c, X, Y, y0, y1, W, col);
+  drawDateLine(c, X, x0, x1, H, BAND, col);
+  if(note) note.textContent = LAND ? "" : (navigator.onLine ? "Loading the map outline…" : "The map outline downloads the first time you're online.");
+  // route
+  if(ports.length > 1){ c.setLineDash([10,9]); c.strokeStyle = col("--accent-edge"); c.lineWidth = 3; c.lineCap = "round";
+    c.beginPath(); ports.forEach((q,i) => i ? c.lineTo(X(q.x),Y(q.y)) : c.moveTo(X(q.x),Y(q.y))); c.stroke(); c.setLineDash([]); }
+  // group ports that would sit on top of each other
+  const R = 21, groups = [];
+  ports.forEach(q => { const px = X(q.x), py = Y(q.y); const g = groups.find(g => Math.hypot(g.px-px, g.py-py) < R*2.1);
+    if(g){ g.items.push(q); g.px = g.items.reduce((s,i)=>s+X(i.x),0)/g.items.length; g.py = g.items.reduce((s,i)=>s+Y(i.y),0)/g.items.length; }
+    else groups.push({px, py, items:[q]}); });
+  const boxes = [{x:0, y:0, w:W, h:BAND+4}, ...lineBoxes], hit = (b) => boxes.some(o => b.x < o.x+o.w && b.x+b.w > o.x && b.y < o.y+o.h && b.y+b.h > o.y);
+  const tones = {hi:[col("--mint"),col("--mint-edge")], mid:[col("--dom"),col("--dom-edge")], lo:[col("--p1"),col("--p1-edge")], none:["#FFFFFF",col("--accent-edge")]};
+  groups.forEach(g => {
+    const nums = g.items.map(i => i.n), consecutive = nums.every((v,i) => !i || v === nums[i-1]+1);
+    g.label = nums.length === 1 ? String(nums[0]) : consecutive ? nums[0] + "–" + nums[nums.length-1] : nums.join("·");
+    c.font = "800 22px " + col("--display"); g.pw = Math.max(R*2, c.measureText(g.label).width + 20);
+    boxes.push({x:g.px-g.pw/2-2, y:g.py-R-2, w:g.pw+4, h:R*2+4});
+  });
+  // pins
+  mapHits = [];
+  groups.forEach(g => {
+    const sc = avg(g.items.map(i => portAvg(i.p))), [fill, edge] = tones[scoreTone(sc)];
+    const x = g.px - g.pw/2, y = g.py - R;
+    c.fillStyle = "rgba(60,40,90,.22)"; roundRect(c, x, y+4, g.pw, R*2, R); c.fill();
+    c.fillStyle = fill; roundRect(c, x, y, g.pw, R*2, R); c.fill(); c.lineWidth = 3.5; c.strokeStyle = edge; c.stroke();
+    c.fillStyle = "#2F2A42"; c.font = "800 22px " + col("--display"); c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(g.label, g.px, g.py+1);
+    mapHits.push({x, y, w:g.pw, h:R*2, id:g.items[0].p.id});
+  });
+  // names, placed where they don't cover a pin or another name
+  c.textBaseline = "alphabetic";
+  groups.forEach(g => {
+    const lines = g.items.map(i => (i.p.name||"").split(",")[0].trim());
+    const diffs = g.items.map(i => fmtDiff(portDiffHours(i.p, t)));
+    // ports sharing a pin and a time zone show the time once, on the last line
+    const sameZone = diffs.every(d => d === diffs[0]);
+    const tags = diffs.map((d,i) => sameZone && i < diffs.length-1 ? "" : d);
+    c.font = "700 21px " + col("--body"); const nameW = lines.map(l => c.measureText(l).width);
+    c.font = "800 19px " + col("--body"); const tagW = tags.map(x => x ? c.measureText(x).width + 10 : 0);
+    const lh = 24, w = Math.max(...lines.map((l,i) => nameW[i] + tagW[i])) + 14, h = lines.length*lh + 8, gap = 8;
+    const cands = [[g.px+g.pw/2+gap, g.py-h/2], [g.px-g.pw/2-gap-w, g.py-h/2], [g.px-w/2, g.py-R-gap-h], [g.px-w/2, g.py+R+gap],
+                   [g.px+g.pw/2+gap, g.py-R-h], [g.px+g.pw/2+gap, g.py+R*0.3], [g.px-g.pw/2-gap-w, g.py-R-h], [g.px-g.pw/2-gap-w, g.py+R*0.3]];
+    const overlap = b => boxes.reduce((s,o) => s + Math.max(0, Math.min(b.x+b.w,o.x+o.w)-Math.max(b.x,o.x)) * Math.max(0, Math.min(b.y+b.h,o.y+o.h)-Math.max(b.y,o.y)), 0);
+    let pick = null, best = null;
+    for(const [bx,by] of cands){
+      const b = {x:Math.min(Math.max(4,bx),W-w-4), y:Math.min(Math.max(BAND+6,by),H-h-4), w, h};   // slide inside the map
+      const ov = overlap(b);
+      if(!ov){ pick = b; break; }
+      if(!best || ov < best.ov) best = {b, ov};
+    }
+    if(!pick) pick = best.b;
+    boxes.push(pick);
+    c.fillStyle = "rgba(255,255,255,.88)"; roundRect(c, pick.x, pick.y, w, h, 9); c.fill();
+    c.textAlign = "left";
+    lines.forEach((l,i) => { const by = pick.y+4+lh*(i+1)-6;
+      c.font = "700 21px " + col("--body"); c.fillStyle = "#3B3551"; c.fillText(l, pick.x+7, by);
+      if(tags[i]){ c.font = "800 19px " + col("--body"); c.fillStyle = col("--sca-ink"); c.fillText(tags[i], pick.x+7+nameW[i]+10, by); } });
+  });
+  cv.dataset.w = W;
+}
+
+// hours between a place and Tampa on a given day (daylight saving included)
+function zoneOffset(zone, date){
+  try{
+    const f = new Intl.DateTimeFormat("en-US", {timeZone:zone, timeZoneName:"longOffset"});
+    const m = /GMT([+-])(\d{2}):?(\d{2})?/.exec(f.formatToParts(date).find(p => p.type === "timeZoneName").value);
+    return m ? (m[1] === "-" ? -1 : 1) * (+m[2] + (+(m[3]||0))/60) : 0;
+  }catch(e){ return null; }
+}
+function dayOf(iso){ if(!iso) return new Date(); const [y,m,d] = iso.split("-").map(Number); return new Date(Date.UTC(y, m-1, d, 12)); }
+function portDiffHours(p, t){
+  const when = dayOf(p.date || t.start), home = zoneOffset(HOME_ZONE, when);
+  const z = PORT_ZONES[placeKey(p.name)];
+  let off = z ? zoneOffset(z, when) : null;
+  if(off == null && p.lon != null){ let L = ((p.lon+540)%360)-180; off = Math.round(L/15); }
+  return off == null || home == null ? null : off - home;
+}
+function fmtDiff(h){
+  if(h == null) return "";
+  if(Math.abs(h) < 0.01) return "same time";
+  const a = Math.abs(h), whole = Math.floor(a), frac = a - whole;
+  return (h > 0 ? "+" : "−") + whole + (frac >= 0.74 ? "¾" : frac >= 0.49 ? "½" : frac >= 0.24 ? "¼" : "") + "h";
+}
+function drawZones(c, X, x0, x1, W, H, BAND, col){
+  // standard 15° time-zone bands; label = difference from Tampa today
+  const home = zoneOffset(HOME_ZONE, dayOf(trip().start)) ?? -5;   // Tampa on the trip dates
+  c.save();
+  for(let k = Math.floor((x0-7.5)/15); k <= Math.ceil((x1+7.5)/15); k++){
+    const left = k*15 - 7.5, right = k*15 + 7.5;
+    if(right < x0 || left > x1) continue;
+    let utc = ((k % 24) + 24) % 24; if(utc > 12) utc -= 24;           // ±12 around the date line
+    if(k % 2 === 0){ c.fillStyle = "rgba(255,255,255,.28)"; c.fillRect(X(left), 0, X(right)-X(left), H); }
+    c.strokeStyle = "rgba(34,111,123,.22)"; c.lineWidth = 1.5; c.setLineDash([4,6]);
+    c.beginPath(); c.moveTo(X(left), 0); c.lineTo(X(left), H); c.stroke(); c.setLineDash([]);
+    const cx = (Math.max(X(left),0) + Math.min(X(right),W)) / 2;
+    if(Math.min(X(right),W) - Math.max(X(left),0) > 44){
+      c.fillStyle = col("--p2-ink"); c.font = "800 17px " + col("--body"); c.textAlign = "center";
+      c.fillText(fmtDiff(utc - home).replace("same time","0h"), cx, 24);
+    }
+  }
+  c.fillStyle = "rgba(255,255,255,.55)"; c.fillRect(0, 0, W, BAND);
+  c.strokeStyle = "rgba(34,111,123,.25)"; c.beginPath(); c.moveTo(0, BAND); c.lineTo(W, BAND); c.stroke();
+  // redraw labels on top of the band
+  for(let k = Math.floor((x0-7.5)/15); k <= Math.ceil((x1+7.5)/15); k++){
+    const left = k*15 - 7.5, right = k*15 + 7.5; if(right < x0 || left > x1) continue;
+    let utc = ((k % 24) + 24) % 24; if(utc > 12) utc -= 24;
+    const l = Math.max(X(left),0), r = Math.min(X(right),W); if(r - l <= 44) continue;
+    c.fillStyle = col("--p2-ink"); c.font = "800 17px " + col("--body"); c.textAlign = "center";
+    c.fillText(fmtDiff(utc - home).replace("same time","0h"), (l+r)/2, 23);
+  }
+  c.restore();
+}
+function drawLatLines(c, X, Y, y0, y1, W, col){
+  [[0,"Equator",[3,8]],[23.44,"Tropic of Cancer",[12,8]],[-23.44,"Tropic of Capricorn",[12,8]]].forEach(([lat,name,dash]) => {
+    if(lat <= y0 || lat >= y1) return;
+    const y = Y(lat);
+    c.save(); c.setLineDash(dash); c.lineWidth = lat === 0 ? 2.5 : 2; c.strokeStyle = lat === 0 ? "rgba(34,111,123,.6)" : "rgba(196,120,40,.55)";
+    c.beginPath(); c.moveTo(0,y); c.lineTo(W,y); c.stroke(); c.setLineDash([]);
+    c.font = "700 17px " + col("--body"); c.textAlign = "left";
+    const tw = c.measureText(name).width; c.fillStyle = "rgba(255,255,255,.75)"; c.fillRect(8, y-22, tw+12, 20);
+    lineBoxes.push({x:8, y:y-22, w:tw+12, h:20});
+    c.fillStyle = lat === 0 ? "rgba(34,111,123,.95)" : "rgba(150,85,20,.95)"; c.fillText(name, 14, y-7);
+    c.restore();
+  });
+}
+function drawDateLine(c, X, x0, x1, H, BAND, col){
+  [-180,180,540].forEach(L => {
+    if(L <= x0 || L >= x1) return;
+    const x = X(L);
+    c.save(); c.setLineDash([14,8]); c.lineWidth = 3; c.strokeStyle = "rgba(164,70,94,.75)";
+    c.beginPath(); c.moveTo(x, BAND); c.lineTo(x, H); c.stroke(); c.setLineDash([]);
+    c.font = "800 17px " + col("--body"); const label = "International Date Line", tw = c.measureText(label).width;
+    lineBoxes.push({x:x+2, y:BAND+6, w:22, h:tw+12});
+    c.translate(x+18, BAND+12+tw); c.rotate(-Math.PI/2);
+    c.fillStyle = "rgba(255,255,255,.8)"; c.fillRect(-4, -15, tw+8, 21);
+    c.fillStyle = "rgba(164,70,94,.95)"; c.textAlign = "left"; c.fillText(label, 0, 0);
+    c.restore();
+  });
+}
+
+function roundRect(c, x, y, w, h, r){ c.beginPath(); c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r); c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath(); }
+document.addEventListener("click", e => {
+  if(e.target.id !== "portsMap") return;
+  const cv = e.target, rect = cv.getBoundingClientRect(), k = (+cv.dataset.w || 720) / rect.width;
+  const x = (e.clientX-rect.left)*k, y = (e.clientY-rect.top)*k;
+  const h = mapHits.find(m => x >= m.x-6 && x <= m.x+m.w+6 && y >= m.y-6 && y <= m.y+m.h+6);
+  if(h){ const el = document.getElementById("port-" + h.id); if(el){ el.scrollIntoView({behavior:"smooth", block:"center"}); el.classList.add("flashport"); setTimeout(() => el.classList.remove("flashport"), 1200); } }
+});
+window.addEventListener("resize", () => { if(tab === "ports") drawPortsMap(); });
+window.addEventListener("online", () => {
+  if(!cloud.ref && !window.firebase){
+    const add = src => new Promise(ok => { const el = document.createElement("script"); el.src = src; el.onload = ok; el.onerror = ok; document.head.appendChild(el); });
+    add("https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js").then(() => add("https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js")).then(() => { initCloud(); renderSyncBits(); });
+  } else if(!cloud.ref){ initCloud(); renderSyncBits(); }
+  loadLand(); if(tab === "ports") fillCoords(trip()); });
+
+
+/* ---------- winning sound (made by the app itself, works offline) ---------- */
+const SOUND_KEY = "cruise-scorebook-sound";
+let soundOn = true; try { soundOn = localStorage.getItem(SOUND_KEY) !== "off"; } catch(e){}
+let audioCtx = null;
+function audio(){
+  try{
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if(audioCtx.state === "suspended") audioCtx.resume();
+    return audioCtx;
+  }catch(e){ return null; }
+}
+function toneAt(ac, out, f, t, d, type, v, glide){
+  const o = ac.createOscillator(), g = ac.createGain();
+  o.type = type; o.frequency.setValueAtTime(f, t); if(glide) o.frequency.exponentialRampToValueAtTime(f*glide, t+d);
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t+0.008); g.gain.exponentialRampToValueAtTime(0.0001, t+d);
+  o.connect(g); g.connect(out); o.start(t); o.stop(t+d+0.05);
+}
+function playJackpot(){
+  if(!soundOn) return; const ac = audio(); if(!ac) return;
+  const t0 = ac.currentTime + 0.05, out = ac.createGain(); out.gain.value = 0.55; out.connect(ac.destination);
+  const N = [523.25, 659.25, 783.99, 1046.5];
+  // 1. reel bells
+  for(let r = 0; r < 4; r++) N.forEach((f,i) => { const t = t0 + (r*4+i)*0.055; toneAt(ac,out,f*(r%2?1:2),t,0.14,"square",0.09); toneAt(ac,out,f*2,t,0.2,"triangle",0.12); });
+  // 2. coin shower
+  for(let k = 0; k < 22; k++){ const t = t0 + 0.95 + k*0.055 + Math.random()*0.03, f = 2400 + Math.random()*2200; toneAt(ac,out,f,t,0.18,"sine",0.18,0.92); toneAt(ac,out,f*1.5,t,0.09,"sine",0.06); }
+  // 3. jackpot fanfare
+  const tc = t0 + 2.15;
+  N.forEach(f => { const o = ac.createOscillator(), l = ac.createOscillator(), lg = ac.createGain(), g = ac.createGain(), fl = ac.createBiquadFilter();
+    o.type = "sawtooth"; o.frequency.value = f; l.frequency.value = 6; lg.gain.value = f*0.012; l.connect(lg); lg.connect(o.frequency);
+    fl.type = "lowpass"; fl.frequency.value = 2600;
+    g.gain.setValueAtTime(0, tc); g.gain.linearRampToValueAtTime(0.07, tc+0.04); g.gain.setValueAtTime(0.07, tc+0.55); g.gain.exponentialRampToValueAtTime(0.0001, tc+1.3);
+    o.connect(fl); fl.connect(g); g.connect(out); o.start(tc); l.start(tc); o.stop(tc+1.4); l.stop(tc+1.4); });
+  toneAt(ac,out,2093,tc,1.2,"sine",0.16); toneAt(ac,out,3136,tc+0.02,0.9,"sine",0.06);
+}
+function playTieChime(){
+  if(!soundOn) return; const ac = audio(); if(!ac) return;
+  const t0 = ac.currentTime + 0.05, out = ac.createGain(); out.gain.value = 0.5; out.connect(ac.destination);
+  [659.25, 783.99, 659.25].forEach((f,i) => { toneAt(ac,out,f,t0+i*0.16,0.5,"triangle",0.14); toneAt(ac,out,f*2,t0+i*0.16,0.3,"sine",0.05); });
+}
+
 /* ---------- winner celebration ---------- */
 const TROPHY = '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 8h24v14a12 12 0 0 1-24 0z" fill="#FFE08A" stroke="#3B3551" stroke-width="2.5" stroke-linejoin="round"/><path d="M20 12h-8a8 8 0 0 0 9 10M44 12h8a8 8 0 0 1-9 10" fill="none" stroke="#3B3551" stroke-width="2.5" stroke-linecap="round"/><path d="M27 34h10l-1 10h-8z" fill="#FFE08A" stroke="#3B3551" stroke-width="2.5" stroke-linejoin="round"/><rect x="18" y="44" width="28" height="9" rx="3" fill="#C7A6EC" stroke="#3B3551" stroke-width="2.5"/><path d="M26 15l3 3 6-7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/></svg>';
 function celebrate(t, g){
@@ -986,6 +1300,7 @@ function celebrate(t, g){
       <div class="series">This trip in ${GAMES[g.type]}: ${esc(t.p1)} ${tl.w1} · ${esc(t.p2)} ${tl.w2}</div>
       <button class="btn b3d" data-party-close>Play again</button>
     </div></div>`;
+  if(g.winner) playJackpot(); else playTieChime();
   const close = () => { root.innerHTML = ""; };
   root.querySelector("[data-party-close]").addEventListener("click", close);
   root.querySelector("[data-party]").addEventListener("click", e => { if(e.target.matches("[data-party]")) close(); });
@@ -1029,9 +1344,23 @@ function showSaveAs(){
   root.innerHTML = `<div class="scrim save-scrim" id="saveScrim"><div class="sheet save-sheet" role="dialog" aria-modal="true" aria-labelledby="saveT">
     <div class="save-h"><h3 id="saveT">Save As…</h3><button type="button" class="xclose" id="saveClose" aria-label="Close">×</button></div>
     <section class="save-sec">
+      <p class="eyebrow">Editing lock</p>
+      <p class="save-help">Games and port scores lock ${LOCK_HOURS} hours after they're entered. Unlock to change or delete anything, then lock it again.</p>
+      <div class="save-row"><button type="button" class="btn b3d lockbtn ${editingUnlocked ? "unlocked" : ""}" id="lockToggle">${editingUnlocked ? "🔓 Editing unlocked · tap to lock" : "🔒 Unlock editing"}</button></div>
+    </section>
+    <section class="save-sec">
+      <p class="eyebrow">Winning sound</p>
+      <p class="save-help">Plays a jackpot sound with the winner popup. This setting is for this device only.</p>
+      <div class="save-row"><button type="button" class="btn b3d" id="soundToggle">${soundOn ? "🔔 Sound on · tap to turn off" : "🔕 Sound off · tap to turn on"}</button><button type="button" class="btn b3d" id="soundTest">🎰 Play it</button></div>
+    </section>
+    <section class="save-sec">
       <p class="eyebrow">Phone and computer sync</p>
       <div id="syncStatus" class="sync-line"></div>
       <div class="save-row"><button type="button" class="btn b3d" id="syncNow">Sync now</button></div>
+    </section>
+    <section class="save-sec">
+      <p class="eyebrow">Using it at sea</p>
+      <div id="offlineStatus" class="sync-line"></div>
     </section>
     <section class="save-sec">
       <p class="eyebrow">Download a copy</p>
@@ -1041,8 +1370,17 @@ function showSaveAs(){
     <p class="save-status" id="saveStatus" role="status"></p>
     <p class="save-ver">Version ${APP_VERSION} · updated ${APP_UPDATED}</p>
   </div></div>`;
-  renderSyncBits();
+  renderSyncBits(); renderOffline();
   const close = () => { root.innerHTML = ""; };
+  document.getElementById("soundToggle").addEventListener("click", () => {
+    soundOn = !soundOn; try { localStorage.setItem(SOUND_KEY, soundOn ? "on" : "off"); } catch(e){}
+    document.getElementById("soundToggle").textContent = soundOn ? "🔔 Sound on · tap to turn off" : "🔕 Sound off · tap to turn on";
+  });
+  document.getElementById("soundTest").addEventListener("click", () => { const was = soundOn; soundOn = true; playJackpot(); soundOn = was; });
+  document.getElementById("lockToggle").addEventListener("click", () => {
+    editingUnlocked = !editingUnlocked; updateLockIcon(); render();
+    root.innerHTML = ""; showSaveAs();          // redraw the window so the button shows the new state
+  });
   document.getElementById("saveClose").addEventListener("click", close);
   document.getElementById("saveScrim").addEventListener("click", e => { if(e.target.id === "saveScrim") close(); });
   document.getElementById("syncNow").addEventListener("click", () => {
@@ -1072,11 +1410,11 @@ function endGame(){
   const t = trip(), type = dayType(t);
   if(type === "domino"){
     const c = t.cur, winner = c.s1===c.s2 ? 0 : (c.s1>c.s2 ? 1 : 2);
-    t.games.push({id:uid(), type, date:t.curDate, s1:c.s1, s2:c.s2, winner});
+    t.games.push({id:uid(), type, date:t.curDate, s1:c.s1, s2:c.s2, winner, createdAt:Date.now()});
     t.cur = {s1:0, s2:0, log:[]};
   } else {
     const sc = t.scala, winner = sc.s1===sc.s2 ? 0 : (sc.s1>sc.s2 ? 1 : 2);
-    t.games.push({id:uid(), type, date:t.curDate, s1:sc.s1, s2:sc.s2, winner, hands:sc.log.length});
+    t.games.push({id:uid(), type, date:t.curDate, s1:sc.s1, s2:sc.s2, winner, hands:sc.log.length, createdAt:Date.now()});
     t.scala = blankScala();
   }
   t.days[t.curDate] = type;
@@ -1109,13 +1447,13 @@ document.addEventListener("click", e => {
 
   const del = e.target.closest("[data-del]");
   if(del){
-    const t = trip(), g = t.games.find(x => x.id===del.dataset.del); if(!g) return;
+    const t = trip(), g = t.games.find(x => x.id===del.dataset.del); if(!g || isLocked(g.createdAt)) return;
     sheet("Delete this game?", `${GAMES[g.type]}: ${esc(t.p1)} ${g.s1} · ${esc(t.p2)} ${g.s2} on ${esc(fmtDate(g.date))}. The win comes off the tally.`, "Delete game", () => { t.games = t.games.filter(x => x.id!==g.id); commit(); render(); }, true);
     return;
   }
 
   const dp = e.target.closest("[data-delport]");
-  if(dp){ const t = trip(), pt = t.ports.find(x => x.id === dp.dataset.delport); if(!pt) return;
+  if(dp){ const t = trip(), pt = t.ports.find(x => x.id === dp.dataset.delport); if(!pt || isLocked(pt.ratedAt)) return;
     sheet(`Remove ${pt.name}?`, "Its scores come off the cruise average.", "Remove port", () => { t.ports = t.ports.filter(x => x.id !== pt.id); commit(); render(); }, true); return; }
 
   const rp = e.target.closest("[data-rateports]");
@@ -1143,6 +1481,17 @@ document.addEventListener("click", e => {
       keepBanner=false; commit(); render(); }, true);
   }
   else if(a==="addport"){ addPort(); }
+  else if(a==="resetports"){
+    const scored = t.ports.filter(p => p.s1 != null || p.s2 != null);
+    if(scored.some(p => isLocked(p.ratedAt))){
+      sheet("Some scores are locked", "Port scores lock 48 hours after they're given. Unlock editing in Save As (tap © 2026 Thor), then reset.", "Open Save As", () => showSaveAs());
+    } else {
+      sheet("Reset all port scores?", `Clears ${esc(t.p1)}'s and ${esc(t.p2)}'s scores on all ${scored.length} scored port${scored.length===1?"":"s"} of this trip, on every device. The ports stay in the list.`, "Reset scores", () => {
+        t.ports.forEach(p => { p.s1 = null; p.s2 = null; delete p.ratedAt; });
+        commit(); render(); window.scrollTo(0,0);
+      }, true);
+    }
+  }
   else if(a==="newtrip"){
     const used = new Set(state.trips.map(x => x.name+"|"+x.start));
     $("#presetBox").innerHTML = `<div class="eyebrow">Start from one of your cruises, or a blank trip</div><div class="presets">
@@ -1150,6 +1499,9 @@ document.addEventListener("click", e => {
       <button class="preset b3d" data-act="blanktrip"><b>Blank trip</b><br>Fill in the details</button></div>`;
   }
   else if(a==="blanktrip"){ const nt = newTrip(); nt.p1=t.p1; nt.p2=t.p2; state.trips.push(nt); state.activeTripId = nt.id; commit(); render(); setTimeout(()=>{ const f=$("#f-name"); if(f){ f.focus(); f.select(); } }, 0); }
+  else if(a==="deltrip" && (t.games.some(g => isLocked(g.createdAt)) || t.ports.some(p => isLocked(p.ratedAt)))){
+    sheet("This trip has locked entries", "Games and port scores lock 48 hours after they're entered. Unlock editing in Save As (tap © 2026 Thor), then delete the trip.", "Open Save As", () => showSaveAs());
+  }
   else if(a==="deltrip"){ sheet(`Delete “${t.name}”?`, `Its ${t.games.length} recorded game${t.games.length===1?"":"s"} will be removed too.`, "Delete trip", () => { state.trips = state.trips.filter(x => x.id!==t.id); state.activeTripId = state.trips[0].id; commit(); render(); }, true); }
 });
 
@@ -1180,6 +1532,20 @@ document.addEventListener("keydown", e => { if(e.key==="Escape"){ $("#sheetRoot"
 (async () => { try { if(navigator.wakeLock) await navigator.wakeLock.request("screen"); } catch(e){} })();
 
 document.getElementById("appver").textContent = "Version " + APP_VERSION + " · updated " + APP_UPDATED;
+/* keep a copy of the app on this device so it opens without internet (needs sw.js next to index.html) */
+let offlineReady = false;
+if("serviceWorker" in navigator && /^https?:/.test(location.protocol)){
+  navigator.serviceWorker.register("sw.js").then(() => navigator.serviceWorker.ready).then(() => { offlineReady = true; renderOffline(); }).catch(() => renderOffline());
+  if(navigator.serviceWorker.controller) offlineReady = true;
+}
+function renderOffline(){
+  const el = document.getElementById("offlineStatus"); if(!el) return;
+  el.className = "sync-line " + (offlineReady ? "ok" : "off");
+  el.innerHTML = offlineReady ? '<i></i><span><b>Ready to open without internet</b><small>A copy of the app is saved on this device.</small></span>'
+    : '<i></i><span><b>Needs internet to open</b><small>Open the scorebook from its GitHub link once with internet to save it on this device.</small></span>';
+}
+function updateLockIcon(){ const el = document.getElementById("lockicon"); if(el){ el.textContent = editingUnlocked ? "🔓" : "🔒"; el.parentElement.classList.toggle("is-unlocked", editingUnlocked); el.parentElement.title = editingUnlocked ? "Editing unlocked" : "Entries lock after 48 hours"; } }
+updateLockIcon();
 render();
 initCloud();
 renderSyncBits();
