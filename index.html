@@ -178,6 +178,9 @@ body[data-game="scala"]{background:var(--sca-soft)}
 .pill{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap;color:var(--on-pastel)}
 .pill.w1{background:var(--p1)} .pill.w2{background:var(--p2)} .pill.tie{background:var(--peach)}
 .xbtn{border:none;background:none;color:var(--muted);font-size:13px;text-decoration:underline;padding:4px}
+.resetgames{width:100%;margin-top:16px}
+.sheet .stack{display:flex;flex-direction:column;gap:10px;padding-bottom:5px}
+.sheet .stack .btn{width:100%}
 .empty{padding:22px 16px;text-align:center;color:var(--muted);border:2px dashed var(--line);border-radius:16px}
 
 /* trips */
@@ -425,8 +428,8 @@ nav.tabs button{font-size:11.5px}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "3.8";
-const APP_UPDATED = "Oct 6, 2026, 2:42 PM ET";
+const APP_VERSION = "4.1";
+const APP_UPDATED = "Oct 6, 2026, 3:28 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -652,13 +655,32 @@ function pushCloud(){
   cloud.ref.update(patch).then(() => { cloud.ok = true; cloud.error = ""; cloud.code = ""; cloud.lastSync = Date.now(); renderSyncBits(); })
     .catch(e => { cloud.ok = false; cloud.code = (e && e.code) || ""; cloud.error = /permission/i.test(cloud.code + (e && e.message)) ? "The database's rules don't allow the scorebook yet (cruiseScorebook)." : "Couldn't reach the cloud. Saved on this device."; renderSyncBits(); });
 }
+/* Show changes from the other devices right away. Only wait while someone is actually typing
+   (a keystroke in the last few seconds) — a box that is merely selected must never hold back new games. */
+let lastTypedAt = 0;
+document.addEventListener("input", () => { lastTypedAt = Date.now(); }, true);
+const typingNow = () => { const a = document.activeElement; return !!(a && /^(INPUT|TEXTAREA)$/.test(a.tagName) && a.closest("#view") && Date.now() - lastTypedAt < 4000); };
+function redraw(){ pendingRemoteRender = false; const y = window.scrollY; render(); window.scrollTo(0, y); }
 function showState(next){
   state = next; saveLocal();
-  const a = document.activeElement;
-  if(a && /^(INPUT|TEXTAREA)$/.test(a.tagName) && a.closest("#view")){ pendingRemoteRender = true; return; }
-  const y = window.scrollY; render(); window.scrollTo(0, y);
+  if(!typingNow()){ redraw(); return; }
+  if(pendingRemoteRender) return;
+  pendingRemoteRender = true;
+  (function wait(){ if(!pendingRemoteRender) return; if(typingNow()) setTimeout(wait, 1000); else redraw(); })();
 }
-document.addEventListener("focusout", () => { if(pendingRemoteRender){ setTimeout(() => { const a = document.activeElement; if(!(a && /^(INPUT|TEXTAREA)$/.test(a.tagName))){ pendingRemoteRender = false; render(); } }, 50); } });
+document.addEventListener("focusout", () => { if(pendingRemoteRender) setTimeout(() => { if(!typingNow()) redraw(); }, 50); });
+/* coming back to the app (computer woke up, tab brought forward): reconnect and pull the latest games */
+let hiddenAt = 0;
+function refreshFromCloud(){
+  if(!cloud.ref || !window.firebase) return;
+  try { const db = firebase.database(); db.goOffline(); db.goOnline(); } catch(e){}
+}
+document.addEventListener("visibilitychange", () => {
+  if(document.hidden){ hiddenAt = Date.now(); return; }
+  if(Date.now() - hiddenAt > 30000) refreshFromCloud();
+  if(pendingRemoteRender && !typingNow()) redraw();
+});
+window.addEventListener("focus", () => { if(pendingRemoteRender && !typingNow()) redraw(); });
 
 
 // First time a device meets the shared scorebook: line up its own copies of
@@ -740,7 +762,7 @@ function initCloud(){
   }catch(e){ cloud.ok = false; cloud.code = "start-failed"; cloud.error = "Sync couldn't start in this window. Open the scorebook link in Safari or Chrome."; }
 }
 function syncLabel(){
-  if(cloud.ok && cloud.online) return {cls:"ok", text:"Synced with your other devices", sub: cloud.lastSync ? "Last synced " + new Date(cloud.lastSync).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}) : ""};
+  if(cloud.ok && cloud.online) return {cls:"ok", text:"Synced with your other devices", sub: (cloud.lastSync ? "Last synced " + new Date(cloud.lastSync).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}) + " · " : "") + trip().name + ": " + trip().games.length + " game" + (trip().games.length === 1 ? "" : "s") + " recorded"};
   if((cloud.ref && !cloud.online && !cloud.error) || (!navigator.onLine && !cloud.code)) return {cls:"wait", text:"Offline. Saving on this device", sub:"It syncs again when you're back online."};
   return {cls:"off", text:"Saved on this device only", sub: cloud.error + (cloud.code ? " [" + cloud.code + "]" : "")};
 }
@@ -1132,6 +1154,39 @@ function tripRecord(x, cur){
   </div>`;
 }
 document.addEventListener("toggle", e => { const d = e.target; if(d.matches && d.matches("[data-tripsum]")) openTripRecords[d.dataset.tripsum] = d.open; }, true);
+
+/* ---------- reset all games of the current trip ---------- */
+function resetGames(type){   // type: "domino", "scala" or "all"
+  const t = trip(), hit = g => type === "all" || g.type === type;
+  t.games = t.games.filter(g => !hit(g));
+  if(type !== "scala") t.cur = {s1:0, s2:0, log:[]};
+  if(type !== "domino") t.scala = blankScala();
+  keepBanner = false; commit(); render();
+}
+document.addEventListener("click", e => {
+  if(!e.target.closest("[data-resetgames]")) return;
+  $("#saveRoot").innerHTML = "";   // close Save As so the reset choices are in front
+  const t = trip(), count = type => t.games.filter(g => type === "all" || g.type === type).length;
+  const root = $("#sheetRoot"), close = () => root.innerHTML = "";
+  root.innerHTML = `<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="rgT">
+    <h3 id="rgT">Reset games on ${esc(t.name)}</h3>
+    <p>Choose which games to clear. The win tally goes back to 0–0. Other trips, ports and notes are not touched.</p>
+    <div class="stack">
+      <button class="btn b3d" data-rg="domino">Domino only · ${count("domino")} game${count("domino")===1?"":"s"}</button>
+      <button class="btn b3d" data-rg="scala">Scala 40 only · ${count("scala")} game${count("scala")===1?"":"s"}</button>
+      <button class="btn danger b3d" data-rg="all">Both games · ${count("all")} game${count("all")===1?"":"s"}</button>
+      <button class="btn b3d" data-close>Cancel</button>
+    </div></div></div>`;
+  root.querySelectorAll("[data-close]").forEach(el => el.addEventListener("click", ev => { if(ev.target === el) close(); }));
+  root.querySelectorAll("[data-rg]").forEach(b => b.addEventListener("click", () => {
+    const type = b.dataset.rg, label = type === "all" ? "Domino and Scala 40" : GAMES[type];
+    const locked = t.games.some(g => (type === "all" || g.type === type) && isLocked(g.createdAt));
+    close();
+    if(locked){ sheet("Some games are locked", "Games lock 48 hours after they're recorded. Unlock editing in Save As (tap © 2026 Thor), then reset.", "Open Save As", () => showSaveAs()); return; }
+    sheet(`Reset all ${label} games?`, `This clears ${count(type)} finished game${count(type)===1?"":"s"} and any game in progress for ${esc(t.name)}, on both phones. It can't be undone.`, "Reset games", () => resetGames(type), true);
+  }));
+  root.querySelector("[data-rg]").focus();
+});
 
 /* ---------- trip notes: a drop-down under each trip; each note can be changed for 48 hours, then locks ---------- */
 const openNotes = {}, noteDraft = {};
@@ -1653,6 +1708,11 @@ function showSaveAs(){
       <div id="offlineStatus" class="sync-line"></div>
     </section>
     <section class="save-sec">
+      <p class="eyebrow">Reset games</p>
+      <p class="save-help">Clears the finished games of the trip you're on (${esc(trip().name)}), so its win tally starts again at 0–0. You'll choose Domino, Scala 40 or both, then confirm.</p>
+      <div class="save-row"><button type="button" class="btn danger b3d" data-resetgames>Reset all games…</button></div>
+    </section>
+    <section class="save-sec">
       <p class="eyebrow">Download a copy</p>
       <p class="save-help">HTML saves the app itself. JSON saves your trips and games.</p>
       <div class="save-row"><button type="button" class="btn primary b3d" id="saveHtml">Save as HTML</button><button type="button" class="btn primary b3d" id="saveJson">Save as JSON</button></div>
@@ -1680,7 +1740,9 @@ function showSaveAs(){
     Object.keys(patch).forEach(k => { if(patch[k] === null) delete patch[k]; });
     rememberSynced(applyPatch(cloud.synced || {}, patch));
     cloud.ref.update(Object.keys(patch).length ? patch : {pingAt: Date.now()})
-      .then(() => setSaveStatus("Synced. Your other devices now match this one."))
+      .then(() => { refreshFromCloud(); return cloud.ref.once("value"); })
+      .then(snap => { const rt = snap && snap.val(); if(rt && rt.trips){ const next = fromTree({trips: rt.trips}, state.activeTripId); if(next){ rememberSynced({v:3, trips: rt.trips}); state = next; saveLocal(); redraw(); } }
+        setSaveStatus("Synced. This device now matches your other devices."); renderSyncBits(); })
       .catch(e => setSaveStatus("Couldn't sync: " + ((e && e.code) || "no connection") + "."));
   });
   document.getElementById("saveHtml").addEventListener("click", () => {
