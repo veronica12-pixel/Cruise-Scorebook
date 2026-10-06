@@ -356,8 +356,8 @@ nav.tabs button{font-size:11.5px}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded */
-const APP_VERSION = "1.7";
-const APP_UPDATED = "Oct 6, 2026, 8:27 AM";
+const APP_VERSION = "1.8";
+const APP_UPDATED = "Oct 6, 2026, 8:45 AM";
 const LS_KEY = "domino-scorebook-v1";
 const QCARD = `<svg viewBox="0 0 100 140">
   <rect x="3" y="3" width="94" height="134" rx="10" fill="#FFFDF8" stroke="#3B3551" stroke-width="3"/>
@@ -436,6 +436,7 @@ if(!state){ const t = newTrip(PRESETS[0]); state = {v:2, updatedAt:0, activeTrip
 const trip = () => state.trips.find(t => t.id === state.activeTripId) || state.trips[0];
 const dayType = t => { t.curDate = today(); return t.days[t.curDate] || t.lastType || "domino"; };
 
+const SYNC_KEY = LS_KEY + ":synced";      // last copy this device knows the cloud has
 function saveLocal(){ try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e){} }
 function commit(){
   state.updatedAt = Date.now();
@@ -443,11 +444,14 @@ function commit(){
   pushCloud();
 }
 
-/* ---------- phone <-> computer sync ----------
-   Same Firebase Realtime Database project as the License Plates app, under
-   its own top-level node ("cruiseScorebook") so the apps never collide.
-   This device always keeps a local copy first; the cloud copy is shared by
-   every device that opens the scorebook, and the newest save wins. */
+/* ---------- phone <-> phone <-> computer sync ----------
+   Same Firebase Realtime Database project as the Garden Almanac and License
+   Plates apps, under its own top-level node ("cruiseScorebook").
+   Every piece is saved as its own small record — each trip's details, each
+   game, each port, and each player's vote on a port — and a device only
+   sends the pieces it actually changed. So Alessandra and Kirk can score the
+   same port at the same time on different phones and both votes are kept.
+   Which trip a device is looking at stays on that device. */
 const FB_CONFIG = {
   apiKey: ["AIzaSyDWceP3CnO43wj6", "xSu_FQ2jQ9N-LVxSKr8"].join(""),
   authDomain: "household-tasks-cb3ca.firebaseapp.com",
@@ -459,60 +463,151 @@ const FB_CONFIG = {
   measurementId: "G-1GQL33S9EW"
 };
 const CLOUD_ROOT = "cruiseScorebook";
-const CLIENT_ID = Math.random().toString(36).slice(2) + Date.now().toString(36);
-const cloud = {ref:null, ok:false, online:false, lastSync:0, error:"", timer:null, writing:false, again:false};
+const cloud = {ref:null, ok:false, online:false, lastSync:0, error:"", code:"", ready:false, synced:null};
 let pendingRemoteRender = false;
+try { const r = localStorage.getItem(SYNC_KEY); if(r) cloud.synced = JSON.parse(r); } catch(e){}
+
+const isObj = v => v !== null && typeof v === "object" && !Array.isArray(v);
+const clone = v => v === undefined ? undefined : JSON.parse(JSON.stringify(v));
+const byId = arr => { const o = {}; (arr||[]).forEach(x => { if(x && x.id) o[x.id] = x; }); return o; };
+function toTree(st){
+  const trips = {};
+  (st.trips||[]).forEach(t => {
+    const {games, ports, cur, scala, ...info} = t;
+    trips[t.id] = clone({info, games: byId(games), ports: byId(ports), cur, scala});
+  });
+  return {v:3, trips};
+}
+function fromTree(tree, keepActive){
+  const trips = Object.values((tree && tree.trips) || {}).filter(x => x && x.info && x.info.id).map(x => {
+    const t = Object.assign({}, x.info);
+    t.games = Object.values(x.games||{}).sort((a,b) => (a.date||"").localeCompare(b.date||"") || String(a.id).localeCompare(String(b.id)));
+    t.ports = Object.values(x.ports||{}).map(p => Object.assign({s1:null, s2:null}, p));
+    t.cur = Object.assign({s1:0, s2:0, log:[]}, x.cur||{}); if(!Array.isArray(t.cur.log)) t.cur.log = [];
+    t.scala = Object.assign({s1:0, s2:0, log:[]}, x.scala||{}); if(!Array.isArray(t.scala.log)) t.scala.log = [];
+    t.days = t.days || {}; t.itineraries = t.itineraries || [];
+    return t;
+  });
+  if(!trips.length) return null;
+  const st = migrate({v:3, updatedAt:Date.now(), trips});
+  st.activeTripId = trips.some(t => t.id === keepActive) ? keepActive : trips[0].id;
+  return st;
+}
+// only the paths that differ between two trees; arrays count as one value
+function diff(a, b, path, out){
+  if(a === undefined && isObj(b)) a = {};               // new branch: send it piece by piece, never as one block
+  if(isObj(a) && isObj(b)){
+    new Set([...Object.keys(a), ...Object.keys(b)]).forEach(k => diff(a[k], b[k], path ? path + "/" + k : k, out));
+  } else if(JSON.stringify(a) !== JSON.stringify(b)){
+    out[path] = b === undefined ? null : clone(b);
+  }
+  return out;
+}
+function applyPatch(tree, patch){
+  const t = clone(tree || {});
+  Object.entries(patch).forEach(([path, val]) => {
+    const keys = path.split("/"); let o = t;
+    keys.slice(0,-1).forEach(k => { if(!isObj(o[k])) o[k] = {}; o = o[k]; });
+    if(val === null) delete o[keys[keys.length-1]]; else o[keys[keys.length-1]] = val;
+  });
+  return t;
+}
+function rememberSynced(tree){ cloud.synced = tree; try { localStorage.setItem(SYNC_KEY, JSON.stringify(tree)); } catch(e){} }
 
 function pushCloud(){
-  if(!cloud.ref) return;
-  clearTimeout(cloud.timer);
-  cloud.timer = setTimeout(async () => {
-    if(cloud.writing){ cloud.again = true; return; }
-    cloud.writing = true;
-    try{
-      await cloud.ref.update({state: JSON.stringify(state), updatedAt: state.updatedAt, __lastWriter: CLIENT_ID});
-      cloud.ok = true; cloud.error = ""; cloud.lastSync = Date.now();
-    }catch(e){ cloud.ok = false; cloud.error = "Couldn't reach the cloud. Saved on this device."; }
-    cloud.writing = false; renderSyncBits();
-    if(cloud.again){ cloud.again = false; pushCloud(); }
-  }, 500);
+  if(!cloud.ref || !cloud.ready) return;      // the first cloud snapshot merges anything waiting
+  const mine = toTree(state), patch = diff(cloud.synced || {}, mine, "", {});
+  delete patch.v;
+  if(!Object.keys(patch).length) return;
+  rememberSynced(mine);
+  cloud.ref.update(patch).then(() => { cloud.ok = true; cloud.error = ""; cloud.code = ""; cloud.lastSync = Date.now(); renderSyncBits(); })
+    .catch(e => { cloud.ok = false; cloud.code = (e && e.code) || ""; cloud.error = /permission/i.test(cloud.code + (e && e.message)) ? "The database's rules don't allow the scorebook yet (cruiseScorebook)." : "Couldn't reach the cloud. Saved on this device."; renderSyncBits(); });
 }
-function applyRemote(remote, updatedAt){
-  state = migrate(remote); state.updatedAt = updatedAt; saveLocal();
+function showState(next){
+  state = next; saveLocal();
   const a = document.activeElement;
   if(a && a.tagName === "INPUT" && a.closest("#view")){ pendingRemoteRender = true; return; }
-  render();
+  const y = window.scrollY; render(); window.scrollTo(0, y);
 }
 document.addEventListener("focusout", () => { if(pendingRemoteRender){ setTimeout(() => { const a = document.activeElement; if(!(a && a.tagName==="INPUT")){ pendingRemoteRender = false; render(); } }, 50); } });
+
+
+// First time a device meets the shared scorebook: line up its own copies of
+// the same trips, ports and games with the shared ones so nothing is doubled.
+const portKey = p => (p.kind ? p.kind : (p.name||"").toLowerCase().split(",")[0].trim()) + "|" + (p.date||"");
+const gameKey = g => [g.type, g.date, g.s1, g.s2].join("|");
+function alignToRemote(st, remoteTree){
+  const rTrips = Object.values((remoteTree && remoteTree.trips) || {}).filter(x => x && x.info);
+  st.trips.forEach(t => {
+    let r = rTrips.find(x => x.info.id === t.id);
+    if(!r){
+      r = rTrips.find(x => (x.info.name||"").trim().toLowerCase() === (t.name||"").trim().toLowerCase() && (x.info.start||"") === (t.start||""));
+      if(r){ if(state.activeTripId === t.id) st.activeTripId = r.info.id; t.id = r.info.id; }
+    }
+    if(!r) return;
+    const rp = Object.values(r.ports||{}), rg = Object.values(r.games||{});
+    t.ports.forEach(p => { if(!(r.ports||{})[p.id]){ const m = rp.find(x => portKey(x) === portKey(p)); if(m) p.id = m.id; } });
+    t.games.forEach(g => { if(!(r.games||{})[g.id]){ const m = rg.find(x => gameKey(x) === gameKey(g)); if(m) g.id = m.id; } });
+  });
+  return st;
+}
+
+function onCloudValue(raw){
+  cloud.ok = true; cloud.error = ""; cloud.code = ""; cloud.lastSync = Date.now();
+  let remote = raw && raw.trips ? {v:3, trips: raw.trips} : null;
+  if(!remote && raw && raw.state){                       // older single-blob format
+    try { const old = JSON.parse(raw.state); if(old && old.trips) remote = toTree(migrate(old)); } catch(e){}
+  }
+  let mine = toTree(state);
+  if(!cloud.ready){
+    cloud.ready = true;
+    // changes made on this device while it couldn't sync (or ever, on a first connect)
+    const pristine = !(state.updatedAt > 0);            // never used on this device yet
+    if(remote && !cloud.synced && !pristine){ alignToRemote(state, remote); mine = toTree(state); }
+    const local = pristine && remote ? {} : diff(cloud.synced || {}, mine, "", {}); delete local.v;
+    if(!remote){
+      // cloud is empty: this device's scorebook becomes the shared one
+      rememberSynced(mine);
+      const seed = {trips: mine.trips, state: null, updatedAt: null, __lastWriter: null};
+      cloud.ref.update(seed).catch(()=>{});
+    } else {
+      if(!cloud.synced){                                 // first connect: keep both sides, never drop anything
+        Object.keys(local).forEach(k => { if(local[k] === null) delete local[k]; });
+      }
+      const merged = applyPatch(remote, local);
+      rememberSynced(merged);
+      const fromOld = !(raw && raw.trips);                 // data was still in the old single-blob format
+      const patch = diff(fromOld ? {} : remote, merged, "", {}); delete patch.v;
+      if(raw && raw.state) Object.assign(patch, {state: null, updatedAt: null, __lastWriter: null});
+      if(Object.keys(patch).length) cloud.ref.update(patch).catch(()=>{});
+      const next = fromTree(merged, state.activeTripId); if(next) showState(next);
+    }
+  } else if(remote){
+    rememberSynced(remote);
+    if(JSON.stringify(remote.trips) !== JSON.stringify(mine.trips)){
+      const next = fromTree(remote, state.activeTripId); if(next) showState(next);
+    }
+  }
+  renderSyncBits();
+}
 function initCloud(){
   try{
-    if(!window.firebase || !firebase.initializeApp) { cloud.error = "This window can't reach the sync service. Open the scorebook in Safari or Chrome with internet on."; return; }
+    if(!window.firebase || !firebase.initializeApp) { cloud.code = "no-script"; cloud.error = "This window can't reach the sync service. Open the scorebook link in Safari or Chrome with internet on."; return; }
     if(!firebase.apps.length) firebase.initializeApp(FB_CONFIG);
     const db = firebase.database();
     cloud.ref = db.ref(CLOUD_ROOT);
     db.ref(".info/connected").on("value", snap => { cloud.online = !!snap.val(); renderSyncBits(); });
-    cloud.ref.on("value", snap => {
-      cloud.ok = true; cloud.error = "";
-      const v = snap.val();
-      let remote = null;
-      if(v && v.state){ try { remote = JSON.parse(v.state); } catch(e){} }
-      if(remote && Array.isArray(remote.trips) && remote.trips.length && (v.updatedAt||0) > (state.updatedAt||0)){
-        applyRemote(remote, v.updatedAt);
-      } else if((state.updatedAt||0) > ((v && v.updatedAt)||0)){
-        pushCloud();
-      }
-      cloud.lastSync = Date.now();
-      renderSyncBits();
-    }, err => {
-      cloud.ok = false; cloud.error = "The database's rules don't allow the scorebook yet (cruiseScorebook). Scores are saved on this device.";
+    cloud.ref.on("value", snap => onCloudValue(snap.val()), err => {
+      cloud.ok = false; cloud.code = (err && err.code) || "denied";
+      cloud.error = "The database's rules don't allow the scorebook yet (cruiseScorebook). Scores are saved on this device.";
       renderSyncBits();
     });
-  }catch(e){ cloud.ok = false; cloud.error = "Sync couldn't start in this window. Open the scorebook in Safari or Chrome."; }
+  }catch(e){ cloud.ok = false; cloud.code = "start-failed"; cloud.error = "Sync couldn't start in this window. Open the scorebook link in Safari or Chrome."; }
 }
 function syncLabel(){
   if(cloud.ok && cloud.online) return {cls:"ok", text:"Synced with your other devices", sub: cloud.lastSync ? "Last synced " + new Date(cloud.lastSync).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}) : ""};
   if(cloud.ref && !cloud.online && !cloud.error) return {cls:"wait", text:"Offline. Saving on this device", sub:"It syncs again when you're back online."};
-  return {cls:"off", text:"Saved on this device only", sub: cloud.error};
+  return {cls:"off", text:"Saved on this device only", sub: cloud.error + (cloud.code ? " [" + cloud.code + "]" : "")};
 }
 function renderSyncBits(){
   const d = document.getElementById("syncdot"); if(d) d.className = "syncdot " + syncLabel().cls;
@@ -952,8 +1047,13 @@ function showSaveAs(){
   document.getElementById("saveScrim").addEventListener("click", e => { if(e.target.id === "saveScrim") close(); });
   document.getElementById("syncNow").addEventListener("click", () => {
     if(!cloud.ref){ setSaveStatus(cloud.error || "Sync isn't available here."); return; }
-    state.updatedAt = Date.now(); saveLocal(); pushCloud(); setSaveStatus("Sending this device's scores to the cloud…");
-    setTimeout(() => setSaveStatus(cloud.ok ? "Synced." : (cloud.error || "Still trying to reach the cloud.")), 2500);
+    if(!cloud.ready){ setSaveStatus("Still connecting… try again in a moment."); return; }
+    const patch = diff(cloud.synced || {}, toTree(state), "", {}); delete patch.v;
+    Object.keys(patch).forEach(k => { if(patch[k] === null) delete patch[k]; });
+    rememberSynced(applyPatch(cloud.synced || {}, patch));
+    cloud.ref.update(Object.keys(patch).length ? patch : {pingAt: Date.now()})
+      .then(() => setSaveStatus("Synced. Your other devices now match this one."))
+      .catch(e => setSaveStatus("Couldn't sync: " + ((e && e.code) || "no connection") + "."));
   });
   document.getElementById("saveHtml").addEventListener("click", () => {
     const html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML.replace(/<div id="saveRoot">[\s\S]*?<\/div>\s*<script/, '<div id="saveRoot"></div>\n<script');
