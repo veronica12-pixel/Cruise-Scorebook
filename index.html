@@ -171,9 +171,12 @@ body[data-game="scala"]{background:var(--sca-soft)}
 .g-domino .gbadge .rico{width:15px}
 .gname{display:block;font-size:12px;font-weight:700;color:var(--gi);margin-bottom:1px}
 .gend{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
-.game .res .pair{white-space:nowrap;margin-right:8px}
+.game .res .pair{display:flex;justify-content:space-between;align-items:baseline;gap:.6em;max-width:12em;line-height:1.25}
+.game .res .pair span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.game .res .pair.c1 span{color:var(--p1-ink)} .game .res .pair.c2 span{color:var(--p2-ink)}
+.game .res .pair b{font-size:1.1em}
 .game .n{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-.game .res{min-width:0;font-variant-numeric:tabular-nums;font-size:15px}
+.game .res{min-width:0;display:flex;flex-direction:column;font-variant-numeric:tabular-nums;font-size:15px}
 .game .res b{font-family:var(--display)}
 .pill{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap;color:var(--on-pastel)}
 .pill.w1{background:var(--p1)} .pill.w2{background:var(--p2)} .pill.tie{background:var(--peach)}
@@ -204,6 +207,10 @@ body[data-game="scala"]{background:var(--sca-soft)}
 .note-f{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
 .note-f .lockmark{padding:0 4px}
 .note-save{min-height:40px;padding:0 16px;margin-left:6px}
+.updatebar{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top) + 10px);z-index:30;display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+  padding:10px 14px;border-radius:14px;text-align:left;--face:var(--peach,#FFD9B8);--edge:var(--peach-edge,#E0A97E);color:var(--on-pastel);font:inherit}
+.updatebar b{font-family:var(--display);font-size:16px}
+.updatebar span{font-size:13px}
 footer{margin-top:28px;text-align:center;font-size:12px;color:var(--muted)}
 
 /* bottom nav */
@@ -326,7 +333,9 @@ nav.tabs button[aria-current="page"]{color:var(--on-pastel);background:linear-gr
 .port{padding:12px;border-radius:16px;background:var(--surface);border:2px solid var(--line);margin-bottom:10px;display:flex;flex-direction:column;gap:10px}
 .port-top{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
 .port-n{width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent-ink);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
-.port-t{min-width:0} .port-t b{display:block;font-family:var(--display);font-size:17px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap} .port-t span{font-size:13px;color:var(--muted)}
+.port-t{min-width:0} .port-t b{display:block;font-family:var(--display);font-weight:800;font-size:18px;line-height:1.1;overflow-wrap:anywhere}
+.port-t .region{display:block;font-weight:700;font-size:14px;line-height:1.2;color:var(--accent-ink);overflow-wrap:anywhere;margin-top:1px}
+.port-t .pdate{display:block;font-size:13px;color:var(--muted);margin-top:2px}
 .port-avg{min-width:58px;padding:6px 8px;border-radius:12px;text-align:center;background:var(--tc);box-shadow:0 3px 0 var(--te);color:var(--on-pastel)}
 .port-avg b{display:block;font-family:var(--display);font-size:22px;line-height:1} .port-avg span{font-size:11px;opacity:.7}
 .port-rates{display:flex;flex-direction:column;gap:8px}
@@ -358,10 +367,14 @@ nav.tabs button{font-size:11.5px}
 .tripsum[open] .chev{transform:rotate(180deg)}
 .ts-body{padding:4px 12px 12px;display:flex;flex-direction:column;gap:10px;border-top:2px dotted var(--line)}
 .ts-route{font-size:13px;color:var(--muted);padding-top:8px}
-.ts-games{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.ts-games div{min-width:0;display:flex;align-items:center;gap:6px;padding:8px 10px;border-radius:12px;background:var(--gs);border:2px solid var(--gc)}
-.ts-games span{font-size:13px;font-weight:700;color:var(--gi);flex:1;min-width:0}
-.ts-games b{font-family:var(--display);font-size:17px}
+.ts-games{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,8.5em),1fr));gap:8px}
+.ts-games .tile{min-width:0;display:flex;flex-direction:column;gap:6px;padding:8px 10px 10px;border-radius:14px;background:var(--gs);border:2px solid var(--gc)}
+.ts-games .tname{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--gi);line-height:1.15}
+.ts-games .tname span{min-width:0;overflow-wrap:anywhere}
+.ts-games .who{display:flex;justify-content:space-between;align-items:baseline;gap:6px;padding:3px 8px;border-radius:9px;background:rgba(255,255,255,.7)}
+.ts-games .who span{font-size:12px;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ts-games .who b{font-family:var(--display);font-weight:800;font-size:18px;line-height:1}
+.ts-games .who.a{color:var(--p1-ink)} .ts-games .who.k{color:var(--p2-ink)}
 .ts-games i{font-style:normal} .c1{color:var(--p1-ink)} .c2{color:var(--p2-ink)}
 .tsico{width:12px;height:20px;flex:none;transform:rotate(-8deg)}
 .ts-h{display:flex;justify-content:space-between;gap:8px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--muted)}
@@ -428,8 +441,8 @@ nav.tabs button{font-size:11.5px}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "4.1";
-const APP_UPDATED = "Oct 6, 2026, 3:28 PM ET";
+const APP_VERSION = "4.4";
+const APP_UPDATED = "Oct 7, 2026, 10:28 AM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -570,7 +583,38 @@ const dayType = t => { t.curDate = today(); return viewType[t.id] || t.days[t.cu
 
 const SYNC_KEY = LS_KEY + ":synced";      // last copy this device knows the cloud has
 function saveLocal(){ try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e){} }
+/* ---------- unfinished scores stay until someone changes them ----------
+   Every change to a game in progress (points, Undo, Clear, End game, Reset) is stamped
+   with its time ("at"). When another device sends different unfinished scores, the newer
+   stamp wins. A device that clears them without a stamp (an old saved copy of the app,
+   for example one that started each day at zero) is ignored, and the scores are put back. */
+const sigOf = o => JSON.stringify(o ? [o.s1||0, o.s2||0, o.log||[]] : null);
+const curSigs = {};
+function noteSigs(){ state.trips.forEach(t => ["cur","scala"].forEach(k => { curSigs[t.id + "|" + k] = sigOf(t[k]); })); }
+function stampChanges(){
+  state.trips.forEach(t => ["cur","scala"].forEach(k => {
+    const key = t.id + "|" + k, sg = sigOf(t[k]);
+    if(t[k] && key in curSigs && curSigs[key] !== sg) t[k].at = Date.now();
+    curSigs[key] = sg;
+  }));
+}
+function protectUnfinished(next, prev){
+  let kept = false;
+  next.trips.forEach(nt => {
+    const pt = prev.trips.find(x => x.id === nt.id); if(!pt) return;
+    ["cur","scala"].forEach(k => {
+      const L = pt[k], R = nt[k];
+      if(!L || sigOf(L) === sigOf(R)) return;
+      const la = L.at || 0, ra = (R && R.at) || 0, hasScore = !!(L.s1 || L.s2 || (L.log && L.log.length));
+      const keepLocal = la === ra ? hasScore : la > ra;
+      if(keepLocal){ nt[k] = clone(L); kept = true; }
+    });
+  });
+  return kept;
+}
+noteSigs();   // remember the unfinished scores as loaded, so only real changes get stamped
 function commit(){
+  stampChanges();
   state.updatedAt = Date.now();
   saveLocal();
   pushCloud();
@@ -662,7 +706,7 @@ document.addEventListener("input", () => { lastTypedAt = Date.now(); }, true);
 const typingNow = () => { const a = document.activeElement; return !!(a && /^(INPUT|TEXTAREA)$/.test(a.tagName) && a.closest("#view") && Date.now() - lastTypedAt < 4000); };
 function redraw(){ pendingRemoteRender = false; const y = window.scrollY; render(); window.scrollTo(0, y); }
 function showState(next){
-  state = next; saveLocal();
+  state = next; noteSigs(); saveLocal();
   if(!typingNow()){ redraw(); return; }
   if(pendingRemoteRender) return;
   pendingRemoteRender = true;
@@ -677,6 +721,7 @@ function refreshFromCloud(){
 }
 document.addEventListener("visibilitychange", () => {
   if(document.hidden){ hiddenAt = Date.now(); return; }
+  if(Date.now() - hiddenAt > 30000 && "serviceWorker" in navigator) navigator.serviceWorker.getRegistration().then(reg => reg && reg.update()).catch(()=>{});
   if(Date.now() - hiddenAt > 30000) refreshFromCloud();
   if(pendingRemoteRender && !typingNow()) redraw();
 });
@@ -705,6 +750,7 @@ function alignToRemote(st, remoteTree){
 
 function onCloudValue(raw){
   cloud.ok = true; cloud.error = ""; cloud.code = ""; cloud.lastSync = Date.now();
+  checkVersion(raw && raw.meta && raw.meta.latestVersion);
   let remote = raw && raw.trips ? {v:3, trips: raw.trips} : null;
   if(!remote && raw && raw.state){                       // older single-blob format
     try { const old = JSON.parse(raw.state); if(old && old.trips) remote = toTree(migrate(old)); } catch(e){}
@@ -731,19 +777,46 @@ function onCloudValue(raw){
       const patch = diff(fromOld ? {} : remote, merged, "", {}); delete patch.v;
       if(raw && raw.state) Object.assign(patch, {state: null, updatedAt: null, __lastWriter: null});
       if(Object.keys(patch).length) cloud.ref.update(patch).catch(()=>{});
-      const next = fromTree(merged, state.activeTripId); if(next) showState(next);
+      const next = fromTree(merged, state.activeTripId);
+      if(next){ const kept = protectUnfinished(next, state); showState(next); if(kept) pushCloud(); }
     }
   } else if(remote){
     rememberSynced(remote);
     if(JSON.stringify(remote.trips) !== JSON.stringify(mine.trips)){
       const seen = new Set(trip().games.map(g => g.id));
-      const next = fromTree(remote, state.activeTripId); if(next) showState(next);
+      const next = fromTree(remote, state.activeTripId), kept = next && protectUnfinished(next, state);
+      if(next) showState(next);
+      if(kept) pushCloud();      // put the unfinished scores back for the other devices too
       // a win recorded on the other phone: show the winner popup and jingle here too
       if(next){ const t = trip(), fresh = t.games.filter(g => !seen.has(g.id) && Date.now() - (g.createdAt||0) < 5*60*1000);
         if(fresh.length) celebrate(t, fresh[fresh.length-1]); }
     }
   }
   renderSyncBits();
+}
+const verNum = v => String(v||"0").split(".").map(Number);
+const verCmp = (a, b) => { const x = verNum(a), y = verNum(b); for(let i = 0; i < Math.max(x.length, y.length); i++){ const d = (x[i]||0) - (y[i]||0); if(d) return d > 0 ? 1 : -1; } return 0; };
+function checkVersion(latest){
+  if(!cloud.ref) return;
+  if(!latest || verCmp(APP_VERSION, latest) > 0){ cloud.ref.child("meta/latestVersion").set(APP_VERSION).catch(()=>{}); return; }
+  if(verCmp(APP_VERSION, latest) < 0) showUpdateBar(latest);
+}
+let updateShown = false;
+function showUpdateBar(latest){
+  if(updateShown) return; updateShown = true; updateApp(true);      // try quietly first
+  const bar = document.createElement("button");
+  bar.type = "button"; bar.className = "updatebar b3d";
+  bar.innerHTML = `<b>Update available</b><span>Version ${esc(latest)} is on your other device. Tap to update. Your scores are kept.</span>`;
+  bar.addEventListener("click", () => updateApp(false));
+  document.body.appendChild(bar);
+}
+function updateApp(quiet){
+  const go = () => { if(!quiet) location.reload(); };
+  if(!("serviceWorker" in navigator)) return go();
+  navigator.serviceWorker.getRegistration().then(reg => {
+    if(!reg) return go();
+    return reg.update().then(() => { if(reg.waiting) reg.waiting.postMessage({type:"SKIP_WAITING"}); }).then(go, go);
+  }).catch(go);
 }
 function initCloud(){
   try{
@@ -913,6 +986,10 @@ function scalaAdd(n, v){
   const el = $("#sc"+n); if(el) el.classList.add("flash");
 }
 
+function portTitle(name){
+  const i = (name||"").indexOf(","), place = i < 0 ? name : name.slice(0,i).trim(), region = i < 0 ? "" : name.slice(i+1).trim();
+  return `<b>${esc(place)}</b>${region ? `<span class="region">${esc(region)}</span>` : ""}`;
+}
 function gameIcon(type, cls){ return (type==="scala" ? QCARD : DOMINO).replace('<svg ','<svg class="'+cls+'" aria-hidden="true" '); }
 function renderGames(){
   const t = trip();
@@ -939,7 +1016,7 @@ function renderGames(){
       return `<div class="day"><div class="eyebrow num">${esc(fmtDate(d,{weekday:"long",month:"short",day:"numeric"}))} · ${esc(types)} · ${d1}–${d2}</div>
       ${list.slice().reverse().map(g => `<div class="game g-${g.type}">
         <span class="gbadge">${gameIcon(g.type,"rico")}<span class="n">#${g.n}</span></span>
-        <span class="res"><span class="gname">${GAMES[g.type]}</span><span class="pair">${esc(t.p1)} <b>${g.s1}</b></span> <span class="pair">${esc(t.p2)} <b>${g.s2}</b></span></span>
+        <span class="res"><span class="gname">${GAMES[g.type]}</span><span class="pair c1"><span>${esc(t.p1)}</span><b>${g.s1}</b></span><span class="pair c2"><span>${esc(t.p2)}</span><b>${g.s2}</b></span></span>
         <span class="gend">${g.winner===0?`<span class="pill tie">Tie</span>`:`<span class="pill w${g.winner}">${esc(g.winner===1?t.p1:t.p2)}</span>`}${isLocked(g.createdAt) ? `<span class="lockmark" title="Locked after 48 hours. Unlock in Save As.">🔒</span>` : `<button class="xbtn" data-del="${g.id}" aria-label="Delete game ${g.n}">Delete</button>`}</span>
       </div>`).join("")}</div>`;
     }).join("") : `<div class="empty">No finished games here yet. Score a game on the Score tab and tap <b>End game</b> to record who won.</div>`}
@@ -1080,7 +1157,7 @@ function renderPorts(){
       <div class="port" id="port-${pt.id}">
         <div class="port-top">
           <span class="port-n num">${i+1}</span>
-          <div class="port-t">${pt.kind?`<span class="port-kind">${pt.kind==="start"?"Departure":"Arrival"}</span>`:""}<b>${esc(pt.name)}</b><span>${pt.date ? esc(fmtDate(pt.date,{weekday:"short",month:"short",day:"numeric"})) : "No date"}</span></div>
+          <div class="port-t">${pt.kind?`<span class="port-kind">${pt.kind==="start"?"Departure":"Arrival"}</span>`:""}${portTitle(pt.name)}<span class="pdate">${pt.date ? esc(fmtDate(pt.date,{weekday:"short",month:"short",day:"numeric"})) : "No date"}</span></div>
           <div class="port-avg tone-${scoreTone(pa)}"><b class="num">${fmt1(pa)}</b><span>avg</span></div>
         </div>
         <div class="port-rates">
@@ -1139,8 +1216,10 @@ function tripRecord(x, cur){
       <div class="ts-body">
         <div class="ts-route">${esc(x.from||"Departure port?")} → ${esc(x.to||"Arrival port?")}${x.ship?` · ${esc(x.ship)}`:""}</div>
         <div class="ts-games">
-          <div class="g-domino">${gameIcon("domino","tsico")}<span>Domino</span><b class="num"><i class="c1">${kd.w1}</i>–<i class="c2">${kd.w2}</i></b></div>
-          <div class="g-scala">${gameIcon("scala","tsico")}<span>Scala 40</span><b class="num"><i class="c1">${ks.w1}</i>–<i class="c2">${ks.w2}</i></b></div>
+          ${[["domino","Domino",kd],["scala","Scala 40",ks]].map(([k,n,w]) => `<div class="tile g-${k}">
+            <div class="tname">${gameIcon(k,"tsico")}<span>${n}</span></div>
+            <div class="who a"><span>${esc(x.p1)}</span><b class="num">${w.w1}</b></div>
+            <div class="who k"><span>${esc(x.p2)}</span><b class="num">${w.w2}</b></div></div>`).join("")}
         </div>
         <button type="button" class="btn primary b3d ts-rate" data-rateports="${x.id}">Rate these ports</button>
         <div class="ts-h"><span>Ports of call</span><span>${cruise!==null?`Cruise score <b>${fmt1(cruise)}</b>/10`:"Not rated yet"}</span></div>
@@ -1741,7 +1820,7 @@ function showSaveAs(){
     rememberSynced(applyPatch(cloud.synced || {}, patch));
     cloud.ref.update(Object.keys(patch).length ? patch : {pingAt: Date.now()})
       .then(() => { refreshFromCloud(); return cloud.ref.once("value"); })
-      .then(snap => { const rt = snap && snap.val(); if(rt && rt.trips){ const next = fromTree({trips: rt.trips}, state.activeTripId); if(next){ rememberSynced({v:3, trips: rt.trips}); state = next; saveLocal(); redraw(); } }
+      .then(snap => { const rt = snap && snap.val(); if(rt && rt.trips){ const next = fromTree({trips: rt.trips}, state.activeTripId); if(next){ rememberSynced({v:3, trips: rt.trips}); const kept = protectUnfinished(next, state); state = next; noteSigs(); saveLocal(); redraw(); if(kept) pushCloud(); } }
         setSaveStatus("Synced. This device now matches your other devices."); renderSyncBits(); })
       .catch(e => setSaveStatus("Couldn't sync: " + ((e && e.code) || "no connection") + "."));
   });
@@ -1887,7 +1966,7 @@ document.getElementById("appver").textContent = "Version " + APP_VERSION + " · 
 /* keep a copy of the app on this device so it opens without internet (needs sw.js next to index.html) */
 let offlineReady = false;
 if("serviceWorker" in navigator && /^https?:/.test(location.protocol)){
-  navigator.serviceWorker.register("sw.js").then(() => navigator.serviceWorker.ready).then(() => { offlineReady = true; renderOffline(); }).catch(() => renderOffline());
+  navigator.serviceWorker.register("sw.js", {updateViaCache: "none"}).then(reg => { try { reg.update(); } catch(e){} return navigator.serviceWorker.ready; }).then(() => { offlineReady = true; renderOffline(); }).catch(() => renderOffline());
   if(navigator.serviceWorker.controller) offlineReady = true;
 }
 function renderOffline(){
