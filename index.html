@@ -441,8 +441,8 @@ nav.tabs button{font-size:11.5px}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "4.4";
-const APP_UPDATED = "Oct 7, 2026, 10:28 AM ET";
+const APP_VERSION = "4.5";
+const APP_UPDATED = "Oct 8, 2026, 12:45 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -642,6 +642,28 @@ const CLOUD_ROOT = "cruiseScorebook";
 const cloud = {ref:null, ok:false, online:false, lastSync:0, error:"", code:"", ready:false, synced:null};
 let pendingRemoteRender = false;
 try { const r = localStorage.getItem(SYNC_KEY); if(r) cloud.synced = JSON.parse(r); } catch(e){}
+/* Changes waiting for the cloud (the "outbox"). Every change is kept here, on this device,
+   until the cloud confirms it has it. So a score entered offline at sea, or just before the
+   phone locked or the app was closed, is never lost and is sent as soon as there is internet. */
+const OUTBOX_KEY = LS_KEY + ":outbox";
+let outbox = {}, hadOutbox = false;
+try { const r = localStorage.getItem(OUTBOX_KEY); if(r){ outbox = JSON.parse(r) || {}; hadOutbox = true; } } catch(e){}
+function saveOutbox(){ hadOutbox = true; try { localStorage.setItem(OUTBOX_KEY, JSON.stringify(outbox)); } catch(e){} }
+const pendingCount = () => Object.keys(outbox).length;
+function outboxAdd(patch){
+  Object.entries(patch).forEach(([p, v]) => {
+    Object.keys(outbox).forEach(k => { if(k.startsWith(p + "/")) delete outbox[k]; });   // a newer, bigger change replaces smaller ones
+    const anc = Object.keys(outbox).find(k => p.startsWith(k + "/"));
+    if(anc){                                                                           // fold into a waiting parent change
+      const rel = p.slice(anc.length + 1).split("/"), root = isObj(outbox[anc]) ? outbox[anc] : {};
+      let o = root; rel.slice(0, -1).forEach(k => { if(!isObj(o[k])) o[k] = {}; o = o[k]; });
+      const last = rel[rel.length - 1];
+      if(v === null || v === undefined) delete o[last]; else o[last] = clone(v);
+      outbox[anc] = root;
+    } else outbox[p] = (v === null || v === undefined) ? null : clone(v);
+  });
+  saveOutbox();
+}
 
 const isObj = v => v !== null && typeof v === "object" && !Array.isArray(v);
 const clone = v => v === undefined ? undefined : JSON.parse(JSON.stringify(v));
@@ -691,13 +713,22 @@ function applyPatch(tree, patch){
 function rememberSynced(tree){ cloud.synced = tree; try { localStorage.setItem(SYNC_KEY, JSON.stringify(tree)); } catch(e){} }
 
 function pushCloud(){
-  if(!cloud.ref || !cloud.ready) return;      // the first cloud snapshot merges anything waiting
-  const mine = toTree(state), patch = diff(cloud.synced || {}, mine, "", {});
+  if(!cloud.synced) return;          // this device hasn't met the cloud yet: the first connection merges everything
+  const mine = toTree(state), patch = diff(cloud.synced, mine, "", {});
   delete patch.v;
-  if(!Object.keys(patch).length) return;
+  if(Object.keys(patch).length) outboxAdd(patch);
   rememberSynced(mine);
-  cloud.ref.update(patch).then(() => { cloud.ok = true; cloud.error = ""; cloud.code = ""; cloud.lastSync = Date.now(); renderSyncBits(); })
-    .catch(e => { cloud.ok = false; cloud.code = (e && e.code) || ""; cloud.error = /permission/i.test(cloud.code + (e && e.message)) ? "The database's rules don't allow the scorebook yet (cruiseScorebook)." : "Couldn't reach the cloud. Saved on this device."; renderSyncBits(); });
+  flush();
+}
+/* send the waiting changes; each one leaves the outbox only after the cloud confirms it */
+function flush(){
+  if(!cloud.ref || !cloud.ready || !pendingCount()) return Promise.resolve();
+  const sent = clone(outbox);
+  return cloud.ref.update(sent).then(() => {
+    Object.keys(sent).forEach(k => { if(k in outbox && JSON.stringify(outbox[k]) === JSON.stringify(sent[k])) delete outbox[k]; });
+    saveOutbox();
+    cloud.ok = true; cloud.error = ""; cloud.code = ""; cloud.lastSync = Date.now(); renderSyncBits();
+  }).catch(e => { cloud.ok = false; cloud.code = (e && e.code) || ""; cloud.error = /permission/i.test(cloud.code + (e && e.message)) ? "The database's rules don't allow the scorebook yet (cruiseScorebook)." : "Couldn't reach the cloud. Saved on this device."; renderSyncBits(); });
 }
 /* Show changes from the other devices right away. Only wait while someone is actually typing
    (a keystroke in the last few seconds) — a box that is merely selected must never hold back new games. */
@@ -748,50 +779,56 @@ function alignToRemote(st, remoteTree){
   return st;
 }
 
+// One-time help when updating from version 4.4: port scores this device has but the cloud never received.
+function recoverPortScores(remote, mine){
+  const patch = {};
+  Object.entries(mine.trips || {}).forEach(([tid, t]) => Object.entries(t.ports || {}).forEach(([pid, p]) => {
+    const r = remote.trips && remote.trips[tid] && remote.trips[tid].ports && remote.trips[tid].ports[pid];
+    if(r) ["s1","s2","ratedAt"].forEach(k => { if(p[k] != null && r[k] == null) patch["trips/" + tid + "/ports/" + pid + "/" + k] = p[k]; });
+  }));
+  if(Object.keys(patch).length) outboxAdd(patch);
+}
 function onCloudValue(raw){
   cloud.ok = true; cloud.error = ""; cloud.code = ""; cloud.lastSync = Date.now();
   checkVersion(raw && raw.meta && raw.meta.latestVersion);
   let remote = raw && raw.trips ? {v:3, trips: raw.trips} : null;
-  if(!remote && raw && raw.state){                       // older single-blob format
-    try { const old = JSON.parse(raw.state); if(old && old.trips) remote = toTree(migrate(old)); } catch(e){}
-  }
-  let mine = toTree(state);
-  if(!cloud.ready){
+  const fromOld = !remote && !!(raw && raw.state);   // older single-blob format
+  if(fromOld){ try { const old = JSON.parse(raw.state); if(old && old.trips) remote = toTree(migrate(old)); } catch(e){} }
+  const first = !cloud.ready;
+  if(first){
     cloud.ready = true;
-    // changes made on this device while it couldn't sync (or ever, on a first connect)
-    const pristine = !(state.updatedAt > 0);            // never used on this device yet
-    if(remote && !cloud.synced && !pristine){ alignToRemote(state, remote); mine = toTree(state); }
-    const local = pristine && remote ? {} : diff(cloud.synced || {}, mine, "", {}); delete local.v;
+    const pristine = !(state.updatedAt > 0);          // never used on this device yet
     if(!remote){
-      // cloud is empty: this device's scorebook becomes the shared one
-      rememberSynced(mine);
-      const seed = {trips: mine.trips, state: null, updatedAt: null, __lastWriter: null};
-      cloud.ref.update(seed).catch(()=>{});
+      outboxAdd({trips: toTree(state).trips});        // cloud is empty: this device's scorebook becomes the shared one
     } else {
-      if(!cloud.synced){                                 // first connect: keep both sides, never drop anything
-        Object.keys(local).forEach(k => { if(local[k] === null) delete local[k]; });
+      if(fromOld) outboxAdd({trips: clone(remote.trips)});
+      if(!pristine){
+        if(!cloud.synced) alignToRemote(state, remote);
+        const mine = toTree(state), local = diff(cloud.synced || remote, mine, "", {});
+        delete local.v;
+        if(!cloud.synced) Object.keys(local).forEach(k => { if(local[k] === null) delete local[k]; });   // first meeting: keep both sides
+        outboxAdd(local);
+        if(cloud.synced && !hadOutbox) recoverPortScores(remote, mine);
       }
-      const merged = applyPatch(remote, local);
-      rememberSynced(merged);
-      const fromOld = !(raw && raw.trips);                 // data was still in the old single-blob format
-      const patch = diff(fromOld ? {} : remote, merged, "", {}); delete patch.v;
-      if(raw && raw.state) Object.assign(patch, {state: null, updatedAt: null, __lastWriter: null});
-      if(Object.keys(patch).length) cloud.ref.update(patch).catch(()=>{});
-      const next = fromTree(merged, state.activeTripId);
-      if(next){ const kept = protectUnfinished(next, state); showState(next); if(kept) pushCloud(); }
     }
-  } else if(remote){
-    rememberSynced(remote);
-    if(JSON.stringify(remote.trips) !== JSON.stringify(mine.trips)){
+    if(raw && raw.state) outboxAdd({state: null, updatedAt: null, __lastWriter: null});
+    saveOutbox();
+  }
+  if(remote){
+    const tree = applyPatch(remote, outbox);          // changes from this device not yet confirmed always stay
+    tree.v = 3;
+    rememberSynced(tree);
+    if(JSON.stringify(tree.trips || {}) !== JSON.stringify(toTree(state).trips)){
       const seen = new Set(trip().games.map(g => g.id));
-      const next = fromTree(remote, state.activeTripId), kept = next && protectUnfinished(next, state);
+      const next = fromTree(tree, state.activeTripId), kept = next && protectUnfinished(next, state);
       if(next) showState(next);
       if(kept) pushCloud();      // put the unfinished scores back for the other devices too
       // a win recorded on the other phone: show the winner popup and jingle here too
-      if(next){ const t = trip(), fresh = t.games.filter(g => !seen.has(g.id) && Date.now() - (g.createdAt||0) < 5*60*1000);
+      if(next && !first){ const t = trip(), fresh = t.games.filter(g => !seen.has(g.id) && Date.now() - (g.createdAt||0) < 5*60*1000);
         if(fresh.length) celebrate(t, fresh[fresh.length-1]); }
     }
-  }
+  } else rememberSynced(toTree(state));
+  flush();
   renderSyncBits();
 }
 const verNum = v => String(v||"0").split(".").map(Number);
@@ -835,9 +872,11 @@ function initCloud(){
   }catch(e){ cloud.ok = false; cloud.code = "start-failed"; cloud.error = "Sync couldn't start in this window. Open the scorebook link in Safari or Chrome."; }
 }
 function syncLabel(){
-  if(cloud.ok && cloud.online) return {cls:"ok", text:"Synced with your other devices", sub: (cloud.lastSync ? "Last synced " + new Date(cloud.lastSync).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}) + " · " : "") + trip().name + ": " + trip().games.length + " game" + (trip().games.length === 1 ? "" : "s") + " recorded"};
-  if((cloud.ref && !cloud.online && !cloud.error) || (!navigator.onLine && !cloud.code)) return {cls:"wait", text:"Offline. Saving on this device", sub:"It syncs again when you're back online."};
-  return {cls:"off", text:"Saved on this device only", sub: cloud.error + (cloud.code ? " [" + cloud.code + "]" : "")};
+  const n = pendingCount(), wait = n ? n + " change" + (n === 1 ? "" : "s") + " kept on this device, waiting to send" : "";
+  if(cloud.ok && cloud.online) return n ? {cls:"wait", text:"Sending changes to your other devices…", sub: wait}
+    : {cls:"ok", text:"Synced with your other devices", sub: (cloud.lastSync ? "Last synced " + new Date(cloud.lastSync).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}) + " · " : "") + trip().name + ": " + trip().games.length + " game" + (trip().games.length === 1 ? "" : "s") + " recorded"};
+  if((cloud.ref && !cloud.online && !cloud.error) || (!navigator.onLine && !cloud.code)) return {cls:"wait", text:"Offline. Saving on this device", sub:(wait ? wait + ". " : "") + "Everything syncs when you're back online."};
+  return {cls:"off", text:"Saved on this device only", sub: (wait ? wait + ". " : "") + cloud.error + (cloud.code ? " [" + cloud.code + "]" : "")};
 }
 function renderSyncBits(){
   const d = document.getElementById("syncdot"); if(d) d.className = "syncdot " + syncLabel().cls;
@@ -1814,15 +1853,14 @@ function showSaveAs(){
   document.getElementById("saveScrim").addEventListener("click", e => { if(e.target.id === "saveScrim") close(); });
   document.getElementById("syncNow").addEventListener("click", () => {
     if(!cloud.ref){ setSaveStatus(cloud.error || "Sync isn't available here."); return; }
-    if(!cloud.ready){ setSaveStatus("Still connecting… try again in a moment."); return; }
-    const patch = diff(cloud.synced || {}, toTree(state), "", {}); delete patch.v;
-    Object.keys(patch).forEach(k => { if(patch[k] === null) delete patch[k]; });
-    rememberSynced(applyPatch(cloud.synced || {}, patch));
-    cloud.ref.update(Object.keys(patch).length ? patch : {pingAt: Date.now()})
-      .then(() => { refreshFromCloud(); return cloud.ref.once("value"); })
-      .then(snap => { const rt = snap && snap.val(); if(rt && rt.trips){ const next = fromTree({trips: rt.trips}, state.activeTripId); if(next){ rememberSynced({v:3, trips: rt.trips}); const kept = protectUnfinished(next, state); state = next; noteSigs(); saveLocal(); redraw(); if(kept) pushCloud(); } }
-        setSaveStatus("Synced. This device now matches your other devices."); renderSyncBits(); })
-      .catch(e => setSaveStatus("Couldn't sync: " + ((e && e.code) || "no connection") + "."));
+    if(!cloud.ready || !cloud.online){ setSaveStatus("No connection right now. Your changes are safe on this device and will send when you're back online."); return; }
+    setSaveStatus("Syncing…");
+    pushCloud();
+    flush().then(() => cloud.ref.once("value")).then(snap => {
+      onCloudValue(snap.val());
+      setSaveStatus(pendingCount() ? "Some changes are still waiting to send. They're safe on this device." : "Synced. This device now matches your other devices.");
+      renderSyncBits();
+    }).catch(e => setSaveStatus("Couldn't sync: " + ((e && e.code) || "no connection") + ". Your changes are kept on this device."));
   });
   document.getElementById("saveHtml").addEventListener("click", () => {
     const html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML.replace(/<div id="saveRoot">[\s\S]*?<\/div>\s*<script/, '<div id="saveRoot"></div>\n<script');
@@ -1978,6 +2016,7 @@ function renderOffline(){
 function updateLockIcon(){ const el = document.getElementById("lockicon"); if(el){ el.textContent = editingUnlocked ? "🔓" : "🔒"; el.parentElement.classList.toggle("is-unlocked", editingUnlocked); el.parentElement.title = editingUnlocked ? "Editing unlocked" : "Entries lock after 48 hours"; } }
 updateLockIcon();
 render();
+try { if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch(e){}   // ask the phone not to clear saved data
 initCloud();
 renderSyncBits();
 })();
