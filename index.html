@@ -441,8 +441,8 @@ nav.tabs button{font-size:11.5px}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "4.5";
-const APP_UPDATED = "Oct 8, 2026, 12:45 PM ET";
+const APP_VERSION = "4.8";
+const APP_UPDATED = "Oct 10, 2026, 4:00 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -823,9 +823,11 @@ function onCloudValue(raw){
       const next = fromTree(tree, state.activeTripId), kept = next && protectUnfinished(next, state);
       if(next) showState(next);
       if(kept) pushCloud();      // put the unfinished scores back for the other devices too
-      // a win recorded on the other phone: show the winner popup and jingle here too
-      if(next && !first){ const t = trip(), fresh = t.games.filter(g => !seen.has(g.id) && Date.now() - (g.createdAt||0) < 5*60*1000);
-        if(fresh.length) celebrate(t, fresh[fresh.length-1]); }
+      // a win recorded on the other phone (even hours ago, while one phone was offline):
+      // show the winner popup and play the music here too, once per game
+      if(next){ const t = trip(), fresh = t.games.filter(g => !seen.has(g.id) && !celebrated.has(g.id));
+        markCelebrated(allGameIds());
+        if(fresh.length) celebrate(t, fresh[fresh.length-1], fresh.length - 1); }
     }
   } else rememberSynced(toTree(state));
   flush();
@@ -1624,6 +1626,13 @@ window.addEventListener("online", () => {
   loadLand(); if(tab === "ports") fillCoords(trip()); });
 
 
+/* ---------- games this phone has already celebrated (so each win gets its music once) ---------- */
+const CELEB_KEY = LS_KEY + ":celebrated";
+let celebrated = new Set(), celebInit = false;
+try { const r = localStorage.getItem(CELEB_KEY); if(r){ celebrated = new Set(JSON.parse(r)); celebInit = true; } } catch(e){}
+function allGameIds(){ const ids = []; Object.values(state.trips || {}).forEach(t => (t.games || []).forEach(g => ids.push(g.id))); return ids; }
+function markCelebrated(ids){ ids.forEach(id => celebrated.add(id)); try { localStorage.setItem(CELEB_KEY, JSON.stringify([...celebrated])); } catch(e){} }
+
 /* ---------- winning sound (made by the app itself, works offline) ---------- */
 const SOUND_KEY = "cruise-scorebook-sound";
 let soundOn = true; try { soundOn = localStorage.getItem(SOUND_KEY) !== "off"; } catch(e){}
@@ -1631,13 +1640,27 @@ let audioCtx = null;
 // iPhones mute web sounds when the side switch is on silent; ask for "playback" so the jingle still plays
 try { if(navigator.audioSession) navigator.audioSession.type = "playback"; } catch(e){}
 // wake the sound player on the first tap so a win from either player (or the other phone) can play it
-["pointerdown","touchend","keydown"].forEach(ev => document.addEventListener(ev, function unlock(){ const ac = audio(); if(ac){ try{ const b = ac.createBuffer(1,1,22050), s = ac.createBufferSource(); s.buffer = b; s.connect(ac.destination); s.start(0); }catch(e){} } }, {once:true, capture:true}));
+// Every tap keeps it awake (phones put it to sleep after the screen locks or the app is in the background),
+// and if a win arrived while the sound was asleep, the music plays on the next tap while the popup is open.
+let pendingSound = null, unlocked = false;
+["pointerdown","touchend","keydown"].forEach(ev => document.addEventListener(ev, function wake(){
+  const ac = audio(); if(!ac) return;
+  if(!unlocked){ unlocked = true; try{ const b = ac.createBuffer(1,1,22050), s = ac.createBufferSource(); s.buffer = b; s.connect(ac.destination); s.start(0); }catch(e){} }
+  if(pendingSound){ const fn = pendingSound; Promise.resolve(ac.state === "running" || ac.resume()).then(() => {
+    if(pendingSound === fn && ac.state === "running" && document.querySelector("[data-party]")){ pendingSound = null; fn(ac); } }).catch(()=>{}); }
+}, {capture:true}));
 function audio(){
   try{
     audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-    if(audioCtx.state === "suspended") audioCtx.resume();
+    if(audioCtx.state !== "running") audioCtx.resume();   // "suspended" or iPhone's "interrupted"
     return audioCtx;
   }catch(e){ return null; }
+}
+function withAudio(fn){
+  if(!soundOn) return; const ac = audio(); if(!ac) return;
+  if(ac.state === "running"){ pendingSound = null; fn(ac); return; }
+  pendingSound = fn;
+  Promise.resolve(ac.resume()).then(() => { if(pendingSound === fn && ac.state === "running"){ pendingSound = null; fn(ac); } }).catch(()=>{});
 }
 function toneAt(ac, out, f, t, d, type, v, glide){
   const o = ac.createOscillator(), g = ac.createGain();
@@ -1645,8 +1668,8 @@ function toneAt(ac, out, f, t, d, type, v, glide){
   g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t+0.008); g.gain.exponentialRampToValueAtTime(0.0001, t+d);
   o.connect(g); g.connect(out); o.start(t); o.stop(t+d+0.05);
 }
-function playJackpot(){
-  if(!soundOn) return; const ac = audio(); if(!ac) return;
+function playJackpot(){ withAudio(jackpotNotes); }
+function jackpotNotes(ac){
   const t0 = ac.currentTime + 0.05, out = ac.createGain(); out.gain.value = 0.55; out.connect(ac.destination);
   const N = [523.25, 659.25, 783.99, 1046.5];
   // 1. reel bells
@@ -1662,8 +1685,57 @@ function playJackpot(){
     o.connect(fl); fl.connect(g); g.connect(out); o.start(tc); l.start(tc); o.stop(tc+1.4); l.stop(tc+1.4); });
   toneAt(ac,out,2093,tc,1.2,"sine",0.16); toneAt(ac,out,3136,tc+0.02,0.9,"sine",0.06);
 }
-function playTieChime(){
-  if(!soundOn) return; const ac = audio(); if(!ac) return;
+/* Player 2's winning music: the Calypso-Tarantella */
+function playCalypso(){ withAudio(calypsoNotes); }
+function steelPan(ac, out, f, t, d, v){
+  // a steel drum: a bright fundamental plus slightly "off" overtones that fade fast
+  [[1, 1], [2, 0.45], [3.02, 0.22], [4.1, 0.08]].forEach(([m, a]) => {
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.type = "sine"; o.frequency.setValueAtTime(f*m, t);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v*a, t+0.006); g.gain.exponentialRampToValueAtTime(0.0001, t + d/(m*0.7+0.3));
+    o.connect(g); g.connect(out); o.start(t); o.stop(t+d+0.05);
+  });
+}
+function mandolin(ac, out, f, t, v, reps){
+  // a mandolin: quick repeated picks (tremolo) of a bright plucked string
+  for(let r = 0; r < reps; r++){ const tt = t + r*0.055;
+    [[1,1],[2,0.4],[3,0.18]].forEach(([m,a]) => toneAt(ac, out, f*m*(1+(r%2)*0.003), tt, 0.16, "triangle", v*a*(r ? 0.75 : 1))); }
+}
+function shaker(ac, out, t, len, v, hpHz){
+  const n = ac.createBufferSource(), buf = ac.createBuffer(1, len, 22050), d = buf.getChannelData(0);
+  for(let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/d.length, 3);
+  const hp = ac.createBiquadFilter(), g = ac.createGain(); hp.type = "highpass"; hp.frequency.value = hpHz;
+  g.gain.value = v; n.buffer = buf; n.connect(hp); hp.connect(g); g.connect(out); n.start(t);
+}
+/* Calypso-Tarantella: steel-drum calypso, then a mandolin tarantella with the steel drums joining in */
+function calypsoNotes(ac){
+  const t0 = ac.currentTime + 0.05;
+  const out = ac.createGain(); out.gain.value = 0.36; out.connect(ac.destination);     // steel drums, bass
+  const outM = ac.createGain(); outM.gain.value = 0.78; outM.connect(ac.destination);  // mandolin, tambourine
+  // part 1: calypso
+  const B = 0.14;
+  const tune = [
+    [523.25,0,1],[659.25,1,1],[783.99,2,1],[659.25,3,0.5],[783.99,3.5,1.5],[880,5,1],[783.99,6,2],
+    [698.46,8,1],[659.25,9,1],[587.33,10,1],[659.25,11,0.5],[698.46,11.5,1.5],[783.99,13,1],[659.25,14,2]
+  ];
+  tune.forEach(([f, at, len]) => steelPan(ac, out, f, t0 + at*B, Math.max(0.35, len*B*2.2), 0.22));
+  tune.forEach(([f, at], i) => { if(i % 2 === 0) steelPan(ac, out, f*0.6, t0 + at*B, 0.4, 0.08); });
+  [[130.81,0],[196,2],[130.81,4],[196,6],[174.61,8],[220,10],[196,12],[164.81,14]].forEach(([f, at]) => toneAt(ac, out, f, t0 + at*B, 0.32, "triangle", 0.22));
+  for(let k = 0; k < 16; k++) shaker(ac, out, t0 + k*B, 2205, k % 2 ? 0.05 : 0.09, 6000);
+  // part 2: tarantella (quick 6/8 dance) — mandolin lead, steel drums answering
+  const T = 0.12, tt = t0 + 16*B;
+  const tar = [[659.25,0],[880,1],[987.8,2],[1046.5,3],[987.8,4],[880,5],[830.6,6],[987.8,7],[1174.7,8],[1318.5,9],[1174.7,10],[987.8,11],[1046.5,12],[987.8,13],[880,14],[1318.5,15],[1760,16]];
+  tar.forEach(([f, at], i) => {
+    mandolin(ac, outM, f, tt + at*T, 0.12, i === tar.length - 1 ? 14 : 2);
+    if(i % 3 === 0) steelPan(ac, out, f, tt + at*T, 0.45, 0.14);
+  });
+  [[220,0],[329.63,3],[164.81,6],[329.63,9],[220,12],[329.63,15]].forEach(([f, at]) => toneAt(ac, out, f, tt + at*T, 0.3, "triangle", 0.3));
+  [1.5,4.5,7.5,10.5,13.5].forEach(at => shaker(ac, outM, tt + at*T, 4410, 0.12, 5000));
+  // final chord: mandolins strumming A major, steel drums ringing it
+  [440, 554.37, 659.25].forEach(f => { mandolin(ac, outM, f, tt + 16*T, 0.05, 14); steelPan(ac, out, f*2, tt + 16*T, 0.9, 0.1); });
+}
+function playTieChime(){ withAudio(tieNotes); }
+function tieNotes(ac){
   const t0 = ac.currentTime + 0.05, out = ac.createGain(); out.gain.value = 0.5; out.connect(ac.destination);
   [659.25, 783.99, 659.25].forEach((f,i) => { toneAt(ac,out,f,t0+i*0.16,0.5,"triangle",0.14); toneAt(ac,out,f*2,t0+i*0.16,0.3,"sine",0.05); });
 }
@@ -1738,7 +1810,7 @@ function imgOf(svg){ if(!/xmlns=/.test(svg)) svg = svg.replace("<svg ", '<svg xm
 const CARD_IMGS = [imgOf(QCARD), ...[["A","♠"],["Q","♥"],["K","♥"],["J","♠"],["Q","♥"],["7","♣"]].map(([r,s]) => imgOf(cardSVG(r,s))), imgOf(QCARD)];
 const TILE_IMGS = [[6,6],[3,5],[1,4],[2,2],[6,0],[4,5]].map(([a,b]) => imgOf(tileSVG(a,b)));
 
-function celebrate(t, g){
+function celebrate(t, g, more){
   const root = $("#partyRoot"), tl = tally(t, g.type), name = g.winner===1 ? t.p1 : g.winner===2 ? t.p2 : null;
   const sameDay = t.games.filter(x => x.date===g.date && x.type===g.type).length, scala = g.type === "scala";
   const card = `<div class="trophy-card ${g.winner ? "p"+g.winner : "tie"}" role="dialog" aria-modal="true" aria-labelledby="winT">
@@ -1746,7 +1818,7 @@ function celebrate(t, g){
       ${TROPHY_A.replace('<svg ', '<svg aria-hidden="true" ')}
       <div class="wingame g-${g.type}">${gameIcon(g.type,"wgico")}<span>${GAMES[g.type]}</span></div>
       <h2 id="winT">${name ? esc(name) + " wins " + GAMES[g.type] + "!" : GAMES[g.type] + " ends in a tie!"}</h2>
-      <div class="eyebrow">Game ${sameDay} of ${GAMES[g.type]} today</div>
+      <div class="eyebrow">Game ${sameDay} of ${GAMES[g.type]} today${more ? " · " + more + " more game" + (more === 1 ? "" : "s") + " came in from the other phone" : ""}</div>
       <div class="final">${g.s1} – ${g.s2}<small>${esc(t.p1)} – ${esc(t.p2)}</small></div>
       <div class="series">
         <div class="series-h">This trip in ${GAMES[g.type]}</div>
@@ -1758,8 +1830,8 @@ function celebrate(t, g){
     ? `<div class="stage">${scatterCards(CARDS_BEHIND,"back")}${card}${scatterCards(CARDS_FRONT,"front")}${scatterCards(CARD_STAR,"front",true)}</div>`
     : `<div class="stage">${scatter(BEHIND,"back")}${card}${scatter(FRONT,"front")}</div>`;
   root.innerHTML = `<div class="party" data-party>${stage}<canvas></canvas></div>`;
-  if(g.winner) playJackpot(); else playTieChime();
-  const close = () => { root.innerHTML = ""; };
+  if(g.winner === 1) playJackpot(); else if(g.winner === 2) playCalypso(); else playTieChime();
+  const close = () => { root.innerHTML = ""; pendingSound = null; };
   root.querySelector("[data-party-close]").addEventListener("click", close);
   root.querySelector("[data-party]").addEventListener("click", e => { if(e.target.matches("[data-party]")) close(); });
   root.querySelector("[data-party-close]").focus();
@@ -1813,8 +1885,9 @@ function showSaveAs(){
     </section>
     <section class="save-sec">
       <p class="eyebrow">Winning sound</p>
-      <p class="save-help">Plays a jackpot sound with the winner popup. This setting is for this device only.</p>
-      <div class="save-row"><button type="button" class="btn b3d" id="soundToggle">${soundOn ? "🔔 Sound on · tap to turn off" : "🔕 Sound off · tap to turn on"}</button><button type="button" class="btn b3d" id="soundTest">🎰 Play it</button></div>
+      <p class="save-help">Each player has their own winning music: ${esc(trip().p1)} gets the slot-machine jackpot, ${esc(trip().p2)} gets the Calypso-Tarantella: steel drums and mandolin. The on/off setting is for this device only.</p>
+      <div class="save-row"><button type="button" class="btn b3d" id="soundToggle">${soundOn ? "🔔 Sound on · tap to turn off" : "🔕 Sound off · tap to turn on"}</button></div>
+      <div class="save-row"><button type="button" class="btn b3d" id="soundTest">🎰 ${esc(trip().p1)}'s music</button><button type="button" class="btn b3d" id="soundTest2">🛳️ ${esc(trip().p2)}'s music</button></div>
     </section>
     <section class="save-sec">
       <p class="eyebrow">Phone and computer sync</p>
@@ -1845,6 +1918,7 @@ function showSaveAs(){
     document.getElementById("soundToggle").textContent = soundOn ? "🔔 Sound on · tap to turn off" : "🔕 Sound off · tap to turn on";
   });
   document.getElementById("soundTest").addEventListener("click", () => { const was = soundOn; soundOn = true; playJackpot(); soundOn = was; });
+  document.getElementById("soundTest2").addEventListener("click", () => { const was = soundOn; soundOn = true; playCalypso(); soundOn = was; });
   document.getElementById("lockToggle").addEventListener("click", () => {
     editingUnlocked = !editingUnlocked; updateLockIcon(); render();
     root.innerHTML = ""; showSaveAs();          // redraw the window so the button shows the new state
@@ -1887,7 +1961,7 @@ function endGame(){
     t.scala = blankScala();
   }
   t.days[t.curDate] = type;
-  keepBanner = false; commit(); render();
+  keepBanner = false; markCelebrated([t.games[t.games.length-1].id]); commit(); render();
   celebrate(t, t.games[t.games.length-1]);
 }
 function winnerText(t, type){
@@ -2016,6 +2090,7 @@ function renderOffline(){
 function updateLockIcon(){ const el = document.getElementById("lockicon"); if(el){ el.textContent = editingUnlocked ? "🔓" : "🔒"; el.parentElement.classList.toggle("is-unlocked", editingUnlocked); el.parentElement.title = editingUnlocked ? "Editing unlocked" : "Entries lock after 48 hours"; } }
 updateLockIcon();
 render();
+if(!celebInit) markCelebrated(allGameIds());   // first time on 4.6: older games are already celebrated
 try { if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch(e){}   // ask the phone not to clear saved data
 initCloud();
 renderSyncBits();
