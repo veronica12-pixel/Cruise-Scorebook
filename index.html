@@ -441,8 +441,8 @@ nav.tabs button{font-size:11.5px}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "4.8";
-const APP_UPDATED = "Oct 10, 2026, 4:00 PM ET";
+const APP_VERSION = "4.9";
+const APP_UPDATED = "Oct 11, 2026, 4:10 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -1685,7 +1685,6 @@ function jackpotNotes(ac){
     o.connect(fl); fl.connect(g); g.connect(out); o.start(tc); l.start(tc); o.stop(tc+1.4); l.stop(tc+1.4); });
   toneAt(ac,out,2093,tc,1.2,"sine",0.16); toneAt(ac,out,3136,tc+0.02,0.9,"sine",0.06);
 }
-/* Player 2's winning music: the Calypso-Tarantella */
 function playCalypso(){ withAudio(calypsoNotes); }
 function steelPan(ac, out, f, t, d, v){
   // a steel drum: a bright fundamental plus slightly "off" overtones that fade fast
@@ -1696,43 +1695,28 @@ function steelPan(ac, out, f, t, d, v){
     o.connect(g); g.connect(out); o.start(t); o.stop(t+d+0.05);
   });
 }
-function mandolin(ac, out, f, t, v, reps){
-  // a mandolin: quick repeated picks (tremolo) of a bright plucked string
-  for(let r = 0; r < reps; r++){ const tt = t + r*0.055;
-    [[1,1],[2,0.4],[3,0.18]].forEach(([m,a]) => toneAt(ac, out, f*m*(1+(r%2)*0.003), tt, 0.16, "triangle", v*a*(r ? 0.75 : 1))); }
-}
 function shaker(ac, out, t, len, v, hpHz){
   const n = ac.createBufferSource(), buf = ac.createBuffer(1, len, 22050), d = buf.getChannelData(0);
   for(let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/d.length, 3);
   const hp = ac.createBiquadFilter(), g = ac.createGain(); hp.type = "highpass"; hp.frequency.value = hpHz;
   g.gain.value = v; n.buffer = buf; n.connect(hp); hp.connect(g); g.connect(out); n.start(t);
 }
-/* Calypso-Tarantella: steel-drum calypso, then a mandolin tarantella with the steel drums joining in */
+/* Player 2's winning music: a steel-drum calypso */
 function calypsoNotes(ac){
   const t0 = ac.currentTime + 0.05;
-  const out = ac.createGain(); out.gain.value = 0.36; out.connect(ac.destination);     // steel drums, bass
-  const outM = ac.createGain(); outM.gain.value = 0.78; outM.connect(ac.destination);  // mandolin, tambourine
-  // part 1: calypso
-  const B = 0.14;
+  const out = ac.createGain(); out.gain.value = 0.45; out.connect(ac.destination);
+  const B = 0.14;   // one eighth note
+  // [note in Hz, start in eighths, length in eighths]
   const tune = [
     [523.25,0,1],[659.25,1,1],[783.99,2,1],[659.25,3,0.5],[783.99,3.5,1.5],[880,5,1],[783.99,6,2],
-    [698.46,8,1],[659.25,9,1],[587.33,10,1],[659.25,11,0.5],[698.46,11.5,1.5],[783.99,13,1],[659.25,14,2]
+    [698.46,8,1],[659.25,9,1],[587.33,10,1],[659.25,11,0.5],[698.46,11.5,1.5],[783.99,13,1],[1046.5,14,4]
   ];
   tune.forEach(([f, at, len]) => steelPan(ac, out, f, t0 + at*B, Math.max(0.35, len*B*2.2), 0.22));
   tune.forEach(([f, at], i) => { if(i % 2 === 0) steelPan(ac, out, f*0.6, t0 + at*B, 0.4, 0.08); });
-  [[130.81,0],[196,2],[130.81,4],[196,6],[174.61,8],[220,10],[196,12],[164.81,14]].forEach(([f, at]) => toneAt(ac, out, f, t0 + at*B, 0.32, "triangle", 0.22));
-  for(let k = 0; k < 16; k++) shaker(ac, out, t0 + k*B, 2205, k % 2 ? 0.05 : 0.09, 6000);
-  // part 2: tarantella (quick 6/8 dance) — mandolin lead, steel drums answering
-  const T = 0.12, tt = t0 + 16*B;
-  const tar = [[659.25,0],[880,1],[987.8,2],[1046.5,3],[987.8,4],[880,5],[830.6,6],[987.8,7],[1174.7,8],[1318.5,9],[1174.7,10],[987.8,11],[1046.5,12],[987.8,13],[880,14],[1318.5,15],[1760,16]];
-  tar.forEach(([f, at], i) => {
-    mandolin(ac, outM, f, tt + at*T, 0.12, i === tar.length - 1 ? 14 : 2);
-    if(i % 3 === 0) steelPan(ac, out, f, tt + at*T, 0.45, 0.14);
-  });
-  [[220,0],[329.63,3],[164.81,6],[329.63,9],[220,12],[329.63,15]].forEach(([f, at]) => toneAt(ac, out, f, tt + at*T, 0.3, "triangle", 0.3));
-  [1.5,4.5,7.5,10.5,13.5].forEach(at => shaker(ac, outM, tt + at*T, 4410, 0.12, 5000));
-  // final chord: mandolins strumming A major, steel drums ringing it
-  [440, 554.37, 659.25].forEach(f => { mandolin(ac, outM, f, tt + 16*T, 0.05, 14); steelPan(ac, out, f*2, tt + 16*T, 0.9, 0.1); });
+  // last note rings as a full C chord so it sounds finished
+  [659.25, 783.99].forEach(f => steelPan(ac, out, f, t0 + 14*B, 1.2, 0.1));
+  [[130.81,0],[196,2],[130.81,4],[196,6],[174.61,8],[220,10],[196,12],[130.81,14]].forEach(([f, at]) => toneAt(ac, out, f, t0 + at*B, at === 14 ? 0.7 : 0.32, "triangle", 0.22));
+  for(let k = 0; k < 15; k++) shaker(ac, out, t0 + k*B, 2205, k % 2 ? 0.05 : 0.09, 6000);
 }
 function playTieChime(){ withAudio(tieNotes); }
 function tieNotes(ac){
@@ -1885,7 +1869,7 @@ function showSaveAs(){
     </section>
     <section class="save-sec">
       <p class="eyebrow">Winning sound</p>
-      <p class="save-help">Each player has their own winning music: ${esc(trip().p1)} gets the slot-machine jackpot, ${esc(trip().p2)} gets the Calypso-Tarantella: steel drums and mandolin. The on/off setting is for this device only.</p>
+      <p class="save-help">Each player has their own winning music: ${esc(trip().p1)} gets the slot-machine jackpot, ${esc(trip().p2)} gets the steel-drum calypso. The on/off setting is for this device only.</p>
       <div class="save-row"><button type="button" class="btn b3d" id="soundToggle">${soundOn ? "🔔 Sound on · tap to turn off" : "🔕 Sound off · tap to turn on"}</button></div>
       <div class="save-row"><button type="button" class="btn b3d" id="soundTest">🎰 ${esc(trip().p1)}'s music</button><button type="button" class="btn b3d" id="soundTest2">🛳️ ${esc(trip().p2)}'s music</button></div>
     </section>
