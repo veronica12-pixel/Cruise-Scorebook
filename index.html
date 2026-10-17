@@ -441,8 +441,8 @@ nav.tabs button{font-size:11.5px}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "5.3";
-const APP_UPDATED = "Oct 17, 2026, 5:15 PM ET";
+const APP_VERSION = "5.5";
+const APP_UPDATED = "Oct 17, 2026, 5:32 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -608,18 +608,24 @@ function stampChanges(){
     curSigs[key] = sg;
   }));
 }
+let keepTimes = [];
 function protectUnfinished(next, prev){
   let kept = false;
+  const now = Date.now(); keepTimes = keepTimes.filter(x => now - x < 15000);
+  if(keepTimes.length >= 4) return false;            // safety stop: the phones keep disagreeing, so take the shared copy
   next.trips.forEach(nt => {
     const pt = prev.trips.find(x => x.id === nt.id); if(!pt) return;
     ["cur","scala"].forEach(k => {
       const L = pt[k], R = nt[k];
       if(!L || sigOf(L) === sigOf(R)) return;
       const la = L.at || 0, ra = (R && R.at) || 0, hasScore = !!(L.s1 || L.s2 || (L.log && L.log.length));
-      const keepLocal = la === ra ? hasScore : la > ra;
+      const rScore = !!(R && (R.s1 || R.s2 || (R.log && R.log.length)));
+      // same time stamp: keep the one with points; if both have points, both phones pick the same one
+      const keepLocal = la === ra ? (hasScore !== rScore ? hasScore : sigOf(L) > sigOf(R)) : la > ra;
       if(keepLocal){ nt[k] = clone(L); kept = true; }
     });
   });
+  if(kept) keepTimes.push(now);
   return kept;
 }
 noteSigs();   // remember the unfinished scores as loaded, so only real changes get stamped
@@ -714,7 +720,9 @@ function fbNorm(v){
 const sameAsCloud = (a, b) => JSON.stringify(fbNorm(a)) === JSON.stringify(fbNorm(b));
 // only the paths that differ between two trees; arrays count as one value
 function diff(a, b, path, out){ return diffRaw(fbNorm(a), fbNorm(b), path, out); }
+const WHOLE = /^trips\/[^/]+\/(cur|scala)$/;      // an unfinished game is always sent whole, so two phones can never mix its parts
 function diffRaw(a, b, path, out){
+  if(WHOLE.test(path)){ if(JSON.stringify(a) !== JSON.stringify(b)) out[path] = b === undefined ? null : clone(b); return out; }
   if(a === undefined && isObj(b)) a = {};               // new branch: send it piece by piece, never as one block
   if(isObj(a) && isObj(b)){
     new Set([...Object.keys(a), ...Object.keys(b)]).forEach(k => diffRaw(a[k], b[k], path ? path + "/" + k : k, out));
@@ -2029,11 +2037,6 @@ function showSaveAs(){
       <div id="offlineStatus" class="sync-line"></div>
     </section>
     <section class="save-sec">
-      <p class="eyebrow">Reset games</p>
-      <p class="save-help">Clears the finished games of the trip you're on (${esc(trip().name)}), so its win tally starts again at 0–0. You'll choose Domino, Scala 40 or both, then confirm.</p>
-      <div class="save-row"><button type="button" class="btn danger b3d" data-resetgames>Reset all games…</button></div>
-    </section>
-    <section class="save-sec">
       <p class="eyebrow">Download a copy</p>
       <p class="save-help">HTML saves the app itself. JSON saves your trips and games.</p>
       <div class="save-row"><button type="button" class="btn primary b3d" id="saveHtml">Save as HTML</button><button type="button" class="btn primary b3d" id="saveJson">Save as JSON</button></div>
@@ -2042,6 +2045,11 @@ function showSaveAs(){
       <p class="eyebrow">Printable list</p>
       <p class="save-help">A black-and-white PDF of every city and country on your trips, ready to print.</p>
       <div class="save-row"><button type="button" class="btn primary b3d" id="savePdf">🖨️ Export to PDF</button></div>
+    </section>
+    <section class="save-sec">
+      <p class="eyebrow">Start over</p>
+      <p class="save-help">Deletes every recorded game and the games in progress on all trips, on every device, including locked games. Trips and ports stay.</p>
+      <div class="save-row"><button type="button" class="btn danger b3d" id="resetGames">🗑️ Reset all games</button></div>
     </section>
     <p class="save-status" id="saveStatus" role="status"></p>
     <p class="save-ver">Version ${APP_VERSION} · updated ${APP_UPDATED}</p>
@@ -2074,6 +2082,18 @@ function showSaveAs(){
   document.getElementById("saveHtml").addEventListener("click", () => {
     const html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML.replace(/<div id="saveRoot">[\s\S]*?<\/div>\s*<script/, '<div id="saveRoot"></div>\n<script');
     triggerDownload("Cruise_Scorebook.html", html, "text/html");
+  });
+  document.getElementById("resetGames").addEventListener("click", () => {
+    const n = state.trips.reduce((s, t) => s + t.games.length, 0);
+    close();
+    sheet("Reset all games?", `Deletes all ${n} recorded game${n===1?"":"s"} and the games in progress on every trip, on every device, including locked games. This can't be undone. Trips, ports and port scores stay.`, "Delete all games", () => {
+      state.trips.forEach(t => {
+        t.games = [];
+        t.cur = {s1:0, s2:0, log:[], at:Date.now()};
+        t.scala = Object.assign(blankScala(), {at:Date.now()});
+      });
+      keepBanner = false; markCelebrated([]); commit(); render(); window.scrollTo(0,0);
+    }, true);
   });
   document.getElementById("savePdf").addEventListener("click", () => {
     try { triggerDownload("Cruise-Ports-" + stamp() + ".pdf", buildPortsPDF(), "application/pdf"); }
