@@ -441,8 +441,8 @@ nav.tabs button{font-size:11.5px}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "5.2";
-const APP_UPDATED = "Oct 17, 2026, 10:15 AM ET";
+const APP_VERSION = "5.3";
+const APP_UPDATED = "Oct 17, 2026, 5:15 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -701,11 +701,23 @@ function fromTree(tree, keepActive){
   st.activeTripId = trips.some(t => t.id === keepActive) ? keepActive : trips[0].id;
   return st;
 }
+/* The cloud never keeps blank values: no score yet (null), an empty list, an empty group.
+   So both copies are compared the way the cloud stores them; otherwise every save would
+   re-send dozens of blanks (the "74 changes waiting" loop) and could blank out a score
+   the other phone had just entered. */
+function fbNorm(v){
+  if(v === null || v === undefined) return undefined;
+  if(Array.isArray(v)){ const a = v.map(x => { const n = fbNorm(x); return n === undefined ? null : n; }); return a.some(x => x !== null) ? a : undefined; }
+  if(isObj(v)){ const o = {}; Object.keys(v).sort().forEach(k => { const n = fbNorm(v[k]); if(n !== undefined) o[k] = n; }); return Object.keys(o).length ? o : undefined; }
+  return v;
+}
+const sameAsCloud = (a, b) => JSON.stringify(fbNorm(a)) === JSON.stringify(fbNorm(b));
 // only the paths that differ between two trees; arrays count as one value
-function diff(a, b, path, out){
+function diff(a, b, path, out){ return diffRaw(fbNorm(a), fbNorm(b), path, out); }
+function diffRaw(a, b, path, out){
   if(a === undefined && isObj(b)) a = {};               // new branch: send it piece by piece, never as one block
   if(isObj(a) && isObj(b)){
-    new Set([...Object.keys(a), ...Object.keys(b)]).forEach(k => diff(a[k], b[k], path ? path + "/" + k : k, out));
+    new Set([...Object.keys(a), ...Object.keys(b)]).forEach(k => diffRaw(a[k], b[k], path ? path + "/" + k : k, out));
   } else if(JSON.stringify(a) !== JSON.stringify(b)){
     out[path] = b === undefined ? null : clone(b);
   }
@@ -731,14 +743,17 @@ function pushCloud(){
   flush();
 }
 /* send the waiting changes; each one leaves the outbox only after the cloud confirms it */
+let sending = null, sendAgain = false;
 function flush(){
-  if(!cloud.ref || !cloud.ready || !pendingCount()) return Promise.resolve();
+  if(!cloud.ref || !cloud.ready || !pendingCount()) return sending || Promise.resolve();
+  if(sending){ sendAgain = true; return sending; }
   const sent = clone(outbox);
-  return cloud.ref.update(sent).then(() => {
+  const done = () => { sending = null; if(sendAgain){ sendAgain = false; flush(); } };
+  return sending = cloud.ref.update(sent).then(() => {
     Object.keys(sent).forEach(k => { if(k in outbox && JSON.stringify(outbox[k]) === JSON.stringify(sent[k])) delete outbox[k]; });
     saveOutbox();
     cloud.ok = true; cloud.error = ""; cloud.code = ""; cloud.lastSync = Date.now(); renderSyncBits();
-  }).catch(e => { cloud.ok = false; cloud.code = (e && e.code) || ""; cloud.error = /permission/i.test(cloud.code + (e && e.message)) ? "The database's rules don't allow the scorebook yet (cruiseScorebook)." : "Couldn't reach the cloud. Saved on this device."; renderSyncBits(); });
+  }).catch(e => { cloud.ok = false; cloud.code = (e && e.code) || ""; cloud.error = /permission/i.test(cloud.code + (e && e.message)) ? "The database's rules don't allow the scorebook yet (cruiseScorebook)." : "Couldn't reach the cloud. Saved on this device."; renderSyncBits(); }).finally(done);
 }
 /* Show changes from the other devices right away. Only wait while someone is actually typing
    (a keystroke in the last few seconds) — a box that is merely selected must never hold back new games. */
@@ -828,7 +843,7 @@ function onCloudValue(raw){
     const tree = applyPatch(remote, outbox);          // changes from this device not yet confirmed always stay
     tree.v = 3;
     rememberSynced(tree);
-    if(JSON.stringify(tree.trips || {}) !== JSON.stringify(toTree(state).trips)){
+    if(!sameAsCloud(tree.trips || {}, toTree(state).trips)){
       const seen = new Set(trip().games.map(g => g.id));
       const next = fromTree(tree, state.activeTripId), kept = next && protectUnfinished(next, state);
       if(next) showState(next);
