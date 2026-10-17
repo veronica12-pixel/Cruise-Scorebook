@@ -441,8 +441,8 @@ nav.tabs button{font-size:11.5px}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "5.1";
-const APP_UPDATED = "Oct 17, 2026, 7:40 AM ET";
+const APP_VERSION = "5.2";
+const APP_UPDATED = "Oct 17, 2026, 10:15 AM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -1854,6 +1854,127 @@ function celebrate(t, g, more){
 }
 
 
+
+/* ---------- printable black-and-white PDF of every city and country (built here, works offline) ---------- */
+const WINANSI = {"–":150,"—":151,"‘":145,"’":146,"“":147,"”":148,"…":133,"•":149};
+function pdfText(s){
+  let o = "";
+  for(const ch of String(s ?? "")){
+    let c = ch.codePointAt(0);
+    if(WINANSI[ch]) c = WINANSI[ch]; else if(c > 255 || (c >= 127 && c < 160)) c = 63;
+    if(c === 40 || c === 41 || c === 92) o += "\\" + ch;
+    else if(c < 32) o += " ";
+    else if(c < 127) o += String.fromCharCode(c);
+    else o += "\\" + c.toString(8).padStart(3, "0");
+  }
+  return o;
+}
+function textW(s, size, bold){
+  let w = 0;
+  for(const ch of String(s)) w += /[ilIjtf.,'!|:;]/.test(ch) ? 0.28 : /[mwMW]/.test(ch) ? 0.85 : /[A-Z]/.test(ch) ? 0.68 : /[0-9]/.test(ch) ? 0.56 : 0.53;
+  return w * size * (bold ? 1.06 : 1);
+}
+function fitText(s, size, maxW, bold){
+  s = String(s ?? ""); if(textW(s, size, bold) <= maxW) return s;
+  while(s.length > 1 && textW(s + "…", size, bold) > maxW) s = s.slice(0, -1);
+  return s + "…";
+}
+function wrapText(s, size, maxW, bold){
+  const lines = []; let cur = "";
+  String(s ?? "").split(" ").forEach(w => { const t = cur ? cur + " " + w : w;
+    if(cur && textW(t, size, bold) > maxW){ lines.push(cur); cur = w; } else cur = t; });
+  if(cur) lines.push(cur);
+  return lines;
+}
+function splitPlace(name){
+  const parts = String(name || "").split(",").map(x => x.trim()).filter(Boolean);
+  const city = parts[0] || "";
+  return {city, region: parts.slice(1).join(", "), country: parts.length > 1 ? parts[parts.length - 1] : city};
+}
+function buildPortsPDF(){
+  const W = 612, H = 792, M = 48, BOTTOM = M + 26, pages = [];
+  let ops, y;
+  const newPage = () => { ops = []; pages.push(ops); y = H - M; };
+  const text = (x, yy, s, size, bold) => ops.push(`BT /${bold ? "F2" : "F1"} ${size} Tf ${x.toFixed(1)} ${yy.toFixed(1)} Td (${pdfText(s)}) Tj ET`);
+  const line = (x1, y1, x2, y2, w, gray) => ops.push(`${gray ?? 0} G ${w} w ${x1.toFixed(1)} ${y1.toFixed(1)} m ${x2.toFixed(1)} ${y2.toFixed(1)} l S`);
+  newPage();
+  text(M, y - 22, "Ports of call", 24, true); y -= 32;
+  text(M, y - 11, "Every city and country on our cruises", 10.5, false); y -= 20;
+  line(M, y, W - M, y, 1.4); y -= 20;
+
+  const trips = state.trips.slice().sort((a, b) => (a.start || "9999").localeCompare(b.start || "9999"));
+  const index = {};
+  const cols = [{x:M, w:16}, {x:M+18, w:70}, {x:M+88, w:166}, {x:M+258, w:126}, {x:M+388, w:58}, {x:M+450, w:40}, {x:M+494, w:22}];
+  trips.forEach(t => {
+    ensureEndPorts(t);
+    const ports = sortPorts(t.ports);
+    if(y - 80 < BOTTOM) newPage();
+    text(M, y - 14, t.name, 15, true); y -= 21;
+    const sub = [t.ship, fmtRange(t.start, t.end), (t.from || t.to) ? (t.from || "?") + " to " + (t.to || "?") : ""].filter(Boolean).join("   ·   ");
+    wrapText(sub, 9.5, W - 2*M).forEach(l => { text(M, y - 10, l, 9.5, false); y -= 13; });
+    y -= 6;
+    if(!ports.length){ text(M, y - 10, "No ports added.", 9.5, false); y -= 28; return; }
+    const head = () => {
+      ["#", "Date", "City", "Country / region", fitText(t.p1, 8.5, 58, true), fitText(t.p2, 8.5, 40, true), "Avg"]
+        .forEach((h, i) => text(cols[i].x, y - 10, h, 8.5, true));
+      y -= 14; line(M, y, W - M, y, 1); y -= 2;
+    };
+    head();
+    ports.forEach((p, i) => {
+      if(y - 16 < BOTTOM){ newPage(); text(M, y - 10, t.name + " (continued)", 10, true); y -= 18; head(); }
+      const pl = splitPlace(p.name), a = portAvg(p);
+      const city = pl.city + (p.kind === "start" ? " (departure)" : p.kind === "end" ? " (arrival)" : "");
+      const cells = [String(i + 1), p.date ? fmtDate(p.date, {month:"short", day:"numeric", year:"numeric"}) : "–",
+        city, pl.region || "–", p.s1 ?? "–", p.s2 ?? "–", a === null ? "–" : fmt1(a)];
+      cells.forEach((c, k) => text(cols[k].x, y - 11, fitText(c, 9.5, cols[k].w, k === 2), 9.5, k === 2));
+      y -= 15; line(M, y, W - M, y, 0.5, 0.6);
+      const key = pl.country || pl.city;
+      if(key){ (index[key] = index[key] || new Set()).add(pl.city); }
+    });
+    y -= 22;
+  });
+
+  const countries = Object.keys(index).sort((a, b) => a.localeCompare(b));
+  if(countries.length){
+    if(y - 90 < BOTTOM) newPage();
+    line(M, y, W - M, y, 1.4); y -= 22;
+    text(M, y - 16, "All countries and cities", 17, true); y -= 24;
+    const nCities = countries.reduce((s, c) => s + index[c].size, 0);
+    text(M, y - 10, countries.length + " countries and regions  ·  " + nCities + " cities", 9.5, false); y -= 22;
+    countries.forEach(c => {
+      const cities = [...index[c]].sort((a, b) => a.localeCompare(b)).join(", ");
+      const lines = wrapText(cities, 10, W - 2*M - 150);
+      if(y - (lines.length * 14 + 6) < BOTTOM) newPage();
+      text(M, y - 11, fitText(c, 10.5, 140, true), 10.5, true);
+      lines.forEach((l, i) => text(M + 150, y - 11 - i*14, l, 10, false));
+      y -= lines.length * 14 + 6; line(M, y + 2, W - M, y + 2, 0.5, 0.75);
+    });
+  }
+
+  const printed = new Date().toLocaleDateString(undefined, {month:"short", day:"numeric", year:"numeric"});
+  const objs = [], add = s => { objs.push(s); return objs.length; };
+  const f1 = add("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>");
+  const f2 = add("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>");
+  const pagesId = add(""), kids = [];
+  pages.forEach((p, i) => {
+    ops = p;
+    line(M, M - 2, W - M, M - 2, 0.5, 0.6);
+    text(M, M - 16, "© 2026 Thor   ·   Cruise Scorebook   ·   printed " + printed, 8, false);
+    text(W - M - 52, M - 16, "Page " + (i + 1) + " of " + pages.length, 8, false);
+    const stream = p.join("\n");
+    const c = add(`<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`);
+    kids.push(add(`<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /Font << /F1 ${f1} 0 R /F2 ${f2} 0 R >> >> /Contents ${c} 0 R >>`));
+  });
+  objs[pagesId - 1] = `<< /Type /Pages /Kids [${kids.map(k => k + " 0 R").join(" ")}] /Count ${kids.length} >>`;
+  const cat = add(`<< /Type /Catalog /Pages ${pagesId} 0 R >>`);
+  let out = "%PDF-1.4\n"; const offs = [];
+  objs.forEach((o, i) => { offs.push(out.length); out += `${i + 1} 0 obj\n${o}\nendobj\n`; });
+  const xref = out.length;
+  out += `xref\n0 ${objs.length + 1}\n0000000000 65535 f \n` + offs.map(o => String(o).padStart(10, "0") + " 00000 n \n").join("")
+    + `trailer\n<< /Size ${objs.length + 1} /Root ${cat} 0 R >>\nstartxref\n${xref}\n%%EOF`;
+  return out;
+}
+
 /* ---------- Save As… popup (opened from the © line) ---------- */
 function backupJSON(){ return JSON.stringify(state, null, 2); }
 function triggerDownload(filename, content, mime){
@@ -1902,6 +2023,11 @@ function showSaveAs(){
       <p class="save-help">HTML saves the app itself. JSON saves your trips and games.</p>
       <div class="save-row"><button type="button" class="btn primary b3d" id="saveHtml">Save as HTML</button><button type="button" class="btn primary b3d" id="saveJson">Save as JSON</button></div>
     </section>
+    <section class="save-sec">
+      <p class="eyebrow">Printable list</p>
+      <p class="save-help">A black-and-white PDF of every city and country on your trips, ready to print.</p>
+      <div class="save-row"><button type="button" class="btn primary b3d" id="savePdf">🖨️ Export to PDF</button></div>
+    </section>
     <p class="save-status" id="saveStatus" role="status"></p>
     <p class="save-ver">Version ${APP_VERSION} · updated ${APP_UPDATED}</p>
   </div></div>`;
@@ -1933,6 +2059,10 @@ function showSaveAs(){
   document.getElementById("saveHtml").addEventListener("click", () => {
     const html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML.replace(/<div id="saveRoot">[\s\S]*?<\/div>\s*<script/, '<div id="saveRoot"></div>\n<script');
     triggerDownload("Cruise_Scorebook.html", html, "text/html");
+  });
+  document.getElementById("savePdf").addEventListener("click", () => {
+    try { triggerDownload("Cruise-Ports-" + stamp() + ".pdf", buildPortsPDF(), "application/pdf"); }
+    catch(e){ setSaveStatus("Couldn't make the PDF: " + (e && e.message || e)); }
   });
   document.getElementById("saveJson").addEventListener("click", () => triggerDownload("cruise-scorebook-" + stamp() + ".json", backupJSON(), "application/json"));
   document.getElementById("saveClose").focus();
