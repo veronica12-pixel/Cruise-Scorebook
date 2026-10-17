@@ -441,12 +441,22 @@ nav.tabs button{font-size:11.5px}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "4.9";
-const APP_UPDATED = "Oct 11, 2026, 4:10 PM ET";
+const APP_VERSION = "5.1";
+const APP_UPDATED = "Oct 17, 2026, 7:40 AM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
 const isLocked = ts => !editingUnlocked && !!ts && (Date.now() - ts) > LOCK_MS;
+/* port scores lock per player: a blank score never locks; a given score locks 48 hours after it was entered,
+   but the 48 hours never start before the cruise sails, so ports stay open until sailing day */
+function sailingStart(pt){
+  const t = (state && state.trips || []).find(x => (x.ports || []).includes(pt));
+  if(!t || !t.start) return 0;
+  const [y, m, d] = t.start.split("-").map(Number);
+  return (y && m && d) ? new Date(y, m - 1, d).getTime() : 0;
+}
+const scoreLocked = (pt, w) => (w === 1 ? pt.s1 : pt.s2) != null && !!pt["rated" + w] && isLocked(Math.max(pt["rated" + w], sailingStart(pt)));
+const portLocked = pt => scoreLocked(pt, 1) || scoreLocked(pt, 2);
 const LS_KEY = "domino-scorebook-v1";
 const QCARD = `<svg viewBox="0 0 100 140">
   <rect x="3" y="3" width="94" height="134" rx="10" fill="#FFFDF8" stroke="#3B3551" stroke-width="3"/>
@@ -549,7 +559,7 @@ function migrate(s){
     t.ports = Array.isArray(t.ports) ? t.ports : [];
     if(!t.p1 || t.p1 === "AT") t.p1 = "Alessandra";
     if(!t.p2 || t.p2 === "Player 2") t.p2 = "Kirk";
-    t.ports.forEach(p => { if(!p.ratedAt && (p.s1 != null || p.s2 != null)) p.ratedAt = Date.now(); });
+    t.ports.forEach(p => { [1,2].forEach(w => { const v = w === 1 ? p.s1 : p.s2; if(v != null && !p["rated" + w]) p["rated" + w] = Date.now(); }); });
     ensureEndPorts(t);
     if(loadItinerary(t)) s.updatedAt = Math.max(s.updatedAt||0, 1);
   });
@@ -784,7 +794,7 @@ function recoverPortScores(remote, mine){
   const patch = {};
   Object.entries(mine.trips || {}).forEach(([tid, t]) => Object.entries(t.ports || {}).forEach(([pid, p]) => {
     const r = remote.trips && remote.trips[tid] && remote.trips[tid].ports && remote.trips[tid].ports[pid];
-    if(r) ["s1","s2","ratedAt"].forEach(k => { if(p[k] != null && r[k] == null) patch["trips/" + tid + "/ports/" + pid + "/" + k] = p[k]; });
+    if(r) ["s1","s2","rated1","rated2"].forEach(k => { if(p[k] != null && r[k] == null) patch["trips/" + tid + "/ports/" + pid + "/" + k] = p[k]; });
   }));
   if(Object.keys(patch).length) outboxAdd(patch);
 }
@@ -1202,13 +1212,13 @@ function renderPorts(){
           <div class="port-avg tone-${scoreTone(pa)}"><b class="num">${fmt1(pa)}</b><span>avg</span></div>
         </div>
         <div class="port-rates">
-          ${(() => { const lk = isLocked(pt.ratedAt); return [1,2].map(w => { const v = w===1 ? pt.s1 : pt.s2, nm = w===1 ? t.p1 : t.p2; return `
+          ${(() => { return [1,2].map(w => { const v = w===1 ? pt.s1 : pt.s2, nm = w===1 ? t.p1 : t.p2, lk = scoreLocked(pt, w); return `
           <div class="rate p${w}" role="group" aria-label="${esc(nm)}'s score for ${esc(pt.name)}">
             <div class="rate-h"><span>${esc(nm)}</span><b class="num">${v ?? "Tap a score"}</b></div>
             <div class="rate-nums">${[1,2,3,4,5,6,7,8,9,10].map(n => `<button type="button" class="rn" data-rate="${pt.id}" data-who="${w}" data-n="${n}" aria-pressed="${v===n}" aria-label="${n}" ${lk?"disabled":""}>${n}</button>`).join("")}</div>
           </div>`; }).join(""); })()}
         </div>
-        ${isLocked(pt.ratedAt) ? `<span class="port-note">🔒 Scores locked after 48 hours. Unlock in Save As (tap © 2026 Thor).</span>` : pt.kind ? `<span class="port-note">Change it on the Trips tab</span>` : `<button class="xbtn" data-delport="${pt.id}">Remove port</button>`}
+        ${portLocked(pt) ? `<span class="port-note">🔒 Scores lock 48 hours after they are given (never before sailing day). Unlock in Save As (tap © 2026 Thor).</span>` : pt.kind ? `<span class="port-note">Change it on the Trips tab</span>` : `<button class="xbtn" data-delport="${pt.id}">Remove port</button>`}
       </div>`; }).join("") : `<div class="empty">No ports yet. Add your first stop below.</div>`}
     ${ports.some(p => p.s1 != null || p.s2 != null) ? `<button type="button" class="btn danger b3d resetports" data-act="resetports">Reset all port scores</button>` : ""}
     <div class="addport">
@@ -1233,10 +1243,10 @@ document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.id 
 document.addEventListener("click", e => {
   const b = e.target.closest(".rn[data-rate]"); if(!b) return;
   const pt = trip().ports.find(p => p.id === b.dataset.rate); if(!pt) return;
-  if(isLocked(pt.ratedAt)) return;
-  const k = b.dataset.who === "1" ? "s1" : "s2", n = +b.dataset.n;
+  const w = b.dataset.who === "1" ? 1 : 2, k = "s" + w, tk = "rated" + w, n = +b.dataset.n;
+  if(scoreLocked(pt, w)) return;
   pt[k] = pt[k] === n ? null : n;          // tap the same number again to clear it
-  if(!pt.ratedAt && (pt.s1 != null || pt.s2 != null)) pt.ratedAt = Date.now();
+  if(pt[k] == null) delete pt[tk]; else if(!pt[tk]) pt[tk] = Date.now();
   const y = window.scrollY; commit(); render(); window.scrollTo(0, y);
 });
 
@@ -1980,7 +1990,7 @@ document.addEventListener("click", e => {
   }
 
   const dp = e.target.closest("[data-delport]");
-  if(dp){ const t = trip(), pt = t.ports.find(x => x.id === dp.dataset.delport); if(!pt || isLocked(pt.ratedAt)) return;
+  if(dp){ const t = trip(), pt = t.ports.find(x => x.id === dp.dataset.delport); if(!pt || portLocked(pt)) return;
     sheet(`Remove ${pt.name}?`, "Its scores come off the cruise average.", "Remove port", () => { t.ports = t.ports.filter(x => x.id !== pt.id); commit(); render(); }, true); return; }
 
   const rp = e.target.closest("[data-rateports]");
@@ -2010,11 +2020,11 @@ document.addEventListener("click", e => {
   else if(a==="addport"){ addPort(); }
   else if(a==="resetports"){
     const scored = t.ports.filter(p => p.s1 != null || p.s2 != null);
-    if(scored.some(p => isLocked(p.ratedAt))){
+    if(scored.some(portLocked)){
       sheet("Some scores are locked", "Port scores lock 48 hours after they're given. Unlock editing in Save As (tap © 2026 Thor), then reset.", "Open Save As", () => showSaveAs());
     } else {
       sheet("Reset all port scores?", `Clears ${esc(t.p1)}'s and ${esc(t.p2)}'s scores on all ${scored.length} scored port${scored.length===1?"":"s"} of this trip, on every device. The ports stay in the list.`, "Reset scores", () => {
-        t.ports.forEach(p => { p.s1 = null; p.s2 = null; delete p.ratedAt; });
+        t.ports.forEach(p => { p.s1 = null; p.s2 = null; delete p.ratedAt; delete p.rated1; delete p.rated2; });
         commit(); render(); window.scrollTo(0,0);
       }, true);
     }
@@ -2026,7 +2036,7 @@ document.addEventListener("click", e => {
       <button class="preset b3d" data-act="blanktrip"><b>Blank trip</b><br>Fill in the details</button></div>`;
   }
   else if(a==="blanktrip"){ const nt = newTrip(); nt.p1=t.p1; nt.p2=t.p2; state.trips.push(nt); state.activeTripId = nt.id; commit(); render(); setTimeout(()=>{ const f=$("#f-name"); if(f){ f.focus(); f.select(); } }, 0); }
-  else if(a==="deltrip" && (t.games.some(g => isLocked(g.createdAt)) || t.ports.some(p => isLocked(p.ratedAt)))){
+  else if(a==="deltrip" && (t.games.some(g => isLocked(g.createdAt)) || t.ports.some(portLocked))){
     sheet("This trip has locked entries", "Games and port scores lock 48 hours after they're entered. Unlock editing in Save As (tap © 2026 Thor), then delete the trip.", "Open Save As", () => showSaveAs());
   }
   else if(a==="deltrip"){ sheet(`Delete “${t.name}”?`, `Its ${t.games.length} recorded game${t.games.length===1?"":"s"} will be removed too.`, "Delete trip", () => { state.trips = state.trips.filter(x => x.id!==t.id); state.activeTripId = state.trips[0].id; commit(); render(); }, true); }
