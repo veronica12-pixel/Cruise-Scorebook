@@ -262,6 +262,8 @@ nav.tabs button[aria-current="page"]{color:var(--on-pastel);background:linear-gr
 .scatter.cards.front svg{width:42px;height:59px}
 .scatter.cards svg.star{width:82px;height:115px;filter:drop-shadow(0 5px 0 rgba(60,40,90,.3)) drop-shadow(0 0 14px rgba(255,211,110,.9))}
 @keyframes toss{0%{opacity:0;translate:0 40px;scale:.5}100%{opacity:1}}
+.tapsound{margin:4px 0 0;font-weight:700;font-size:14px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.7);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.05)}}
 .trophy-card .btn{margin-top:10px;width:100%;--face:var(--surface);--edge:var(--pe);color:var(--ink)}
 @keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
 @media (prefers-reduced-motion:reduce){.trophy-card,.scatter svg{animation:none}}
@@ -441,8 +443,8 @@ nav.tabs button{font-size:11.5px}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "5.5";
-const APP_UPDATED = "Oct 17, 2026, 5:32 PM ET";
+const APP_VERSION = "5.6";
+const APP_UPDATED = "Oct 22, 2026, 8:10 AM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -778,7 +780,7 @@ function showState(next){
 }
 document.addEventListener("focusout", () => { if(pendingRemoteRender) setTimeout(() => { if(!typingNow()) redraw(); }, 50); });
 /* coming back to the app (computer woke up, tab brought forward): reconnect and pull the latest games */
-let hiddenAt = 0;
+let hiddenAt = 0, deferredWin = null;
 function refreshFromCloud(){
   if(!cloud.ref || !window.firebase) return;
   try { const db = firebase.database(); db.goOffline(); db.goOnline(); } catch(e){}
@@ -788,6 +790,9 @@ document.addEventListener("visibilitychange", () => {
   if(Date.now() - hiddenAt > 30000 && "serviceWorker" in navigator) navigator.serviceWorker.getRegistration().then(reg => reg && reg.update()).catch(()=>{});
   if(Date.now() - hiddenAt > 30000) refreshFromCloud();
   if(pendingRemoteRender && !typingNow()) redraw();
+  if(deferredWin){ const w = deferredWin; deferredWin = null;
+    const t = state.trips.find(x => x.id === w.trip), g = t && t.games.find(x => x.id === w.game);
+    if(t && g){ state.activeTripId = t.id; render(); celebrate(t, g, w.more); } }
 });
 window.addEventListener("focus", () => { if(pendingRemoteRender && !typingNow()) redraw(); });
 
@@ -860,7 +865,11 @@ function onCloudValue(raw){
       // show the winner popup and play the music here too, once per game
       if(next){ const t = trip(), fresh = t.games.filter(g => !seen.has(g.id) && !celebrated.has(g.id));
         markCelebrated(allGameIds());
-        if(fresh.length) celebrate(t, fresh[fresh.length-1], fresh.length - 1); }
+        if(fresh.length){
+          // if the phone isn't showing the app right now, wait until it's back on screen
+          if(document.hidden) deferredWin = {trip:t.id, game:fresh[fresh.length-1].id, more:fresh.length - 1};
+          else celebrate(t, fresh[fresh.length-1], fresh.length - 1);
+        } }
     }
   } else rememberSynced(toTree(state));
   flush();
@@ -1672,28 +1681,43 @@ let soundOn = true; try { soundOn = localStorage.getItem(SOUND_KEY) !== "off"; }
 let audioCtx = null;
 // iPhones mute web sounds when the side switch is on silent; ask for "playback" so the jingle still plays
 try { if(navigator.audioSession) navigator.audioSession.type = "playback"; } catch(e){}
-// wake the sound player on the first tap so a win from either player (or the other phone) can play it
-// Every tap keeps it awake (phones put it to sleep after the screen locks or the app is in the background),
-// and if a win arrived while the sound was asleep, the music plays on the next tap while the popup is open.
-let pendingSound = null, unlocked = false;
-["pointerdown","touchend","keydown"].forEach(ev => document.addEventListener(ev, function wake(){
-  const ac = audio(); if(!ac) return;
-  if(!unlocked){ unlocked = true; try{ const b = ac.createBuffer(1,1,22050), s = ac.createBufferSource(); s.buffer = b; s.connect(ac.destination); s.start(0); }catch(e){} }
-  if(pendingSound){ const fn = pendingSound; Promise.resolve(ac.state === "running" || ac.resume()).then(() => {
-    if(pendingSound === fn && ac.state === "running" && document.querySelector("[data-party]")){ pendingSound = null; fn(ac); } }).catch(()=>{}); }
-}, {capture:true}));
+// The sound player sleeps when the phone goes to the background, locks, or switches airplane mode,
+// and a sleeping player can't be woken without a tap. So:
+//  - when the app comes back to the screen, the old player is thrown away and a fresh one is made on the next tap;
+//  - if a win arrives while the player is asleep, the popup says "Tap to hear the winning music"
+//    and the music plays on the very next tap anywhere (including the Play again button).
+let pendingSound = null, pendingAt = 0, audioStale = false;
+document.addEventListener("visibilitychange", () => { if(document.hidden) audioStale = true; });
+window.addEventListener("pageshow", e => { if(e.persisted) audioStale = true; });
+window.addEventListener("online", () => { audioStale = true; });
+let lastWake = 0;
+function wakeAudio(){
+  lastWake = Date.now();
+  let ac = audio(); if(!ac) return;
+  if(audioStale || ac.state === "interrupted" || ac.state === "closed"){
+    audioStale = false;
+    try { ac.close(); } catch(e){}
+    audioCtx = null; ac = audio(); if(!ac) return;
+  }
+  try { const b = ac.createBuffer(1,1,22050), s = ac.createBufferSource(); s.buffer = b; s.connect(ac.destination); s.start(0); } catch(e){}
+  if(pendingSound && Date.now() - pendingAt < 10*60*1000){ const fn = pendingSound; pendingSound = null; fn(ac); }
+  else pendingSound = null;
+  const hint = document.getElementById("tapSound"); if(hint) hint.hidden = true;
+}
+["touchend","pointerdown","click","keydown"].forEach(ev => document.addEventListener(ev, wakeAudio, {capture:true}));
 function audio(){
   try{
+    if(audioCtx && audioCtx.state === "closed") audioCtx = null;
     audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-    if(audioCtx.state !== "running") audioCtx.resume();   // "suspended" or iPhone's "interrupted"
+    if(audioCtx.state !== "running") Promise.resolve(audioCtx.resume()).catch(()=>{});   // "suspended" or iPhone's "interrupted"
     return audioCtx;
   }catch(e){ return null; }
 }
 function withAudio(fn){
   if(!soundOn) return; const ac = audio(); if(!ac) return;
-  if(ac.state === "running"){ pendingSound = null; fn(ac); return; }
-  pendingSound = fn;
-  Promise.resolve(ac.resume()).then(() => { if(pendingSound === fn && ac.state === "running"){ pendingSound = null; fn(ac); } }).catch(()=>{});
+  // play now if the player is awake, or if this comes from the tap that just woke it
+  if(!document.hidden && ((ac.state === "running" && !audioStale) || Date.now() - lastWake < 1500)){ pendingSound = null; fn(ac); return; }
+  pendingSound = fn; pendingAt = Date.now();     // waits for the next tap
 }
 function toneAt(ac, out, f, t, d, type, v, glide){
   const o = ac.createOscillator(), g = ac.createGain();
@@ -1841,6 +1865,7 @@ function celebrate(t, g, more){
         <div class="series-h">This trip in ${GAMES[g.type]}</div>
         <div class="series-row"><div class="a ${tl.w1 > tl.w2 ? "lead" : ""}"><span>${esc(t.p1)}</span><b>${tl.w1}</b></div><div class="k ${tl.w2 > tl.w1 ? "lead" : ""}"><span>${esc(t.p2)}</span><b>${tl.w2}</b></div></div>
       </div>
+      <p class="tapsound" id="tapSound" hidden>🔊 Tap anywhere to hear the winning music</p>
       <button class="btn b3d" data-party-close>Play again</button>
     </div>`;
   const stage = scala
@@ -1848,7 +1873,8 @@ function celebrate(t, g, more){
     : `<div class="stage">${scatter(BEHIND,"back")}${card}${scatter(FRONT,"front")}</div>`;
   root.innerHTML = `<div class="party" data-party>${stage}<canvas></canvas></div>`;
   if(g.winner === 1) playJackpot(); else if(g.winner === 2) playCalypso(); else playTieChime();
-  const close = () => { root.innerHTML = ""; pendingSound = null; };
+  if(pendingSound) root.querySelector("#tapSound").hidden = false;
+  const close = () => { root.innerHTML = ""; };
   root.querySelector("[data-party-close]").addEventListener("click", close);
   root.querySelector("[data-party]").addEventListener("click", e => { if(e.target.matches("[data-party]")) close(); });
   root.querySelector("[data-party-close]").focus();
