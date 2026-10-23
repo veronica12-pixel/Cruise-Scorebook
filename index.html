@@ -387,10 +387,26 @@ nav.tabs button{font-size:11.5px}
 
 
 /* saved trip records */
-.triprec{margin-bottom:14px}
-.triprec .tripcard{margin-bottom:0}
+/* one card per trip: flags + trip button on top, Trip summary and Notes inside the same card */
+.triprec{margin-bottom:20px;border-radius:16px;background:var(--surface);box-shadow:0 0 0 2px var(--line),0 5px 0 var(--line),0 9px 14px var(--drop);padding-bottom:10px}
+.triprec.active{background:var(--accent-soft);box-shadow:0 0 0 2px var(--accent),0 5px 0 var(--accent),0 9px 14px var(--drop)}
+.triprec .tripcard{margin-bottom:0;border-radius:16px 16px 0 0;background:transparent;box-shadow:none;--face:transparent}
+.triprec .tripcard:active:not(:disabled){transform:none;box-shadow:none;background:rgba(0,0,0,.04)}
+.triprec .tripcard::before{top:0;bottom:0}
+.triprec{padding-bottom:0;overflow:hidden}
+.tr-chev{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-ink);font-size:12px;transition:transform .2s}
+.triprec.active .tr-chev{background:var(--surface)}
+.tripcard[aria-expanded="true"] .tr-chev{transform:rotate(180deg)}
+.tr-more{padding:4px 12px 14px;display:flex;flex-direction:column;gap:12px;border-top:2px dashed var(--line)}
+.tr-more[hidden]{display:none}
+.tr-sec{background:var(--surface);border:2px solid var(--line);border-radius:14px;overflow:hidden}
+.triprec.active .tr-sec{border-color:rgba(255,255,255,.8)}
+.tr-h{padding:10px 12px 0;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink)}
+.tr-cur{margin-top:8px;font-size:13px;font-weight:700;color:var(--accent-ink);text-align:center}
+.tr-use{margin-top:8px;width:100%;--face:var(--surface);--edge:var(--accent);color:var(--accent-ink)}
 .tripcard.has-banner{flex-wrap:wrap;padding-top:0;row-gap:10px}
 .tripcard.has-banner .t{flex:1 1 0}
+.tripcard .t .tr-line{display:block;margin-top:2px}
 .tr-banner{flex:0 0 calc(100% + 28px);margin:0 -14px;position:relative;aspect-ratio:4/1;max-height:120px;overflow:hidden;border-top-left-radius:inherit;border-top-right-radius:inherit;background:var(--accent-soft)}
 .tr-banner .bf{position:absolute;top:0;bottom:0;height:100%;display:block}
 .tr-banner .fa{left:0;width:61%}
@@ -455,6 +471,30 @@ nav.tabs button{font-size:11.5px}
 
 @media (max-width:360px){.tilebtn{font-size:19px;min-height:50px}.player{padding:10px 10px 14px}}
 @media (prefers-reduced-motion:reduce){.flash{animation:none}.b3d{transition:none}}
+
+/* ---------- every button 3D: raised face, darker edge, soft shadow, presses down when tapped ---------- */
+.xbtn,.xclose,.copyright,nav.tabs button:not([aria-current="page"]),.pts summary{
+  --face:var(--surface);--edge:var(--line);
+  background:linear-gradient(180deg,var(--hi) 0%,rgba(255,255,255,0) 55%),var(--face);
+  box-shadow:inset 0 -2px 0 rgba(0,0,0,.05),0 4px 0 var(--edge),0 7px 10px var(--drop);
+  transform:translateY(0);transition:transform .07s ease,box-shadow .07s ease}
+.xbtn:active:not(:disabled),.xclose:active,.copyright:active,nav.tabs button:active,.pts summary:active{
+  transform:translateY(3px);box-shadow:inset 0 -1px 0 rgba(0,0,0,.05),0 1px 0 var(--edge),0 2px 4px var(--drop)}
+.xbtn{text-decoration:none;color:var(--ink);font-weight:700;font-size:13px;padding:7px 14px;min-height:36px;border-radius:12px;margin:2px 0 6px}
+.xbtn[data-del],.xbtn[data-delport],.xbtn[data-delhotel],.xbtn[data-delnote],.xbtn[data-pfdel],.xbtn[data-pfdelh]{--face:#FDECEC;--edge:#EDB8B8;color:#A3262A}
+.note-f .xbtn{margin-left:8px}
+.xclose{--face:var(--accent-soft);--edge:var(--accent-edge)}
+.copyright{border-radius:999px;color:var(--muted);margin-bottom:6px}
+.copyright:hover{--face:var(--accent-soft);color:var(--ink)}
+.copyright.is-unlocked{--face:var(--dom);--edge:var(--dom-edge);color:var(--on-pastel)}
+nav.tabs button:not([aria-current="page"]){color:var(--muted)}
+nav.tabs button[aria-current="page"]{box-shadow:inset 0 -2px 0 rgba(0,0,0,.06),0 4px 0 var(--accent-edge),0 7px 10px var(--drop)}
+.pts summary{--face:var(--ps,var(--surface));--edge:var(--pc,var(--line));border-radius:12px;margin:4px}
+.rn{box-shadow:inset 0 -1px 0 rgba(0,0,0,.05),0 3px 0 var(--pc),0 5px 8px var(--drop);background:linear-gradient(180deg,var(--hi) 0%,rgba(255,255,255,0) 60%),var(--surface)}
+.rn[aria-pressed="true"]{background:linear-gradient(180deg,var(--hi) 0%,rgba(255,255,255,0) 60%),var(--pe);box-shadow:0 3px 0 var(--pd),0 5px 8px var(--drop)}
+.rn:active:not(:disabled){transform:translateY(3px);box-shadow:0 0 0 var(--pc)}
+.mapcard.photo{box-shadow:0 5px 0 var(--line),0 9px 14px var(--drop)}
+.mapcard.photo:active{transform:translateY(3px);box-shadow:0 2px 0 var(--line),0 3px 6px var(--drop)}
 </style>
 </head>
 <body>
@@ -482,8 +522,8 @@ nav.tabs button{font-size:11.5px}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "6.1";
-const APP_UPDATED = "Oct 23, 2026, 2:30 PM ET";
+const APP_VERSION = "6.5";
+const APP_UPDATED = "Oct 23, 2026, 5:50 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -577,6 +617,13 @@ const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(3
 const today = () => { const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); };
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const fmtDate = (iso, opts) => { if(!iso) return ""; const [y,m,d]=iso.split("-").map(Number); if(!y||!m||!d) return iso; return new Date(y,m-1,d).toLocaleDateString(undefined, opts || {weekday:"short", month:"short", day:"numeric"}); };
+// trip cards: "November 9 – December 3, 2026" (years shown on both sides only when they differ)
+const fmtRangeLong = (a,b) => { const L = {month:"long", day:"numeric"}, Y = {month:"long", day:"numeric", year:"numeric"};
+  if(!a && !b) return "Dates not set"; if(a && !b) return "From " + fmtDate(a, Y); if(!a) return "Until " + fmtDate(b, Y);
+  return fmtDate(a, a.slice(0,4) === b.slice(0,4) ? L : Y) + " – " + fmtDate(b, Y); };
+// "South Pacific crossing" → "South Pacific Crossing" (small joining words stay lowercase unless first)
+const SMALL = new Set(["a","an","and","at","by","for","in","of","on","or","the","to","via"]);
+const titleCase = str => String(str || "").replace(/[A-Za-zÀ-ÿ][^\s\-/]*/g, (w, i) => (i > 0 && SMALL.has(w.toLowerCase())) ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1));
 const fmtRange = (a,b) => { if(!a && !b) return "Dates not set"; if(a && !b) return "From " + fmtDate(a,{month:"short",day:"numeric",year:"numeric"}); if(!a) return "Until " + fmtDate(b,{month:"short",day:"numeric",year:"numeric"}); return fmtDate(a,{month:"short",day:"numeric"}) + " – " + fmtDate(b,{month:"short",day:"numeric",year:"numeric"}); };
 
 const blankScala = () => ({s1:0, s2:0, log:[]});
@@ -1555,6 +1602,13 @@ function placeCC(name){
   return find(txt);
 }
 const flagOf = cc => cc ? String.fromCodePoint(...[...cc].map(c => 127397 + c.charCodeAt(0))) : "";
+// "Los Angeles, California" → "Los Angeles, USA"; other countries stay as typed
+function placeShort(name){
+  name = (name || "").trim(); if(!name || placeCC(name) !== "US") return name;
+  const i = name.lastIndexOf(","), city = i > 0 ? name.slice(0, i).trim() : name;
+  return /^(usa|united states|us|u\.s\.a?\.?)$/i.test(city) ? "USA" : city + ", USA";
+}
+const routeText = x => [placeShort(x.from), placeShort(x.to)].filter(Boolean).join(" to ");
 const FLAG_VB = {"US":"0 0 76 40","CA":"0 0 1000 500","MX":"0 0 28 16","PR":"0 0 30 20","BS":"0 0 60 30","JM":"0 0 60 30","DO":"0 0 30 20","HT":"0 0 30 18","PA":"0 0 30 20","CR":"0 0 50 30","HN":"0 0 36 18","GT":"0 0 32 20","NI":"0 0 30 18","SV":"0 0 30 17","CO":"0 0 30 20","EC":"0 0 30 20","PE":"0 0 30 20","CL":"0 0 30 20","AR":"0 0 32 20","UY":"0 0 36 24","BR":"0 0 20 14","TT":"0 0 50 30","LC":"0 0 30 15","BB":"0 0 30 20","KY":"0 0 60 30","VG":"0 0 60 30","TC":"0 0 60 30","FK":"0 0 60 30","MS":"0 0 60 30","AI":"0 0 60 30","BM":"0 0 60 30","GB":"0 0 60 30","IE":"0 0 30 15","IT":"0 0 3 2","FR":"0 0 3 2","BE":"0 0 15 13","DE":"0 0 5 3","NL":"0 0 9 6","RU":"0 0 9 6","PL":"0 0 8 5","EE":"0 0 33 21","LV":"0 0 20 10","LT":"0 0 5 3","MC":"0 0 5 4","ES":"0 0 30 20","PT":"0 0 30 20","GR":"0 0 27 18","TR":"0 0 30 20","HR":"0 0 30 15","MT":"0 0 30 20","DK":"0 0 37 28","NO":"0 0 22 16","SE":"0 0 16 10","FI":"0 0 18 11","IS":"0 0 25 18","FO":"0 0 22 16","AT":"0 0 9 6","CH":"0 0 20 20","AE":"0 0 60 30","EG":"0 0 30 20","IL":"0 0 22 16","MA":"0 0 30 20","TN":"0 0 30 20","QA":"0 0 28 11","BH":"0 0 30 18","OM":"0 0 30 15","SA":"0 0 30 20","JO":"0 0 40 20","ZA":"0 0 36 24","MU":"0 0 30 20","SN":"0 0 30 20","KE":"0 0 30 20","MV":"0 0 30 20","SC":"0 0 30 15","NA":"0 0 30 20","CV":"0 0 30 18","JP":"0 0 30 20","CN":"0 0 30 20","VN":"0 0 30 20","ID":"0 0 30 20","IN":"0 0 30 20","TH":"0 0 30 20","SG":"0 0 30 20","PH":"0 0 60 30","KR":"0 0 30 20","MY":"0 0 28 14","HK":"0 0 30 20","TW":"0 0 30 20","LK":"0 0 40 20","KH":"0 0 30 20","NZ":"0 0 60 30","AU":"0 0 60 30","FJ":"0 0 60 30","CK":"0 0 60 30","PF":"0 0 30 20","NC":"0 0 3 2","WS":"0 0 30 15","TO":"0 0 30 15","VU":"0 0 30 18","PG":"0 0 40 30","AS":"0 0 30 15"};
 // one half of the banner: a drawn flag, or the phone's emoji flag on a soft background for countries not drawn
 function flagHalf(cc, side){
@@ -1573,13 +1627,15 @@ function tripRecord(x, cur){
   const k = tally(x,"all"), kd = tally(x,"domino"), ks = tally(x,"scala");
   ensureEndPorts(x); const ports = sortPorts(x.ports);
   const cruise = avg(ports.map(portAvg)), a1 = avg(ports.map(p=>p.s1)), a2 = avg(ports.map(p=>p.s2));
-  return `<div class="triprec">
-    <button class="tripcard b3d ${x.id===cur.id?"active":""} ${placeCC(x.from)||placeCC(x.to)?"has-banner":""}" data-trip="${x.id}" aria-pressed="${x.id===cur.id}">
-      ${tripFlags(x)}<span class="t"><b>${esc(x.name)}</b><span>${esc(fmtRange(x.start,x.end))}${x.from?` · ${esc(x.from)}`:""}</span></span>
-      <span class="tr-right">${cruise!==null?`<span class="tr-score tone-${scoreTone(cruise)}" title="Cruise score">${fmt1(cruise)}</span>`:""}<span class="w">${k.w1}–${k.w2}</span></span>
+  return `<div class="triprec ${x.id===cur.id?"active":""}">
+    <button class="tripcard b3d ${x.id===cur.id?"active":""} ${placeCC(x.from)||placeCC(x.to)?"has-banner":""}" data-tripopen="${x.id}" aria-expanded="${!!openTripRecords[x.id]}" aria-controls="more-${x.id}">
+      ${tripFlags(x)}<span class="t"><b>${esc(titleCase(x.name))}</b><span class="tr-line">${esc(fmtRangeLong(x.start,x.end))}</span>${x.from || x.to ? `<span class="tr-line">${esc(routeText(x))}</span>` : ""}</span>
+      <span class="tr-right">${cruise!==null?`<span class="tr-score tone-${scoreTone(cruise)}" title="Cruise score">${fmt1(cruise)}</span>`:""}<span class="w">${k.w1}–${k.w2}</span><span class="chev tr-chev" aria-hidden="true">▾</span></span>
     </button>
-    <details class="tripsum" data-tripsum="${x.id}" ${openTripRecords[x.id]?"open":""}>
-      <summary>Trip summary<span class="chev" aria-hidden="true">▾</span></summary>
+    <div class="tr-more" id="more-${x.id}" ${openTripRecords[x.id]?"":"hidden"}>
+      ${x.id===cur.id ? `<div class="tr-cur">✓ Current trip · new scores go here</div>` : `<button type="button" class="btn b3d tr-use" data-trip="${x.id}">Make this the current trip</button>`}
+      <div class="tr-sec">
+      <div class="tr-h">Trip summary</div>
       <div class="ts-body">
         <div class="ts-route">${esc(x.from||"Departure port?")} → ${esc(x.to||"Arrival port?")}${x.ship?` · ${esc(x.ship)}`:""}</div>
         <div class="ts-games">
@@ -1596,8 +1652,9 @@ function tripRecord(x, cur){
           : `<p class="ts-empty">No ports added for this trip.</p>`}
         ${hotelSummary(x)}
       </div>
-    </details>
-    ${notesPanel(x)}
+      </div>
+      ${notesPanel(x)}
+    </div>
   </div>`;
 }
 document.addEventListener("toggle", e => { const d = e.target; if(d.matches && d.matches("[data-tripsum]")) openTripRecords[d.dataset.tripsum] = d.open; }, true);
@@ -1642,8 +1699,8 @@ const noteList = x => Object.values(x.notes || {}).filter(n => n && n.text).sort
 const noteWhen = ts => new Date(ts).toLocaleDateString(undefined, {month:"short", day:"numeric", year:"numeric"}) + " · " + new Date(ts).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
 function notesPanel(x){
   const list = noteList(x);
-  return `<details class="tripsum notes" data-notes="${x.id}" ${openNotes[x.id] ? "open" : ""}>
-    <summary>Notes${list.length ? ` · ${list.length}` : ""}<span class="chev" aria-hidden="true">▾</span></summary>
+  return `<div class="tr-sec notes" data-notes="${x.id}">
+    <div class="tr-h">Notes${list.length ? ` · ${list.length}` : ""}</div>
     <div class="ts-body">
       <label class="sr" for="note-${x.id}">New note for ${esc(x.name)}</label>
       <textarea class="note-in" id="note-${x.id}" data-notedraft="${x.id}" rows="3" placeholder="Write a note for this trip…">${esc(noteDraft[x.id] || "")}</textarea>
@@ -1660,7 +1717,7 @@ function notesPanel(x){
             : `<span><button type="button" class="xbtn" data-editnote="${x.id}|${n.id}">Edit</button><button type="button" class="xbtn" data-delnote="${x.id}|${n.id}">Delete</button></span>`}</div>
         </div>`).join("") : `<p class="ts-empty">No notes yet.</p>`}
     </div>
-  </details>`;
+  </div>`;
 }
 document.addEventListener("toggle", e => { const d = e.target; if(d.matches && d.matches("[data-notes]")) openNotes[d.dataset.notes] = d.open; }, true);
 document.addEventListener("input", e => {
@@ -2472,6 +2529,9 @@ document.addEventListener("click", e => {
   const rp = e.target.closest("[data-rateports]");
   if(rp){ state.activeTripId = rp.dataset.rateports; tab = "ports"; commit(); render(); window.scrollTo(0,0); return; }
 
+  const op = e.target.closest("[data-tripopen]");
+  if(op){ const id = op.dataset.tripopen, open = !openTripRecords[id]; openTripRecords[id] = open;
+    op.setAttribute("aria-expanded", open); const m = document.getElementById("more-" + id); if(m) m.hidden = !open; return; }
   const tc = e.target.closest("[data-trip]");
   if(tc){ state.activeTripId = tc.dataset.trip; commit(); render(); return; }
 
