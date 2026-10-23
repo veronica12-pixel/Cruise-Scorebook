@@ -207,10 +207,14 @@ body[data-game="scala"]{background:var(--sca-soft)}
 .note-f{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
 .note-f .lockmark{padding:0 4px}
 .note-save{min-height:40px;padding:0 16px;margin-left:6px}
-.updatebar{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top) + 10px);z-index:30;display:flex;flex-direction:column;align-items:flex-start;gap:2px;
-  padding:10px 14px;border-radius:14px;text-align:left;--face:var(--peach,#FFD9B8);--edge:var(--peach-edge,#E0A97E);color:var(--on-pastel);font:inherit}
+.updatebar{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top) + 10px);z-index:30;display:flex;align-items:stretch;gap:4px;
+  padding:0;border-radius:14px;text-align:left;--face:var(--peach,#FFD9B8);--edge:var(--peach-edge,#E0A97E);color:var(--on-pastel);font:inherit}
 .updatebar b{font-family:var(--display);font-size:16px}
 .updatebar span{font-size:13px}
+.updatebar::before{pointer-events:none}
+.updatebar .ub-main,.updatebar .ub-x{position:relative;z-index:1}
+.updatebar .ub-main{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 4px 10px 14px;background:none;border:0;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.updatebar .ub-x{flex:none;width:44px;min-height:44px;background:none;border:0;color:inherit;font-size:18px;font-weight:700;cursor:pointer;border-radius:0 14px 14px 0}
 footer{margin-top:28px;text-align:center;font-size:12px;color:var(--muted)}
 
 /* bottom nav */
@@ -352,6 +356,31 @@ nav.tabs button[aria-current="page"]{color:var(--on-pastel);background:linear-gr
 .port .xbtn{align-self:flex-end}
 .port-kind{display:inline-block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent-ink);background:var(--accent-soft);padding:1px 7px;border-radius:999px;margin-bottom:2px}
 .port-note{align-self:flex-end;font-size:12px;color:var(--muted)}
+.hotel{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:12px;margin-bottom:12px;display:flex;flex-direction:column;gap:10px}
+.hotel .xbtn{align-self:flex-end}
+.hotel-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.hotel-top .hn{font-size:13px;color:var(--muted);font-weight:700}
+.hotel select,.pf-port select{min-width:0}
+.form select{width:100%}
+.trip-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.pastform{margin:8px 0 16px;padding:14px;border-radius:18px;background:var(--accent-soft);display:flex;flex-direction:column;gap:10px}
+.pastform h3{font-size:17px}
+.pf-h{font-weight:800;font-size:14px;margin-top:4px}
+.pf-port{background:var(--surface);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:8px;border:2px solid var(--line)}
+.pf-name{display:flex;flex-direction:column;gap:2px}
+.pf-row{display:grid;grid-template-columns:1fr;gap:8px}
+.pf-row input{width:100%;min-width:0}
+.pf-scores{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+@media (max-width:374px){.pf-scores{grid-template-columns:minmax(0,1fr)}}
+.pf-sc{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;padding:4px 6px;border-radius:12px}
+.pf-sc span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pf-sc select{width:62px;flex:none;padding:6px 6px}
+.pf-sc.p1,.pf-sc.p2{background:var(--ps);color:var(--pd)}
+.pf-add{align-self:flex-start}
+.pf-msg{color:#b3261e;font-weight:700;font-size:14px;margin:0;min-height:1em}
+.pf-msg:empty{display:none}
+.pf-actions{display:grid;grid-template-columns:1fr 2fr;gap:8px}
+.pf-port .xbtn{align-self:flex-end}
 .addport{margin-top:16px;padding:14px;border-radius:18px;background:var(--accent-soft);display:flex;flex-direction:column;gap:6px}
 .addport h3{font-size:17px}
 nav.tabs button{font-size:11.5px}
@@ -360,6 +389,15 @@ nav.tabs button{font-size:11.5px}
 /* saved trip records */
 .triprec{margin-bottom:14px}
 .triprec .tripcard{margin-bottom:0}
+.tripcard.has-banner{flex-wrap:wrap;padding-top:0;row-gap:10px}
+.tripcard.has-banner .t{flex:1 1 0}
+.tr-banner{flex:0 0 calc(100% + 28px);margin:0 -14px;position:relative;aspect-ratio:4/1;max-height:120px;overflow:hidden;border-top-left-radius:inherit;border-top-right-radius:inherit;background:var(--accent-soft)}
+.tr-banner .bf{position:absolute;top:0;bottom:0;height:100%;display:block}
+.tr-banner .fa{left:0;width:61%}
+.tr-banner .fb{right:0;width:58%;-webkit-mask-image:linear-gradient(90deg,transparent,#000 30%);mask-image:linear-gradient(90deg,transparent,#000 30%)}
+.tr-banner .emo{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent-soft),var(--surface))}
+.tr-banner .emo span{font-size:44px;line-height:1;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.tr-banner .fa.emo{padding-right:10%}.tr-banner .fb.emo{padding-left:12%}
 .tr-right{display:flex;align-items:center;gap:8px;flex:none}
 .tr-score{min-width:38px;text-align:center;padding:3px 8px;border-radius:10px;background:var(--tc);color:var(--on-pastel);font-family:var(--display);font-weight:800;font-size:15px}
 .tripsum{margin:10px 6px 0;border-radius:14px;background:var(--surface);border:2px solid var(--line);overflow:hidden}
@@ -420,6 +458,7 @@ nav.tabs button{font-size:11.5px}
 </style>
 </head>
 <body>
+<svg xmlns="http://www.w3.org/2000/svg" id="flagSprite" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false"><defs><clipPath id="fj-s"><path d="M0,0v30h60V0z"/></clipPath><clipPath id="fj-t"><path d="M30,15h30v15zv15h-30zh-30v-15zv-15h30z"/></clipPath><symbol id="fj" viewBox="0 0 60 30"><g clip-path="url(#fj-s)"><path d="M0,0v30h60V0z" fill="#012169"/><path d="M0,0L60,30M60,0L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0L60,30M60,0L0,30" clip-path="url(#fj-t)" stroke="#C8102E" stroke-width="4"/><path d="M30,0v30M0,15h60" stroke="#fff" stroke-width="10"/><path d="M30,0v30M0,15h60" stroke="#C8102E" stroke-width="6"/></g></symbol><symbol id="fl-US" viewBox="0 0 76 40"><rect width="76" height="40" fill="#fff"/><rect y="0.000" width="76" height="3.077" fill="#B31942"/><rect y="6.154" width="76" height="3.077" fill="#B31942"/><rect y="12.308" width="76" height="3.077" fill="#B31942"/><rect y="18.462" width="76" height="3.077" fill="#B31942"/><rect y="24.615" width="76" height="3.077" fill="#B31942"/><rect y="30.769" width="76" height="3.077" fill="#B31942"/><rect y="36.923" width="76" height="3.077" fill="#B31942"/><rect width="30.4" height="21.54" fill="#0A3161"/><polygon points="2.53,1.25 2.74,1.88 3.39,1.88 2.86,2.26 3.06,2.88 2.53,2.50 2.00,2.88 2.21,2.26 1.68,1.88 2.33,1.88" fill="#fff"/><polygon points="7.60,1.25 7.80,1.88 8.46,1.88 7.93,2.26 8.13,2.88 7.60,2.50 7.07,2.88 7.27,2.26 6.74,1.88 7.40,1.88" fill="#fff"/><polygon points="12.67,1.25 12.87,1.88 13.52,1.88 12.99,2.26 13.20,2.88 12.67,2.50 12.14,2.88 12.34,2.26 11.81,1.88 12.46,1.88" fill="#fff"/><polygon points="17.73,1.25 17.94,1.88 18.59,1.88 18.06,2.26 18.26,2.88 17.73,2.50 17.20,2.88 17.41,2.26 16.88,1.88 17.53,1.88" fill="#fff"/><polygon points="22.80,1.25 23.00,1.88 23.66,1.88 23.13,2.26 23.33,2.88 22.80,2.50 22.27,2.88 22.47,2.26 21.94,1.88 22.60,1.88" fill="#fff"/><polygon points="27.87,1.25 28.07,1.88 28.72,1.88 28.19,2.26 28.40,2.88 27.87,2.50 27.34,2.88 27.54,2.26 27.01,1.88 27.66,1.88" fill="#fff"/><polygon points="5.07,3.41 5.27,4.03 5.92,4.03 5.39,4.41 5.60,5.04 5.07,4.65 4.54,5.04 4.74,4.41 4.21,4.03 4.86,4.03" fill="#fff"/><polygon points="10.13,3.41 10.34,4.03 10.99,4.03 10.46,4.41 10.66,5.04 10.13,4.65 9.60,5.04 9.81,4.41 9.28,4.03 9.93,4.03" fill="#fff"/><polygon points="15.20,3.41 15.40,4.03 16.06,4.03 15.53,4.41 15.73,5.04 15.20,4.65 14.67,5.04 14.87,4.41 14.34,4.03 15.00,4.03" fill="#fff"/><polygon points="20.27,3.41 20.47,4.03 21.12,4.03 20.59,4.41 20.80,5.04 20.27,4.65 19.74,5.04 19.94,4.41 19.41,4.03 20.06,4.03" fill="#fff"/><polygon points="25.33,3.41 25.54,4.03 26.19,4.03 25.66,4.41 25.86,5.04 25.33,4.65 24.80,5.04 25.01,4.41 24.48,4.03 25.13,4.03" fill="#fff"/><polygon points="2.53,5.56 2.74,6.18 3.39,6.18 2.86,6.57 3.06,7.19 2.53,6.81 2.00,7.19 2.21,6.57 1.68,6.18 2.33,6.18" fill="#fff"/><polygon points="7.60,5.56 7.80,6.18 8.46,6.18 7.93,6.57 8.13,7.19 7.60,6.81 7.07,7.19 7.27,6.57 6.74,6.18 7.40,6.18" fill="#fff"/><polygon points="12.67,5.56 12.87,6.18 13.52,6.18 12.99,6.57 13.20,7.19 12.67,6.81 12.14,7.19 12.34,6.57 11.81,6.18 12.46,6.18" fill="#fff"/><polygon points="17.73,5.56 17.94,6.18 18.59,6.18 18.06,6.57 18.26,7.19 17.73,6.81 17.20,7.19 17.41,6.57 16.88,6.18 17.53,6.18" fill="#fff"/><polygon points="22.80,5.56 23.00,6.18 23.66,6.18 23.13,6.57 23.33,7.19 22.80,6.81 22.27,7.19 22.47,6.57 21.94,6.18 22.60,6.18" fill="#fff"/><polygon points="27.87,5.56 28.07,6.18 28.72,6.18 28.19,6.57 28.40,7.19 27.87,6.81 27.34,7.19 27.54,6.57 27.01,6.18 27.66,6.18" fill="#fff"/><polygon points="5.07,7.72 5.27,8.34 5.92,8.34 5.39,8.72 5.60,9.34 5.07,8.96 4.54,9.34 4.74,8.72 4.21,8.34 4.86,8.34" fill="#fff"/><polygon points="10.13,7.72 10.34,8.34 10.99,8.34 10.46,8.72 10.66,9.34 10.13,8.96 9.60,9.34 9.81,8.72 9.28,8.34 9.93,8.34" fill="#fff"/><polygon points="15.20,7.72 15.40,8.34 16.06,8.34 15.53,8.72 15.73,9.34 15.20,8.96 14.67,9.34 14.87,8.72 14.34,8.34 15.00,8.34" fill="#fff"/><polygon points="20.27,7.72 20.47,8.34 21.12,8.34 20.59,8.72 20.80,9.34 20.27,8.96 19.74,9.34 19.94,8.72 19.41,8.34 20.06,8.34" fill="#fff"/><polygon points="25.33,7.72 25.54,8.34 26.19,8.34 25.66,8.72 25.86,9.34 25.33,8.96 24.80,9.34 25.01,8.72 24.48,8.34 25.13,8.34" fill="#fff"/><polygon points="2.53,9.87 2.74,10.49 3.39,10.49 2.86,10.88 3.06,11.50 2.53,11.11 2.00,11.50 2.21,10.88 1.68,10.49 2.33,10.49" fill="#fff"/><polygon points="7.60,9.87 7.80,10.49 8.46,10.49 7.93,10.88 8.13,11.50 7.60,11.11 7.07,11.50 7.27,10.88 6.74,10.49 7.40,10.49" fill="#fff"/><polygon points="12.67,9.87 12.87,10.49 13.52,10.49 12.99,10.88 13.20,11.50 12.67,11.11 12.14,11.50 12.34,10.88 11.81,10.49 12.46,10.49" fill="#fff"/><polygon points="17.73,9.87 17.94,10.49 18.59,10.49 18.06,10.88 18.26,11.50 17.73,11.11 17.20,11.50 17.41,10.88 16.88,10.49 17.53,10.49" fill="#fff"/><polygon points="22.80,9.87 23.00,10.49 23.66,10.49 23.13,10.88 23.33,11.50 22.80,11.11 22.27,11.50 22.47,10.88 21.94,10.49 22.60,10.49" fill="#fff"/><polygon points="27.87,9.87 28.07,10.49 28.72,10.49 28.19,10.88 28.40,11.50 27.87,11.11 27.34,11.50 27.54,10.88 27.01,10.49 27.66,10.49" fill="#fff"/><polygon points="5.07,12.02 5.27,12.65 5.92,12.65 5.39,13.03 5.60,13.65 5.07,13.27 4.54,13.65 4.74,13.03 4.21,12.65 4.86,12.65" fill="#fff"/><polygon points="10.13,12.02 10.34,12.65 10.99,12.65 10.46,13.03 10.66,13.65 10.13,13.27 9.60,13.65 9.81,13.03 9.28,12.65 9.93,12.65" fill="#fff"/><polygon points="15.20,12.02 15.40,12.65 16.06,12.65 15.53,13.03 15.73,13.65 15.20,13.27 14.67,13.65 14.87,13.03 14.34,12.65 15.00,12.65" fill="#fff"/><polygon points="20.27,12.02 20.47,12.65 21.12,12.65 20.59,13.03 20.80,13.65 20.27,13.27 19.74,13.65 19.94,13.03 19.41,12.65 20.06,12.65" fill="#fff"/><polygon points="25.33,12.02 25.54,12.65 26.19,12.65 25.66,13.03 25.86,13.65 25.33,13.27 24.80,13.65 25.01,13.03 24.48,12.65 25.13,12.65" fill="#fff"/><polygon points="2.53,14.18 2.74,14.80 3.39,14.80 2.86,15.18 3.06,15.81 2.53,15.42 2.00,15.81 2.21,15.18 1.68,14.80 2.33,14.80" fill="#fff"/><polygon points="7.60,14.18 7.80,14.80 8.46,14.80 7.93,15.18 8.13,15.81 7.60,15.42 7.07,15.81 7.27,15.18 6.74,14.80 7.40,14.80" fill="#fff"/><polygon points="12.67,14.18 12.87,14.80 13.52,14.80 12.99,15.18 13.20,15.81 12.67,15.42 12.14,15.81 12.34,15.18 11.81,14.80 12.46,14.80" fill="#fff"/><polygon points="17.73,14.18 17.94,14.80 18.59,14.80 18.06,15.18 18.26,15.81 17.73,15.42 17.20,15.81 17.41,15.18 16.88,14.80 17.53,14.80" fill="#fff"/><polygon points="22.80,14.18 23.00,14.80 23.66,14.80 23.13,15.18 23.33,15.81 22.80,15.42 22.27,15.81 22.47,15.18 21.94,14.80 22.60,14.80" fill="#fff"/><polygon points="27.87,14.18 28.07,14.80 28.72,14.80 28.19,15.18 28.40,15.81 27.87,15.42 27.34,15.81 27.54,15.18 27.01,14.80 27.66,14.80" fill="#fff"/><polygon points="5.07,16.33 5.27,16.95 5.92,16.95 5.39,17.34 5.60,17.96 5.07,17.58 4.54,17.96 4.74,17.34 4.21,16.95 4.86,16.95" fill="#fff"/><polygon points="10.13,16.33 10.34,16.95 10.99,16.95 10.46,17.34 10.66,17.96 10.13,17.58 9.60,17.96 9.81,17.34 9.28,16.95 9.93,16.95" fill="#fff"/><polygon points="15.20,16.33 15.40,16.95 16.06,16.95 15.53,17.34 15.73,17.96 15.20,17.58 14.67,17.96 14.87,17.34 14.34,16.95 15.00,16.95" fill="#fff"/><polygon points="20.27,16.33 20.47,16.95 21.12,16.95 20.59,17.34 20.80,17.96 20.27,17.58 19.74,17.96 19.94,17.34 19.41,16.95 20.06,16.95" fill="#fff"/><polygon points="25.33,16.33 25.54,16.95 26.19,16.95 25.66,17.34 25.86,17.96 25.33,17.58 24.80,17.96 25.01,17.34 24.48,16.95 25.13,16.95" fill="#fff"/><polygon points="2.53,18.49 2.74,19.11 3.39,19.11 2.86,19.49 3.06,20.11 2.53,19.73 2.00,20.11 2.21,19.49 1.68,19.11 2.33,19.11" fill="#fff"/><polygon points="7.60,18.49 7.80,19.11 8.46,19.11 7.93,19.49 8.13,20.11 7.60,19.73 7.07,20.11 7.27,19.49 6.74,19.11 7.40,19.11" fill="#fff"/><polygon points="12.67,18.49 12.87,19.11 13.52,19.11 12.99,19.49 13.20,20.11 12.67,19.73 12.14,20.11 12.34,19.49 11.81,19.11 12.46,19.11" fill="#fff"/><polygon points="17.73,18.49 17.94,19.11 18.59,19.11 18.06,19.49 18.26,20.11 17.73,19.73 17.20,20.11 17.41,19.49 16.88,19.11 17.53,19.11" fill="#fff"/><polygon points="22.80,18.49 23.00,19.11 23.66,19.11 23.13,19.49 23.33,20.11 22.80,19.73 22.27,20.11 22.47,19.49 21.94,19.11 22.60,19.11" fill="#fff"/><polygon points="27.87,18.49 28.07,19.11 28.72,19.11 28.19,19.49 28.40,20.11 27.87,19.73 27.34,20.11 27.54,19.49 27.01,19.11 27.66,19.11" fill="#fff"/></symbol><symbol id="fl-CA" viewBox="0 0 1000 500"><rect width="1000" height="500" fill="#fff"/><rect width="250" height="500" fill="#D52B1E"/><rect x="750" width="250" height="500" fill="#D52B1E"/><polygon points="500,85 528,138 556,126 546,208 596,158 608,184 660,174 642,224 668,236 586,302 598,334 516,322 512,400 488,400 484,322 402,334 414,302 332,236 358,224 340,174 392,184 404,158 454,208 444,126 472,138 500,85" fill="#D52B1E"/></symbol><symbol id="fl-MX" viewBox="0 0 28 16"><rect x="0.000" width="9.383" height="16" fill="#006847"/><rect x="9.333" width="9.383" height="16" fill="#fff"/><rect x="18.667" width="9.383" height="16" fill="#CE1126"/><circle cx="14" cy="8" r="3" fill="#8C5A2B"/><path d="M11.3,9.2a3,3 0 0 0 5.4,0" fill="none" stroke="#006847" stroke-width=".7"/></symbol><symbol id="fl-PR" viewBox="0 0 30 20"><rect y="0.000" width="30" height="4.050" fill="#ED0000"/><rect y="4.000" width="30" height="4.050" fill="#fff"/><rect y="8.000" width="30" height="4.050" fill="#ED0000"/><rect y="12.000" width="30" height="4.050" fill="#fff"/><rect y="16.000" width="30" height="4.050" fill="#ED0000"/><polygon points="0,0 17.3,10 0,20" fill="#0050F0"/><polygon points="5.80,7.00 6.47,9.07 8.65,9.07 6.89,10.35 7.56,12.43 5.80,11.15 4.04,12.43 4.71,10.35 2.95,9.07 5.13,9.07" fill="#fff"/></symbol><symbol id="fl-BS" viewBox="0 0 60 30"><rect y="0.000" width="60" height="10.050" fill="#00778B"/><rect y="10.000" width="60" height="10.050" fill="#FFC72C"/><rect y="20.000" width="60" height="10.050" fill="#00778B"/><polygon points="0,0 26,15 0,30" fill="#000"/></symbol><symbol id="fl-JM" viewBox="0 0 60 30"><rect width="60" height="30" fill="#009B3A"/><polygon points="0,0 30,15 0,30" fill="#000"/><polygon points="60,0 30,15 60,30" fill="#000"/><path d="M0,0L60,30M60,0L0,30" stroke="#FED100" stroke-width="4"/></symbol><symbol id="fl-DO" viewBox="0 0 30 20"><rect width="15" height="10" fill="#002D62"/><rect x="15" width="15" height="10" fill="#CE1126"/><rect y="10" width="15" height="10" fill="#CE1126"/><rect x="15" y="10" width="15" height="10" fill="#002D62"/><rect x="13.5" width="3" height="20" fill="#fff"/><rect y="8.5" width="30" height="3" fill="#fff"/><circle cx="15" cy="10" r="1.6" fill="#2E7D4F"/></symbol><symbol id="fl-HT" viewBox="0 0 30 18"><rect y="0.000" width="30" height="9.050" fill="#00209F"/><rect y="9.000" width="30" height="9.050" fill="#D21034"/><rect x="12" y="6.5" width="6" height="5" fill="#fff"/><circle cx="15" cy="9" r="1.5" fill="#2E7D4F"/></symbol><symbol id="fl-PA" viewBox="0 0 30 20"><rect width="30" height="20" fill="#fff"/><rect x="15" width="15" height="10" fill="#DA121A"/><rect y="10" width="15" height="10" fill="#072357"/><polygon points="7.50,2.00 8.17,4.07 10.35,4.07 8.59,5.35 9.26,7.43 7.50,6.15 5.74,7.43 6.41,5.35 4.65,4.07 6.83,4.07" fill="#072357"/><polygon points="22.50,12.00 23.17,14.07 25.35,14.07 23.59,15.35 24.26,17.43 22.50,16.15 20.74,17.43 21.41,15.35 19.65,14.07 21.83,14.07" fill="#DA121A"/></symbol><symbol id="fl-CR" viewBox="0 0 50 30"><rect y="0.000" width="50" height="5.050" fill="#002B7F"/><rect y="5.000" width="50" height="5.050" fill="#fff"/><rect y="10.000" width="50" height="10.050" fill="#CE1126"/><rect y="20.000" width="50" height="5.050" fill="#fff"/><rect y="25.000" width="50" height="5.050" fill="#002B7F"/></symbol><symbol id="fl-HN" viewBox="0 0 36 18"><rect y="0.000" width="36" height="6.050" fill="#0073CF"/><rect y="6.000" width="36" height="6.050" fill="#fff"/><rect y="12.000" width="36" height="6.050" fill="#0073CF"/><polygon points="18.00,7.90 18.25,8.66 19.05,8.66 18.40,9.13 18.65,9.89 18.00,9.42 17.35,9.89 17.60,9.13 16.95,8.66 17.75,8.66" fill="#0073CF"/><polygon points="12.50,5.90 12.75,6.66 13.55,6.66 12.90,7.13 13.15,7.89 12.50,7.42 11.85,7.89 12.10,7.13 11.45,6.66 12.25,6.66" fill="#0073CF"/><polygon points="12.50,9.90 12.75,10.66 13.55,10.66 12.90,11.13 13.15,11.89 12.50,11.42 11.85,11.89 12.10,11.13 11.45,10.66 12.25,10.66" fill="#0073CF"/><polygon points="23.50,5.90 23.75,6.66 24.55,6.66 23.90,7.13 24.15,7.89 23.50,7.42 22.85,7.89 23.10,7.13 22.45,6.66 23.25,6.66" fill="#0073CF"/><polygon points="23.50,9.90 23.75,10.66 24.55,10.66 23.90,11.13 24.15,11.89 23.50,11.42 22.85,11.89 23.10,11.13 22.45,10.66 23.25,10.66" fill="#0073CF"/></symbol><symbol id="fl-GT" viewBox="0 0 32 20"><rect x="0.000" width="10.717" height="20" fill="#4997D0"/><rect x="10.667" width="10.717" height="20" fill="#fff"/><rect x="21.333" width="10.717" height="20" fill="#4997D0"/><circle cx="16" cy="10" r="3" fill="none" stroke="#3F8F4E" stroke-width="1"/></symbol><symbol id="fl-NI" viewBox="0 0 30 18"><rect y="0.000" width="30" height="6.050" fill="#0067C6"/><rect y="6.000" width="30" height="6.050" fill="#fff"/><rect y="12.000" width="30" height="6.050" fill="#0067C6"/><polygon points="15,6.6 17.6,11 12.4,11" fill="none" stroke="#C8A846" stroke-width=".7"/></symbol><symbol id="fl-SV" viewBox="0 0 30 17"><rect y="0.000" width="30" height="5.717" fill="#0F47AF"/><rect y="5.667" width="30" height="5.717" fill="#fff"/><rect y="11.333" width="30" height="5.717" fill="#0F47AF"/><circle cx="15" cy="8.5" r="2.4" fill="none" stroke="#C8A846" stroke-width=".7"/></symbol><symbol id="fl-CO" viewBox="0 0 30 20"><rect y="0.000" width="30" height="10.050" fill="#FCD116"/><rect y="10.000" width="30" height="5.050" fill="#003893"/><rect y="15.000" width="30" height="5.050" fill="#CE1126"/></symbol><symbol id="fl-EC" viewBox="0 0 30 20"><rect y="0.000" width="30" height="10.050" fill="#FFDD00"/><rect y="10.000" width="30" height="5.050" fill="#034EA2"/><rect y="15.000" width="30" height="5.050" fill="#ED1C24"/><ellipse cx="15" cy="10" rx="2.6" ry="3.4" fill="#7FB4E0" stroke="#8C5A2B" stroke-width=".7"/></symbol><symbol id="fl-PE" viewBox="0 0 30 20"><rect x="0.000" width="10.050" height="20" fill="#D91023"/><rect x="10.000" width="10.050" height="20" fill="#fff"/><rect x="20.000" width="10.050" height="20" fill="#D91023"/></symbol><symbol id="fl-CL" viewBox="0 0 30 20"><rect width="30" height="10" fill="#fff"/><rect y="10" width="30" height="10" fill="#D52B1E"/><rect width="10" height="10" fill="#0039A6"/><polygon points="5.00,2.40 5.58,4.20 7.47,4.20 5.94,5.31 6.53,7.10 5.00,5.99 3.47,7.10 4.06,5.31 2.53,4.20 4.42,4.20" fill="#fff"/></symbol><symbol id="fl-AR" viewBox="0 0 32 20"><rect y="0.000" width="32" height="6.717" fill="#74ACDF"/><rect y="6.667" width="32" height="6.717" fill="#fff"/><rect y="13.333" width="32" height="6.717" fill="#74ACDF"/><circle cx="16" cy="10" r="2.2" fill="#F6B40E" stroke="#85340A" stroke-width=".3"/></symbol><symbol id="fl-UY" viewBox="0 0 36 24"><rect width="36" height="24" fill="#fff"/><rect y="2.667" width="36" height="2.667" fill="#0038A8"/><rect y="8.000" width="36" height="2.667" fill="#0038A8"/><rect y="13.333" width="36" height="2.667" fill="#0038A8"/><rect y="18.667" width="36" height="2.667" fill="#0038A8"/><rect width="13.3" height="13.3" fill="#fff"/><polygon points="6.65,2.25 7.17,4.06 8.33,2.58 8.12,4.45 9.76,3.54 8.85,5.18 10.72,4.97 9.24,6.13 11.05,6.65 9.24,7.17 10.72,8.33 8.85,8.12 9.76,9.76 8.12,8.85 8.33,10.72 7.17,9.24 6.65,11.05 6.13,9.24 4.97,10.72 5.18,8.85 3.54,9.76 4.45,8.12 2.58,8.33 4.06,7.17 2.25,6.65 4.06,6.13 2.58,4.97 4.45,5.18 3.54,3.54 5.18,4.45 4.97,2.58 6.13,4.06" fill="#FCD116"/><circle cx="6.65" cy="6.65" r="2.4" fill="#FCD116" stroke="#7B3F00" stroke-width=".3"/></symbol><symbol id="fl-BR" viewBox="0 0 20 14"><rect width="20" height="14" fill="#009C3B"/><polygon points="1.7,7 10,1.7 18.3,7 10,12.3" fill="#FFDF00"/><circle cx="10" cy="7" r="3.5" fill="#002776"/><path d="M6.6,6.3q3.6-1 6.9,1.2" stroke="#fff" stroke-width=".55" fill="none"/></symbol><symbol id="fl-TT" viewBox="0 0 50 30"><rect width="50" height="30" fill="#DA1A35"/><path d="M4,0L46,30" stroke="#fff" stroke-width="13"/><path d="M4,0L46,30" stroke="#000" stroke-width="9.5"/></symbol><symbol id="fl-LC" viewBox="0 0 30 15"><rect width="30" height="15" fill="#65CFFF"/><polygon points="15,1.5 20.5,13.5 9.5,13.5" fill="#fff"/><polygon points="15,3 19.6,13.5 10.4,13.5" fill="#000"/><polygon points="15,7.5 20.5,13.5 9.5,13.5" fill="#FCD116"/></symbol><symbol id="fl-BB" viewBox="0 0 30 20"><rect x="0.000" width="10.050" height="20" fill="#00267F"/><rect x="10.000" width="10.050" height="20" fill="#FFC726"/><rect x="20.000" width="10.050" height="20" fill="#00267F"/><path d="M15,5v10M12.3,6.5q0,4 2.7,4.5q2.7-.5 2.7-4.5" stroke="#000" stroke-width="1" fill="none"/></symbol><symbol id="fl-KY" viewBox="0 0 60 30"><rect width="60" height="30" fill="#012169"/><use href="#fj" width="30" height="15"/><circle cx="45" cy="15" r="5.5" fill="#fff" stroke="#C8A846" stroke-width=".8"/><circle cx="45" cy="15" r="3" fill="#2E7D4F"/></symbol><symbol id="fl-VG" viewBox="0 0 60 30"><rect width="60" height="30" fill="#012169"/><use href="#fj" width="30" height="15"/><circle cx="45" cy="15" r="5.5" fill="#fff" stroke="#C8A846" stroke-width=".8"/><circle cx="45" cy="15" r="3" fill="#2E7D4F"/></symbol><symbol id="fl-TC" viewBox="0 0 60 30"><rect width="60" height="30" fill="#012169"/><use href="#fj" width="30" height="15"/><circle cx="45" cy="15" r="5.5" fill="#fff" stroke="#C8A846" stroke-width=".8"/><circle cx="45" cy="15" r="3" fill="#2E7D4F"/></symbol><symbol id="fl-FK" viewBox="0 0 60 30"><rect width="60" height="30" fill="#012169"/><use href="#fj" width="30" height="15"/><circle cx="45" cy="15" r="5.5" fill="#fff" stroke="#C8A846" stroke-width=".8"/><circle cx="45" cy="15" r="3" fill="#2E7D4F"/></symbol><symbol id="fl-MS" viewBox="0 0 60 30"><rect width="60" height="30" fill="#012169"/><use href="#fj" width="30" height="15"/><circle cx="45" cy="15" r="5.5" fill="#fff" stroke="#C8A846" stroke-width=".8"/><circle cx="45" cy="15" r="3" fill="#2E7D4F"/></symbol><symbol id="fl-AI" viewBox="0 0 60 30"><rect width="60" height="30" fill="#012169"/><use href="#fj" width="30" height="15"/><circle cx="45" cy="15" r="5.5" fill="#fff" stroke="#C8A846" stroke-width=".8"/><circle cx="45" cy="15" r="3" fill="#2E7D4F"/></symbol><symbol id="fl-BM" viewBox="0 0 60 30"><rect width="60" height="30" fill="#C8102E"/><use href="#fj" width="30" height="15"/><circle cx="45" cy="15" r="5.5" fill="#fff" stroke="#C8A846" stroke-width=".8"/><circle cx="45" cy="15" r="3" fill="#2E7D4F"/></symbol><symbol id="fl-GB" viewBox="0 0 60 30"><use href="#fj" width="60" height="30"/></symbol><symbol id="fl-IE" viewBox="0 0 30 15"><rect x="0.000" width="10.050" height="15" fill="#169B62"/><rect x="10.000" width="10.050" height="15" fill="#fff"/><rect x="20.000" width="10.050" height="15" fill="#FF883E"/></symbol><symbol id="fl-IT" viewBox="0 0 3 2"><rect x="0.000" width="1.050" height="2" fill="#009246"/><rect x="1.000" width="1.050" height="2" fill="#fff"/><rect x="2.000" width="1.050" height="2" fill="#CE2B37"/></symbol><symbol id="fl-FR" viewBox="0 0 3 2"><rect x="0.000" width="1.050" height="2" fill="#002654"/><rect x="1.000" width="1.050" height="2" fill="#fff"/><rect x="2.000" width="1.050" height="2" fill="#CE1126"/></symbol><symbol id="fl-BE" viewBox="0 0 15 13"><rect x="0.000" width="5.050" height="13" fill="#000"/><rect x="5.000" width="5.050" height="13" fill="#FDDA24"/><rect x="10.000" width="5.050" height="13" fill="#EF3340"/></symbol><symbol id="fl-DE" viewBox="0 0 5 3"><rect y="0.000" width="5" height="1.050" fill="#000"/><rect y="1.000" width="5" height="1.050" fill="#DD0000"/><rect y="2.000" width="5" height="1.050" fill="#FFCE00"/></symbol><symbol id="fl-NL" viewBox="0 0 9 6"><rect y="0.000" width="9" height="2.050" fill="#AE1C28"/><rect y="2.000" width="9" height="2.050" fill="#fff"/><rect y="4.000" width="9" height="2.050" fill="#21468B"/></symbol><symbol id="fl-RU" viewBox="0 0 9 6"><rect y="0.000" width="9" height="2.050" fill="#fff"/><rect y="2.000" width="9" height="2.050" fill="#0039A6"/><rect y="4.000" width="9" height="2.050" fill="#D52B1E"/></symbol><symbol id="fl-PL" viewBox="0 0 8 5"><rect y="0.000" width="8" height="2.550" fill="#fff"/><rect y="2.500" width="8" height="2.550" fill="#DC143C"/></symbol><symbol id="fl-EE" viewBox="0 0 33 21"><rect y="0.000" width="33" height="7.050" fill="#0072CE"/><rect y="7.000" width="33" height="7.050" fill="#000"/><rect y="14.000" width="33" height="7.050" fill="#fff"/></symbol><symbol id="fl-LV" viewBox="0 0 20 10"><rect y="0.000" width="20" height="4.050" fill="#9E3039"/><rect y="4.000" width="20" height="2.050" fill="#fff"/><rect y="6.000" width="20" height="4.050" fill="#9E3039"/></symbol><symbol id="fl-LT" viewBox="0 0 5 3"><rect y="0.000" width="5" height="1.050" fill="#FDB913"/><rect y="1.000" width="5" height="1.050" fill="#006A44"/><rect y="2.000" width="5" height="1.050" fill="#C1272D"/></symbol><symbol id="fl-MC" viewBox="0 0 5 4"><rect y="0.000" width="5" height="2.050" fill="#CE1126"/><rect y="2.000" width="5" height="2.050" fill="#fff"/></symbol><symbol id="fl-ES" viewBox="0 0 30 20"><rect y="0.000" width="30" height="5.050" fill="#AA151B"/><rect y="5.000" width="30" height="10.050" fill="#F1BF00"/><rect y="15.000" width="30" height="5.050" fill="#AA151B"/><rect x="7" y="7.2" width="4" height="5.6" rx="1.4" fill="#AA151B" stroke="#C8A846" stroke-width=".5"/></symbol><symbol id="fl-PT" viewBox="0 0 30 20"><rect width="12" height="20" fill="#006600"/><rect x="12" width="18" height="20" fill="#FF0000"/><circle cx="12" cy="10" r="4" fill="#FFE000"/><path d="M10,7.6h4v3.4a2,2 0 0 1-4,0z" fill="#fff" stroke="#FF0000" stroke-width=".7"/></symbol><symbol id="fl-GR" viewBox="0 0 27 18"><rect width="27" height="18" fill="#fff"/><rect y="0" width="27" height="2" fill="#0D5EAF"/><rect y="4" width="27" height="2" fill="#0D5EAF"/><rect y="8" width="27" height="2" fill="#0D5EAF"/><rect y="12" width="27" height="2" fill="#0D5EAF"/><rect y="16" width="27" height="2" fill="#0D5EAF"/><rect width="10" height="10" fill="#0D5EAF"/><rect x="4" width="2" height="10" fill="#fff"/><rect y="4" width="10" height="2" fill="#fff"/></symbol><symbol id="fl-TR" viewBox="0 0 30 20"><rect width="30" height="20" fill="#E30A17"/><circle cx="11" cy="10" r="5" fill="#fff"/><circle cx="12.25" cy="10" r="4" fill="#E30A17"/><polygon points="13.90,10.00 15.49,9.48 15.49,7.81 16.47,9.16 18.06,8.65 17.08,10.00 18.06,11.35 16.47,10.84 15.49,12.19 15.49,10.52" fill="#fff"/></symbol><symbol id="fl-HR" viewBox="0 0 30 15"><rect y="0.000" width="30" height="5.050" fill="#FF0000"/><rect y="5.000" width="30" height="5.050" fill="#fff"/><rect y="10.000" width="30" height="5.050" fill="#171796"/><rect x="12.6" y="3.6" width="4.8" height="6" fill="#fff" stroke="#171796" stroke-width=".3"/><rect x="12.6" y="3.6" width="1.2" height="1.2" fill="#FF0000"/><rect x="12.6" y="6.0" width="1.2" height="1.2" fill="#FF0000"/><rect x="12.6" y="8.4" width="1.2" height="1.2" fill="#FF0000"/><rect x="13.799999999999999" y="4.8" width="1.2" height="1.2" fill="#FF0000"/><rect x="13.799999999999999" y="7.199999999999999" width="1.2" height="1.2" fill="#FF0000"/><rect x="15.0" y="3.6" width="1.2" height="1.2" fill="#FF0000"/><rect x="15.0" y="6.0" width="1.2" height="1.2" fill="#FF0000"/><rect x="15.0" y="8.4" width="1.2" height="1.2" fill="#FF0000"/><rect x="16.2" y="4.8" width="1.2" height="1.2" fill="#FF0000"/><rect x="16.2" y="7.199999999999999" width="1.2" height="1.2" fill="#FF0000"/></symbol><symbol id="fl-MT" viewBox="0 0 30 20"><rect x="0.000" width="15.050" height="20" fill="#fff"/><rect x="15.000" width="15.050" height="20" fill="#CF142B"/><rect x="2" y="2" width="4" height="4" fill="#B0B0B0" stroke="#CF142B" stroke-width=".3"/></symbol><symbol id="fl-DK" viewBox="0 0 37 28"><rect width="37" height="28" fill="#C8102E"/><rect x="12" width="4" height="28" fill="#fff"/><rect y="12" width="37" height="4" fill="#fff"/></symbol><symbol id="fl-NO" viewBox="0 0 22 16"><rect width="22" height="16" fill="#BA0C2F"/><rect x="6" width="4" height="16" fill="#fff"/><rect y="6.0" width="22" height="4" fill="#fff"/><rect x="7" width="2" height="16" fill="#00205B"/><rect y="7" width="22" height="2" fill="#00205B"/></symbol><symbol id="fl-SE" viewBox="0 0 16 10"><rect width="16" height="10" fill="#006AA7"/><rect x="5" width="2" height="10" fill="#FECC00"/><rect y="4" width="16" height="2" fill="#FECC00"/></symbol><symbol id="fl-FI" viewBox="0 0 18 11"><rect width="18" height="11" fill="#fff"/><rect x="5" width="3" height="11" fill="#002F6C"/><rect y="4" width="18" height="3" fill="#002F6C"/></symbol><symbol id="fl-IS" viewBox="0 0 25 18"><rect width="25" height="18" fill="#02529C"/><rect x="7" width="4" height="18" fill="#fff"/><rect y="7" width="25" height="4" fill="#fff"/><rect x="8" width="2" height="18" fill="#DC1E35"/><rect y="8" width="25" height="2" fill="#DC1E35"/></symbol><symbol id="fl-FO" viewBox="0 0 22 16"><rect width="22" height="16" fill="#fff"/><rect x="6" width="4" height="16" fill="#0065BD"/><rect y="6" width="22" height="4" fill="#0065BD"/><rect x="7" width="2" height="16" fill="#EF303E"/><rect y="7" width="22" height="2" fill="#EF303E"/></symbol><symbol id="fl-AT" viewBox="0 0 9 6"><rect y="0.000" width="9" height="2.050" fill="#C8102E"/><rect y="2.000" width="9" height="2.050" fill="#fff"/><rect y="4.000" width="9" height="2.050" fill="#C8102E"/></symbol><symbol id="fl-CH" viewBox="0 0 20 20"><rect width="20" height="20" fill="#DA291C"/><rect x="8.1" y="4" width="3.8" height="12" fill="#fff"/><rect x="4" y="8.1" width="12" height="3.8" fill="#fff"/></symbol><symbol id="fl-AE" viewBox="0 0 60 30"><rect y="0.000" width="60" height="10.050" fill="#00732F"/><rect y="10.000" width="60" height="10.050" fill="#fff"/><rect y="20.000" width="60" height="10.050" fill="#000"/><rect width="15" height="30" fill="#FF0000"/></symbol><symbol id="fl-EG" viewBox="0 0 30 20"><rect y="0.000" width="30" height="6.717" fill="#CE1126"/><rect y="6.667" width="30" height="6.717" fill="#fff"/><rect y="13.333" width="30" height="6.717" fill="#000"/><circle cx="15" cy="10" r="2" fill="#C09300"/></symbol><symbol id="fl-IL" viewBox="0 0 22 16"><rect width="22" height="16" fill="#fff"/><rect y="1.5" width="22" height="2.4" fill="#0038B8"/><rect y="12.1" width="22" height="2.4" fill="#0038B8"/><polygon points="11,5 13.6,9.5 8.4,9.5" fill="none" stroke="#0038B8" stroke-width=".6"/><polygon points="11,11 13.6,6.5 8.4,6.5" fill="none" stroke="#0038B8" stroke-width=".6"/></symbol><symbol id="fl-MA" viewBox="0 0 30 20"><rect width="30" height="20" fill="#C1272D"/><polygon points="15.00,5.80 16.03,8.98 19.37,8.98 16.67,10.94 17.70,14.12 15.00,12.16 12.30,14.12 13.33,10.94 10.63,8.98 13.97,8.98" fill="none" stroke="#006233" stroke-width=".9"/></symbol><symbol id="fl-TN" viewBox="0 0 30 20"><rect width="30" height="20" fill="#E70013"/><circle cx="15" cy="10" r="5" fill="#fff"/><circle cx="14.2" cy="10" r="3.6" fill="#E70013"/><circle cx="15.1" cy="10" r="2.9" fill="#fff"/><polygon points="13.70,10.00 15.22,9.51 15.22,7.91 16.16,9.20 17.68,8.71 16.74,10.00 17.68,11.29 16.16,10.80 15.22,12.09 15.22,10.49" fill="#E70013"/></symbol><symbol id="fl-QA" viewBox="0 0 28 11"><rect width="28" height="11" fill="#8A1538"/><polygon points="0,0 8,0 10.5,0.61 8,1.22 10.5,1.83 8,2.44 10.5,3.06 8,3.67 10.5,4.28 8,4.89 10.5,5.50 8,6.11 10.5,6.72 8,7.33 10.5,7.94 8,8.56 10.5,9.17 8,9.78 10.5,10.39 8,11 0,11" fill="#fff"/></symbol><symbol id="fl-BH" viewBox="0 0 30 18"><rect width="30" height="18" fill="#CE1126"/><polygon points="0,0 7.5,0 11.5,1.80 7.5,3.60 11.5,5.40 7.5,7.20 11.5,9.00 7.5,10.80 11.5,12.60 7.5,14.40 11.5,16.20 7.5,18 0,18" fill="#fff"/></symbol><symbol id="fl-OM" viewBox="0 0 30 15"><rect width="30" height="15" fill="#DB161B"/><rect x="7.5" width="22.5" height="5" fill="#fff"/><rect x="7.5" y="10" width="22.5" height="5" fill="#008000"/></symbol><symbol id="fl-SA" viewBox="0 0 30 20"><rect width="30" height="20" fill="#006C35"/><path d="M8,8.5h14M9,12.5h12" stroke="#fff" stroke-width="1.2"/></symbol><symbol id="fl-JO" viewBox="0 0 40 20"><rect y="0.000" width="40" height="6.717" fill="#000"/><rect y="6.667" width="40" height="6.717" fill="#fff"/><rect y="13.333" width="40" height="6.717" fill="#007A3D"/><polygon points="0,0 20,10 0,20" fill="#CE1126"/><polygon points="6.50,8.20 6.85,9.27 7.91,8.88 7.29,9.82 8.25,10.40 7.13,10.51 7.28,11.62 6.50,10.81 5.72,11.62 5.87,10.51 4.75,10.40 5.71,9.82 5.09,8.88 6.15,9.27" fill="#fff"/></symbol><symbol id="fl-ZA" viewBox="0 0 36 24"><rect width="36" height="12" fill="#E03C31"/><rect y="12" width="36" height="12" fill="#001489"/><path d="M0,0L15,12L0,24M15,12H36" stroke="#fff" stroke-width="8" fill="none"/><path d="M0,0L15,12L0,24M15,12H36" stroke="#007749" stroke-width="4.8" fill="none"/><polygon points="0,3.6 10.5,12 0,20.4" fill="#FFB81C"/><polygon points="0,5.4 8.3,12 0,18.6" fill="#000"/></symbol><symbol id="fl-MU" viewBox="0 0 30 20"><rect y="0.000" width="30" height="5.050" fill="#EA2839"/><rect y="5.000" width="30" height="5.050" fill="#1A206D"/><rect y="10.000" width="30" height="5.050" fill="#FFD500"/><rect y="15.000" width="30" height="5.050" fill="#00A551"/></symbol><symbol id="fl-SN" viewBox="0 0 30 20"><rect x="0.000" width="10.050" height="20" fill="#00853F"/><rect x="10.000" width="10.050" height="20" fill="#FDEF42"/><rect x="20.000" width="10.050" height="20" fill="#E31B23"/><polygon points="15.00,7.00 15.67,9.07 17.85,9.07 16.09,10.35 16.76,12.43 15.00,11.15 13.24,12.43 13.91,10.35 12.15,9.07 14.33,9.07" fill="#00853F"/></symbol><symbol id="fl-KE" viewBox="0 0 30 20"><rect y="0.000" width="30" height="6.717" fill="#000"/><rect y="6.667" width="30" height="6.717" fill="#BB0000"/><rect y="13.333" width="30" height="6.717" fill="#006600"/><path d="M0,6.67H30M0,13.33H30" stroke="#fff" stroke-width="1.2"/><ellipse cx="15" cy="10" rx="2.6" ry="5" fill="#BB0000" stroke="#000" stroke-width=".6"/></symbol><symbol id="fl-MV" viewBox="0 0 30 20"><rect width="30" height="20" fill="#D21034"/><rect x="5" y="5" width="20" height="10" fill="#007E3A"/><circle cx="16" cy="10" r="3.3" fill="#fff"/><circle cx="17.2" cy="10" r="2.9" fill="#007E3A"/></symbol><symbol id="fl-SC" viewBox="0 0 30 15"><polygon points="0,15 0,0 10,0" fill="#003F87"/><polygon points="0,15 10,0 20,0" fill="#FCD856"/><polygon points="0,15 20,0 30,0 30,5" fill="#D62828"/><polygon points="0,15 30,5 30,10" fill="#fff"/><polygon points="0,15 30,10 30,15" fill="#007A3D"/></symbol><symbol id="fl-NA" viewBox="0 0 30 20"><rect width="30" height="20" fill="#003580"/><polygon points="30,0 30,20 0,20" fill="#009543"/><path d="M0,20L30,0" stroke="#fff" stroke-width="5"/><path d="M0,20L30,0" stroke="#D21034" stroke-width="3.4"/><circle cx="6" cy="5.5" r="2.4" fill="#FFCE00"/></symbol><symbol id="fl-CV" viewBox="0 0 30 18"><rect width="30" height="18" fill="#003893"/><rect y="9" width="30" height="3" fill="#fff"/><rect y="10" width="30" height="1" fill="#CF2027"/><circle cx="11" cy="10.5" r="4" fill="none" stroke="#F7D116" stroke-width=".7" stroke-dasharray="1 1.1"/></symbol><symbol id="fl-JP" viewBox="0 0 30 20"><rect width="30" height="20" fill="#fff"/><circle cx="15" cy="10" r="6" fill="#BC002D"/></symbol><symbol id="fl-CN" viewBox="0 0 30 20"><rect width="30" height="20" fill="#EE1C25"/><polygon points="5.00,2.00 5.67,4.07 7.85,4.07 6.09,5.35 6.76,7.43 5.00,6.15 3.24,7.43 3.91,5.35 2.15,4.07 4.33,4.07" fill="#FFFF00"/><polygon points="10.00,1.00 10.22,1.69 10.95,1.69 10.36,2.12 10.59,2.81 10.00,2.38 9.41,2.81 9.64,2.12 9.05,1.69 9.78,1.69" fill="#FFFF00"/><polygon points="12.00,3.00 12.22,3.69 12.95,3.69 12.36,4.12 12.59,4.81 12.00,4.38 11.41,4.81 11.64,4.12 11.05,3.69 11.78,3.69" fill="#FFFF00"/><polygon points="12.00,6.00 12.22,6.69 12.95,6.69 12.36,7.12 12.59,7.81 12.00,7.38 11.41,7.81 11.64,7.12 11.05,6.69 11.78,6.69" fill="#FFFF00"/><polygon points="10.00,8.00 10.22,8.69 10.95,8.69 10.36,9.12 10.59,9.81 10.00,9.38 9.41,9.81 9.64,9.12 9.05,8.69 9.78,8.69" fill="#FFFF00"/></symbol><symbol id="fl-VN" viewBox="0 0 30 20"><rect width="30" height="20" fill="#DA251D"/><polygon points="15.00,4.40 16.35,8.55 20.71,8.55 17.18,11.11 18.53,15.25 15.00,12.69 11.47,15.25 12.82,11.11 9.29,8.55 13.65,8.55" fill="#FFFF00"/></symbol><symbol id="fl-ID" viewBox="0 0 30 20"><rect y="0.000" width="30" height="10.050" fill="#FF0000"/><rect y="10.000" width="30" height="10.050" fill="#fff"/></symbol><symbol id="fl-IN" viewBox="0 0 30 20"><rect y="0.000" width="30" height="6.717" fill="#FF9933"/><rect y="6.667" width="30" height="6.717" fill="#fff"/><rect y="13.333" width="30" height="6.717" fill="#138808"/><circle cx="15" cy="10" r="2.6" fill="none" stroke="#000080" stroke-width=".55"/><circle cx="15" cy="10" r=".5" fill="#000080"/></symbol><symbol id="fl-TH" viewBox="0 0 30 20"><rect y="0.000" width="30" height="3.383" fill="#A51931"/><rect y="3.333" width="30" height="3.383" fill="#F4F5F8"/><rect y="6.667" width="30" height="6.717" fill="#2D2A4A"/><rect y="13.333" width="30" height="3.383" fill="#F4F5F8"/><rect y="16.667" width="30" height="3.383" fill="#A51931"/></symbol><symbol id="fl-SG" viewBox="0 0 30 20"><rect y="0.000" width="30" height="10.050" fill="#EF3340"/><rect y="10.000" width="30" height="10.050" fill="#fff"/><circle cx="6.2" cy="5" r="3.4" fill="#fff"/><circle cx="7.5" cy="5" r="3.3" fill="#EF3340"/><polygon points="9.50,1.85 9.67,2.37 10.21,2.37 9.77,2.69 9.94,3.21 9.50,2.89 9.06,3.21 9.23,2.69 8.79,2.37 9.33,2.37" fill="#fff"/><polygon points="7.90,3.15 8.07,3.67 8.61,3.67 8.17,3.99 8.34,4.51 7.90,4.19 7.46,4.51 7.63,3.99 7.19,3.67 7.73,3.67" fill="#fff"/><polygon points="11.10,3.15 11.27,3.67 11.81,3.67 11.37,3.99 11.54,4.51 11.10,4.19 10.66,4.51 10.83,3.99 10.39,3.67 10.93,3.67" fill="#fff"/><polygon points="8.50,5.15 8.67,5.67 9.21,5.67 8.77,5.99 8.94,6.51 8.50,6.19 8.06,6.51 8.23,5.99 7.79,5.67 8.33,5.67" fill="#fff"/><polygon points="10.50,5.15 10.67,5.67 11.21,5.67 10.77,5.99 10.94,6.51 10.50,6.19 10.06,6.51 10.23,5.99 9.79,5.67 10.33,5.67" fill="#fff"/></symbol><symbol id="fl-PH" viewBox="0 0 60 30"><rect y="0.000" width="60" height="15.050" fill="#0038A8"/><rect y="15.000" width="60" height="15.050" fill="#CE1126"/><polygon points="0,0 26,15 0,30" fill="#fff"/><circle cx="9" cy="15" r="3.2" fill="#FCD116"/><polygon points="3.00,2.70 3.29,3.60 4.24,3.60 3.47,4.15 3.76,5.05 3.00,4.50 2.24,5.05 2.53,4.15 1.76,3.60 2.71,3.60" fill="#FCD116"/><polygon points="3.00,24.70 3.29,25.60 4.24,25.60 3.47,26.15 3.76,27.05 3.00,26.50 2.24,27.05 2.53,26.15 1.76,25.60 2.71,25.60" fill="#FCD116"/><polygon points="21.00,13.70 21.29,14.60 22.24,14.60 21.47,15.15 21.76,16.05 21.00,15.50 20.24,16.05 20.53,15.15 19.76,14.60 20.71,14.60" fill="#FCD116"/></symbol><symbol id="fl-KR" viewBox="0 0 30 20"><rect width="30" height="20" fill="#fff"/><circle cx="15" cy="10" r="5" fill="#003478"/><path d="M10,10a5,5 0 0 1 10,0a2.5,2.5 0 0 1-5,0a2.5,2.5 0 0 0-5,0z" fill="#CD2E3A"/><g transform="rotate(-56 6 4.5)"><rect x="3.8" y="2.9" width="4.4" height=".7" fill="#000"/><rect x="3.8" y="4.15" width="4.4" height=".7" fill="#000"/><rect x="3.8" y="5.4" width="4.4" height=".7" fill="#000"/></g><g transform="rotate(-56 24 15.5)"><rect x="21.8" y="13.9" width="4.4" height=".7" fill="#000"/><rect x="21.8" y="15.15" width="4.4" height=".7" fill="#000"/><rect x="21.8" y="16.4" width="4.4" height=".7" fill="#000"/></g><g transform="rotate(56 24 4.5)"><rect x="21.8" y="2.9" width="4.4" height=".7" fill="#000"/><rect x="21.8" y="4.15" width="4.4" height=".7" fill="#000"/><rect x="21.8" y="5.4" width="4.4" height=".7" fill="#000"/></g><g transform="rotate(56 6 15.5)"><rect x="3.8" y="13.9" width="4.4" height=".7" fill="#000"/><rect x="3.8" y="15.15" width="4.4" height=".7" fill="#000"/><rect x="3.8" y="16.4" width="4.4" height=".7" fill="#000"/></g></symbol><symbol id="fl-MY" viewBox="0 0 28 14"><rect y="0" width="28" height="1" fill="#CC0001"/><rect y="1" width="28" height="1" fill="#fff"/><rect y="2" width="28" height="1" fill="#CC0001"/><rect y="3" width="28" height="1" fill="#fff"/><rect y="4" width="28" height="1" fill="#CC0001"/><rect y="5" width="28" height="1" fill="#fff"/><rect y="6" width="28" height="1" fill="#CC0001"/><rect y="7" width="28" height="1" fill="#fff"/><rect y="8" width="28" height="1" fill="#CC0001"/><rect y="9" width="28" height="1" fill="#fff"/><rect y="10" width="28" height="1" fill="#CC0001"/><rect y="11" width="28" height="1" fill="#fff"/><rect y="12" width="28" height="1" fill="#CC0001"/><rect y="13" width="28" height="1" fill="#fff"/><rect width="14" height="8" fill="#010066"/><circle cx="5.5" cy="4" r="3" fill="#FFCC00"/><circle cx="6.4" cy="4" r="2.5" fill="#010066"/><polygon points="10.20,2.00 10.40,3.12 11.07,2.20 10.76,3.30 11.76,2.75 11.01,3.61 12.15,3.55 11.10,4.00 12.15,4.45 11.01,4.39 11.76,5.25 10.76,4.70 11.07,5.80 10.40,4.88 10.20,6.00 10.00,4.88 9.33,5.80 9.64,4.70 8.64,5.25 9.39,4.39 8.25,4.45 9.30,4.00 8.25,3.55 9.39,3.61 8.64,2.75 9.64,3.30 9.33,2.20 10.00,3.12" fill="#FFCC00"/></symbol><symbol id="fl-HK" viewBox="0 0 30 20"><rect width="30" height="20" fill="#DE2910"/><g transform="rotate(0 15 10)"><ellipse cx="15" cy="6.8" rx="1.8" ry="3.2" fill="#fff"/></g><g transform="rotate(72 15 10)"><ellipse cx="15" cy="6.8" rx="1.8" ry="3.2" fill="#fff"/></g><g transform="rotate(144 15 10)"><ellipse cx="15" cy="6.8" rx="1.8" ry="3.2" fill="#fff"/></g><g transform="rotate(216 15 10)"><ellipse cx="15" cy="6.8" rx="1.8" ry="3.2" fill="#fff"/></g><g transform="rotate(288 15 10)"><ellipse cx="15" cy="6.8" rx="1.8" ry="3.2" fill="#fff"/></g></symbol><symbol id="fl-TW" viewBox="0 0 30 20"><rect width="30" height="20" fill="#FE0000"/><rect width="15" height="10" fill="#000095"/><polygon points="7.50,1.40 8.06,2.91 9.30,1.88 9.03,3.47 10.62,3.20 9.59,4.44 11.10,5.00 9.59,5.56 10.62,6.80 9.03,6.53 9.30,8.12 8.06,7.09 7.50,8.60 6.94,7.09 5.70,8.12 5.97,6.53 4.38,6.80 5.41,5.56 3.90,5.00 5.41,4.44 4.38,3.20 5.97,3.47 5.70,1.88 6.94,2.91" fill="#fff"/><circle cx="7.5" cy="5" r="1.9" fill="#fff" stroke="#000095" stroke-width=".4"/></symbol><symbol id="fl-LK" viewBox="0 0 40 20"><rect width="40" height="20" fill="#FFBE29"/><rect x="1.5" y="1.5" width="4.5" height="17" fill="#00534E"/><rect x="6" y="1.5" width="4.5" height="17" fill="#EB7400"/><rect x="12" y="1.5" width="26.5" height="17" fill="#8D153A"/></symbol><symbol id="fl-KH" viewBox="0 0 30 20"><rect y="0.000" width="30" height="5.050" fill="#032EA1"/><rect y="5.000" width="30" height="10.050" fill="#E00025"/><rect y="15.000" width="30" height="5.050" fill="#032EA1"/><path d="M10,13h10v-1.5h-1v-2h-1v-2.5h-1.2v-2l-.8-1.5l-.8,1.5v2h-1.2v2.5h-1v2h-1z" fill="#fff"/></symbol><symbol id="fl-NZ" viewBox="0 0 60 30"><rect width="60" height="30" fill="#012169"/><use href="#fj" width="30" height="15"/><polygon points="45.00,4.90 45.38,6.07 46.62,6.07 45.62,6.80 46.00,7.98 45.00,7.25 44.00,7.98 44.38,6.80 43.38,6.07 44.62,6.07" fill="#C8102E" stroke="#fff" stroke-width=".5"/><polygon points="39.80,12.05 40.15,13.12 41.27,13.12 40.36,13.78 40.71,14.85 39.80,14.19 38.89,14.85 39.24,13.78 38.33,13.12 39.45,13.12" fill="#C8102E" stroke="#fff" stroke-width=".5"/><polygon points="50.20,10.90 50.51,11.87 51.53,11.87 50.71,12.47 51.02,13.43 50.20,12.83 49.38,13.43 49.69,12.47 48.87,11.87 49.89,11.87" fill="#C8102E" stroke="#fff" stroke-width=".5"/><polygon points="45.00,22.35 45.42,23.63 46.76,23.63 45.67,24.42 46.09,25.70 45.00,24.91 43.91,25.70 44.33,24.42 43.24,23.63 44.58,23.63" fill="#C8102E" stroke="#fff" stroke-width=".5"/></symbol><symbol id="fl-AU" viewBox="0 0 60 30"><rect width="60" height="30" fill="#012169"/><use href="#fj" width="30" height="15"/><polygon points="15.00,18.00 15.86,20.72 18.52,19.69 16.93,22.06 19.39,23.50 16.55,23.73 16.95,26.55 15.00,24.48 13.05,26.55 13.45,23.73 10.61,23.50 13.07,22.06 11.48,19.69 14.14,20.72" fill="#fff"/><polygon points="45.00,22.90 45.40,24.17 46.64,23.69 45.90,24.79 47.05,25.47 45.72,25.58 45.91,26.89 45.00,25.92 44.09,26.89 44.28,25.58 42.95,25.47 44.10,24.79 43.36,23.69 44.60,24.17" fill="#fff"/><polygon points="37.50,10.50 37.90,11.77 39.14,11.29 38.40,12.39 39.55,13.07 38.22,13.18 38.41,14.49 37.50,13.52 36.59,14.49 36.78,13.18 35.45,13.07 36.60,12.39 35.86,11.29 37.10,11.77" fill="#fff"/><polygon points="45.00,2.90 45.40,4.17 46.64,3.69 45.90,4.79 47.05,5.47 45.72,5.58 45.91,6.89 45.00,5.92 44.09,6.89 44.28,5.58 42.95,5.47 44.10,4.79 43.36,3.69 44.60,4.17" fill="#fff"/><polygon points="52.50,8.70 52.90,9.97 54.14,9.49 53.40,10.59 54.55,11.27 53.22,11.38 53.41,12.69 52.50,11.72 51.59,12.69 51.78,11.38 50.45,11.27 51.60,10.59 50.86,9.49 52.10,9.97" fill="#fff"/><polygon points="48.60,14.50 48.86,15.24 49.65,15.26 49.02,15.74 49.25,16.49 48.60,16.04 47.95,16.49 48.18,15.74 47.55,15.26 48.34,15.24" fill="#fff"/></symbol><symbol id="fl-FJ" viewBox="0 0 60 30"><rect width="60" height="30" fill="#68BFE5"/><use href="#fj" width="30" height="15"/><path d="M40,8h10v8q0,5-5,7q-5-2-5-7z" fill="#fff" stroke="#C8102E" stroke-width=".4"/><rect x="40" y="8" width="10" height="3" fill="#C8102E"/><rect x="44.4" y="11" width="1.2" height="11" fill="#C8102E"/><rect x="40" y="15" width="10" height="1.2" fill="#C8102E"/></symbol><symbol id="fl-CK" viewBox="0 0 60 30"><rect width="60" height="30" fill="#012169"/><use href="#fj" width="30" height="15"/><polygon points="45.00,7.50 45.22,8.19 45.95,8.19 45.36,8.62 45.59,9.31 45.00,8.88 44.41,9.31 44.64,8.62 44.05,8.19 44.78,8.19" fill="#fff"/><polygon points="47.64,8.06 47.87,8.75 48.59,8.75 48.01,9.18 48.23,9.87 47.64,9.44 47.06,9.87 47.28,9.18 46.69,8.75 47.42,8.75" fill="#fff"/><polygon points="49.83,9.65 50.05,10.34 50.78,10.34 50.19,10.77 50.42,11.46 49.83,11.03 49.24,11.46 49.47,10.77 48.88,10.34 49.61,10.34" fill="#fff"/><polygon points="51.18,11.99 51.41,12.68 52.13,12.68 51.55,13.11 51.77,13.80 51.18,13.37 50.59,13.80 50.82,13.11 50.23,12.68 50.96,12.68" fill="#fff"/><polygon points="51.46,14.68 51.69,15.37 52.42,15.37 51.83,15.80 52.05,16.49 51.46,16.06 50.88,16.49 51.10,15.80 50.51,15.37 51.24,15.37" fill="#fff"/><polygon points="50.63,17.25 50.85,17.94 51.58,17.94 50.99,18.37 51.22,19.06 50.63,18.63 50.04,19.06 50.27,18.37 49.68,17.94 50.40,17.94" fill="#fff"/><polygon points="48.82,19.26 49.05,19.95 49.77,19.95 49.18,20.38 49.41,21.07 48.82,20.64 48.23,21.07 48.46,20.38 47.87,19.95 48.60,19.95" fill="#fff"/><polygon points="46.35,20.36 46.58,21.05 47.30,21.05 46.71,21.48 46.94,22.17 46.35,21.74 45.76,22.17 45.99,21.48 45.40,21.05 46.13,21.05" fill="#fff"/><polygon points="43.65,20.36 43.87,21.05 44.60,21.05 44.01,21.48 44.24,22.17 43.65,21.74 43.06,22.17 43.29,21.48 42.70,21.05 43.42,21.05" fill="#fff"/><polygon points="41.18,19.26 41.40,19.95 42.13,19.95 41.54,20.38 41.77,21.07 41.18,20.64 40.59,21.07 40.82,20.38 40.23,19.95 40.95,19.95" fill="#fff"/><polygon points="39.37,17.25 39.60,17.94 40.32,17.94 39.73,18.37 39.96,19.06 39.37,18.63 38.78,19.06 39.01,18.37 38.42,17.94 39.15,17.94" fill="#fff"/><polygon points="38.54,14.68 38.76,15.37 39.49,15.37 38.90,15.80 39.12,16.49 38.54,16.06 37.95,16.49 38.17,15.80 37.58,15.37 38.31,15.37" fill="#fff"/><polygon points="38.82,11.99 39.04,12.68 39.77,12.68 39.18,13.11 39.41,13.80 38.82,13.37 38.23,13.80 38.45,13.11 37.87,12.68 38.59,12.68" fill="#fff"/><polygon points="40.17,9.65 40.39,10.34 41.12,10.34 40.53,10.77 40.76,11.46 40.17,11.03 39.58,11.46 39.81,10.77 39.22,10.34 39.95,10.34" fill="#fff"/><polygon points="42.36,8.06 42.58,8.75 43.31,8.75 42.72,9.18 42.94,9.87 42.36,9.44 41.77,9.87 41.99,9.18 41.41,8.75 42.13,8.75" fill="#fff"/></symbol><symbol id="fl-PF" viewBox="0 0 30 20"><rect y="0.000" width="30" height="5.050" fill="#CE1126"/><rect y="5.000" width="30" height="10.050" fill="#fff"/><rect y="15.000" width="30" height="5.050" fill="#CE1126"/><circle cx="15" cy="10" r="3" fill="#FFC000"/><path d="M12,10.5h6v1.4q-3,1.6-6,0z" fill="#083D9C"/><path d="M13.3,10l1.7-2.4l1.7,2.4z" fill="#CE1126"/></symbol><symbol id="fl-NC" viewBox="0 0 3 2"><rect x="0.000" width="1.050" height="2" fill="#002654"/><rect x="1.000" width="1.050" height="2" fill="#fff"/><rect x="2.000" width="1.050" height="2" fill="#CE1126"/></symbol><symbol id="fl-WS" viewBox="0 0 30 15"><rect width="30" height="15" fill="#CE1126"/><rect width="15" height="7.5" fill="#002B7F"/><polygon points="7.50,0.60 7.72,1.29 8.45,1.29 7.86,1.72 8.09,2.41 7.50,1.98 6.91,2.41 7.14,1.72 6.55,1.29 7.28,1.29" fill="#fff"/><polygon points="4.80,2.60 5.02,3.29 5.75,3.29 5.16,3.72 5.39,4.41 4.80,3.98 4.21,4.41 4.44,3.72 3.85,3.29 4.58,3.29" fill="#fff"/><polygon points="10.00,2.20 10.22,2.89 10.95,2.89 10.36,3.32 10.59,4.01 10.00,3.58 9.41,4.01 9.64,3.32 9.05,2.89 9.78,2.89" fill="#fff"/><polygon points="7.50,4.90 7.75,5.66 8.55,5.66 7.90,6.13 8.15,6.89 7.50,6.42 6.85,6.89 7.10,6.13 6.45,5.66 7.25,5.66" fill="#fff"/><polygon points="8.80,3.70 8.93,4.11 9.37,4.11 9.02,4.37 9.15,4.79 8.80,4.53 8.45,4.79 8.58,4.37 8.23,4.11 8.67,4.11" fill="#fff"/></symbol><symbol id="fl-TO" viewBox="0 0 30 15"><rect width="30" height="15" fill="#C10000"/><rect width="12" height="7.5" fill="#fff"/><rect x="5.1" y="1.1" width="1.8" height="5.3" fill="#C10000"/><rect x="3.35" y="2.85" width="5.3" height="1.8" fill="#C10000"/></symbol><symbol id="fl-VU" viewBox="0 0 30 18"><rect y="0.000" width="30" height="9.050" fill="#D21034"/><rect y="9.000" width="30" height="9.050" fill="#009543"/><path d="M0,0L13,9L0,18" stroke="#FDCE12" stroke-width="2.6" fill="#000"/><path d="M13,9H30" stroke="#000" stroke-width="2.6"/><path d="M13,9H30" stroke="#FDCE12" stroke-width="1"/></symbol><symbol id="fl-PG" viewBox="0 0 40 30"><polygon points="0,0 40,0 40,30" fill="#CE1126"/><polygon points="0,0 0,30 40,30" fill="#000"/><polygon points="10.00,12.40 10.36,13.51 11.52,13.51 10.58,14.19 10.94,15.29 10.00,14.61 9.06,15.29 9.42,14.19 8.48,13.51 9.64,13.51" fill="#fff"/><polygon points="7.00,17.60 7.31,18.57 8.33,18.57 7.51,19.17 7.82,20.13 7.00,19.53 6.18,20.13 6.49,19.17 5.67,18.57 6.69,18.57" fill="#fff"/><polygon points="13.00,17.60 13.31,18.57 14.33,18.57 13.51,19.17 13.82,20.13 13.00,19.53 12.18,20.13 12.49,19.17 11.67,18.57 12.69,18.57" fill="#fff"/><polygon points="10.00,22.90 10.36,24.01 11.52,24.01 10.58,24.69 10.94,25.79 10.00,25.11 9.06,25.79 9.42,24.69 8.48,24.01 9.64,24.01" fill="#fff"/><polygon points="11.50,20.70 11.68,21.25 12.26,21.25 11.79,21.59 11.97,22.15 11.50,21.81 11.03,22.15 11.21,21.59 10.74,21.25 11.32,21.25" fill="#fff"/><path d="M24,10q6-4 9,0q-3,1-5,3z" fill="#FCD116"/></symbol><symbol id="fl-AS" viewBox="0 0 30 15"><rect width="30" height="15" fill="#002B7F"/><polygon points="30,0 0,7.5 30,15" fill="#fff"/><polygon points="30,1.5 4.5,7.5 30,13.5" fill="#BF0A30"/><path d="M17,6.5l8-1.5l-1,4z" fill="#8C5A2B"/></symbol></defs></svg>
 
 <div class="wrap">
   <header class="trip" id="tripHead"></header>
@@ -443,8 +482,8 @@ nav.tabs button{font-size:11.5px}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "5.6";
-const APP_UPDATED = "Oct 22, 2026, 8:10 AM ET";
+const APP_VERSION = "6.1";
+const APP_UPDATED = "Oct 23, 2026, 2:30 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -543,9 +582,9 @@ const fmtRange = (a,b) => { if(!a && !b) return "Dates not set"; if(a && !b) ret
 const blankScala = () => ({s1:0, s2:0, log:[]});
 function newTrip(p, fixedId){
   p = p || {};
-  const t = {id:fixedId||uid(), name:p.name||"New cruise", ship:p.ship||"", from:p.from||"", to:p.to||"", start:p.start||"", end:p.end||"",
+  const t = {id:fixedId||uid(), createdAt:Date.now(), name:p.name||"New cruise", ship:p.ship||"", from:p.from||"", to:p.to||"", start:p.start||"", end:p.end||"",
           p1:"Alessandra", p2:"Kirk", target:150, limit:101, rulesV:3, games:[], days:{}, lastType:"domino", curDate:today(),
-          cur:{s1:0, s2:0, log:[]}, scala:blankScala(), ports:[]};
+          cur:{s1:0, s2:0, log:[]}, scala:blankScala(), ports:[], hotels:[]};
   ensureEndPorts(t);
   loadItinerary(t);
   return t;
@@ -553,6 +592,7 @@ function newTrip(p, fixedId){
 function migrate(s){
   s.trips.forEach(t => {
     t.days = t.days || {}; t.lastType = t.lastType || "domino"; t.limit = t.limit || 101;
+    t.hotels = Array.isArray(t.hotels) ? t.hotels : Object.values(t.hotels || {});
     if(!t.rulesV || t.rulesV < 3){ t.target = 150; t.limit = 101; t.rulesV = 3; }   // Domino ends at 150, Scala 40 at 101
     t.curDate = t.curDate || (t.cur && t.cur.date) || today();
     t.cur = t.cur || {s1:0,s2:0,log:[]};
@@ -689,8 +729,8 @@ const byId = arr => { const o = {}; (arr||[]).forEach(x => { if(x && x.id) o[x.i
 function toTree(st){
   const trips = {};
   (st.trips||[]).forEach(t => {
-    const {games, ports, cur, scala, ...info} = t;
-    trips[t.id] = clone({info, games: byId(games), ports: byId(ports), cur, scala});
+    const {games, ports, hotels, cur, scala, ...info} = t;
+    trips[t.id] = clone({info, games: byId(games), ports: byId(ports), hotels: byId(hotels), cur, scala});
   });
   return {v:3, trips};
 }
@@ -699,6 +739,7 @@ function fromTree(tree, keepActive){
     const t = Object.assign({}, x.info);
     t.games = Object.values(x.games||{}).sort((a,b) => (a.date||"").localeCompare(b.date||"") || String(a.id).localeCompare(String(b.id)));
     t.ports = Object.values(x.ports||{}).map(p => Object.assign({s1:null, s2:null}, p));
+    t.hotels = Object.values(x.hotels||{}).filter(h => h && h.id).map(h => Object.assign({s1:null, s2:null}, h));
     t.cur = Object.assign({s1:0, s2:0, log:[]}, x.cur||{}); if(!Array.isArray(t.cur.log)) t.cur.log = [];
     t.scala = Object.assign({s1:0, s2:0, log:[]}, x.scala||{}); if(!Array.isArray(t.scala.log)) t.scala.log = [];
     t.days = t.days || {}; t.itineraries = t.itineraries || [];
@@ -879,17 +920,40 @@ const verNum = v => String(v||"0").split(".").map(Number);
 const verCmp = (a, b) => { const x = verNum(a), y = verNum(b); for(let i = 0; i < Math.max(x.length, y.length); i++){ const d = (x[i]||0) - (y[i]||0); if(d) return d > 0 ? 1 : -1; } return 0; };
 function checkVersion(latest){
   if(!cloud.ref) return;
-  if(!latest || verCmp(APP_VERSION, latest) > 0){ cloud.ref.child("meta/latestVersion").set(APP_VERSION).catch(()=>{}); return; }
+  if(!latest || verCmp(APP_VERSION, latest) > 0){ if(/^https?:$/.test(location.protocol)) cloud.ref.child("meta/latestVersion").set(APP_VERSION).catch(()=>{}); return; }
   if(verCmp(APP_VERSION, latest) < 0) showUpdateBar(latest);
 }
 let updateShown = false;
+// How updating works: 1) ask the offline copy for the new version and reload; 2) if the page still
+// comes back old, clear the offline copy and reload fresh from the website; 3) if it is STILL old,
+// the website itself doesn't have the new file yet, so say that, and let the banner be closed.
+const UPD_KEY = "cs-update-try", UPD_HIDE = "cs-update-hide";
+const ss = { get(k){ try { return JSON.parse(sessionStorage.getItem(k) || "null"); } catch(e){ return null; } },
+             set(k, v){ try { sessionStorage.setItem(k, JSON.stringify(v)); } catch(e){} } };
+function hiddenFor(v){ try { return localStorage.getItem(UPD_HIDE) === v; } catch(e){ return false; } }
 function showUpdateBar(latest){
-  if(updateShown) return; updateShown = true; updateApp(true);      // try quietly first
-  const bar = document.createElement("button");
-  bar.type = "button"; bar.className = "updatebar b3d";
-  bar.innerHTML = `<b>Update available</b><span>Version ${esc(latest)} is on your other device. Tap to update. Your scores are kept.</span>`;
-  bar.addEventListener("click", () => updateApp(false));
+  if(updateShown || hiddenFor(latest)) return; updateShown = true;
+  const tried = ss.get(UPD_KEY), tries = tried && tried.v === latest ? tried.n : 0;
+  if(tries === 1){ hardRefresh(latest); return; }                      // first reload didn't do it: clear the offline copy
+  if(!tries) updateApp(true);                                          // try quietly first
+  const stuck = tries >= 2;
+  const bar = document.createElement("div");
+  bar.className = "updatebar b3d"; bar.setAttribute("role", "status");
+  bar.innerHTML = `<button type="button" class="ub-main">${stuck
+      ? `<b>Version ${esc(latest)} isn't on the website yet</b><span>It's open on your other device, but this link still has version ${esc(APP_VERSION)}. Upload the new Cruise_Scorebook.html to the website, then tap here.</span>`
+      : `<b>Update available</b><span>Version ${esc(latest)} is on your other device. Tap to update. Your scores are kept.</span>`}</button>
+    <button type="button" class="ub-x" aria-label="Close">✕</button>`;
+  bar.querySelector(".ub-main").addEventListener("click", () => { ss.set(UPD_KEY, {v: latest, n: stuck ? 1 : tries + 1}); updateApp(false); });
+  bar.querySelector(".ub-x").addEventListener("click", () => { try { localStorage.setItem(UPD_HIDE, latest); } catch(e){} bar.remove(); });
   document.body.appendChild(bar);
+}
+function hardRefresh(latest){
+  ss.set(UPD_KEY, {v: latest, n: 2});
+  const go = () => location.replace(location.pathname + "?v=" + encodeURIComponent(latest) + "&t=" + Date.now() + location.hash);
+  const jobs = [];
+  if("serviceWorker" in navigator) jobs.push(navigator.serviceWorker.getRegistrations().then(rs => Promise.all(rs.map(r => r.unregister()))).catch(()=>{}));
+  if(window.caches) jobs.push(caches.keys().then(ks => Promise.all(ks.map(k => caches.delete(k)))).catch(()=>{}));
+  Promise.all(jobs).then(go, go);
 }
 function updateApp(quiet){
   const go = () => { if(!quiet) location.reload(); };
@@ -899,6 +963,9 @@ function updateApp(quiet){
     return reg.update().then(() => { if(reg.waiting) reg.waiting.postMessage({type:"SKIP_WAITING"}); }).then(go, go);
   }).catch(go);
 }
+// once this device runs the newest version, forget the update attempts and tidy the address
+(function(){ const t = ss.get(UPD_KEY); if(t && verCmp(APP_VERSION, t.v) >= 0) ss.set(UPD_KEY, null);
+  if(/[?&]t=\d/.test(location.search)) try { history.replaceState(null, "", location.pathname + location.hash); } catch(e){} })();
 function initCloud(){
   try{
     if(!window.firebase || !firebase.initializeApp) {
@@ -1113,6 +1180,150 @@ function tripsInOrder(){
   return state.trips.slice().sort((a,b) => rank(a) - rank(b) ||
     (rank(a) === 0 ? b.start.localeCompare(a.start) : (a.start||"").localeCompare(b.start||"")));
 }
+/* ---------- add a past trip: dates, from/to, and Alessandra's and Kirk's score for each port ---------- */
+let pastOpen = false, pastDraft = null;
+const blankPast = () => ({start:"", end:"", from:"", to:"", ship:"", dep:{s1:"", s2:""}, arr:{s1:"", s2:""}, ports:[{name:"", date:"", s1:"", s2:""}], hotels:[]});
+function pfScore(path, v, who){
+  return `<label class="pf-sc p${who}"><span>${who === 1 ? "Alessandra" : "Kirk"}</span><select data-pf="${path}" aria-label="${who === 1 ? "Alessandra" : "Kirk"}'s score">
+    <option value="">–</option>${[1,2,3,4,5,6,7,8,9,10].map(n => `<option value="${n}" ${String(v) === String(n) ? "selected" : ""}>${n}</option>`).join("")}</select></label>`;
+}
+function pastTripForm(){
+  const d = pastDraft = pastDraft || blankPast();
+  return `<div class="pastform" id="pastForm">
+    <h3>Add a past trip</h3>
+    <div class="form">
+      <label for="pf-start">Sailed on<input type="date" id="pf-start" data-pf="start" value="${esc(d.start)}"></label>
+      <label for="pf-end">Back on<input type="date" id="pf-end" data-pf="end" value="${esc(d.end)}"></label>
+      <label class="full" for="pf-from">Sailed from<input id="pf-from" data-pf="from" value="${esc(d.from)}" placeholder="e.g. Fort Lauderdale" autocomplete="off"></label>
+      <label class="full" for="pf-to">Sailed to<input id="pf-to" data-pf="to" value="${esc(d.to)}" placeholder="e.g. Barcelona" autocomplete="off"></label>
+      <label class="full" for="pf-ship">Ship (optional)<input id="pf-ship" data-pf="ship" value="${esc(d.ship)}" placeholder="Ship name" autocomplete="off"></label>
+    </div>
+    <div class="pf-h">Score the ports from 1 to 10</div>
+    <div class="pf-port end">
+      <div class="pf-name"><span class="port-kind">Departure</span><b id="pf-depname">${esc(d.from || "Sailed from")}</b></div>
+      <div class="pf-scores">${pfScore("dep.s1", d.dep.s1, 1)}${pfScore("dep.s2", d.dep.s2, 2)}</div>
+    </div>
+    ${d.ports.map((pt, i) => `<div class="pf-port">
+      <div class="pf-row">
+        <input data-pf="ports.${i}.name" value="${esc(pt.name)}" placeholder="Port ${i+1}, e.g. Nassau" aria-label="Port ${i+1} name" autocomplete="off">
+        <input type="date" data-pf="ports.${i}.date" value="${esc(pt.date)}" aria-label="Date in port ${i+1}">
+      </div>
+      <div class="pf-scores">${pfScore(`ports.${i}.s1`, pt.s1, 1)}${pfScore(`ports.${i}.s2`, pt.s2, 2)}</div>
+      ${d.ports.length > 1 ? `<button type="button" class="xbtn" data-pfdel="${i}">Remove port</button>` : ""}
+    </div>`).join("")}
+    <button type="button" class="btn b3d pf-add" data-act="pfaddport">+ Add another port</button>
+    <div class="pf-port end">
+      <div class="pf-name"><span class="port-kind">Arrival</span><b id="pf-arrname">${esc(d.to || "Sailed to")}</b></div>
+      <div class="pf-scores">${pfScore("arr.s1", d.arr.s1, 1)}${pfScore("arr.s2", d.arr.s2, 2)}</div>
+    </div>
+    <div class="pf-h">Hotels before or after the cruise</div>
+    ${d.hotels.map((h, i) => `<div class="pf-port">${hotelFields(Object.assign({}, h, {id: "hotels." + i}), "data-pf", false)}<button type="button" class="xbtn" data-pfdelh="${i}">Remove hotel</button></div>`).join("")}
+    <button type="button" class="btn b3d pf-add" data-act="pfaddhotel">+ Add a hotel</button>
+    <p class="pf-msg" id="pfMsg" role="alert"></p>
+    <div class="pf-actions">
+      <button type="button" class="btn b3d" data-act="pfcancel">Cancel</button>
+      <button type="button" class="btn primary b3d" data-act="pfsave">Save past trip</button>
+    </div>
+  </div>`;
+}
+function setPast(path, v){
+  const keys = path.split("."); let o = pastDraft;
+  keys.slice(0, -1).forEach(k => { o = o[k]; });
+  o[keys[keys.length - 1]] = v;
+}
+document.addEventListener("input", e => { const el = e.target; if(el.dataset && el.dataset.pf && pastDraft){ setPast(el.dataset.pf, el.value);
+  if(el.dataset.pf === "from"){ const n = $("#pf-depname"); if(n) n.textContent = el.value || "Sailed from"; }
+  if(el.dataset.pf === "to"){ const n = $("#pf-arrname"); if(n) n.textContent = el.value || "Sailed to"; } } });
+document.addEventListener("change", e => { const el = e.target; if(el.dataset && el.dataset.pf && pastDraft) setPast(el.dataset.pf, el.value); });
+document.addEventListener("click", e => {
+  const dh = e.target.closest("[data-pfdelh]"); if(!dh || !pastDraft) return;
+  pastDraft.hotels.splice(+dh.dataset.pfdelh, 1); $("#presetBox").innerHTML = pastTripForm();
+});
+document.addEventListener("click", e => {
+  const del = e.target.closest("[data-pfdel]"); if(!del || !pastDraft) return;
+  pastDraft.ports.splice(+del.dataset.pfdel, 1); $("#presetBox").innerHTML = pastTripForm();
+});
+function savePastTrip(){
+  const d = pastDraft, msg = t => { const m = $("#pfMsg"); if(m) m.textContent = t; };
+  const from = d.from.trim(), to = d.to.trim();
+  if(!d.start){ msg("Add the date you sailed."); $("#pf-start").focus(); return; }
+  if(!from){ msg("Add where you sailed from."); $("#pf-from").focus(); return; }
+  if(!to){ msg("Add where you sailed to."); $("#pf-to").focus(); return; }
+  if(d.end && d.end < d.start){ msg("The return date is before the sailing date."); $("#pf-end").focus(); return; }
+  const now = Date.now(), num = v => v === "" || v == null ? null : +v;
+  const t = newTrip();
+  Object.assign(t, {name: from + " → " + to, ship: d.ship.trim(), from, to, start: d.start, end: d.end, p1: "Alessandra", p2: "Kirk", past: true, curDate: d.start});
+  t.ports = []; ensureEndPorts(t);
+  const score = (pt, src) => { pt.s1 = num(src.s1); pt.s2 = num(src.s2); if(pt.s1 != null) pt.rated1 = now; if(pt.s2 != null) pt.rated2 = now; };
+  t.ports.forEach(pt => score(pt, pt.kind === "start" ? d.dep : d.arr));
+  d.ports.filter(x => x.name.trim()).forEach((x, i) => { const pt = {id: uid(), name: x.name.trim(), date: x.date || "", s1: null, s2: null, order: i}; score(pt, x); t.ports.push(pt); });
+  t.hotels = d.hotels.filter(h => (h.name || "").trim() || (h.city || "").trim()).map((h, i) => ({id: uid(), name: (h.name || "").trim(), city: (h.city || "").trim(), in: h.in || "", out: h.out || "", when: h.when || "before", s1: num(h.s1), s2: num(h.s2), createdAt: now, order: i}));
+  state.trips.push(t);
+  openTripRecords[t.id] = true; pastOpen = false; pastDraft = null;
+  commit(); render();
+  setTimeout(() => { const c = document.querySelector(`[data-trip="${t.id}"]`); if(c) c.scrollIntoView({block:"center", behavior:"smooth"}); }, 50);
+}
+
+/* ---------- hotels: stays before or after the cruise, as many as needed ---------- */
+const WHEN = {before:"Before the cruise", after:"After the cruise"};
+const nightsOf = (a, b) => a && b && b > a ? Math.round((new Date(b + "T12:00") - new Date(a + "T12:00")) / 864e5) : 0;
+const hotelLocked = h => isLocked(h.createdAt);
+function sortHotels(list){ const r = h => h.when === "after" ? 1 : 0; return (list || []).slice().sort((a,b) => r(a) - r(b) || (a.in||"9999").localeCompare(b.in||"9999") || (a.order||0) - (b.order||0)); }
+function hotelScore(path, v, who, dis){
+  const nm = who === 1 ? "Alessandra" : "Kirk";
+  return `<label class="pf-sc p${who}"><span>${nm}</span><select ${path} aria-label="${nm}'s hotel score" ${dis ? "disabled" : ""}>
+    <option value="">–</option>${[1,2,3,4,5,6,7,8,9,10].map(n => `<option value="${n}" ${String(v ?? "") === String(n) ? "selected" : ""}>${n}</option>`).join("")}</select></label>`;
+}
+function hotelFields(h, attr, dis){
+  const n = nightsOf(h.in, h.out), a = f => `${attr}="${h.id}.${f}"`;
+  return `<div class="hotel-top"><span class="port-kind">🏨 ${WHEN[h.when] || WHEN.before}</span>${n ? `<span class="hn">${n} night${n === 1 ? "" : "s"}</span>` : ""}</div>
+    <div class="form">
+      <label class="full">Hotel<input ${a("name")} value="${esc(h.name || "")}" placeholder="e.g. Park Hyatt Auckland" autocomplete="off" ${dis ? "disabled" : ""}></label>
+      <label class="full">City<input ${a("city")} value="${esc(h.city || "")}" placeholder="e.g. Auckland, New Zealand" autocomplete="off" ${dis ? "disabled" : ""}></label>
+      <label>Check-in<input type="date" ${a("in")} value="${esc(h.in || "")}" ${dis ? "disabled" : ""}></label>
+      <label>Check-out<input type="date" ${a("out")} value="${esc(h.out || "")}" ${dis ? "disabled" : ""}></label>
+      <label class="full">When<select ${a("when")} ${dis ? "disabled" : ""}>${Object.entries(WHEN).map(([k,v]) => `<option value="${k}" ${(h.when || "before") === k ? "selected" : ""}>${v}</option>`).join("")}</select></label>
+    </div>
+    <div class="pf-scores">${hotelScore(a("s1"), h.s1, 1, dis)}${hotelScore(a("s2"), h.s2, 2, dis)}</div>`;
+}
+function hotelsSection(t){
+  const hs = sortHotels(t.hotels);
+  return `<div class="section-h"><h2>Hotels</h2><span class="eyebrow">${hs.length} stay${hs.length === 1 ? "" : "s"}</span></div>
+    ${hs.length ? hs.map(h => { const lk = hotelLocked(h); return `<div class="hotel" id="hotel-${h.id}">
+      ${hotelFields(h, "data-h", lk)}
+      ${lk ? `<span class="port-note">🔒 Locked 48 hours after it was added. Unlock in Save As (tap © 2026 Thor).</span>` : `<button type="button" class="xbtn" data-delhotel="${h.id}">Remove hotel</button>`}
+    </div>`; }).join("") : `<div class="empty">No hotels for this trip. Add the hotels where you stay before or after the cruise.</div>`}
+    <button type="button" class="btn b3d pf-add" data-act="addhotel">+ Add a hotel</button>`;
+}
+function hotelSummary(x){
+  const hs = sortHotels(x.hotels).filter(h => h.name || h.city);
+  if(!hs.length) return "";
+  return `<div class="ts-h"><span>Hotels</span><span>${hs.length} stay${hs.length === 1 ? "" : "s"}</span></div>
+    <table class="ts-ports"><thead><tr><th>Hotel</th><th class="c1">${esc(x.p1)}</th><th class="c2">${esc(x.p2)}</th><th>Avg</th></tr></thead><tbody>
+    ${hs.map(h => { const n = nightsOf(h.in, h.out); return `<tr><td><b>${esc(h.name || h.city)}</b><small>${esc([h.when === "after" ? "After" : "Before", h.name && h.city ? h.city : "", h.in ? fmtDate(h.in, {month:"short", day:"numeric"}) + (n ? ` · ${n} night${n === 1 ? "" : "s"}` : "") : ""].filter(Boolean).join(" · "))}</small></td><td class="num">${h.s1 ?? "–"}</td><td class="num">${h.s2 ?? "–"}</td><td class="num"><span class="ts-avg tone-${scoreTone(portAvg(h))}">${fmt1(portAvg(h))}</span></td></tr>`; }).join("")}
+    </tbody></table>`;
+}
+function setHotel(t, path, v){
+  const [id, f] = path.split("."), h = (t.hotels || []).find(x => x.id === id); if(!h || hotelLocked(h)) return null;
+  h[f] = (f === "s1" || f === "s2") ? (v === "" ? null : +v) : v;
+  return h;
+}
+let hotelTimer = null;
+document.addEventListener("input", e => { const el = e.target; if(!el.dataset || !el.dataset.h || el.tagName === "SELECT") return;
+  const h = setHotel(trip(), el.dataset.h, el.value); if(!h) return;
+  clearTimeout(hotelTimer); hotelTimer = setTimeout(() => commit(), 400); });
+document.addEventListener("change", e => { const el = e.target; if(!el.dataset || !el.dataset.h) return;
+  const h = setHotel(trip(), el.dataset.h, el.value); if(!h) return;
+  clearTimeout(hotelTimer); commit();
+  if(/\.(when|in|out)$/.test(el.dataset.h)){ const y = window.scrollY; render(); window.scrollTo(0, y); } });
+document.addEventListener("click", e => {
+  const d = e.target.closest("[data-delhotel]"); if(!d) return;
+  const t = trip(), h = (t.hotels || []).find(x => x.id === d.dataset.delhotel); if(!h || hotelLocked(h)) return;
+  sheet(`Remove ${h.name ? "“" + esc(h.name) + "”" : "this hotel"}?`, "Its scores are removed too.", "Remove hotel", () => { t.hotels = t.hotels.filter(x => x.id !== h.id); commit(); render(); }, true);
+});
+
+/* Delete this trip shows only for 24 hours after a trip is added, or while editing is unlocked */
+const canDeleteTrip = t => editingUnlocked || (!!t.createdAt && Date.now() - t.createdAt < 24*60*60*1000);
 function renderTrips(){
   const t = trip();
   $("#view").innerHTML = `
@@ -1127,10 +1338,12 @@ function renderTrips(){
       <label for="f-p1">Player 1<input id="f-p1" data-f="p1" value="${esc(t.p1)}" maxlength="18" placeholder="Alessandra"></label>
       <label for="f-p2">Player 2<input id="f-p2" data-f="p2" value="${esc(t.p2)}" maxlength="18" placeholder="Kirk"></label>
     </div>
-    <div class="section-h"><h2>All trips</h2><button class="btn b3d" data-act="newtrip">New trip</button></div>
-    <div id="presetBox"></div>
+    ${hotelsSection(t)}
+    <div class="section-h"><h2>All trips</h2><div class="trip-btns"><button class="btn b3d" data-act="pasttrip">Add past trip</button><button class="btn b3d" data-act="newtrip">New trip</button></div></div>
+    <div id="presetBox">${pastOpen ? pastTripForm() : ""}</div>
     ${tripsInOrder().map(x => tripRecord(x, t)).join("")}
-    ${state.trips.length > 1 ? `<button class="btn danger b3d" style="margin-top:12px" data-act="deltrip">Delete this trip</button>` : ""}
+    ${state.trips.length > 1 && canDeleteTrip(t) ? `<button class="btn danger b3d" style="margin-top:12px" data-act="deltrip">Delete this trip</button>
+      ${editingUnlocked ? "" : `<p class="rulehint" style="margin-top:6px">You can delete a trip for 24 hours after adding it. After that, unlock editing (tap © 2026 Thor) to delete it.</p>`}` : ""}
   `;
 }
 
@@ -1283,6 +1496,77 @@ document.addEventListener("click", e => {
 });
 
 
+/* ---------- country flags for a port name (e.g. "Auckland, New Zealand" → 🇳🇿) ---------- */
+const PLACE_CC = (() => {
+  const m = {};
+  const add = (cc, names) => names.split("|").forEach(n => { m[n] = cc; });
+  // countries
+  add("US","united states|usa|u.s.a.|u.s.|america|hawaii|alaska|florida|california|texas|new york|washington|louisiana|maryland|massachusetts|new jersey|georgia|south carolina|north carolina|virginia|alabama|oregon|maine|illinois|pennsylvania|fl|ca|tx|ny|wa|la|md|ma|nj|sc|hi|ak|al|or|me");
+  add("CA","canada|british columbia|quebec|nova scotia|ontario|new brunswick|newfoundland|bc|qc|ns");
+  add("MX","mexico|méxico"); add("GB","united kingdom|uk|england|scotland|wales|great britain|britain|northern ireland");
+  add("IE","ireland"); add("IT","italy|italia|sicily|sardinia"); add("FR","france|corsica|french riviera"); add("ES","spain|españa|canary islands|mallorca|majorca|ibiza");
+  add("PT","portugal|madeira|azores"); add("GR","greece|crete"); add("TR","turkey|türkiye|turkiye"); add("HR","croatia"); add("ME","montenegro"); add("MT","malta");
+  add("CY","cyprus"); add("DE","germany"); add("NL","netherlands|holland"); add("BE","belgium"); add("DK","denmark"); add("NO","norway"); add("SE","sweden");
+  add("FI","finland"); add("IS","iceland"); add("EE","estonia"); add("LV","latvia"); add("LT","lithuania"); add("PL","poland"); add("RU","russia"); add("MC","monaco");
+  add("GI","gibraltar"); add("SI","slovenia"); add("AL","albania"); add("EG","egypt"); add("MA","morocco"); add("TN","tunisia"); add("IL","israel"); add("JO","jordan");
+  add("AE","united arab emirates|uae|dubai|abu dhabi"); add("OM","oman"); add("QA","qatar"); add("BH","bahrain"); add("SA","saudi arabia"); add("IN","india"); add("LK","sri lanka"); add("MV","maldives");
+  add("SG","singapore"); add("MY","malaysia"); add("TH","thailand"); add("VN","vietnam|viet nam"); add("KH","cambodia"); add("ID","indonesia|bali"); add("PH","philippines");
+  add("CN","china"); add("HK","hong kong"); add("TW","taiwan"); add("JP","japan"); add("KR","south korea|korea"); add("AU","australia|tasmania|queensland|new south wales|victoria|western australia|south australia|nsw|qld|wa");
+  add("NZ","new zealand|aotearoa"); add("FJ","fiji"); add("PF","french polynesia|tahiti|bora bora|moorea"); add("NC","new caledonia"); add("VU","vanuatu"); add("WS","samoa"); add("AS","american samoa"); add("TO","tonga");
+  add("CK","cook islands"); add("PG","papua new guinea"); add("BS","bahamas"); add("JM","jamaica"); add("HT","haiti"); add("DO","dominican republic"); add("PR","puerto rico");
+  add("VI","us virgin islands|u.s. virgin islands|st. thomas|st thomas|st. croix|st croix|st. john"); add("VG","british virgin islands|tortola"); add("KY","cayman islands|grand cayman"); add("TC","turks and caicos|grand turk");
+  add("AW","aruba"); add("CW","curaçao|curacao"); add("BQ","bonaire"); add("SX","st. maarten|sint maarten|st maarten"); add("MF","st. martin|saint martin"); add("AG","antigua|antigua and barbuda");
+  add("KN","st. kitts|st kitts|saint kitts|nevis"); add("LC","st. lucia|st lucia|saint lucia"); add("VC","st. vincent|saint vincent"); add("GD","grenada"); add("BB","barbados"); add("TT","trinidad|tobago");
+  add("DM","dominica"); add("MQ","martinique"); add("GP","guadeloupe"); add("BM","bermuda"); add("BZ","belize"); add("GT","guatemala"); add("HN","honduras|roatan|roatán"); add("CR","costa rica");
+  add("PA","panama|panamá"); add("NI","nicaragua"); add("SV","el salvador"); add("CO","colombia|cartagena"); add("EC","ecuador|galápagos|galapagos"); add("PE","peru|perú"); add("CL","chile");
+  add("AR","argentina"); add("UY","uruguay"); add("BR","brazil|brasil"); add("FK","falkland islands|falklands"); add("AQ","antarctica"); add("ZA","south africa"); add("NA","namibia");
+  add("MU","mauritius"); add("SC","seychelles"); add("MG","madagascar"); add("KE","kenya"); add("TZ","tanzania|zanzibar"); add("CV","cape verde"); add("SN","senegal"); add("GL","greenland"); add("FO","faroe islands");
+  // ports often written without a country
+  add("US","fort lauderdale|port everglades|miami|port canaveral|cape canaveral|orlando|tampa|jacksonville|galveston|houston|new orleans|seattle|los angeles|san pedro|long beach|san diego|san francisco|honolulu|baltimore|boston|bayonne|brooklyn|manhattan|charleston|mobile|juneau|ketchikan|skagway|sitka|whittier|seward|anchorage|key west|maui|lahaina|kona|hilo|kauai|nawiliwili|catalina|astoria|portland|norfolk|cape liberty");
+  add("CA","vancouver|victoria, bc|montreal|montréal|quebec city|halifax|saint john|st. john's|sydney, nova scotia|charlottetown");
+  add("MX","cozumel|cabo san lucas|cabo|ensenada|puerto vallarta|mazatlán|mazatlan|costa maya|progreso|acapulco|huatulco|manzanillo");
+  add("GB","southampton|dover|london|liverpool|edinburgh|glasgow|belfast|portsmouth|harwich|greenock|invergordon"); add("IE","dublin|cork|cobh");
+  add("IT","rome|civitavecchia|venice|venezia|genoa|genova|naples|napoli|florence|livorno|la spezia|trieste|ravenna|bari|messina|palermo|portofino|amalfi|sorrento|capri|cagliari|salerno|taormina");
+  add("FR","marseille|nice|cannes|villefranche|toulon|le havre|cherbourg|ajaccio|paris|bordeaux");
+  add("ES","barcelona|malaga|málaga|valencia|cartagena, spain|cádiz|cadiz|palma|tenerife|gran canaria|lanzarote|vigo|bilbao|la coruña|a coruña");
+  add("PT","lisbon|lisboa|porto|funchal|ponta delgada"); add("GR","athens|piraeus|santorini|mykonos|corfu|rhodes|katakolon|heraklion|chania|kefalonia|nafplion");
+  add("TR","istanbul|kusadasi|kuşadası|ephesus|bodrum"); add("HR","dubrovnik|split|zadar|korčula|korcula|rovinj"); add("ME","kotor"); add("MT","valletta");
+  add("NL","amsterdam|rotterdam"); add("DK","copenhagen"); add("NO","oslo|bergen|geiranger|flåm|flam|stavanger|ålesund|alesund|tromsø|tromso"); add("SE","stockholm|gothenburg");
+  add("FI","helsinki"); add("IS","reykjavik|reykjavík|akureyri"); add("EE","tallinn"); add("DE","hamburg|kiel|warnemünde|warnemunde|berlin"); add("BE","zeebrugge|bruges|antwerp");
+  add("AU","sydney|melbourne|brisbane|perth|fremantle|adelaide|hobart|cairns|darwin|broome|airlie beach|eden|newcastle, nsw"); add("NZ","auckland|wellington|christchurch|dunedin|port chalmers|tauranga|napier|picton|bay of islands|akaroa|milford sound|fiordland");
+  add("FJ","suva|lautoka|savusavu"); add("PF","papeete|raiatea"); add("NC","nouméa|noumea"); add("SG","singapore"); add("HK","hong kong"); add("JP","tokyo|yokohama|osaka|kobe|kyoto|nagasaki|hiroshima|okinawa");
+  add("BS","nassau|freeport|princess cays|great stirrup cay|perfect day at cococay|cococay|half moon cay|bimini|castaway cay"); add("JM","montego bay|ocho rios|falmouth");
+  add("PR","san juan"); add("HT","labadee"); add("DO","punta cana|la romana|amber cove|puerto plata"); add("AG","st. john's, antigua"); add("BB","bridgetown"); add("LC","castries");
+  add("CW","willemstad"); add("AW","oranjestad"); add("CR","puerto limón|puerto limon|puntarenas|puerto caldera"); add("PA","colón|colon|fuerte amador|panama canal"); add("CO","santa marta");
+  add("BR","rio de janeiro|santos|salvador"); add("AR","buenos aires|ushuaia"); add("CL","valparaíso|valparaiso|san antonio|punta arenas|puerto montt"); add("UY","montevideo|punta del este");
+  add("ZA","cape town|durban"); add("AE","dubai|abu dhabi"); add("EG","alexandria|port said"); add("IL","haifa|ashdod"); add("BM","king's wharf|kings wharf|hamilton, bermuda");
+  return m;
+})();
+function placeCC(name){
+  const txt = (name || "").toLowerCase().replace(/[()]/g, ",");
+  const parts = txt.split(",").map(x => x.trim()).filter(Boolean);
+  const find = str => {
+    if(PLACE_CC[str]) return PLACE_CC[str];
+    let best = null, len = 0;
+    Object.keys(PLACE_CC).forEach(k => { if(k.length > 2 && k.length > len && new RegExp("(^|[^a-zà-ÿ])" + k.replace(/[.*+?^${}|[\]\\]/g, "\\$&") + "($|[^a-zà-ÿ])").test(str)){ best = PLACE_CC[k]; len = k.length; } });
+    return best;
+  };
+  for(let i = parts.length - 1; i >= 0; i--){ const c = find(parts[i]); if(c) return c; }   // country is usually last
+  return find(txt);
+}
+const flagOf = cc => cc ? String.fromCodePoint(...[...cc].map(c => 127397 + c.charCodeAt(0))) : "";
+const FLAG_VB = {"US":"0 0 76 40","CA":"0 0 1000 500","MX":"0 0 28 16","PR":"0 0 30 20","BS":"0 0 60 30","JM":"0 0 60 30","DO":"0 0 30 20","HT":"0 0 30 18","PA":"0 0 30 20","CR":"0 0 50 30","HN":"0 0 36 18","GT":"0 0 32 20","NI":"0 0 30 18","SV":"0 0 30 17","CO":"0 0 30 20","EC":"0 0 30 20","PE":"0 0 30 20","CL":"0 0 30 20","AR":"0 0 32 20","UY":"0 0 36 24","BR":"0 0 20 14","TT":"0 0 50 30","LC":"0 0 30 15","BB":"0 0 30 20","KY":"0 0 60 30","VG":"0 0 60 30","TC":"0 0 60 30","FK":"0 0 60 30","MS":"0 0 60 30","AI":"0 0 60 30","BM":"0 0 60 30","GB":"0 0 60 30","IE":"0 0 30 15","IT":"0 0 3 2","FR":"0 0 3 2","BE":"0 0 15 13","DE":"0 0 5 3","NL":"0 0 9 6","RU":"0 0 9 6","PL":"0 0 8 5","EE":"0 0 33 21","LV":"0 0 20 10","LT":"0 0 5 3","MC":"0 0 5 4","ES":"0 0 30 20","PT":"0 0 30 20","GR":"0 0 27 18","TR":"0 0 30 20","HR":"0 0 30 15","MT":"0 0 30 20","DK":"0 0 37 28","NO":"0 0 22 16","SE":"0 0 16 10","FI":"0 0 18 11","IS":"0 0 25 18","FO":"0 0 22 16","AT":"0 0 9 6","CH":"0 0 20 20","AE":"0 0 60 30","EG":"0 0 30 20","IL":"0 0 22 16","MA":"0 0 30 20","TN":"0 0 30 20","QA":"0 0 28 11","BH":"0 0 30 18","OM":"0 0 30 15","SA":"0 0 30 20","JO":"0 0 40 20","ZA":"0 0 36 24","MU":"0 0 30 20","SN":"0 0 30 20","KE":"0 0 30 20","MV":"0 0 30 20","SC":"0 0 30 15","NA":"0 0 30 20","CV":"0 0 30 18","JP":"0 0 30 20","CN":"0 0 30 20","VN":"0 0 30 20","ID":"0 0 30 20","IN":"0 0 30 20","TH":"0 0 30 20","SG":"0 0 30 20","PH":"0 0 60 30","KR":"0 0 30 20","MY":"0 0 28 14","HK":"0 0 30 20","TW":"0 0 30 20","LK":"0 0 40 20","KH":"0 0 30 20","NZ":"0 0 60 30","AU":"0 0 60 30","FJ":"0 0 60 30","CK":"0 0 60 30","PF":"0 0 30 20","NC":"0 0 3 2","WS":"0 0 30 15","TO":"0 0 30 15","VU":"0 0 30 18","PG":"0 0 40 30","AS":"0 0 30 15"};
+// one half of the banner: a drawn flag, or the phone's emoji flag on a soft background for countries not drawn
+function flagHalf(cc, side){
+  if(cc && FLAG_VB[cc]) return `<svg class="bf ${side}" viewBox="${FLAG_VB[cc]}" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><use href="#fl-${cc}" width="100%" height="100%"/></svg>`;
+  return `<span class="bf ${side} emo" aria-hidden="true"><span>${cc ? flagOf(cc) : "🏳️"}</span></span>`;
+}
+function tripFlags(x){
+  const a = placeCC(x.from), b = placeCC(x.to);
+  if(!a && !b) return "";
+  return `<span class="tr-banner" role="img" aria-label="${esc((x.from || "?") + " to " + (x.to || "?"))}">${flagHalf(a, "fa")}${flagHalf(b, "fb")}</span>`;
+}
+
 /* saved trip record: card + summary drop-down with games and ports of call */
 const openTripRecords = {};
 function tripRecord(x, cur){
@@ -1290,8 +1574,8 @@ function tripRecord(x, cur){
   ensureEndPorts(x); const ports = sortPorts(x.ports);
   const cruise = avg(ports.map(portAvg)), a1 = avg(ports.map(p=>p.s1)), a2 = avg(ports.map(p=>p.s2));
   return `<div class="triprec">
-    <button class="tripcard b3d ${x.id===cur.id?"active":""}" data-trip="${x.id}" aria-pressed="${x.id===cur.id}">
-      <span class="t"><b>${esc(x.name)}</b><span>${esc(fmtRange(x.start,x.end))}${x.from?` · ${esc(x.from)}`:""}</span></span>
+    <button class="tripcard b3d ${x.id===cur.id?"active":""} ${placeCC(x.from)||placeCC(x.to)?"has-banner":""}" data-trip="${x.id}" aria-pressed="${x.id===cur.id}">
+      ${tripFlags(x)}<span class="t"><b>${esc(x.name)}</b><span>${esc(fmtRange(x.start,x.end))}${x.from?` · ${esc(x.from)}`:""}</span></span>
       <span class="tr-right">${cruise!==null?`<span class="tr-score tone-${scoreTone(cruise)}" title="Cruise score">${fmt1(cruise)}</span>`:""}<span class="w">${k.w1}–${k.w2}</span></span>
     </button>
     <details class="tripsum" data-tripsum="${x.id}" ${openTripRecords[x.id]?"open":""}>
@@ -1310,6 +1594,7 @@ function tripRecord(x, cur){
           ${ports.map(pt => `<tr><td><b>${esc(pt.name)}</b>${pt.date?`<small>${esc(fmtDate(pt.date,{month:"short",day:"numeric"}))}</small>`:""}</td><td class="num">${pt.s1??"–"}</td><td class="num">${pt.s2??"–"}</td><td class="num"><span class="ts-avg tone-${scoreTone(portAvg(pt))}">${fmt1(portAvg(pt))}</span></td></tr>`).join("")}
           </tbody><tfoot><tr><td>Average</td><td class="num">${fmt1(a1)}</td><td class="num">${fmt1(a2)}</td><td class="num"><b>${fmt1(cruise)}</b></td></tr></tfoot></table>`
           : `<p class="ts-empty">No ports added for this trip.</p>`}
+        ${hotelSummary(x)}
       </div>
     </details>
     ${notesPanel(x)}
@@ -2220,13 +2505,26 @@ document.addEventListener("click", e => {
       }, true);
     }
   }
+  else if(a==="addhotel"){
+    t.hotels = t.hotels || [];
+    const h = {id: uid(), name: "", city: "", in: "", out: "", when: t.hotels.some(x => x.when !== "after") ? "after" : "before", s1: null, s2: null, createdAt: Date.now(), order: Date.now()};
+    t.hotels.push(h); commit(); const y = window.scrollY; render(); window.scrollTo(0, y);
+    setTimeout(() => { const f = document.querySelector(`[data-h="${h.id}.name"]`); if(f){ f.scrollIntoView({block:"center"}); f.focus(); } }, 0);
+  }
+  else if(a==="pasttrip"){ pastOpen = true; pastDraft = pastDraft || blankPast(); $("#presetBox").innerHTML = pastTripForm(); setTimeout(() => { const f = $("#pf-start"); if(f) f.focus(); }, 0); }
+  else if(a==="pfaddport"){ pastDraft.ports.push({name:"", date:"", s1:"", s2:""}); $("#presetBox").innerHTML = pastTripForm(); const f = document.querySelector(`[data-pf="ports.${pastDraft.ports.length-1}.name"]`); if(f) f.focus(); }
+  else if(a==="pfaddhotel"){ pastDraft.hotels.push({name:"", city:"", in:"", out:"", when: pastDraft.hotels.length ? "after" : "before", s1:"", s2:""}); $("#presetBox").innerHTML = pastTripForm(); const f = document.querySelector(`[data-pf="hotels.${pastDraft.hotels.length-1}.name"]`); if(f) f.focus(); }
+  else if(a==="pfcancel"){ pastOpen = false; pastDraft = null; $("#presetBox").innerHTML = ""; }
+  else if(a==="pfsave"){ savePastTrip(); }
   else if(a==="newtrip"){
+    pastOpen = false;
     const used = new Set(state.trips.map(x => x.name+"|"+x.start));
     $("#presetBox").innerHTML = `<div class="eyebrow">Start from one of your cruises, or a blank trip</div><div class="presets">
       ${PRESETS.map((p,i) => used.has(p.name+"|"+p.start) ? "" : `<button class="preset b3d" data-preset="${i}"><b>${esc(p.name)}</b><br>${esc(p.ship?p.ship+" · ":"")}${esc(p.from)}${p.start?" · "+esc(fmtDate(p.start,{month:"short",day:"numeric",year:"numeric"})):""}</button>`).join("")}
       <button class="preset b3d" data-act="blanktrip"><b>Blank trip</b><br>Fill in the details</button></div>`;
   }
   else if(a==="blanktrip"){ const nt = newTrip(); nt.p1=t.p1; nt.p2=t.p2; state.trips.push(nt); state.activeTripId = nt.id; commit(); render(); setTimeout(()=>{ const f=$("#f-name"); if(f){ f.focus(); f.select(); } }, 0); }
+  else if(a==="deltrip" && !canDeleteTrip(t)){ render(); }
   else if(a==="deltrip" && (t.games.some(g => isLocked(g.createdAt)) || t.ports.some(portLocked))){
     sheet("This trip has locked entries", "Games and port scores lock 48 hours after they're entered. Unlock editing in Save As (tap © 2026 Thor), then delete the trip.", "Open Save As", () => showSaveAs());
   }
