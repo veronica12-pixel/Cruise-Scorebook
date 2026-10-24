@@ -379,6 +379,8 @@ nav.tabs button[aria-current="page"]{color:var(--on-pastel);background:linear-gr
 .pf-sc select{width:62px;flex:none;padding:6px 6px}
 .pf-sc.p1,.pf-sc.p2{background:var(--ps);color:var(--pd)}
 .pf-add{align-self:flex-start}
+.pf-missed{font-weight:700;color:#A3262A;background:#FDECEC;border-radius:12px;padding:10px 12px;font-size:14px}
+.pf-skip.on{--face:#FDECEC;--edge:#EDB8B8;color:#A3262A}
 .pf-addrow{display:flex;gap:10px}.pf-addrow .btn{flex:1;white-space:nowrap}
 .pf-msg{color:#b3261e;font-weight:700;font-size:14px;margin:0;min-height:1em}
 .pf-msg:empty{display:none}
@@ -433,15 +435,19 @@ nav.tabs button{font-size:11.5px}
 .tr-h{padding:10px 12px 0;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink)}
 .tr-cur{margin-top:8px;font-size:13px;font-weight:700;color:var(--accent-ink);text-align:center}
 .tr-use{margin-top:8px;width:100%;--face:var(--surface);--edge:var(--accent);color:var(--accent-ink)}
-.tripcard.has-banner{flex-wrap:wrap;padding-top:0;row-gap:10px}
+.tripcard.has-banner{flex-wrap:wrap;padding-top:0;padding-bottom:10px;row-gap:8px}
+.tripcard .t b.tc-route{white-space:normal;overflow:visible;line-height:1.25}
+.tripcard .t .arr{color:var(--accent-ink)}.tripcard .t .rt{font-size:13px;font-weight:600;color:var(--muted);font-family:inherit}
+.tripcard .t .tc-sub{color:var(--ink);opacity:.8}
 .tripcard.has-banner .t{flex:1 1 0}
-.tripcard .t .tr-line{display:block;margin-top:2px}
-.tr-banner{flex:0 0 calc(100% + 28px);margin:0 -14px;position:relative;aspect-ratio:4/1;max-height:120px;overflow:hidden;border-top-left-radius:inherit;border-top-right-radius:inherit;background:var(--accent-soft)}
+.tripcard .t .tr-line{display:block;margin-top:2px;line-height:1.3}
+.tr-banner{flex:0 0 calc(100% + 28px);margin:0 -14px;position:relative;height:64px;overflow:hidden;border-top-left-radius:inherit;border-top-right-radius:inherit;background:var(--accent-soft)}
 .tr-banner .bf{position:absolute;top:0;bottom:0;height:100%;display:block}
-.tr-banner .fa{left:0;width:61%}
+.tr-banner::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:rgba(0,0,0,.15);z-index:1}
+.tr-banner .fa{left:0;width:61%}.tr-banner .fw{left:0;width:100%}
 .tr-banner .fb{right:0;width:58%;-webkit-mask-image:linear-gradient(90deg,transparent,#000 30%);mask-image:linear-gradient(90deg,transparent,#000 30%)}
 .tr-banner .emo{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent-soft),var(--surface))}
-.tr-banner .emo span{font-size:44px;line-height:1;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.tr-banner .emo span{font-size:34px;line-height:1;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
 .tr-banner .fa.emo{padding-right:10%}.tr-banner .fb.emo{padding-left:12%}
 .tr-right{display:flex;align-items:center;gap:8px;flex:none}
 .tr-score{min-width:38px;text-align:center;padding:3px 8px;border-radius:10px;background:var(--tc);color:var(--on-pastel);font-family:var(--display);font-weight:800;font-size:15px}
@@ -478,6 +484,7 @@ nav.tabs button{font-size:11.5px}
 /* ports map */
 .mapcard{position:relative;margin:4px 0 6px;border-radius:20px;overflow:hidden;border:2px solid var(--p2);box-shadow:0 5px 0 var(--p2-edge);background:var(--p2-soft)}
 .mapcard canvas{display:block;width:100%;height:auto;cursor:pointer}
+.tripmapcard{margin:2px 0 10px}.tripmapcard canvas{cursor:default}
 .mapnote{position:absolute;left:10px;bottom:8px;font-size:12px;color:var(--p2-ink);background:rgba(255,255,255,.8);padding:2px 8px;border-radius:999px}
 .mapnote:empty{display:none}
 .resetports{width:100%;margin-top:6px}
@@ -551,8 +558,8 @@ nav.tabs button[aria-current="page"]{box-shadow:inset 0 -2px 0 rgba(0,0,0,.06),0
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "8.0";
-const APP_UPDATED = "Oct 24, 2026, 12:10 PM ET";
+const APP_VERSION = "8.9";
+const APP_UPDATED = "Oct 24, 2026, 1:58 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -566,7 +573,12 @@ function sailingStart(pt){
   return (y && m && d) ? new Date(y, m - 1, d).getTime() : 0;
 }
 const scoreLocked = (pt, w) => (w === 1 ? pt.s1 : pt.s2) != null && !!pt["rated" + w] && isLocked(Math.max(pt["rated" + w], sailingStart(pt)));
-const portLocked = pt => scoreLocked(pt, 1) || scoreLocked(pt, 2);
+/* trips added with "Add past trip" are locked right away; unlock in Save As to edit or delete */
+/* also any trip that ended more than 2 days ago (the 48 hours after coming home stay open) */
+const tripDone = t => !!t && (t.past === true || (() => { const e = t.end || t.start; if(!e) return false; const d = new Date(e + "T12:00"); d.setDate(d.getDate() + 2); return d.toISOString().slice(0,10) < today(); })());
+const pastTripOf = o => state.trips.find(t => tripDone(t) && ((t.ports || []).includes(o) || (t.hotels || []).includes(o) || Object.values(t.notes || {}).includes(o)));
+const pastLocked = o => !editingUnlocked && !!o && (Array.isArray(o.ports) ? tripDone(o) : !!pastTripOf(o));
+const portLocked = pt => pastLocked(pt) || scoreLocked(pt, 1) || scoreLocked(pt, 2);
 const LS_KEY = "domino-scorebook-v1";
 const QCARD = `<svg viewBox="0 0 100 140">
   <rect x="3" y="3" width="94" height="134" rx="10" fill="#FFFDF8" stroke="#3B3551" stroke-width="3"/>
@@ -650,6 +662,9 @@ const fmtDate = (iso, opts) => { if(!iso) return ""; const [y,m,d]=iso.split("-"
 const fmtRangeLong = (a,b) => { const L = {month:"long", day:"numeric"}, Y = {month:"long", day:"numeric", year:"numeric"};
   if(!a && !b) return "Dates not set"; if(a && !b) return "From " + fmtDate(a, Y); if(!a) return "Until " + fmtDate(b, Y);
   return fmtDate(a, a.slice(0,4) === b.slice(0,4) ? L : Y) + " – " + fmtDate(b, Y); };
+const fmtRangeCard = (a,b) => { const S = {month:"short", day:"numeric"}, Y = {month:"short", day:"numeric", year:"numeric"};
+  if(!a && !b) return "Dates not set"; if(a && !b) return "From " + fmtDate(a, Y); if(!a) return "Until " + fmtDate(b, Y);
+  return fmtDate(a, a.slice(0,4) === b.slice(0,4) ? S : Y) + " – " + fmtDate(b, Y); };
 // "South Pacific crossing" → "South Pacific Crossing" (small joining words stay lowercase unless first)
 const SMALL = new Set(["a","an","and","at","by","for","in","of","on","or","the","to","via"]);
 const titleCase = str => String(str || "").replace(/[A-Za-zÀ-ÿ][^\s\-/]*/g, (w, i) => (i > 0 && SMALL.has(w.toLowerCase())) ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1));
@@ -1260,7 +1275,7 @@ function tripsInOrder(){
   return state.trips.slice().sort((a,b) => rank(a) - rank(b) ||
     (rank(a) === 2 ? b.start.localeCompare(a.start) : (a.start||"").localeCompare(b.start||"")));
 }
-let completedOpen = false; try { completedOpen = localStorage.getItem(LS_KEY + ":completedOpen") === "1"; } catch(e){}
+let completedOpen = false;   // always starts closed; opens only when tapped
 function tripGroups(){
   const now = today(), all = tripsInOrder();
   const over = x => (x.end || x.start) && (x.end || x.start) < now, sailing = x => x.start && x.start <= now && !over(x);
@@ -1294,20 +1309,22 @@ function pastTripForm(){
     <div class="pf-h">Score the ports from 1 to 10</div>
     <div class="pf-port end">
       <div class="pf-name"><span class="port-kind">Departure</span><b id="pf-depname">${esc(d.from || "Sailed from")}</b></div>
-      <div class="pf-scores">${pfScore("dep.s1", d.dep.s1, 1)}${pfScore("dep.s2", d.dep.s2, 2)}</div>
+      ${d.dep.skip ? `<div class="pf-missed">🚫 Missed · not scored</div>` : `<div class="pf-scores">${pfScore("dep.s1", d.dep.s1, 1)}${pfScore("dep.s2", d.dep.s2, 2)}</div>`}
+      <button type="button" class="xbtn pf-skip ${d.dep.skip ? "on" : ""}" data-pfskip="dep">${d.dep.skip ? "↩️ We visited · score it" : "🚫 Missed this port"}</button>
     </div>
     ${d.ports.map((pt, i) => `<div class="pf-port">
       <div class="pf-row">
         <input data-pf="ports.${i}.name" value="${esc(pt.name)}" placeholder="Port ${i+1}, e.g. Nassau" aria-label="Port ${i+1} name" autocomplete="off">
         <input type="date" data-pf="ports.${i}.date" value="${esc(pt.date)}" aria-label="Date in port ${i+1}">
       </div>
-      <div class="pf-scores">${pfScore(`ports.${i}.s1`, pt.s1, 1)}${pfScore(`ports.${i}.s2`, pt.s2, 2)}</div>
-      ${d.ports.length > 1 ? `<button type="button" class="xbtn" data-pfdel="${i}">Remove port</button>` : ""}
+      ${pt.skip ? `<div class="pf-missed">🚫 Missed · not scored</div>` : `<div class="pf-scores">${pfScore(`ports.${i}.s1`, pt.s1, 1)}${pfScore(`ports.${i}.s2`, pt.s2, 2)}</div>`}
+      <div class="trip-btns"><button type="button" class="xbtn pf-skip ${pt.skip ? "on" : ""}" data-pfskip="${i}">${pt.skip ? "↩️ We visited · score it" : "🚫 Missed this port"}</button>${d.ports.length > 1 ? `<button type="button" class="xbtn" data-pfdel="${i}">Remove port</button>` : ""}</div>
     </div>`).join("")}
     <button type="button" class="btn b3d pf-add" data-act="pfaddport">+ Add another port</button>
     <div class="pf-port end">
       <div class="pf-name"><span class="port-kind">Arrival</span><b id="pf-arrname">${esc(d.to || "Sailed to")}</b></div>
-      <div class="pf-scores">${pfScore("arr.s1", d.arr.s1, 1)}${pfScore("arr.s2", d.arr.s2, 2)}</div>
+      ${d.arr.skip ? `<div class="pf-missed">🚫 Missed · not scored</div>` : `<div class="pf-scores">${pfScore("arr.s1", d.arr.s1, 1)}${pfScore("arr.s2", d.arr.s2, 2)}</div>`}
+      <button type="button" class="xbtn pf-skip ${d.arr.skip ? "on" : ""}" data-pfskip="arr">${d.arr.skip ? "↩️ We visited · score it" : "🚫 Missed this port"}</button>
     </div>
     <div class="pf-h">Final game score for the trip</div>
     ${winsFields("data-pf", "wins.", d.wins, "Alessandra", "Kirk", false)}
@@ -1339,6 +1356,9 @@ document.addEventListener("click", e => {
   pastDraft.hotels.splice(+dh.dataset.pfdelh, 1); $("#presetBox").innerHTML = pastTripForm();
 });
 document.addEventListener("click", e => {
+  const sk = e.target.closest("[data-pfskip]");
+  if(sk && pastDraft){ const k = sk.dataset.pfskip, o = k === "dep" ? pastDraft.dep : k === "arr" ? pastDraft.arr : pastDraft.ports[+k];
+    if(o){ o.skip = !o.skip; const y = window.scrollY; $("#presetBox").innerHTML = pastTripForm(); window.scrollTo(0, y); } return; }
   const dn = e.target.closest("[data-pfdeln]"); if(dn && pastDraft){ pastDraft.notes.splice(+dn.dataset.pfdeln, 1); $("#presetBox").innerHTML = pastTripForm(); return; }
   const del = e.target.closest("[data-pfdel]"); if(!del || !pastDraft) return;
   pastDraft.ports.splice(+del.dataset.pfdel, 1); $("#presetBox").innerHTML = pastTripForm();
@@ -1354,7 +1374,8 @@ function savePastTrip(){
   const t = newTrip();
   Object.assign(t, {name: from + " → " + to, ship: d.ship.trim(), from, to, start: d.start, end: d.end, p1: "Alessandra", p2: "Kirk", past: true, curDate: d.start});
   t.ports = []; ensureEndPorts(t);
-  const score = (pt, src) => { pt.s1 = num(src.s1); pt.s2 = num(src.s2); if(pt.s1 != null) pt.rated1 = now; if(pt.s2 != null) pt.rated2 = now; };
+  const score = (pt, src) => { if(src.skip){ pt.skip = true; pt.s1 = null; pt.s2 = null; return; }
+    pt.s1 = num(src.s1); pt.s2 = num(src.s2); if(pt.s1 != null) pt.rated1 = now; if(pt.s2 != null) pt.rated2 = now; };
   t.ports.forEach(pt => score(pt, pt.kind === "start" ? d.dep : d.arr));
   d.ports.filter(x => x.name.trim()).forEach((x, i) => { const pt = {id: uid(), name: x.name.trim(), date: x.date || "", s1: null, s2: null, order: i}; score(pt, x); t.ports.push(pt); });
   const wn = v => Math.max(0, parseInt(v, 10) || 0), wins = d.wins || {};
@@ -1363,15 +1384,15 @@ function savePastTrip(){
   t.hotels = d.hotels.filter(h => (h.name || "").trim() || (h.city || "").trim()).map((h, i) => ({id: uid(), name: (h.name || "").trim(), city: (h.city || "").trim(), in: h.in || "", out: h.out || "", when: h.when || "before", s1: num(h.s1), s2: num(h.s2), createdAt: now, order: i}));
   t.notes = {}; (d.notes || []).map(x => (x || "").trim()).filter(Boolean).forEach((text, i) => { const id = uid(); t.notes[id] = {id, text, at: now + i}; });
   state.trips.push(t);
-  openTripRecords[t.id] = true; pastOpen = false; completedOpen = true; pastDraft = null;
+  openTripRecords[t.id] = true; pastOpen = false; completedOpen = false; pastDraft = null;
   commit(); render();
-  setTimeout(() => { const c = document.querySelector(`[data-trip="${t.id}"]`); if(c) c.scrollIntoView({block:"center", behavior:"smooth"}); }, 50);
+  setTimeout(() => { const c = document.querySelector(`[data-trip="${t.id}"]`) || document.querySelector(".voyages"); if(c) c.scrollIntoView({block:"center", behavior:"smooth"}); }, 50);
 }
 
 /* ---------- hotels: stays before or after the cruise, as many as needed ---------- */
 const WHEN = {before:"Before the cruise", after:"After the cruise"};
 const nightsOf = (a, b) => a && b && b > a ? Math.round((new Date(b + "T12:00") - new Date(a + "T12:00")) / 864e5) : 0;
-const hotelLocked = h => isLocked(h.createdAt);
+const hotelLocked = h => pastLocked(h) || isLocked(h.createdAt);
 function sortHotels(list){ const r = h => h.when === "after" ? 1 : 0; return (list || []).slice().sort((a,b) => r(a) - r(b) || (a.in||"9999").localeCompare(b.in||"9999") || (a.order||0) - (b.order||0)); }
 function hotelScore(path, v, who, dis){
   const nm = who === 1 ? "Alessandra" : "Kirk";
@@ -1426,7 +1447,7 @@ document.addEventListener("click", e => {
 });
 
 /* Delete this trip shows only for 24 hours after a trip is added, or while editing is unlocked */
-const canDeleteTrip = t => editingUnlocked || (!!t.createdAt && Date.now() - t.createdAt < LOCK_MS);
+const canDeleteTrip = t => editingUnlocked || (!tripDone(t) && !!t.createdAt && Date.now() - t.createdAt < LOCK_MS);
 function renderTrips(){
   const t = trip();
   $("#view").innerHTML = `
@@ -1468,7 +1489,7 @@ function render(){
   document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-current", b.dataset.tab===tab ? "page" : "false"));
   document.body.dataset.game = tab === "score" ? dayType(trip()) : "";
   if(tab==="score"){ dayType(trip())==="scala" ? renderScala() : renderDomino(); }
-  else if(tab==="games") renderGames(); else if(tab==="ports"){ renderPorts(); fillCoords(trip()); loadLand(); drawPortsMap(); } else renderTrips();
+  else if(tab==="games") renderGames(); else if(tab==="ports"){ renderPorts(); fillCoords(trip()); loadLand(); drawPortsMap(); } else { renderTrips(); loadLand(); drawTripMaps(); }
 }
 
 /* ---------- confirm sheet ---------- */
@@ -1690,11 +1711,23 @@ function placeShort(name){
   const i = name.lastIndexOf(","), city = i > 0 ? name.slice(0, i).trim() : name;
   return /^(usa|united states|us|u\.s\.a?\.?)$/i.test(city) ? "USA" : city + ", USA";
 }
+/* trip card heading: the full route once ("Civitavecchia, Italy → Barcelona, Spain");
+   a trip with its own name ("South Pacific Crossing") keeps the route on a line below */
+const sameRoute = x => { const k = v => String(v || "").toLowerCase().replace(/[^a-zà-ÿ0-9]/g, ""), n = k(x.name);
+  return !n || n === k(x.from + x.to) || n === k(placeShort(x.from) + placeShort(x.to)) || /^newcruise$/.test(n); };
+function cardTitle(x){
+  const a = placeShort(x.from), b = placeShort(x.to);
+  const route = a && b && a.toLowerCase() === b.toLowerCase() ? `${esc(a)} <small class="rt">round trip</small>` : `${esc(a || "?")} <span class="arr">→</span> ${esc(b || "?")}`;
+  if(sameRoute(x)) return `<b class="tc-route">${route}</b>`;
+  return `<b>${esc(titleCase(x.name))}</b>${x.from || x.to ? `<span class="tr-line tc-sub">${route}</span>` : ""}`;
+}
 const routeText = x => [placeShort(x.from), placeShort(x.to)].filter(Boolean).join(" to ");
 const FLAG_VB = {"US":"0 0 76 40","CA":"0 0 1000 500","MX":"0 0 28 16","PR":"0 0 30 20","BS":"0 0 60 30","JM":"0 0 60 30","DO":"0 0 30 20","HT":"0 0 30 18","PA":"0 0 30 20","CR":"0 0 50 30","HN":"0 0 36 18","GT":"0 0 32 20","NI":"0 0 30 18","SV":"0 0 30 17","CO":"0 0 30 20","EC":"0 0 30 20","PE":"0 0 30 20","CL":"0 0 30 20","AR":"0 0 32 20","UY":"0 0 36 24","BR":"0 0 20 14","TT":"0 0 50 30","LC":"0 0 30 15","BB":"0 0 30 20","KY":"0 0 60 30","VG":"0 0 60 30","TC":"0 0 60 30","FK":"0 0 60 30","MS":"0 0 60 30","AI":"0 0 60 30","BM":"0 0 60 30","GB":"0 0 60 30","IE":"0 0 30 15","IT":"0 0 3 2","FR":"0 0 3 2","BE":"0 0 15 13","DE":"0 0 5 3","NL":"0 0 9 6","RU":"0 0 9 6","PL":"0 0 8 5","EE":"0 0 33 21","LV":"0 0 20 10","LT":"0 0 5 3","MC":"0 0 5 4","ES":"0 0 30 20","PT":"0 0 30 20","GR":"0 0 27 18","TR":"0 0 30 20","HR":"0 0 30 15","MT":"0 0 30 20","DK":"0 0 37 28","NO":"0 0 22 16","SE":"0 0 16 10","FI":"0 0 18 11","IS":"0 0 25 18","FO":"0 0 22 16","AT":"0 0 9 6","CH":"0 0 20 20","AE":"0 0 60 30","EG":"0 0 30 20","IL":"0 0 22 16","MA":"0 0 30 20","TN":"0 0 30 20","QA":"0 0 28 11","BH":"0 0 30 18","OM":"0 0 30 15","SA":"0 0 30 20","JO":"0 0 40 20","ZA":"0 0 36 24","MU":"0 0 30 20","SN":"0 0 30 20","KE":"0 0 30 20","MV":"0 0 30 20","SC":"0 0 30 15","NA":"0 0 30 20","CV":"0 0 30 18","JP":"0 0 30 20","CN":"0 0 30 20","VN":"0 0 30 20","ID":"0 0 30 20","IN":"0 0 30 20","TH":"0 0 30 20","SG":"0 0 30 20","PH":"0 0 60 30","KR":"0 0 30 20","MY":"0 0 28 14","HK":"0 0 30 20","TW":"0 0 30 20","LK":"0 0 40 20","KH":"0 0 30 20","NZ":"0 0 60 30","AU":"0 0 60 30","FJ":"0 0 60 30","CK":"0 0 60 30","PF":"0 0 30 20","NC":"0 0 3 2","WS":"0 0 30 15","TO":"0 0 30 15","VU":"0 0 30 18","PG":"0 0 40 30","AS":"0 0 30 15"};
+// flags whose emblem sits in the top corner: keep the top in view on the short banner
+const FLAG_TOP = new Set(["SG","MY","CN","TW","MM","LR","UY"]);
 // one half of the banner: a drawn flag, or the phone's emoji flag on a soft background for countries not drawn
 function flagHalf(cc, side){
-  if(cc && FLAG_VB[cc]) return `<svg class="bf ${side}" viewBox="${FLAG_VB[cc]}" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><use href="#fl-${cc}" width="100%" height="100%"/></svg>`;
+  if(cc && FLAG_VB[cc]) return `<svg class="bf ${side}" viewBox="${FLAG_VB[cc]}" preserveAspectRatio="xMidY${FLAG_TOP.has(cc) ? "Min" : "Mid"} slice" aria-hidden="true" focusable="false"><use href="#fl-${cc}" width="100%" height="100%"/></svg>`;
   return `<span class="bf ${side} emo" aria-hidden="true"><span>${cc ? flagOf(cc) : "🏳️"}</span></span>`;
 }
 function tripFlags(x){
@@ -1717,7 +1750,7 @@ function tripEditor(x, ports){
       ${lk ? lockNote : `<span class="trip-btns"><button type="button" class="xbtn" data-skip="${pt.id}" data-skiptrip="${x.id}">${pt.skip ? "↩️ We visited · score it" : "🚫 Didn't visit · don't score"}</button>${pt.kind ? "" : `<button type="button" class="xbtn" data-tpdel="${k}">Remove port</button>`}</span>`}
     </div>`; };
   const hs = sortHotels(x.hotels);
-  const tlk = !!x.tallyAt && isLocked(x.tallyAt);
+  const tlk = pastLocked(x) || (!!x.tallyAt && isLocked(x.tallyAt));
   return `<div class="pf-h">Final game score for the trip</div>
     <p class="rulehint" style="margin:0">Use this when you only know the totals. Games you score in the app are added on top.</p>
     ${winsFields("data-tw", x.id + "|", x.tally, x.p1, x.p2, tlk)}
@@ -1741,7 +1774,7 @@ function setTripPort(path, v){
 let tripEditTimer = null;
 function setTripWins(path, v){
   const [tid, rest] = path.split("|"), [k, f] = rest.split("."), t = state.trips.find(z => z.id === tid);
-  if(!t || (t.tallyAt && isLocked(t.tallyAt))) return null;
+  if(!t || pastLocked(t) || (t.tallyAt && isLocked(t.tallyAt))) return null;
   t.tally = t.tally || {}; t.tally[k] = t.tally[k] || {w1:0, w2:0};
   t.tally[k][f] = Math.max(0, parseInt(v, 10) || 0); if(!t.tallyAt) t.tallyAt = Date.now();
   return t;
@@ -1759,7 +1792,7 @@ document.addEventListener("change", e => { const d = e.target.dataset || {};
 document.addEventListener("click", e => {
   const tripOf = id => state.trips.find(z => z.id === id), redraw = () => { const y = window.scrollY; render(); window.scrollTo(0, y); };
   const et = e.target.closest("[data-edittrip]");
-  if(et){ editTrip = editTrip === et.dataset.edittrip ? null : et.dataset.edittrip; redraw(); return; }
+  if(et){ if(pastLocked(tripOf(et.dataset.edittrip))) return; editTrip = editTrip === et.dataset.edittrip ? null : et.dataset.edittrip; redraw(); return; }
   const pa = e.target.closest("[data-tpadd]");
   if(pa){ const t = tripOf(pa.dataset.tpadd); if(!t) return; const pt = {id: uid(), name: "", date: "", s1: null, s2: null, order: Date.now()};
     t.ports.push(pt); commit(); redraw(); const f = document.querySelector(`[data-tpe="${t.id}|${pt.id}|name"]`); if(f){ f.scrollIntoView({block:"center"}); f.focus(); } return; }
@@ -1780,7 +1813,7 @@ function tripRecord(x, cur){
   const cruise = avg(ports.map(portAvg)), a1 = avg(ports.filter(p=>!p.skip).map(p=>p.s1)), a2 = avg(ports.filter(p=>!p.skip).map(p=>p.s2));
   return `<div class="triprec ${x.id===cur.id?"active":""}">
     <button class="tripcard b3d ${x.id===cur.id?"active":""} ${placeCC(x.from)||placeCC(x.to)?"has-banner":""}" data-tripopen="${x.id}" aria-expanded="${!!openTripRecords[x.id]}" aria-controls="more-${x.id}">
-      ${tripFlags(x)}<span class="t"><b>${esc(titleCase(x.name))}</b><span class="tr-line">${esc(fmtRangeLong(x.start,x.end))}</span>${x.from || x.to ? `<span class="tr-line">${esc(routeText(x))}</span>` : ""}</span>
+      ${tripFlags(x)}<span class="t">${cardTitle(x)}<span class="tr-line">${esc(fmtRangeCard(x.start,x.end))}</span></span>
       <span class="tr-right">${cruise!==null?`<span class="tr-score tone-${scoreTone(cruise)}" title="Cruise score">${fmt1(cruise)}</span>`:""}<span class="w">${k.w1}–${k.w2}</span><span class="chev tr-chev" aria-hidden="true">▾</span></span>
     </button>
     <div class="tr-more" id="more-${x.id}" ${openTripRecords[x.id]?"":"hidden"}>
@@ -1795,11 +1828,12 @@ function tripRecord(x, cur){
             <div class="who a"><span>${esc(x.p1)}</span><b class="num">${w.w1}</b></div>
             <div class="who k"><span>${esc(x.p2)}</span><b class="num">${w.w2}</b></div></div>`).join("")}
         </div>
-        <button type="button" class="btn primary b3d ts-rate" data-rateports="${x.id}">Rate these ports</button>
-        <button type="button" class="btn b3d ts-rate ${editTrip===x.id ? "lockbtn unlocked" : ""}" data-edittrip="${x.id}">${editTrip===x.id ? "✓ Done editing" : "✏️ Edit score, ports and hotels"}</button>
+        ${pastLocked(x) ? "" : `<button type="button" class="btn primary b3d ts-rate" data-rateports="${x.id}">Rate these ports</button>`}
+        ${pastLocked(x) ? `<span class="port-note">🔒 Completed trip · locked. Unlock in Save As (tap © 2026 Thor) to edit or delete.</span>` : `<button type="button" class="btn b3d ts-rate ${editTrip===x.id ? "lockbtn unlocked" : ""}" data-edittrip="${x.id}">${editTrip===x.id ? "✓ Done editing" : "✏️ Edit score, ports and hotels"}</button>`}
         <div class="ts-h"><span>Ports of call</span><span>${cruise!==null?`Cruise score <b>${fmt1(cruise)}</b>/10`:"Not rated yet"}</span></div>
+        ${editTrip!==x.id && ports.length ? `<div class="mapcard tripmapcard"><canvas data-tripmap="${x.id}" role="img" aria-label="Map of the ports on this trip"></canvas><div class="mapnote"></div></div>` : ""}
         ${editTrip===x.id ? tripEditor(x, ports) : ports.length ? `<table class="ts-ports"><thead><tr><th>Port</th><th class="c1">${esc(x.p1)}</th><th class="c2">${esc(x.p2)}</th><th>Avg</th></tr></thead><tbody>
-          ${ports.map(pt => `<tr><td><b>${esc(pt.name)}</b>${pt.date?`<small>${esc(fmtDate(pt.date,{month:"short",day:"numeric"}))}</small>`:""}</td>${pt.skip ? `<td colspan="3" class="num"><small>Didn't visit</small></td>` : `<td class="num">${pt.s1??"–"}</td><td class="num">${pt.s2??"–"}</td><td class="num"><span class="ts-avg tone-${scoreTone(portAvg(pt))}">${fmt1(portAvg(pt))}</span></td>`}</tr>`).join("")}
+          ${ports.map(pt => `<tr><td><b>${esc(pt.name)}</b>${pt.date?`<small>${esc(fmtDate(pt.date,{month:"short",day:"numeric"}))}</small>`:""}</td>${pt.skip ? `<td colspan="3" class="num"><small>🚫 Missed · not scored</small></td>` : `<td class="num">${pt.s1??"–"}</td><td class="num">${pt.s2??"–"}</td><td class="num"><span class="ts-avg tone-${scoreTone(portAvg(pt))}">${fmt1(portAvg(pt))}</span></td>`}</tr>`).join("")}
           </tbody><tfoot><tr><td>Average</td><td class="num">${fmt1(a1)}</td><td class="num">${fmt1(a2)}</td><td class="num"><b>${fmt1(cruise)}</b></td></tr></tfoot></table>`
           : `<p class="ts-empty">No ports added for this trip.</p>`}
         ${editTrip===x.id ? "" : hotelSummary(x)}
@@ -1855,9 +1889,9 @@ function notesPanel(x){
   return `<div class="tr-sec notes" data-notes="${x.id}">
     <div class="tr-h">Notes${list.length ? ` · ${list.length}` : ""}</div>
     <div class="ts-body">
-      <label class="sr" for="note-${x.id}">New note for ${esc(x.name)}</label>
+      ${pastLocked(x) ? (list.length ? "" : `<span class="port-note">No notes for this trip.</span>`) : `<label class="sr" for="note-${x.id}">New note for ${esc(x.name)}</label>
       <textarea class="note-in" id="note-${x.id}" data-notedraft="${x.id}" rows="3" placeholder="Write a note for this trip…">${esc(noteDraft[x.id] || "")}</textarea>
-      <button type="button" class="btn primary b3d" data-addnote="${x.id}">Add note</button>
+      <button type="button" class="btn primary b3d" data-addnote="${x.id}">Add note</button>`}
       ${list.length ? list.map(n => editingNote === n.id ? `
         <div class="note">
           <textarea class="note-in" data-noteedit="${n.id}" rows="3" aria-label="Edit note">${esc(editDraft)}</textarea>
@@ -1865,7 +1899,7 @@ function notesPanel(x){
         </div>` : `
         <div class="note">
           <div class="note-t">${esc(n.text)}</div>
-          <div class="note-f"><span>${esc(noteWhen(n.at))}${n.editedAt ? " · edited" : ""}</span>${isLocked(n.at)
+          <div class="note-f"><span>${esc(noteWhen(n.at))}${n.editedAt ? " · edited" : ""}</span>${(isLocked(n.at) || pastLocked(n))
             ? `<span class="lockmark" title="Locked after 48 hours. Unlock in Save As.">🔒</span>`
             : `<span><button type="button" class="xbtn" data-editnote="${x.id}|${n.id}">Edit</button><button type="button" class="xbtn" data-delnote="${x.id}|${n.id}">Delete</button></span>`}</div>
         </div>`).join("") : `<p class="ts-empty">No notes yet.</p>`}
@@ -1882,13 +1916,13 @@ document.addEventListener("click", e => {
   const tripOf = id => state.trips.find(x => x.id === id);
   const add = e.target.closest("[data-addnote]");
   if(add){
-    const x = tripOf(add.dataset.addnote), text = (noteDraft[x.id] || "").trim(); if(!x) return;
+    const x = tripOf(add.dataset.addnote); if(!x || pastLocked(x)) return; const text = (noteDraft[x.id] || "").trim();
     if(!text){ const f = document.getElementById("note-" + x.id); if(f) f.focus(); return; }
     const id = uid(); x.notes = x.notes || {}; x.notes[id] = {id, text, at:Date.now()};
     noteDraft[x.id] = ""; openNotes[x.id] = true; commit(); render(); return;
   }
   const ed = e.target.closest("[data-editnote]");
-  if(ed){ const [tid, nid] = ed.dataset.editnote.split("|"), n = (tripOf(tid)?.notes || {})[nid]; if(!n || isLocked(n.at)) return;
+  if(ed){ const [tid, nid] = ed.dataset.editnote.split("|"), n = (tripOf(tid)?.notes || {})[nid]; if(!n || (isLocked(n.at) || pastLocked(n))) return;
     editingNote = nid; editDraft = n.text; render(); const f = document.querySelector(`[data-noteedit="${nid}"]`); if(f) f.focus(); return; }
   if(e.target.closest("[data-cancelnote]")){ editingNote = null; render(); return; }
   const sv = e.target.closest("[data-savenote]");
@@ -1897,7 +1931,7 @@ document.addEventListener("click", e => {
     if(text && text !== n.text){ n.text = text; n.editedAt = Date.now(); commit(); }
     render(); return; }
   const dl = e.target.closest("[data-delnote]");
-  if(dl){ const [tid, nid] = dl.dataset.delnote.split("|"), x = tripOf(tid), n = (x?.notes || {})[nid]; if(!n || isLocked(n.at)) return;
+  if(dl){ const [tid, nid] = dl.dataset.delnote.split("|"), x = tripOf(tid), n = (x?.notes || {})[nid]; if(!n || (isLocked(n.at) || pastLocked(n))) return;
     sheet("Delete this note?", esc(n.text.length > 80 ? n.text.slice(0,80) + "…" : n.text), "Delete note", () => { delete x.notes[nid]; commit(); render(); }, true); }
 });
 
@@ -1953,7 +1987,7 @@ function loadLand(){
   fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json").then(r => r.json()).then(topo => {
     LAND = topoRings(topo);
     try { localStorage.setItem(LAND_KEY, JSON.stringify(LAND)); } catch(e){}
-    if(tab === "ports") drawPortsMap();
+    if(tab === "ports") drawPortsMap(); else if(tab === "trips") drawTripMaps();
   }).catch(() => {}).finally(() => { landLoading = false; });
 }
 // fill in map positions: known ports right away, others looked up by name when online
@@ -1961,20 +1995,21 @@ let geoBusy = false;
 function fillCoords(t){
   let changed = false;
   t.ports.forEach(p => { if(p.lat == null){ const k = PORT_COORDS[placeKey(p.name)]; if(k){ p.lat = k[0]; p.lon = k[1]; changed = true; } } });
-  if(changed) setTimeout(commit, 0);
+  if(changed){ setTimeout(commit, 0); if(tab === "trips") setTimeout(() => { document.querySelectorAll(`canvas[data-tripmap="${t.id}"]`).forEach(cv => drawPortsMap(cv, t)); }, 0); }
   const missing = t.ports.find(p => p.lat == null && !p.geoTried);
   if(missing && !geoBusy && navigator.onLine){
     geoBusy = true; missing.geoTried = true;
     fetch("https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(missing.name), {headers:{"Accept":"application/json"}})
-      .then(r => r.json()).then(res => { if(res && res[0]){ missing.lat = Math.round(+res[0].lat*100)/100; missing.lon = Math.round(+res[0].lon*100)/100; commit(); if(tab === "ports") render(); } })
-      .catch(() => {}).finally(() => { geoBusy = false; if(tab === "ports") setTimeout(() => fillCoords(trip()), 1200); });
+      .then(r => r.json()).then(res => { if(res && res[0]){ missing.lat = Math.round(+res[0].lat*100)/100; missing.lon = Math.round(+res[0].lon*100)/100; commit(); if(tab === "ports") render(); else if(tab === "trips") drawTripMaps(); } })
+      .catch(() => {}).finally(() => { geoBusy = false; if(tab === "ports") setTimeout(() => fillCoords(trip()), 1200); else if(tab === "trips") setTimeout(() => fillCoords(t), 1200); });
   }
 }
 let mapHits = [], lineBoxes = [];
-function drawPortsMap(){
-  const cv = document.getElementById("portsMap"); if(!cv) return;
-  const t = trip(), ports = sortPorts(t.ports).map((p,i) => ({p, n:i+1})).filter(x => x.p.lat != null);
-  const note = document.getElementById("mapNote");
+function drawPortsMap(cv, t){
+  cv = cv || document.getElementById("portsMap"); if(!cv) return;
+  t = t || trip(); const main = cv.id === "portsMap";
+  const ports = sortPorts(t.ports).map((p,i) => ({p, n:i+1})).filter(x => x.p.lat != null);
+  const note = main ? document.getElementById("mapNote") : cv.parentElement.querySelector(".mapnote");
   if(!ports.length){ cv.hidden = true; if(note) note.textContent = "Pins appear once your ports have a location."; return; }
   cv.hidden = false;
   // keep the route continuous across the date line
@@ -1992,8 +2027,9 @@ function drawPortsMap(){
   const css = getComputedStyle(document.documentElement), col = n => css.getPropertyValue(n).trim();
   // sea
   c.fillStyle = col("--p2-soft"); c.fillRect(0,0,W,H);
-  const BAND = 34;   // strip at the top for the time-zone labels
-  drawZones(c, X, x0, x1, W, H, BAND, col);
+  const simple = !main;   // trip summary map: just the route and the city names
+  const BAND = simple ? 0 : 34;   // strip at the top for the time-zone labels
+  if(!simple) drawZones(c, X, x0, x1, W, H, BAND, col, t);
   // land
   if(LAND){
     c.fillStyle = "#F4EEDA"; c.strokeStyle = "#CDBF94"; c.lineWidth = 1.4; c.lineJoin = "round";
@@ -2006,14 +2042,20 @@ function drawPortsMap(){
     });
   }
   lineBoxes = [];
-  drawLatLines(c, X, Y, y0, y1, W, col);
-  drawDateLine(c, X, x0, x1, H, BAND, col);
+  // remember where the land is, so names can sit on the sea instead of over an island
+  let landPx = null; if(simple && LAND){ try { landPx = c.getImageData(0, 0, cv.width, cv.height); } catch(e){} }
+  const landShare = b => { if(!landPx) return 0; let n = 0, land = 0;
+    for(let yy = b.y; yy < b.y + b.h; yy += 4) for(let xx = b.x; xx < b.x + b.w; xx += 4){
+      const i = (Math.round(yy*dpr) * landPx.width + Math.round(xx*dpr)) * 4, d = landPx.data; n++;
+      if(d[i] > 225 && d[i+1] > 215 && d[i+2] < 225 && d[i] - d[i+2] > 14) land++; }   // the sand-colored land
+    return n ? land / n : 0; };
+  if(!simple){ drawLatLines(c, X, Y, y0, y1, W, col); drawDateLine(c, X, x0, x1, H, BAND, col); }
   if(note) note.textContent = LAND ? "" : (navigator.onLine ? "Loading the map outline…" : "The map outline downloads the first time you're online.");
   // route
   if(ports.length > 1){ c.setLineDash([10,9]); c.strokeStyle = col("--accent-edge"); c.lineWidth = 3; c.lineCap = "round";
     c.beginPath(); ports.forEach((q,i) => i ? c.lineTo(X(q.x),Y(q.y)) : c.moveTo(X(q.x),Y(q.y))); c.stroke(); c.setLineDash([]); }
   // group ports that would sit on top of each other
-  const R = 21, groups = [];
+  const R = simple ? 8 : 21, groups = [];
   ports.forEach(q => { const px = X(q.x), py = Y(q.y); const g = groups.find(g => Math.hypot(g.px-px, g.py-py) < R*2.1);
     if(g){ g.items.push(q); g.px = g.items.reduce((s,i)=>s+X(i.x),0)/g.items.length; g.py = g.items.reduce((s,i)=>s+Y(i.y),0)/g.items.length; }
     else groups.push({px, py, items:[q]}); });
@@ -2021,50 +2063,65 @@ function drawPortsMap(){
   const tones = {hi:[col("--mint"),col("--mint-edge")], mid:[col("--dom"),col("--dom-edge")], lo:[col("--p1"),col("--p1-edge")], none:["#FFFFFF",col("--accent-edge")]};
   groups.forEach(g => {
     const nums = g.items.map(i => i.n), consecutive = nums.every((v,i) => !i || v === nums[i-1]+1);
-    g.label = nums.length === 1 ? String(nums[0]) : consecutive ? nums[0] + "–" + nums[nums.length-1] : nums.join("·");
-    c.font = "800 22px " + col("--display"); g.pw = Math.max(R*2, c.measureText(g.label).width + 20);
+    g.label = simple ? "" : nums.length === 1 ? String(nums[0]) : consecutive ? nums[0] + "–" + nums[nums.length-1] : nums.join("·");
+    c.font = "800 22px " + col("--display"); g.pw = simple ? R*2 : Math.max(R*2, c.measureText(g.label).width + 20);
     boxes.push({x:g.px-g.pw/2-2, y:g.py-R-2, w:g.pw+4, h:R*2+4});
   });
   // pins
-  mapHits = [];
+  const hits = [];
   groups.forEach(g => {
     const sc = avg(g.items.map(i => portAvg(i.p))), [fill, edge] = tones[scoreTone(sc)];
     const x = g.px - g.pw/2, y = g.py - R;
     c.fillStyle = "rgba(60,40,90,.22)"; roundRect(c, x, y+4, g.pw, R*2, R); c.fill();
     c.fillStyle = fill; roundRect(c, x, y, g.pw, R*2, R); c.fill(); c.lineWidth = 3.5; c.strokeStyle = edge; c.stroke();
     c.fillStyle = "#2F2A42"; c.font = "800 22px " + col("--display"); c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(g.label, g.px, g.py+1);
-    mapHits.push({x, y, w:g.pw, h:R*2, id:g.items[0].p.id});
+    hits.push({x, y, w:g.pw, h:R*2, id:g.items[0].p.id});
   });
   // names, placed where they don't cover a pin or another name
   c.textBaseline = "alphabetic";
+  // trip map: same size as the port names in the list below it
+  const shown = cv.getBoundingClientRect().width || 340, fs = simple ? Math.round(13 * W / shown) : 21;
+  const nameFont = "700 " + fs + "px " + col("--body");
   groups.forEach(g => {
-    const lines = g.items.map(i => (i.p.name||"").split(",")[0].trim());
-    const diffs = g.items.map(i => fmtDiff(portDiffHours(i.p, t)));
+    let lines = g.items.map(i => (i.p.name||"").split(",")[0].trim());
+    if(simple) lines = lines.filter((l,i) => lines.indexOf(l) === i);   // a round trip shows its city once
+    const diffs = simple ? lines.map(() => "") : g.items.map(i => fmtDiff(portDiffHours(i.p, t)));
     // ports sharing a pin and a time zone show the time once, on the last line
     const sameZone = diffs.every(d => d === diffs[0]);
     const tags = diffs.map((d,i) => sameZone && i < diffs.length-1 ? "" : d);
-    c.font = "700 21px " + col("--body"); const nameW = lines.map(l => c.measureText(l).width);
+    c.font = nameFont; const nameW = lines.map(l => c.measureText(l).width);
     c.font = "800 19px " + col("--body"); const tagW = tags.map(x => x ? c.measureText(x).width + 10 : 0);
-    const lh = 24, w = Math.max(...lines.map((l,i) => nameW[i] + tagW[i])) + 14, h = lines.length*lh + 8, gap = 8;
+    const lh = simple ? Math.round(fs*1.2) : 24, w = Math.max(...lines.map((l,i) => nameW[i] + tagW[i])) + 14, h = lines.length*lh + 8, gap = simple ? 4 : 8;
     const cands = [[g.px+g.pw/2+gap, g.py-h/2], [g.px-g.pw/2-gap-w, g.py-h/2], [g.px-w/2, g.py-R-gap-h], [g.px-w/2, g.py+R+gap],
                    [g.px+g.pw/2+gap, g.py-R-h], [g.px+g.pw/2+gap, g.py+R*0.3], [g.px-g.pw/2-gap-w, g.py-R-h], [g.px-g.pw/2-gap-w, g.py+R*0.3]];
     const overlap = b => boxes.reduce((s,o) => s + Math.max(0, Math.min(b.x+b.w,o.x+o.w)-Math.max(b.x,o.x)) * Math.max(0, Math.min(b.y+b.h,o.y+o.h)-Math.max(b.y,o.y)), 0);
     let pick = null, best = null;
     for(const [bx,by] of cands){
       const b = {x:Math.min(Math.max(4,bx),W-w-4), y:Math.min(Math.max(BAND+6,by),H-h-4), w, h};   // slide inside the map
-      const ov = overlap(b);
+      const ov = overlap(b) + landShare(b) * w * h * 0.6;
       if(!ov){ pick = b; break; }
       if(!best || ov < best.ov) best = {b, ov};
     }
     if(!pick) pick = best.b;
     boxes.push(pick);
-    c.fillStyle = "rgba(255,255,255,.88)"; roundRect(c, pick.x, pick.y, w, h, 9); c.fill();
+    if(!simple){ c.fillStyle = "rgba(255,255,255,.88)"; roundRect(c, pick.x, pick.y, w, h, 9); c.fill(); }
     c.textAlign = "left";
     lines.forEach((l,i) => { const by = pick.y+4+lh*(i+1)-6;
-      c.font = "700 21px " + col("--body"); c.fillStyle = "#3B3551"; c.fillText(l, pick.x+7, by);
+      c.font = nameFont;
+      // trip map: plain text with a faint soft edge so it stays readable on land or sea
+      if(simple){ c.lineJoin = "round"; c.lineWidth = Math.max(3, fs*0.22); c.strokeStyle = "rgba(255,255,255,.55)"; c.strokeText(l, pick.x+7, by); }
+      c.fillStyle = "#3B3551"; c.fillText(l, pick.x+7, by);
       if(tags[i]){ c.font = "800 19px " + col("--body"); c.fillStyle = col("--sca-ink"); c.fillText(tags[i], pick.x+7+nameW[i]+10, by); } });
   });
   cv.dataset.w = W;
+  if(main) mapHits = hits;
+}
+/* the same map inside each opened trip summary on the Trips tab */
+function drawTripMaps(){
+  document.querySelectorAll("canvas[data-tripmap]").forEach(cv => {
+    const t = state.trips.find(x => x.id === cv.dataset.tripmap); if(!t || !openTripRecords[t.id]) return;
+    drawPortsMap(cv, t); fillCoords(t);
+  });
 }
 
 // hours between a place and Tampa on a given day (daylight saving included)
@@ -2075,10 +2132,12 @@ function zoneOffset(zone, date){
     return m ? (m[1] === "-" ? -1 : 1) * (+m[2] + (+(m[3]||0))/60) : 0;
   }catch(e){ return null; }
 }
+// countries on a single time zone: used when a port isn't in the list above
+const CC_ZONE = {ES:"Europe/Madrid",FR:"Europe/Paris",IT:"Europe/Rome",DE:"Europe/Berlin",NL:"Europe/Amsterdam",BE:"Europe/Brussels",AT:"Europe/Vienna",CH:"Europe/Zurich",HR:"Europe/Zagreb",MT:"Europe/Malta",MC:"Europe/Monaco",NO:"Europe/Oslo",SE:"Europe/Stockholm",DK:"Europe/Copenhagen",PL:"Europe/Warsaw",GB:"Europe/London",IE:"Europe/Dublin",GR:"Europe/Athens",TR:"Europe/Istanbul",FI:"Europe/Helsinki",EE:"Europe/Tallinn",LV:"Europe/Riga",LT:"Europe/Vilnius",IS:"Atlantic/Reykjavik",EG:"Africa/Cairo",IL:"Asia/Jerusalem",MA:"Africa/Casablanca",AE:"Asia/Dubai",QA:"Asia/Qatar",OM:"Asia/Muscat",JP:"Asia/Tokyo",KR:"Asia/Seoul",VN:"Asia/Ho_Chi_Minh",TH:"Asia/Bangkok",SG:"Asia/Singapore",MY:"Asia/Kuala_Lumpur",KH:"Asia/Phnom_Penh",PH:"Asia/Manila",HK:"Asia/Hong_Kong",TW:"Asia/Taipei",IN:"Asia/Kolkata",LK:"Asia/Colombo",NZ:"Pacific/Auckland",FJ:"Pacific/Fiji",JM:"America/Jamaica",BS:"America/Nassau",DO:"America/Santo_Domingo",PR:"America/Puerto_Rico",CO:"America/Bogota",PA:"America/Panama",CR:"America/Costa_Rica",BM:"Atlantic/Bermuda",ZA:"Africa/Johannesburg"};
 function dayOf(iso){ if(!iso) return new Date(); const [y,m,d] = iso.split("-").map(Number); return new Date(Date.UTC(y, m-1, d, 12)); }
 function portDiffHours(p, t){
   const when = dayOf(p.date || t.start), home = zoneOffset(HOME_ZONE, when);
-  const z = PORT_ZONES[placeKey(p.name)];
+  const z = PORT_ZONES[placeKey(p.name)] || CC_ZONE[placeCC(p.name)];
   let off = z ? zoneOffset(z, when) : null;
   if(off == null && p.lon != null){ let L = ((p.lon+540)%360)-180; off = Math.round(L/15); }
   return off == null || home == null ? null : off - home;
@@ -2089,9 +2148,9 @@ function fmtDiff(h){
   const a = Math.abs(h), whole = Math.floor(a), frac = a - whole;
   return (h > 0 ? "+" : "−") + whole + (frac >= 0.74 ? "¾" : frac >= 0.49 ? "½" : frac >= 0.24 ? "¼" : "") + "h";
 }
-function drawZones(c, X, x0, x1, W, H, BAND, col){
+function drawZones(c, X, x0, x1, W, H, BAND, col, t){
   // standard 15° time-zone bands; label = difference from Tampa today
-  const home = zoneOffset(HOME_ZONE, dayOf(trip().start)) ?? -5;   // Tampa on the trip dates
+  const home = zoneOffset(HOME_ZONE, dayOf((t || trip()).start)) ?? -5;   // Tampa on the trip dates
   c.save();
   for(let k = Math.floor((x0-7.5)/15); k <= Math.ceil((x1+7.5)/15); k++){
     const left = k*15 - 7.5, right = k*15 + 7.5;
@@ -2154,7 +2213,7 @@ document.addEventListener("click", e => {
   const h = mapHits.find(m => x >= m.x-6 && x <= m.x+m.w+6 && y >= m.y-6 && y <= m.y+m.h+6);
   if(h){ const el = document.getElementById("port-" + h.id); if(el){ el.scrollIntoView({behavior:"smooth", block:"center"}); el.classList.add("flashport"); setTimeout(() => el.classList.remove("flashport"), 1200); } }
 });
-window.addEventListener("resize", () => { if(tab === "ports") drawPortsMap(); });
+window.addEventListener("resize", () => { if(tab === "ports") drawPortsMap(); else if(tab === "trips") drawTripMaps(); });
 window.addEventListener("online", () => {
   if(!cloud.ref && !window.firebase){
     const add = src => new Promise(ok => { const el = document.createElement("script"); el.src = src; el.onload = ok; el.onerror = ok; document.head.appendChild(el); });
@@ -2651,7 +2710,7 @@ function winnerText(t, type){
 
 document.addEventListener("click", e => {
   const tb = e.target.closest("nav.tabs button");
-  if(tb){ tab = tb.dataset.tab; render(); window.scrollTo(0,0); return; }
+  if(tb){ if(tb.dataset.tab !== tab) completedOpen = false; tab = tb.dataset.tab; render(); window.scrollTo(0,0); return; }
 
   const ty = e.target.closest("[data-type]");
   if(ty){ const t = trip(); setViewType(t, ty.dataset.type); t.days[t.curDate] = ty.dataset.type; t.lastType = ty.dataset.type; keepBanner=false; commit(); render(); return; }
@@ -2692,7 +2751,7 @@ document.addEventListener("click", e => {
 
   const op = e.target.closest("[data-tripopen]");
   if(op){ const id = op.dataset.tripopen, open = !openTripRecords[id]; openTripRecords[id] = open;
-    op.setAttribute("aria-expanded", open); const m = document.getElementById("more-" + id); if(m) m.hidden = !open; return; }
+    op.setAttribute("aria-expanded", open); const m = document.getElementById("more-" + id); if(m) m.hidden = !open; if(open) drawTripMaps(); return; }
   const tc = e.target.closest("[data-trip]");
   if(tc){ state.activeTripId = tc.dataset.trip; commit(); render(); return; }
 
@@ -2715,7 +2774,7 @@ document.addEventListener("click", e => {
       keepBanner=false; commit(); render(); }, true);
   }
   else if(a==="addport"){ addPort(); }
-  else if(a==="togglecompleted"){ completedOpen = !completedOpen; try { localStorage.setItem(LS_KEY + ":completedOpen", completedOpen ? "1" : "0"); } catch(e){} const y = window.scrollY; render(); window.scrollTo(0, y); }
+  else if(a==="togglecompleted"){ completedOpen = !completedOpen; const y = window.scrollY; render(); window.scrollTo(0, y); }
   else if(a==="pesave"){ savePortEdit(); }
   else if(a==="pecancel"){ editingPort = null; const y = window.scrollY; render(); window.scrollTo(0, y); }
   else if(a==="resetports"){
