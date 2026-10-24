@@ -379,6 +379,7 @@ nav.tabs button[aria-current="page"]{color:var(--on-pastel);background:linear-gr
 .pf-sc select{width:62px;flex:none;padding:6px 6px}
 .pf-sc.p1,.pf-sc.p2{background:var(--ps);color:var(--pd)}
 .pf-add{align-self:flex-start}
+.pf-addrow{display:flex;gap:10px}.pf-addrow .btn{flex:1;white-space:nowrap}
 .pf-msg{color:#b3261e;font-weight:700;font-size:14px;margin:0;min-height:1em}
 .pf-msg:empty{display:none}
 .pf-actions{display:grid;grid-template-columns:1fr 2fr;gap:8px}
@@ -550,8 +551,8 @@ nav.tabs button[aria-current="page"]{box-shadow:inset 0 -2px 0 rgba(0,0,0,.06),0
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "7.9";
-const APP_UPDATED = "Oct 24, 2026, 11:40 AM ET";
+const APP_VERSION = "8.0";
+const APP_UPDATED = "Oct 24, 2026, 12:10 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -1274,7 +1275,7 @@ function winsFields(attr, prefix, vals, p1, p2, dis){
       ${[[1,p1],[2,p2]].map(([w,nm]) => `<label class="pf-sc p${w}"><span>${esc(nm)}</span><input type="number" inputmode="numeric" min="0" max="999" ${attr}="${prefix}${k}.w${w}" value="${v["w"+w] ?? ""}" placeholder="0" aria-label="${esc(nm)}'s ${GAMES[k]} wins" ${dis ? "disabled" : ""} style="width:72px;flex:none"></label>`).join("")}
     </div></div>`; }).join("");
 }
-const blankPast = () => ({wins:{domino:{w1:"",w2:""},scala:{w1:"",w2:""}}, start:"", end:"", from:"", to:"", ship:"", dep:{s1:"", s2:""}, arr:{s1:"", s2:""}, ports:[{name:"", date:"", s1:"", s2:""}], hotels:[]});
+const blankPast = () => ({wins:{domino:{w1:"",w2:""},scala:{w1:"",w2:""}}, start:"", end:"", from:"", to:"", ship:"", dep:{s1:"", s2:""}, arr:{s1:"", s2:""}, ports:[{name:"", date:"", s1:"", s2:""}], hotels:[], notes:[]});
 function pfScore(path, v, who){
   return `<label class="pf-sc p${who}"><span>${who === 1 ? "Alessandra" : "Kirk"}</span><select data-pf="${path}" aria-label="${who === 1 ? "Alessandra" : "Kirk"}'s score">
     <option value="">–</option>${[1,2,3,4,5,6,7,8,9,10].map(n => `<option value="${n}" ${String(v) === String(n) ? "selected" : ""}>${n}</option>`).join("")}</select></label>`;
@@ -1310,9 +1311,13 @@ function pastTripForm(){
     </div>
     <div class="pf-h">Final game score for the trip</div>
     ${winsFields("data-pf", "wins.", d.wins, "Alessandra", "Kirk", false)}
-    <div class="pf-h">Hotels before or after the cruise</div>
+    <div class="pf-h">Hotels and notes</div>
     ${d.hotels.map((h, i) => `<div class="pf-port">${hotelFields(Object.assign({}, h, {id: "hotels." + i}), "data-pf", false)}<button type="button" class="xbtn" data-pfdelh="${i}">Remove hotel</button></div>`).join("")}
-    <button type="button" class="btn b3d pf-add" data-act="pfaddhotel">+ Add a hotel</button>
+    ${(d.notes = d.notes || []).map((n, i) => `<div class="pf-port"><label class="pf-name" for="pf-note-${i}"><span class="port-kind">📝 Note ${d.notes.length > 1 ? i + 1 : ""}</span></label><textarea class="note-in" id="pf-note-${i}" data-pf="notes.${i}" rows="3" placeholder="Write a note for this trip…">${esc(n)}</textarea><button type="button" class="xbtn" data-pfdeln="${i}">Remove note</button></div>`).join("")}
+    <div class="pf-addrow">
+      <button type="button" class="btn b3d" data-act="pfaddhotel">🏨 + Add a hotel</button>
+      <button type="button" class="btn b3d" data-act="pfaddnote">📝 + Add a note</button>
+    </div>
     <p class="pf-msg" id="pfMsg" role="alert"></p>
     <div class="pf-actions">
       <button type="button" class="btn b3d" data-act="pfcancel">Cancel</button>
@@ -1325,7 +1330,7 @@ function setPast(path, v){
   keys.slice(0, -1).forEach(k => { o = o[k]; });
   o[keys[keys.length - 1]] = v;
 }
-document.addEventListener("input", e => { const el = e.target; if(el.dataset && el.dataset.pf && pastDraft){ setPast(el.dataset.pf, el.value);
+document.addEventListener("input", e => { const el = e.target; if(el.dataset && el.dataset.pf && pastDraft){ setPast(el.dataset.pf, el.value); const m = $("#pfMsg"); if(m) m.textContent = "";
   if(el.dataset.pf === "from"){ const n = $("#pf-depname"); if(n) n.textContent = el.value || "Sailed from"; }
   if(el.dataset.pf === "to"){ const n = $("#pf-arrname"); if(n) n.textContent = el.value || "Sailed to"; } } });
 document.addEventListener("change", e => { const el = e.target; if(el.dataset && el.dataset.pf && pastDraft) setPast(el.dataset.pf, el.value); });
@@ -1334,6 +1339,7 @@ document.addEventListener("click", e => {
   pastDraft.hotels.splice(+dh.dataset.pfdelh, 1); $("#presetBox").innerHTML = pastTripForm();
 });
 document.addEventListener("click", e => {
+  const dn = e.target.closest("[data-pfdeln]"); if(dn && pastDraft){ pastDraft.notes.splice(+dn.dataset.pfdeln, 1); $("#presetBox").innerHTML = pastTripForm(); return; }
   const del = e.target.closest("[data-pfdel]"); if(!del || !pastDraft) return;
   pastDraft.ports.splice(+del.dataset.pfdel, 1); $("#presetBox").innerHTML = pastTripForm();
 });
@@ -1355,6 +1361,7 @@ function savePastTrip(){
   if(["domino","scala"].some(k => wn((wins[k]||{}).w1) || wn((wins[k]||{}).w2))){
     t.tally = {}; ["domino","scala"].forEach(k => { t.tally[k] = {w1: wn((wins[k]||{}).w1), w2: wn((wins[k]||{}).w2)}; }); t.tallyAt = now; }
   t.hotels = d.hotels.filter(h => (h.name || "").trim() || (h.city || "").trim()).map((h, i) => ({id: uid(), name: (h.name || "").trim(), city: (h.city || "").trim(), in: h.in || "", out: h.out || "", when: h.when || "before", s1: num(h.s1), s2: num(h.s2), createdAt: now, order: i}));
+  t.notes = {}; (d.notes || []).map(x => (x || "").trim()).filter(Boolean).forEach((text, i) => { const id = uid(); t.notes[id] = {id, text, at: now + i}; });
   state.trips.push(t);
   openTripRecords[t.id] = true; pastOpen = false; completedOpen = true; pastDraft = null;
   commit(); render();
@@ -2730,6 +2737,7 @@ document.addEventListener("click", e => {
   }
   else if(a==="pasttrip"){ pastOpen = true; pastDraft = pastDraft || blankPast(); $("#presetBox").innerHTML = pastTripForm(); setTimeout(() => { const f = $("#pf-start"); if(f) f.focus(); }, 0); }
   else if(a==="pfaddport"){ pastDraft.ports.push({name:"", date:"", s1:"", s2:""}); $("#presetBox").innerHTML = pastTripForm(); const f = document.querySelector(`[data-pf="ports.${pastDraft.ports.length-1}.name"]`); if(f) f.focus(); }
+  else if(a==="pfaddnote"){ (pastDraft.notes = pastDraft.notes || []).push(""); $("#presetBox").innerHTML = pastTripForm(); const f = $("#pf-note-" + (pastDraft.notes.length-1)); if(f) f.focus(); }
   else if(a==="pfaddhotel"){ pastDraft.hotels.push({name:"", city:"", in:"", out:"", when: pastDraft.hotels.length ? "after" : "before", s1:"", s2:""}); $("#presetBox").innerHTML = pastTripForm(); const f = document.querySelector(`[data-pf="hotels.${pastDraft.hotels.length-1}.name"]`); if(f) f.focus(); }
   else if(a==="pfcancel"){ pastOpen = false; pastDraft = null; $("#presetBox").innerHTML = ""; }
   else if(a==="pfsave"){ savePastTrip(); }
