@@ -370,6 +370,7 @@ nav.tabs button[aria-current="page"]{color:var(--on-pastel);background:linear-gr
 .pf-name{display:flex;flex-direction:column;gap:2px}
 .pf-row{display:grid;grid-template-columns:1fr;gap:8px}
 .pf-row input{width:100%;min-width:0}
+.port-t.pf-row{gap:6px}
 .pf-scores{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
 @media (max-width:374px){.pf-scores{grid-template-columns:minmax(0,1fr)}}
 .pf-sc{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;padding:4px 6px;border-radius:12px}
@@ -397,6 +398,10 @@ nav.tabs button{font-size:11.5px}
 .tr-chev{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent-ink);font-size:12px;transition:transform .2s}
 .triprec.active .tr-chev{background:var(--surface)}
 .tripcard[aria-expanded="true"] .tr-chev{transform:rotate(180deg)}
+.skipnote{font-weight:700;font-size:14px;color:var(--muted);padding:8px 12px;border-radius:12px;background:var(--bg);text-align:center}
+.skipbtn{align-self:flex-start}
+.curtrip{display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:16px;background:var(--accent-soft);border:2px solid var(--accent);margin-bottom:6px}
+.curtrip select{width:100%;font-weight:700}
 .tr-more{padding:4px 12px 14px;display:flex;flex-direction:column;gap:12px;border-top:2px dashed var(--line)}
 .tr-more[hidden]{display:none}
 .tr-sec{background:var(--surface);border:2px solid var(--line);border-radius:14px;overflow:hidden}
@@ -522,8 +527,8 @@ nav.tabs button[aria-current="page"]{box-shadow:inset 0 -2px 0 rgba(0,0,0,.06),0
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "6.5";
-const APP_UPDATED = "Oct 23, 2026, 5:50 PM ET";
+const APP_VERSION = "7.2";
+const APP_UPDATED = "Oct 24, 2026, 9:50 AM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -1047,6 +1052,9 @@ const $ = s => document.querySelector(s);
 function tally(t, type){
   let w1=0,w2=0,ties=0,n=0;
   t.games.forEach(g => { if(type && type!=="all" && g.type!==type) return; n++; g.winner===1?w1++:g.winner===2?w2++:ties++; });
+  // final totals typed in for past trips (no game-by-game record)
+  ["domino","scala"].forEach(k => { if(type && type!=="all" && type!==k) return; const x = (t.tally||{})[k]; if(!x) return;
+    const a = +x.w1||0, b = +x.w2||0; w1 += a; w2 += b; n += a + b; });
   return {w1,w2,ties,n};
 }
 function renderHead(){
@@ -1229,7 +1237,14 @@ function tripsInOrder(){
 }
 /* ---------- add a past trip: dates, from/to, and Alessandra's and Kirk's score for each port ---------- */
 let pastOpen = false, pastDraft = null;
-const blankPast = () => ({start:"", end:"", from:"", to:"", ship:"", dep:{s1:"", s2:""}, arr:{s1:"", s2:""}, ports:[{name:"", date:"", s1:"", s2:""}], hotels:[]});
+/* number boxes for the final win totals of a trip */
+function winsFields(attr, prefix, vals, p1, p2, dis){
+  return ["domino","scala"].map(k => { const v = (vals||{})[k] || {};
+    return `<div class="pf-port g-${k}"><div class="pf-name"><b>${gameIcon(k,"tsico")} ${GAMES[k]} games won</b></div><div class="pf-scores">
+      ${[[1,p1],[2,p2]].map(([w,nm]) => `<label class="pf-sc p${w}"><span>${esc(nm)}</span><input type="number" inputmode="numeric" min="0" max="999" ${attr}="${prefix}${k}.w${w}" value="${v["w"+w] ?? ""}" placeholder="0" aria-label="${esc(nm)}'s ${GAMES[k]} wins" ${dis ? "disabled" : ""} style="width:72px;flex:none"></label>`).join("")}
+    </div></div>`; }).join("");
+}
+const blankPast = () => ({wins:{domino:{w1:"",w2:""},scala:{w1:"",w2:""}}, start:"", end:"", from:"", to:"", ship:"", dep:{s1:"", s2:""}, arr:{s1:"", s2:""}, ports:[{name:"", date:"", s1:"", s2:""}], hotels:[]});
 function pfScore(path, v, who){
   return `<label class="pf-sc p${who}"><span>${who === 1 ? "Alessandra" : "Kirk"}</span><select data-pf="${path}" aria-label="${who === 1 ? "Alessandra" : "Kirk"}'s score">
     <option value="">–</option>${[1,2,3,4,5,6,7,8,9,10].map(n => `<option value="${n}" ${String(v) === String(n) ? "selected" : ""}>${n}</option>`).join("")}</select></label>`;
@@ -1263,6 +1278,8 @@ function pastTripForm(){
       <div class="pf-name"><span class="port-kind">Arrival</span><b id="pf-arrname">${esc(d.to || "Sailed to")}</b></div>
       <div class="pf-scores">${pfScore("arr.s1", d.arr.s1, 1)}${pfScore("arr.s2", d.arr.s2, 2)}</div>
     </div>
+    <div class="pf-h">Final game score for the trip</div>
+    ${winsFields("data-pf", "wins.", d.wins, "Alessandra", "Kirk", false)}
     <div class="pf-h">Hotels before or after the cruise</div>
     ${d.hotels.map((h, i) => `<div class="pf-port">${hotelFields(Object.assign({}, h, {id: "hotels." + i}), "data-pf", false)}<button type="button" class="xbtn" data-pfdelh="${i}">Remove hotel</button></div>`).join("")}
     <button type="button" class="btn b3d pf-add" data-act="pfaddhotel">+ Add a hotel</button>
@@ -1304,6 +1321,9 @@ function savePastTrip(){
   const score = (pt, src) => { pt.s1 = num(src.s1); pt.s2 = num(src.s2); if(pt.s1 != null) pt.rated1 = now; if(pt.s2 != null) pt.rated2 = now; };
   t.ports.forEach(pt => score(pt, pt.kind === "start" ? d.dep : d.arr));
   d.ports.filter(x => x.name.trim()).forEach((x, i) => { const pt = {id: uid(), name: x.name.trim(), date: x.date || "", s1: null, s2: null, order: i}; score(pt, x); t.ports.push(pt); });
+  const wn = v => Math.max(0, parseInt(v, 10) || 0), wins = d.wins || {};
+  if(["domino","scala"].some(k => wn((wins[k]||{}).w1) || wn((wins[k]||{}).w2))){
+    t.tally = {}; ["domino","scala"].forEach(k => { t.tally[k] = {w1: wn((wins[k]||{}).w1), w2: wn((wins[k]||{}).w2)}; }); t.tallyAt = now; }
   t.hotels = d.hotels.filter(h => (h.name || "").trim() || (h.city || "").trim()).map((h, i) => ({id: uid(), name: (h.name || "").trim(), city: (h.city || "").trim(), in: h.in || "", out: h.out || "", when: h.when || "before", s1: num(h.s1), s2: num(h.s2), createdAt: now, order: i}));
   state.trips.push(t);
   openTripRecords[t.id] = true; pastOpen = false; pastDraft = null;
@@ -1330,8 +1350,7 @@ function hotelFields(h, attr, dis){
       <label>Check-in<input type="date" ${a("in")} value="${esc(h.in || "")}" ${dis ? "disabled" : ""}></label>
       <label>Check-out<input type="date" ${a("out")} value="${esc(h.out || "")}" ${dis ? "disabled" : ""}></label>
       <label class="full">When<select ${a("when")} ${dis ? "disabled" : ""}>${Object.entries(WHEN).map(([k,v]) => `<option value="${k}" ${(h.when || "before") === k ? "selected" : ""}>${v}</option>`).join("")}</select></label>
-    </div>
-    <div class="pf-scores">${hotelScore(a("s1"), h.s1, 1, dis)}${hotelScore(a("s2"), h.s2, 2, dis)}</div>`;
+    </div>`;
 }
 function hotelsSection(t){
   const hs = sortHotels(t.hotels);
@@ -1346,8 +1365,8 @@ function hotelSummary(x){
   const hs = sortHotels(x.hotels).filter(h => h.name || h.city);
   if(!hs.length) return "";
   return `<div class="ts-h"><span>Hotels</span><span>${hs.length} stay${hs.length === 1 ? "" : "s"}</span></div>
-    <table class="ts-ports"><thead><tr><th>Hotel</th><th class="c1">${esc(x.p1)}</th><th class="c2">${esc(x.p2)}</th><th>Avg</th></tr></thead><tbody>
-    ${hs.map(h => { const n = nightsOf(h.in, h.out); return `<tr><td><b>${esc(h.name || h.city)}</b><small>${esc([h.when === "after" ? "After" : "Before", h.name && h.city ? h.city : "", h.in ? fmtDate(h.in, {month:"short", day:"numeric"}) + (n ? ` · ${n} night${n === 1 ? "" : "s"}` : "") : ""].filter(Boolean).join(" · "))}</small></td><td class="num">${h.s1 ?? "–"}</td><td class="num">${h.s2 ?? "–"}</td><td class="num"><span class="ts-avg tone-${scoreTone(portAvg(h))}">${fmt1(portAvg(h))}</span></td></tr>`; }).join("")}
+    <table class="ts-ports"><thead><tr><th>Hotel</th><th>Nights</th></tr></thead><tbody>
+    ${hs.map(h => { const n = nightsOf(h.in, h.out); return `<tr><td><b>${esc(h.name || h.city)}</b><small>${esc([h.when === "after" ? "After" : "Before", h.name && h.city ? h.city : "", h.in ? fmtDate(h.in, {month:"short", day:"numeric"}) + (h.out ? " – " + fmtDate(h.out, {month:"short", day:"numeric"}) : "") : ""].filter(Boolean).join(" · "))}</small></td><td class="num">${n || "–"}</td></tr>`; }).join("")}
     </tbody></table>`;
 }
 function setHotel(t, path, v){
@@ -1370,11 +1389,15 @@ document.addEventListener("click", e => {
 });
 
 /* Delete this trip shows only for 24 hours after a trip is added, or while editing is unlocked */
-const canDeleteTrip = t => editingUnlocked || (!!t.createdAt && Date.now() - t.createdAt < 24*60*60*1000);
+const canDeleteTrip = t => editingUnlocked || (!!t.createdAt && Date.now() - t.createdAt < LOCK_MS);
 function renderTrips(){
   const t = trip();
   $("#view").innerHTML = `
-    <div class="section-h" style="margin-top:0"><h2>Trip details</h2></div>
+    <div class="curtrip">
+      <label for="curTrip" class="eyebrow">Current trip · new games and scores go here</label>
+      <select id="curTrip">${tripsInOrder().map(x => `<option value="${x.id}" ${x.id === t.id ? "selected" : ""}>${esc(titleCase(x.name))}${x.start ? " · " + esc(fmtDate(x.start,{month:"short", year:"numeric"})) : ""}</option>`).join("")}</select>
+    </div>
+    <div class="section-h"><h2>Trip details</h2></div>
     <div class="form">
       <label class="full" for="f-name">Where we're going<input id="f-name" data-f="name" value="${esc(t.name)}" placeholder="e.g. South Pacific crossing"></label>
       <label class="full" for="f-ship">Ship<input id="f-ship" data-f="ship" value="${esc(t.ship)}" placeholder="Ship name"></label>
@@ -1389,8 +1412,6 @@ function renderTrips(){
     <div class="section-h"><h2>All trips</h2><div class="trip-btns"><button class="btn b3d" data-act="pasttrip">Add past trip</button><button class="btn b3d" data-act="newtrip">New trip</button></div></div>
     <div id="presetBox">${pastOpen ? pastTripForm() : ""}</div>
     ${tripsInOrder().map(x => tripRecord(x, t)).join("")}
-    ${state.trips.length > 1 && canDeleteTrip(t) ? `<button class="btn danger b3d" style="margin-top:12px" data-act="deltrip">Delete this trip</button>
-      ${editingUnlocked ? "" : `<p class="rulehint" style="margin-top:6px">You can delete a trip for 24 hours after adding it. After that, unlock editing (tap © 2026 Thor) to delete it.</p>`}` : ""}
   `;
 }
 
@@ -1471,12 +1492,21 @@ function sortPorts(list){
 /* ---------- Ports: rate each stop ---------- */
 const avg = arr => { const v = arr.filter(x => typeof x === "number"); return v.length ? v.reduce((a,b)=>a+b,0)/v.length : null; };
 const fmt1 = x => x === null ? "–" : (Math.round(x*10)/10).toFixed(1).replace(/\.0$/,"");
-function portAvg(pt){ return avg([pt.s1, pt.s2]); }
+function portAvg(pt){ return pt.skip ? null : avg([pt.s1, pt.s2]); }
 function scoreTone(x){ return x === null ? "none" : x >= 8 ? "hi" : x >= 5 ? "mid" : "lo"; }
-let portDraft = {name:"", date:""};
+let portDraft = {name:"", date:""}, editingPort = null;
+function savePortEdit(){
+  const t = trip(), pt = t.ports.find(x => x.id === editingPort); editingPort = null;
+  if(pt && !portLocked(pt)){
+    const name = (document.querySelector('[data-pe="name"]')?.value || "").trim(), date = document.querySelector('[data-pe="date"]')?.value || "";
+    if(name && name !== pt.name){ pt.name = name; pt.lat = null; pt.lon = null; delete pt.geoTried; }
+    pt.date = date; commit();
+  }
+  const y = window.scrollY; render(); window.scrollTo(0, y);
+}
 function renderPorts(){
   const t = trip(); ensureEndPorts(t); const ports = sortPorts(t.ports);
-  const cruise = avg(ports.map(portAvg)), a1 = avg(ports.map(p=>p.s1)), a2 = avg(ports.map(p=>p.s2));
+  const cruise = avg(ports.map(portAvg)), a1 = avg(ports.filter(p=>!p.skip).map(p=>p.s1)), a2 = avg(ports.filter(p=>!p.skip).map(p=>p.s2));
   const rated = ports.filter(p => portAvg(p) !== null);
   const best = rated.length ? rated.reduce((m,p) => portAvg(p) > portAvg(m) ? p : m) : null;
   $("#view").innerHTML = `
@@ -1500,17 +1530,20 @@ function renderPorts(){
       <div class="port" id="port-${pt.id}">
         <div class="port-top">
           <span class="port-n num">${i+1}</span>
-          <div class="port-t">${pt.kind?`<span class="port-kind">${pt.kind==="start"?"Departure":"Arrival"}</span>`:""}${portTitle(pt.name)}<span class="pdate">${pt.date ? esc(fmtDate(pt.date,{weekday:"short",month:"short",day:"numeric"})) : "No date"}</span></div>
+          ${editingPort === pt.id ? `<div class="port-t pf-row"><input data-pe="name" value="${esc(pt.name)}" aria-label="Port name" autocomplete="off" enterkeyhint="done"><input type="date" data-pe="date" value="${esc(pt.date||"")}" aria-label="Date in port"></div>`
+            : `<div class="port-t">${pt.kind?`<span class="port-kind">${pt.kind==="start"?"Departure":"Arrival"}</span>`:""}${portTitle(pt.name)}<span class="pdate">${pt.date ? esc(fmtDate(pt.date,{weekday:"short",month:"short",day:"numeric"})) : "No date"}</span></div>`}
           <div class="port-avg tone-${scoreTone(pa)}"><b class="num">${fmt1(pa)}</b><span>avg</span></div>
         </div>
-        <div class="port-rates">
+        ${pt.skip ? `<div class="skipnote">🚫 Didn't visit · not scored</div>` : ""}
+        <div class="port-rates" ${pt.skip ? "hidden" : ""}>
           ${(() => { return [1,2].map(w => { const v = w===1 ? pt.s1 : pt.s2, nm = w===1 ? t.p1 : t.p2, lk = scoreLocked(pt, w); return `
           <div class="rate p${w}" role="group" aria-label="${esc(nm)}'s score for ${esc(pt.name)}">
             <div class="rate-h"><span>${esc(nm)}</span><b class="num">${v ?? "Tap a score"}</b></div>
             <div class="rate-nums">${[1,2,3,4,5,6,7,8,9,10].map(n => `<button type="button" class="rn" data-rate="${pt.id}" data-who="${w}" data-n="${n}" aria-pressed="${v===n}" aria-label="${n}" ${lk?"disabled":""}>${n}</button>`).join("")}</div>
           </div>`; }).join(""); })()}
         </div>
-        ${portLocked(pt) ? `<span class="port-note">🔒 Scores lock 48 hours after they are given (never before sailing day). Unlock in Save As (tap © 2026 Thor).</span>` : pt.kind ? `<span class="port-note">Change it on the Trips tab</span>` : `<button class="xbtn" data-delport="${pt.id}">Remove port</button>`}
+        ${portLocked(pt) ? "" : `<button type="button" class="xbtn skipbtn" data-skip="${pt.id}">${pt.skip ? "↩️ We visited · score it" : "🚫 Didn't visit · don't score"}</button>`}
+        ${portLocked(pt) ? `<span class="port-note">🔒 Scores lock 48 hours after they are given (never before sailing day). Unlock in Save As (tap © 2026 Thor).</span>` : pt.kind ? `<span class="port-note">Change it on the Trips tab</span>` : editingPort === pt.id ? `<span class="trip-btns"><button type="button" class="xbtn" data-act="pecancel">Cancel</button><button type="button" class="btn primary b3d note-save" data-act="pesave">Save</button></span>` : `<span class="trip-btns"><button type="button" class="xbtn" data-editport="${pt.id}">✏️ Edit</button><button class="xbtn" data-delport="${pt.id}">Remove port</button></span>`}
       </div>`; }).join("") : `<div class="empty">No ports yet. Add your first stop below.</div>`}
     ${ports.some(p => p.s1 != null || p.s2 != null) ? `<button type="button" class="btn danger b3d resetports" data-act="resetports">Reset all port scores</button>` : ""}
     <div class="addport">
@@ -1531,7 +1564,8 @@ function addPort(){
   commit(); render();
 }
 document.addEventListener("input", e => { if(e.target.id === "port-name") portDraft.name = e.target.value; if(e.target.id === "port-date") portDraft.date = e.target.value; });
-document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.id === "port-name"){ e.preventDefault(); addPort(); } });
+document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.id === "port-name"){ e.preventDefault(); addPort(); }
+  if(e.key === "Enter" && e.target.dataset && e.target.dataset.pe){ e.preventDefault(); savePortEdit(); } });
 document.addEventListener("click", e => {
   const b = e.target.closest(".rn[data-rate]"); if(!b) return;
   const pt = trip().ports.find(p => p.id === b.dataset.rate); if(!pt) return;
@@ -1623,17 +1657,86 @@ function tripFlags(x){
 
 /* saved trip record: card + summary drop-down with games and ports of call */
 const openTripRecords = {};
+/* edit ports and hotels of any trip, right inside its summary */
+let editTrip = null;
+function tripEditor(x, ports){
+  const lockNote = `<span class="port-note">🔒 Locked 48 hours after scoring. Unlock in Save As (tap © 2026 Thor).</span>`;
+  const portRow = pt => { const lk = portLocked(pt), k = x.id + "|" + pt.id;
+    return `<div class="pf-port">
+      ${pt.kind ? `<span class="port-kind">${pt.kind === "start" ? "Departure" : "Arrival"}</span>` : ""}
+      <div class="pf-row"><input data-tpe="${k}|name" value="${esc(pt.name)}" aria-label="Port name" autocomplete="off" ${lk ? "disabled" : ""}>
+        <input type="date" data-tpe="${k}|date" value="${esc(pt.date || "")}" aria-label="Date in port" ${lk ? "disabled" : ""}></div>
+      ${lk ? lockNote : `<span class="trip-btns"><button type="button" class="xbtn" data-skip="${pt.id}" data-skiptrip="${x.id}">${pt.skip ? "↩️ We visited · score it" : "🚫 Didn't visit · don't score"}</button>${pt.kind ? "" : `<button type="button" class="xbtn" data-tpdel="${k}">Remove port</button>`}</span>`}
+    </div>`; };
+  const hs = sortHotels(x.hotels);
+  const tlk = !!x.tallyAt && isLocked(x.tallyAt);
+  return `<div class="pf-h">Final game score for the trip</div>
+    <p class="rulehint" style="margin:0">Use this when you only know the totals. Games you score in the app are added on top.</p>
+    ${winsFields("data-tw", x.id + "|", x.tally, x.p1, x.p2, tlk)}
+    ${tlk ? `<span class="port-note">🔒 Locked 48 hours after it was entered. Unlock in Save As (tap © 2026 Thor).</span>` : ""}
+    <div class="pf-h">Ports of call</div>
+    ${ports.map(portRow).join("")}
+    <button type="button" class="btn b3d pf-add" data-tpadd="${x.id}">+ Add a port</button>
+    <div class="pf-h">Hotels</div>
+    ${hs.map(h => { const lk = hotelLocked(h); return `<div class="pf-port">${hotelFields(Object.assign({}, h, {id: x.id + "|" + h.id}), "data-th", lk)}
+      ${lk ? `<span class="port-note">🔒 Locked 48 hours after it was added. Unlock in Save As (tap © 2026 Thor).</span>` : `<button type="button" class="xbtn" data-thdel="${x.id}|${h.id}">Remove hotel</button>`}</div>`; }).join("")}
+    <button type="button" class="btn b3d pf-add" data-thadd="${x.id}">+ Add a hotel</button>`;
+}
+function setTripPort(path, v){
+  const [tid, pid, f] = path.split("|"), t = state.trips.find(z => z.id === tid), pt = t && t.ports.find(z => z.id === pid);
+  if(!pt || portLocked(pt)) return null;
+  if(pt.kind){ if(f === "name") t[pt.kind === "start" ? "from" : "to"] = v; else t[pt.kind === "start" ? "start" : "end"] = v; }
+  pt[f] = v;
+  if(f === "name"){ pt.lat = null; pt.lon = null; delete pt.geoTried; }
+  return t;
+}
+let tripEditTimer = null;
+function setTripWins(path, v){
+  const [tid, rest] = path.split("|"), [k, f] = rest.split("."), t = state.trips.find(z => z.id === tid);
+  if(!t || (t.tallyAt && isLocked(t.tallyAt))) return null;
+  t.tally = t.tally || {}; t.tally[k] = t.tally[k] || {w1:0, w2:0};
+  t.tally[k][f] = Math.max(0, parseInt(v, 10) || 0); if(!t.tallyAt) t.tallyAt = Date.now();
+  return t;
+}
+document.addEventListener("change", e => { const d = e.target.dataset || {};
+  if(d.tw && setTripWins(d.tw, e.target.value)){ commit(); const y = window.scrollY; render(); window.scrollTo(0, y); } });
+document.addEventListener("input", e => { const d = e.target.dataset || {};
+  if(d.tpe){ if(setTripPort(d.tpe, e.target.value)){ clearTimeout(tripEditTimer); tripEditTimer = setTimeout(() => commit(), 500); } }
+  else if(d.th && e.target.tagName !== "SELECT"){ const [tid, rest] = d.th.split("|"), t = state.trips.find(z => z.id === tid);
+    if(t && setHotel(t, rest, e.target.value)){ clearTimeout(tripEditTimer); tripEditTimer = setTimeout(() => commit(), 500); } } });
+document.addEventListener("change", e => { const d = e.target.dataset || {};
+  if(d.tpe){ const t = setTripPort(d.tpe, e.target.value); if(t){ clearTimeout(tripEditTimer); if(d.tpe.endsWith("|date")) ensureEndPorts(t); commit(); if(d.tpe.endsWith("|date")){ const y = window.scrollY; render(); window.scrollTo(0, y); } } }
+  else if(d.th){ const [tid, rest] = d.th.split("|"), t = state.trips.find(z => z.id === tid);
+    if(t && setHotel(t, rest, e.target.value)){ clearTimeout(tripEditTimer); commit(); if(/\.(when|in|out)$/.test(rest)){ const y = window.scrollY; render(); window.scrollTo(0, y); } } } });
+document.addEventListener("click", e => {
+  const tripOf = id => state.trips.find(z => z.id === id), redraw = () => { const y = window.scrollY; render(); window.scrollTo(0, y); };
+  const et = e.target.closest("[data-edittrip]");
+  if(et){ editTrip = editTrip === et.dataset.edittrip ? null : et.dataset.edittrip; redraw(); return; }
+  const pa = e.target.closest("[data-tpadd]");
+  if(pa){ const t = tripOf(pa.dataset.tpadd); if(!t) return; const pt = {id: uid(), name: "", date: "", s1: null, s2: null, order: Date.now()};
+    t.ports.push(pt); commit(); redraw(); const f = document.querySelector(`[data-tpe="${t.id}|${pt.id}|name"]`); if(f){ f.scrollIntoView({block:"center"}); f.focus(); } return; }
+  const pd = e.target.closest("[data-tpdel]");
+  if(pd){ const [tid, pid] = pd.dataset.tpdel.split("|"), t = tripOf(tid), pt = t && t.ports.find(z => z.id === pid); if(!pt || portLocked(pt)) return;
+    sheet(`Remove ${pt.name || "this port"}?`, "Its scores come off the cruise average.", "Remove port", () => { t.ports = t.ports.filter(z => z.id !== pid); commit(); redraw(); }, true); return; }
+  const ha = e.target.closest("[data-thadd]");
+  if(ha){ const t = tripOf(ha.dataset.thadd); if(!t) return; t.hotels = t.hotels || [];
+    const h = {id: uid(), name: "", city: "", in: "", out: "", when: t.hotels.some(z => z.when !== "after") ? "after" : "before", createdAt: Date.now(), order: Date.now()};
+    t.hotels.push(h); commit(); redraw(); const f = document.querySelector(`[data-th="${t.id}|${h.id}.name"]`); if(f){ f.scrollIntoView({block:"center"}); f.focus(); } return; }
+  const hd = e.target.closest("[data-thdel]");
+  if(hd){ const [tid, hid] = hd.dataset.thdel.split("|"), t = tripOf(tid), h = t && (t.hotels || []).find(z => z.id === hid); if(!h || hotelLocked(h)) return;
+    sheet(`Remove ${h.name ? "“" + esc(h.name) + "”" : "this hotel"}?`, "", "Remove hotel", () => { t.hotels = t.hotels.filter(z => z.id !== hid); commit(); redraw(); }, true); }
+});
 function tripRecord(x, cur){
   const k = tally(x,"all"), kd = tally(x,"domino"), ks = tally(x,"scala");
   ensureEndPorts(x); const ports = sortPorts(x.ports);
-  const cruise = avg(ports.map(portAvg)), a1 = avg(ports.map(p=>p.s1)), a2 = avg(ports.map(p=>p.s2));
+  const cruise = avg(ports.map(portAvg)), a1 = avg(ports.filter(p=>!p.skip).map(p=>p.s1)), a2 = avg(ports.filter(p=>!p.skip).map(p=>p.s2));
   return `<div class="triprec ${x.id===cur.id?"active":""}">
     <button class="tripcard b3d ${x.id===cur.id?"active":""} ${placeCC(x.from)||placeCC(x.to)?"has-banner":""}" data-tripopen="${x.id}" aria-expanded="${!!openTripRecords[x.id]}" aria-controls="more-${x.id}">
       ${tripFlags(x)}<span class="t"><b>${esc(titleCase(x.name))}</b><span class="tr-line">${esc(fmtRangeLong(x.start,x.end))}</span>${x.from || x.to ? `<span class="tr-line">${esc(routeText(x))}</span>` : ""}</span>
       <span class="tr-right">${cruise!==null?`<span class="tr-score tone-${scoreTone(cruise)}" title="Cruise score">${fmt1(cruise)}</span>`:""}<span class="w">${k.w1}–${k.w2}</span><span class="chev tr-chev" aria-hidden="true">▾</span></span>
     </button>
     <div class="tr-more" id="more-${x.id}" ${openTripRecords[x.id]?"":"hidden"}>
-      ${x.id===cur.id ? `<div class="tr-cur">✓ Current trip · new scores go here</div>` : `<button type="button" class="btn b3d tr-use" data-trip="${x.id}">Make this the current trip</button>`}
+      ${x.id===cur.id ? `<div class="tr-cur">✓ Current trip · new scores go here</div>` : ""}
       <div class="tr-sec">
       <div class="tr-h">Trip summary</div>
       <div class="ts-body">
@@ -1645,15 +1748,17 @@ function tripRecord(x, cur){
             <div class="who k"><span>${esc(x.p2)}</span><b class="num">${w.w2}</b></div></div>`).join("")}
         </div>
         <button type="button" class="btn primary b3d ts-rate" data-rateports="${x.id}">Rate these ports</button>
+        <button type="button" class="btn b3d ts-rate ${editTrip===x.id ? "lockbtn unlocked" : ""}" data-edittrip="${x.id}">${editTrip===x.id ? "✓ Done editing" : "✏️ Edit score, ports and hotels"}</button>
         <div class="ts-h"><span>Ports of call</span><span>${cruise!==null?`Cruise score <b>${fmt1(cruise)}</b>/10`:"Not rated yet"}</span></div>
-        ${ports.length ? `<table class="ts-ports"><thead><tr><th>Port</th><th class="c1">${esc(x.p1)}</th><th class="c2">${esc(x.p2)}</th><th>Avg</th></tr></thead><tbody>
-          ${ports.map(pt => `<tr><td><b>${esc(pt.name)}</b>${pt.date?`<small>${esc(fmtDate(pt.date,{month:"short",day:"numeric"}))}</small>`:""}</td><td class="num">${pt.s1??"–"}</td><td class="num">${pt.s2??"–"}</td><td class="num"><span class="ts-avg tone-${scoreTone(portAvg(pt))}">${fmt1(portAvg(pt))}</span></td></tr>`).join("")}
+        ${editTrip===x.id ? tripEditor(x, ports) : ports.length ? `<table class="ts-ports"><thead><tr><th>Port</th><th class="c1">${esc(x.p1)}</th><th class="c2">${esc(x.p2)}</th><th>Avg</th></tr></thead><tbody>
+          ${ports.map(pt => `<tr><td><b>${esc(pt.name)}</b>${pt.date?`<small>${esc(fmtDate(pt.date,{month:"short",day:"numeric"}))}</small>`:""}</td>${pt.skip ? `<td colspan="3" class="num"><small>Didn't visit</small></td>` : `<td class="num">${pt.s1??"–"}</td><td class="num">${pt.s2??"–"}</td><td class="num"><span class="ts-avg tone-${scoreTone(portAvg(pt))}">${fmt1(portAvg(pt))}</span></td>`}</tr>`).join("")}
           </tbody><tfoot><tr><td>Average</td><td class="num">${fmt1(a1)}</td><td class="num">${fmt1(a2)}</td><td class="num"><b>${fmt1(cruise)}</b></td></tr></tfoot></table>`
           : `<p class="ts-empty">No ports added for this trip.</p>`}
-        ${hotelSummary(x)}
+        ${editTrip===x.id ? "" : hotelSummary(x)}
       </div>
       </div>
       ${notesPanel(x)}
+      ${state.trips.length > 1 && canDeleteTrip(x) ? `<button type="button" class="btn danger b3d" data-act="deltrip" data-tid="${x.id}">🗑️ Delete this trip</button>` : ""}
     </div>
   </div>`;
 }
@@ -2316,7 +2421,7 @@ function buildPortsPDF(){
       const pl = splitPlace(p.name), a = portAvg(p);
       const city = pl.city + (p.kind === "start" ? " (departure)" : p.kind === "end" ? " (arrival)" : "");
       const cells = [String(i + 1), p.date ? fmtDate(p.date, {month:"short", day:"numeric", year:"numeric"}) : "–",
-        city, pl.region || "–", p.s1 ?? "–", p.s2 ?? "–", a === null ? "–" : fmt1(a)];
+        city + (p.skip ? " (not visited)" : ""), pl.region || "–", p.skip ? "–" : p.s1 ?? "–", p.skip ? "–" : p.s2 ?? "–", a === null ? "–" : fmt1(a)];
       cells.forEach((c, k) => text(cols[k].x, y - 11, fitText(c, 9.5, cols[k].w, k === 2), 9.5, k === 2));
       y -= 15; line(M, y, W - M, y, 0.5, 0.6);
       const key = pl.country || pl.city;
@@ -2526,6 +2631,14 @@ document.addEventListener("click", e => {
   if(dp){ const t = trip(), pt = t.ports.find(x => x.id === dp.dataset.delport); if(!pt || portLocked(pt)) return;
     sheet(`Remove ${pt.name}?`, "Its scores come off the cruise average.", "Remove port", () => { t.ports = t.ports.filter(x => x.id !== pt.id); commit(); render(); }, true); return; }
 
+  const sk = e.target.closest("[data-skip]");
+  if(sk){ const st = sk.dataset.skiptrip ? state.trips.find(z => z.id === sk.dataset.skiptrip) : trip(), pt = st && st.ports.find(z => z.id === sk.dataset.skip);
+    if(!pt || portLocked(pt)) return; pt.skip = !pt.skip; commit(); const y = window.scrollY; render(); window.scrollTo(0, y); return; }
+
+  const ep = e.target.closest("[data-editport]");
+  if(ep){ editingPort = ep.dataset.editport; const y = window.scrollY; render(); window.scrollTo(0, y);
+    const f = document.querySelector('[data-pe="name"]'); if(f){ f.focus(); f.select(); } return; }
+
   const rp = e.target.closest("[data-rateports]");
   if(rp){ state.activeTripId = rp.dataset.rateports; tab = "ports"; commit(); render(); window.scrollTo(0,0); return; }
 
@@ -2554,6 +2667,8 @@ document.addEventListener("click", e => {
       keepBanner=false; commit(); render(); }, true);
   }
   else if(a==="addport"){ addPort(); }
+  else if(a==="pesave"){ savePortEdit(); }
+  else if(a==="pecancel"){ editingPort = null; const y = window.scrollY; render(); window.scrollTo(0, y); }
   else if(a==="resetports"){
     const scored = t.ports.filter(p => p.s1 != null || p.s2 != null);
     if(scored.some(portLocked)){
@@ -2584,11 +2699,12 @@ document.addEventListener("click", e => {
       <button class="preset b3d" data-act="blanktrip"><b>Blank trip</b><br>Fill in the details</button></div>`;
   }
   else if(a==="blanktrip"){ const nt = newTrip(); nt.p1=t.p1; nt.p2=t.p2; state.trips.push(nt); state.activeTripId = nt.id; commit(); render(); setTimeout(()=>{ const f=$("#f-name"); if(f){ f.focus(); f.select(); } }, 0); }
-  else if(a==="deltrip" && !canDeleteTrip(t)){ render(); }
-  else if(a==="deltrip" && (t.games.some(g => isLocked(g.createdAt)) || t.ports.some(portLocked))){
-    sheet("This trip has locked entries", "Games and port scores lock 48 hours after they're entered. Unlock editing in Save As (tap © 2026 Thor), then delete the trip.", "Open Save As", () => showSaveAs());
-  }
-  else if(a==="deltrip"){ sheet(`Delete “${t.name}”?`, `Its ${t.games.length} recorded game${t.games.length===1?"":"s"} will be removed too.`, "Delete trip", () => { state.trips = state.trips.filter(x => x.id!==t.id); state.activeTripId = state.trips[0].id; commit(); render(); }, true); }
+  else if(a==="deltrip"){ const dt = state.trips.find(x => x.id === act.dataset.tid);
+    if(!dt || !canDeleteTrip(dt) || state.trips.length < 2){ render(); }
+    else if(dt.games.some(g => isLocked(g.createdAt)) || dt.ports.some(portLocked)){
+      sheet("This trip has locked entries", "Games and port scores lock 48 hours after they're entered. Unlock editing in Save As (tap © 2026 Thor), then delete the trip.", "Open Save As", () => showSaveAs()); }
+    else sheet(`Delete “${dt.name}”?`, `Its ${dt.games.length} recorded game${dt.games.length===1?"":"s"}, ports, hotels and notes will be removed too, on every device.`, "Delete trip", () => {
+      state.trips = state.trips.filter(x => x.id !== dt.id); if(state.activeTripId === dt.id) state.activeTripId = state.trips[0].id; commit(); render(); }, true); }
 });
 
 let typingTimer = null;
@@ -2598,6 +2714,7 @@ document.addEventListener("input", e => {
 });
 document.addEventListener("change", e => {
   const el = e.target, t = trip();
+  if(el.id === "curTrip"){ state.activeTripId = el.value; editTrip = null; commit(); render(); window.scrollTo(0,0); return; }
   if(el.id === "target"){ t.target = +el.value; keepBanner=false; commit(); render(); }
   else if(el.id === "limit"){ t.limit = +el.value; commit(); render(); }
   else if(el.dataset && el.dataset.f){ t[el.dataset.f] = el.value; ensureEndPorts(t); commit(); renderHead(); }
