@@ -558,8 +558,8 @@ nav.tabs button[aria-current="page"]{box-shadow:inset 0 -2px 0 rgba(0,0,0,.06),0
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "8.9";
-const APP_UPDATED = "Oct 24, 2026, 1:58 PM ET";
+const APP_VERSION = "9.1";
+const APP_UPDATED = "Oct 24, 2026, 2:45 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -1453,7 +1453,7 @@ function renderTrips(){
   $("#view").innerHTML = `
     <div class="curtrip">
       <label for="curTrip" class="eyebrow">Current trip · new games and scores go here</label>
-      <select id="curTrip">${tripsInOrder().map(x => `<option value="${x.id}" ${x.id === t.id ? "selected" : ""}>${esc(titleCase(x.name))}${x.start ? " · " + esc(fmtDate(x.start,{month:"short", year:"numeric"})) : ""}</option>`).join("")}</select>
+      <select id="curTrip">${(([s, u]) => [...s, ...u])(tripGroups().map(g => g[1])).concat(tripGroups()[2].filter(x => x.id === t.id)).map(x => `<option value="${x.id}" ${x.id === t.id ? "selected" : ""}>${esc(titleCase(x.name))}${x.start ? " · " + esc(fmtDate(x.start,{month:"short", year:"numeric"})) : ""}</option>`).join("")}</select>
     </div>
     <div class="section-h"><h2>Trip details</h2></div>
     <div class="form">
@@ -1484,7 +1484,17 @@ function renderTrips(){
   `;
 }
 
+/* typing a date: the phone/computer fills the year one digit at a time (0002 → 0020 → 0202 → 2026).
+   Don't redraw the page under the box until the date is finished, and never save a half-typed year. */
+let dateRenderWaiting = false;
+const dateBoxBusy = () => { const a = document.activeElement; return !!(a && a.type === "date" && a.closest("#view")); };
+const halfDate = v => !!v && (+String(v).slice(0,4) < 1900 || +String(v).slice(0,4) > 2200);
+document.addEventListener("input", e => { if(e.target.type === "date" && halfDate(e.target.value)) e.stopImmediatePropagation(); }, true);
+document.addEventListener("change", e => { if(e.target.type === "date" && halfDate(e.target.value)) e.stopImmediatePropagation(); }, true);
+document.addEventListener("focusout", e => { if(e.target.type === "date" && dateRenderWaiting){ dateRenderWaiting = false;
+  setTimeout(() => { if(!dateBoxBusy()){ const y = window.scrollY; render(); window.scrollTo(0, y); } }, 0); } });
 function render(){
+  if(dateBoxBusy()){ dateRenderWaiting = true; return; }
   renderHead();
   document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-current", b.dataset.tab===tab ? "page" : "false"));
   document.body.dataset.game = tab === "score" ? dayType(trip()) : "";
@@ -2867,3 +2877,4 @@ renderSyncBits();
 </script>
 </body>
 </html>
+
