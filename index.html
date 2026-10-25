@@ -67,6 +67,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .qcard{width:54px;height:auto;transform:rotate(8deg);filter:drop-shadow(0 4px 0 var(--accent-edge)) drop-shadow(0 6px 10px var(--drop));transition:transform .25s}
 .qcard:hover{transform:rotate(-4deg) scale(1.06)}
 .trip h1{font-size:22px;font-weight:800;line-height:1.15;min-width:0}
+/* Trips tab: the current-trip picker already names the trip, so the big header steps aside */
+body[data-tab="trips"] #tripHead{display:none}
 .route{display:flex;flex-wrap:wrap;align-items:center;gap:6px;color:var(--muted);font-size:14px}
 .route b{color:var(--ink);font-weight:700}
 .dayrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
@@ -434,8 +436,18 @@ nav.tabs button{font-size:11.5px}
 .tripgroup{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:18px 2px 10px;padding-bottom:6px;border-bottom:2px dotted var(--line)}
 .tripgroup h3{font-size:16px;color:var(--accent-ink)}
 .tripgroup span{font-size:12px;color:var(--muted);font-weight:700}
-.curtrip{display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:16px;background:var(--accent-soft);border:2px solid var(--accent);margin-bottom:6px}
+.curtrip{display:flex;flex-direction:column;gap:4px;padding:8px 10px;border-radius:16px;background:var(--accent-soft);border:2px solid var(--accent);margin-bottom:6px}
 .curtrip select{width:100%;font-weight:700}
+.trip-tools{display:flex;gap:8px;margin:10px 0 4px}
+.trip-tools .tool{flex:1;padding:10px 8px;font-size:15px;font-weight:800;white-space:nowrap;--face:var(--surface);--edge:var(--line);color:var(--ink);border-radius:14px}
+.trip-tools .tool.on{--face:var(--accent-soft);--edge:var(--accent)}
+.trip-tools .tchev{font-size:11px;opacity:.6;margin-left:2px}
+.form.compact{gap:6px 10px;margin:8px 0 4px;padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-radius:16px}
+.form.compact label,.hotels-compact .form label{font-size:12px;gap:2px}
+.form.compact input,.hotels-compact input,.hotels-compact select{padding:5px 10px;min-height:38px;border-radius:10px}
+.hotels-compact .form{gap:6px 10px}
+.hotels-compact .hotel{gap:6px;padding:10px 12px;margin-bottom:10px}
+.hotels-compact .section-h{margin:10px 0 6px}
 .tr-more{padding:4px 12px 14px;display:flex;flex-direction:column;gap:12px;border-top:2px dashed var(--line)}
 .tr-more[hidden]{display:none}
 .tr-sec{background:var(--surface);border:2px solid var(--line);border-radius:14px;overflow:hidden}
@@ -540,6 +552,20 @@ nav.tabs button[aria-current="page"]{box-shadow:inset 0 -2px 0 rgba(0,0,0,.06),0
 .rn:active:not(:disabled){transform:translateY(3px);box-shadow:0 0 0 var(--pc)}
 .mapcard.photo{box-shadow:0 5px 0 var(--line),0 9px 14px var(--drop)}
 .mapcard.photo:active{transform:translateY(3px);box-shadow:0 2px 0 var(--line),0 3px 6px var(--drop)}
+
+/* bottom bar: four colorful 3D buttons, each with its own color; the open tab is raised and brighter */
+nav.tabs .in{gap:8px;padding:7px 10px 10px}
+nav.tabs .in button{--c:#F1ECFA;--ca:#DCCFFF;--e:#B9A8E6;position:relative;border:1.5px solid rgba(255,255,255,.85);border-radius:16px;color:#4A3F5C;font-size:12px;font-weight:800;gap:1px;
+  background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(255,255,255,0) 58%),var(--c);box-shadow:0 4px 0 var(--e),0 6px 10px rgba(60,40,90,.14);transition:transform .12s,box-shadow .12s,background .2s}
+nav.tabs .in button .ic{width:28px;height:28px;stroke:none;fill:none;stroke-width:initial;filter:drop-shadow(0 1.5px 0 rgba(0,0,0,.12));transition:transform .15s}
+nav.tabs .in button.t-score{--c:#FFE3EA;--ca:#FFB8C8;--e:#E79AAE}
+nav.tabs .in button.t-wins{--c:#FFF1C9;--ca:#FFD970;--e:#E0B348}
+nav.tabs .in button.t-ports{--c:#D8F5F2;--ca:#99E3DC;--e:#6CC2BA}
+nav.tabs .in button.t-trips{--c:#E8DFFF;--ca:#C9B5FF;--e:#9F87E0}
+nav.tabs .in button[aria-current="page"]{color:#2F2A42;background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,0) 55%),var(--ca);transform:translateY(-3px);box-shadow:0 6px 0 var(--e),0 10px 14px rgba(60,40,90,.22)}
+nav.tabs .in button[aria-current="page"] .ic{transform:scale(1.14) rotate(-4deg)}
+nav.tabs .in button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--e),0 2px 4px rgba(60,40,90,.14)}
+@media (prefers-reduced-motion: reduce){nav.tabs .in button,nav.tabs .in button .ic{transition:none}nav.tabs .in button[aria-current="page"] .ic{transform:none}}
 </style>
 </head>
 <body>
@@ -552,10 +578,30 @@ nav.tabs button[aria-current="page"]{box-shadow:inset 0 -2px 0 rgba(0,0,0,.06),0
 </div>
 
 <nav class="tabs" aria-label="Sections"><div class="in">
-  <button data-tab="score" aria-current="page"><svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><line x1="6" y1="12" x2="18" y2="12"/><circle cx="12" cy="7.2" r=".9"/><circle cx="9.5" cy="15.5" r=".9"/><circle cx="14.5" cy="18" r=".9"/></svg>Score</button>
-  <button data-tab="games"><svg viewBox="0 0 24 24"><path d="M7 4h10v4a5 5 0 0 1-10 0z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/><path d="M12 13v4M8 21h8M9.5 17h5"/></svg>Wins</button>
-  <button data-tab="ports"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.2"/><path d="M12 7.2V21M8 10.5h8"/><path d="M4.5 13.5c0 4.2 3.4 7.5 7.5 7.5s7.5-3.3 7.5-7.5"/><path d="M3 15l1.5-1.5L6 15M18 15l1.5-1.5L21 15"/></svg>Ports</button>
-  <button data-tab="trips"><svg viewBox="0 0 24 24"><path d="M3 15h18l-2.5 4.5h-13z"/><path d="M6 15V9h10l2 6"/><path d="M9 9V6h4v3"/></svg>Trips</button>
+  <button data-tab="score" class="t-score" aria-current="page"><svg class="ic" viewBox="0 0 32 32" aria-hidden="true">
+    <rect x="9" y="2.5" width="14" height="27" rx="3.5" fill="#fff" stroke="#3B3551" stroke-width="1.8"/><path d="M9 3.5h14" stroke="#fff" opacity=".6"/>
+    <line x1="10.5" y1="16" x2="21.5" y2="16" stroke="#3B3551" stroke-width="1.6"/>
+    <circle cx="13" cy="7" r="1.8" fill="#1E1B2A"/><circle cx="19" cy="12" r="1.8" fill="#1E1B2A"/><circle cx="16" cy="9.5" r="1.8" fill="#1E1B2A"/>
+    <circle cx="13" cy="20" r="1.8" fill="#1E1B2A"/><circle cx="19" cy="20" r="1.8" fill="#1E1B2A"/><circle cx="13" cy="25.5" r="1.8" fill="#1E1B2A"/><circle cx="19" cy="25.5" r="1.8" fill="#1E1B2A"/></svg>Score</button>
+  <button data-tab="games" class="t-wins"><svg class="ic" viewBox="0 0 32 32" aria-hidden="true">
+    <path d="M9 6H4.5a4.5 4.5 0 0 0 5 5.5M23 6h4.5a4.5 4.5 0 0 1-5 5.5" fill="none" stroke="#D99A12" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M8.5 3.5h15v6.5a7.5 7.5 0 0 1-15 0z" fill="#FFC531" stroke="#B57A0A" stroke-width="1.4"/>
+    <path d="M11.5 5.5v4.5a4.5 4.5 0 0 0 2.2 3.9" fill="none" stroke="#FFF3C4" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M14 17h4l.8 5h-5.6z" fill="#F0AE1E" stroke="#B57A0A" stroke-width="1.2"/>
+    <rect x="9.5" y="22" width="13" height="5.5" rx="1.6" fill="#7A4A2A" stroke="#4E2C16" stroke-width="1.2"/><rect x="12.5" y="23.6" width="7" height="2.2" rx=".8" fill="#FFD866"/>
+    <path d="M16 6.2l.9 1.9 2 .3-1.5 1.4.4 2-1.8-1-1.8 1 .4-2-1.5-1.4 2-.3z" fill="#fff"/></svg>Wins</button>
+  <button data-tab="ports" class="t-ports"><svg class="ic" viewBox="0 0 32 32" aria-hidden="true">
+    <circle cx="24.5" cy="7.5" r="4" fill="#FFC531"/>
+    <path d="M2 26c3-1.6 5.5-1.6 8 0s5.5 1.6 8 0 5.5-1.6 8 0 4 1.2 4 1.2V30H2z" fill="#3BB3E0"/>
+    <ellipse cx="14" cy="25" rx="9" ry="3" fill="#F6D58E"/>
+    <path d="M14.5 24c.3-5 1.6-9.5 3.6-13" fill="none" stroke="#8A5A2B" stroke-width="2" stroke-linecap="round"/>
+    <path d="M18 11c-2.6-3.4-7.2-3.6-9.8-1.4 3.2-.2 6.2.5 9.8 1.4zM18 11c.6-4 4.5-6.2 8-5.2-2.9 1-5.6 2.6-8 5.2zM18 11c-3.8-.6-7.4 1.6-8.4 5 2.4-2.2 5.2-3.8 8.4-5zM18 11c3.6-.8 7 1 7.8 4.4-2.2-2-4.9-3.6-7.8-4.4z" fill="#2FAE5B" stroke="#1E7A3E" stroke-width=".8" stroke-linejoin="round"/></svg>Ports</button>
+  <button data-tab="trips" class="t-trips"><svg class="ic" viewBox="0 0 32 32" aria-hidden="true">
+    <path d="M17.5 6h4l.8 5h-5.6z" fill="#E8456B" stroke="#2B3A67" stroke-width="1"/><rect x="17.2" y="4.6" width="4.6" height="2" rx=".8" fill="#2B3A67"/>
+    <path d="M9 11h16l2 4H7z" fill="#fff" stroke="#9AA6C4" stroke-width="1"/><path d="M6 15h22l2 3H4z" fill="#fff" stroke="#9AA6C4" stroke-width="1"/>
+    <path d="M10.5 12.6h12M7.5 16.4h18" stroke="#6FA4DA" stroke-width="1.3" stroke-dasharray="1.6 1.2"/>
+    <path d="M2.5 18h27l-3.2 6H5.5z" fill="#2B3A67" stroke="#16203D" stroke-width="1" stroke-linejoin="round"/><path d="M4 21.4h24.5" stroke="#E8456B" stroke-width="1.4"/>
+    <path d="M2 27.5q3-2 6 0t6 0 6 0 6 0 4 0" fill="none" stroke="#3BB3E0" stroke-width="2" stroke-linecap="round"/></svg>Trips</button>
 </div></nav>
 
 <div id="sheetRoot"></div>
@@ -567,8 +613,8 @@ nav.tabs button[aria-current="page"]{box-shadow:inset 0 -2px 0 rgba(0,0,0,.06),0
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "9.7";
-const APP_UPDATED = "Oct 24, 2026, 7:15 PM ET";
+const APP_VERSION = "10.3";
+const APP_UPDATED = "Oct 25, 2026, 4:20 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -726,7 +772,14 @@ if(!state){ const t = newTrip(PRESETS[0]); state = {v:2, updatedAt:0, activeTrip
   } catch(e){}
 });
 
-const trip = () => state.trips.find(t => t.id === state.activeTripId) || state.trips[0];
+// the current trip; if it's missing (deleted on the other phone, say), fall back to the trip sailing now or the next upcoming one, never an old trip
+const trip = () => { const t = state.trips.find(x => x.id === state.activeTripId);
+  // a finished trip can't stay the current one (unless the app is unlocked to fix it): move on to the trip sailing now or next
+  if(t && !(typeof editingUnlocked !== "undefined" && editingUnlocked) && typeof tripDone === "function" && tripDone(t) && state.trips.some(x => !tripDone(x))){} else if(t) return t;
+  const now = today(), live = state.trips.filter(x => !(typeof tripDone === "function" ? tripDone(x) : ((x.end || x.start) && (x.end || x.start) < now))).sort((a,b) => (a.start || "9999").localeCompare(b.start || "9999"));
+  const pick = live[0] || state.trips.slice().sort((a,b) => (b.start || "").localeCompare(a.start || ""))[0];
+  if(pick) state.activeTripId = pick.id;
+  return pick; };
 /* which game this phone is showing is kept on this phone only, so a sync from the other phone can never switch it */
 const VIEW_KEY = LS_KEY + ":view";
 let viewType = {}; try { viewType = JSON.parse(localStorage.getItem(VIEW_KEY) || "{}") || {}; } catch(e){}
@@ -1457,15 +1510,20 @@ document.addEventListener("click", e => {
 
 /* Delete this trip shows only for 24 hours after a trip is added, or while editing is unlocked */
 const canDeleteTrip = t => editingUnlocked || (!tripDone(t) && !!t.createdAt && Date.now() - t.createdAt < LOCK_MS);
+let detailsOpen = false, hotelsOpen = false;   // the Trips page opens compact; tap to show the forms
 function renderTrips(){
   const t = trip();
+  if(!t.from && !t.start && !t.to) detailsOpen = true;   // a blank trip needs its details
   $("#view").innerHTML = `
     <div class="curtrip">
-      <label for="curTrip" class="eyebrow">Current trip · new games and scores go here</label>
+      <label for="curTrip" class="eyebrow">Current trip</label>
       <select id="curTrip">${(([s, u]) => [...s, ...u])(tripGroups().map(g => g[1])).concat(tripGroups()[2].filter(x => x.id === t.id)).map(x => `<option value="${x.id}" ${x.id === t.id ? "selected" : ""}>${esc(titleCase(x.name))}${x.start ? " · " + esc(fmtDate(x.start,{month:"short", year:"numeric"})) : ""}</option>`).join("")}</select>
     </div>
-    <div class="section-h"><h2>Trip details</h2></div>
-    <div class="form">
+    <div class="trip-tools">
+      <button type="button" class="tool b3d ${detailsOpen ? "on" : ""}" data-act="tgldetails" aria-expanded="${detailsOpen}">✏️ Trip details <span class="tchev">${detailsOpen ? "▴" : "▾"}</span></button>
+      <button type="button" class="tool b3d ${hotelsOpen ? "on" : ""}" data-act="tglhotels" aria-expanded="${hotelsOpen}">🏨 Hotels${(t.hotels||[]).length ? ` · ${(t.hotels||[]).length}` : ""} <span class="tchev">${hotelsOpen ? "▴" : "▾"}</span></button>
+    </div>
+    ${detailsOpen ? `<div class="form compact">
       <label class="full" for="f-name">Where we're going<input id="f-name" data-f="name" value="${esc(t.name)}" placeholder="e.g. South Pacific crossing"></label>
       <label class="full" for="f-ship">Ship<input id="f-ship" data-f="ship" value="${esc(t.ship)}" placeholder="Ship name"></label>
       <label for="f-start">Trip starts<input type="date" id="f-start" data-f="start" value="${esc(t.start)}"></label>
@@ -1474,8 +1532,8 @@ function renderTrips(){
       <label class="full" for="f-to">Arrival port<input id="f-to" data-f="to" value="${esc(t.to)}" placeholder="Arrival port"></label>
       <label for="f-p1">Player 1<input id="f-p1" data-f="p1" value="${esc(t.p1)}" maxlength="18" placeholder="Alessandra"></label>
       <label for="f-p2">Player 2<input id="f-p2" data-f="p2" value="${esc(t.p2)}" maxlength="18" placeholder="Kirk"></label>
-    </div>
-    ${hotelsSection(t)}
+    </div>` : ""}
+    ${hotelsOpen ? `<div class="hotels-compact">${hotelsSection(t)}</div>` : ""}
     <div class="section-h"><h2>All trips</h2></div>
     ${tripGroups().map(([label, list], gi) => !list.length ? "" : gi === 2
       ? `<button type="button" class="b3d voyages" data-act="togglecompleted" aria-expanded="${completedOpen}" aria-label="Completed trips, ${list.length}">
@@ -1507,6 +1565,7 @@ function render(){
   renderHead();
   document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-current", b.dataset.tab===tab ? "page" : "false"));
   document.body.dataset.game = tab === "score" ? dayType(trip()) : "";
+  document.body.dataset.tab = tab;
   if(tab==="score"){ dayType(trip())==="scala" ? renderScala() : renderDomino(); }
   else if(tab==="games") renderGames(); else if(tab==="ports"){ renderPorts(); fillCoords(trip()); loadLand(); drawPortsMap(); } else { renderTrips(); loadLand(); drawTripMaps(); }
 }
@@ -2910,6 +2969,8 @@ document.addEventListener("click", e => {
       keepBanner=false; commit(); render(); }, true);
   }
   else if(a==="addport"){ addPort(); }
+  else if(a==="tgldetails"){ detailsOpen = !detailsOpen; const y = window.scrollY; render(); window.scrollTo(0, y); }
+  else if(a==="tglhotels"){ hotelsOpen = !hotelsOpen; const y = window.scrollY; render(); window.scrollTo(0, y); }
   else if(a==="togglecompleted"){ completedOpen = !completedOpen; const y = window.scrollY; render(); window.scrollTo(0, y); }
   else if(a==="pesave"){ savePortEdit(); }
   else if(a==="pecancel"){ editingPort = null; const y = window.scrollY; render(); window.scrollTo(0, y); }
