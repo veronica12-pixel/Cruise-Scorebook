@@ -360,6 +360,8 @@ nav.tabs button[aria-current="page"]{color:var(--on-pastel);background:linear-gr
 .port{padding:12px;border-radius:16px;background:var(--surface);border:2px solid var(--line);margin-bottom:10px;display:flex;flex-direction:column;gap:10px}
 .port-top{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
 .port-n{width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent-ink);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.port-tf{display:flex;align-items:center;gap:10px;min-width:0}
+.pflag.lg{width:38px;height:26px;border-radius:4px}.pflag.lg.emo{font-size:26px;line-height:26px}
 .port-t{min-width:0} .port-t b{display:block;font-family:var(--display);font-weight:800;font-size:18px;line-height:1.1;overflow-wrap:anywhere}
 .port-t .region{display:block;font-weight:700;font-size:14px;line-height:1.2;color:var(--accent-ink);overflow-wrap:anywhere;margin-top:1px}
 .port-t .pdate{display:block;font-size:14px;color:var(--muted);margin-top:2px}
@@ -649,8 +651,8 @@ nav.tabs .in button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--e)
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "11.1";
-const APP_UPDATED = "Oct 29, 2026, 8:50 AM ET";
+const APP_VERSION = "11.2";
+const APP_UPDATED = "Oct 29, 2026, 8:55 AM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -1722,7 +1724,7 @@ function renderPorts(){
         <div class="port-top">
           <span class="port-n num">${i+1}</span>
           ${editingPort === pt.id ? `<div class="port-t pf-row"><input data-pe="name" value="${esc(pt.name)}" aria-label="Port name" autocomplete="off" enterkeyhint="done"><input type="date" data-pe="date" value="${esc(pt.date||"")}" aria-label="Date in port"></div>`
-            : `<div class="port-t">${pt.kind?`<span class="port-kind">${pt.kind==="start"?"Departure":"Arrival"}</span>`:""}${portTitle(pt.name)}<span class="pdate">${pt.date ? esc(fmtDate(pt.date,{weekday:"short",month:"short",day:"numeric"})) : "No date"}</span></div>`}
+            : `<div class="port-tf">${portFlag(pt.name).replace('class="pflag', 'class="pflag lg')}<div class="port-t">${pt.kind?`<span class="port-kind">${pt.kind==="start"?"Departure":"Arrival"}</span>`:""}${portTitle(pt.name)}<span class="pdate">${pt.date ? esc(fmtDate(pt.date,{weekday:"short",month:"short",day:"numeric"})) : "No date"}</span></div></div>`}
           <div class="port-avg tone-${scoreTone(pa)}"><b class="num">${fmt1(pa)}</b><span>avg</span></div>
         </div>
         ${pt.skip ? `<div class="skipnote">🚫 Didn't visit · not scored</div>` : ""}
