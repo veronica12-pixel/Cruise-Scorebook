@@ -471,7 +471,8 @@ nav.tabs button{font-size:11.5px}
 .tr-banner .emo span{font-size:34px;line-height:1;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
 .tr-banner .fa.emo{padding-right:10%}.tr-banner .fb.emo{padding-left:12%}
 .tr-right{display:flex;align-items:center;gap:8px;flex:none}
-.tr-score{min-width:38px;text-align:center;padding:3px 8px;border-radius:10px;background:var(--tc);color:var(--on-pastel);font-family:var(--display);font-weight:800;font-size:15px}
+.tr-score{flex:none;display:inline-grid;place-items:center;width:50px;height:50px;border-radius:50%;font:800 18px/1 var(--display);color:#2F2A42;border:2.5px solid rgba(255,255,255,.95);
+  background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.9) 0,rgba(255,255,255,0) 48%),var(--tc);box-shadow:0 4px 0 var(--te),0 7px 12px rgba(60,40,90,.2)}
 .tripsum{margin:10px 6px 0;border-radius:14px;background:var(--surface);border:2px solid var(--line);overflow:hidden}
 .tripsum summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:8px 12px;font-size:13px;font-weight:700;color:var(--muted)}
 .tripsum summary::-webkit-details-marker{display:none}
@@ -705,6 +706,20 @@ span.wxchip{cursor:default}
 @property --lfa{syntax:"<angle>";inherits:false;initial-value:0deg}
 @keyframes lfSpin{to{--lfa:360deg}}
 @media (prefers-reduced-motion: reduce){.lockfloat{animation:none}}
+.stopnote{display:flex;align-items:flex-start;gap:8px;width:100%;text-align:left;margin:8px 0 4px;padding:8px 10px;border-radius:12px;background:#FFF8DC;border:1.5px solid #F0D98A;color:#4A3F2A;font:inherit;font-size:14px;line-height:1.35;cursor:pointer}
+div.stopnote{cursor:default}
+.stopnote .sn-t{flex:1;white-space:pre-wrap;overflow-wrap:anywhere}
+.stopnote.sm{margin:5px 0 2px;padding:5px 8px;font-size:12.5px;border-radius:9px}
+.stopnote.sm .sn-t{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal}
+.addstopnote{display:inline-flex;align-items:center;gap:4px;margin:8px 0 2px;min-height:36px;padding:0 12px;font-weight:800;font-size:14px;color:#6B5200;--face:#FFF3C4;--edge:#E3C443;border-radius:12px}
+.addstopnote.sm{min-height:26px;padding:0 9px;font-size:12px;margin:5px 0 0;border-radius:9px}
+.sn-group{margin-top:12px}.sn-h{font-size:13px;font-weight:800;color:var(--muted);margin:6px 0 8px}
+.note.stop{border-left:4px solid #F0D98A}
+.sn-port{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}.sn-port small{color:var(--muted);font-size:12px}
+.snbox{display:flex;flex-direction:column;gap:4px;margin:10px 0 4px;padding:8px 10px 6px;border-radius:14px;background:#FFF8DC;border:1.5px solid #F0D98A}
+.snbox-h{font-size:13px;font-weight:800;color:#6B5200}
+.snbox textarea{background:#fff;border-color:#F0D98A;min-height:58px;resize:vertical;font-size:16px}
+.snbox-s{font-size:11.5px;color:#8A7A4A;text-align:right;min-height:1.2em}
 </style>
 </head>
 <body>
@@ -753,8 +768,8 @@ span.wxchip{cursor:default}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "13.4";
-const APP_UPDATED = "Nov 1, 2026, 12:05 PM ET";
+const APP_VERSION = "13.8";
+const APP_UPDATED = "Nov 6, 2026, 1:45 AM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -2236,6 +2251,7 @@ function renderPorts(){
             <div class="rate-nums">${[1,2,3,4,5,6,7,8,9,10].map(n => `<button type="button" class="rn" data-rate="${pt.id}" data-who="${w}" data-n="${n}" aria-pressed="${v===n}" aria-label="${n}" ${lk?"disabled":""}>${n}</button>`).join("")}</div>
           </div>`; }).join(""); })()}
         </div>
+        ${stopNoteBox(t, pt)}
         ${portLocked(pt) ? "" : `<button type="button" class="xbtn skipbtn" data-skip="${pt.id}">${pt.skip ? "↩️ We visited · score it" : "🚫 Didn't visit · don't score"}</button>`}
         ${portLocked(pt) ? `<span class="port-note">🔒 Scores lock 48 hours after they are given (never before sailing day). Unlock in Save As (tap © 2026 Thor).</span>` : pt.kind ? `<span class="port-note">Change it on the Trips tab</span>` : editingPort === pt.id ? `<span class="trip-btns"><button type="button" class="xbtn" data-act="pecancel">Cancel</button><button type="button" class="btn primary b3d note-save" data-act="pesave">Save</button></span>` : `<span class="trip-btns"><button type="button" class="xbtn" data-editport="${pt.id}">✏️ Edit</button><button class="xbtn" data-delport="${pt.id}">Remove port</button></span>`}
       </div>`; }).join("") : `<div class="empty">No ports yet. Add your first stop below.</div>`}
@@ -2589,7 +2605,7 @@ function tripRecord(x, cur){
         ${editTrip!==x.id && routeMapFor(x) ? `<button type="button" class="mapcard photo tripmapcard" data-routezoom="${x.id}" aria-label="Enlarge the itinerary map"><img src="${esc(routeMapFor(x).src)}" alt="${esc(routeMapFor(x).alt)}"><span class="zoomtag">Tap to enlarge</span></button>`
           : editTrip!==x.id && ports.length ? `<div class="mapcard tripmapcard"><canvas data-tripmap="${x.id}" role="img" aria-label="Map of the ports on this trip"></canvas><div class="mapnote"></div></div>` : ""}
         ${editTrip===x.id ? tripEditor(x, ports) : ports.length ? `<table class="ts-ports"><thead><tr><th>Port</th><th class="c1">${esc(x.p1)}</th><th class="c2">${esc(x.p2)}</th><th>Avg</th></tr></thead><tbody>
-          ${ports.map(pt => `<tr><td><b>${esc(pt.name)}</b>${pt.date || pt.wx || pt.wxManual ? `<small>${pt.date ? esc(fmtDate(pt.date,{month:"short",day:"numeric"})) : ""}${wxChip(pt, x)}</small>` : ""}</td>${pt.skip ? `<td colspan="3" class="num"><small>🚫 Missed · not scored</small></td>` : `<td class="num">${pt.s1??"–"}</td><td class="num">${pt.s2??"–"}</td><td class="num"><span class="ts-avg tone-${scoreTone(portAvg(pt))}">${fmt1(portAvg(pt))}</span></td>`}</tr>`).join("")}
+          ${ports.map(pt => `<tr><td><b>${esc(pt.name)}</b>${pt.date || pt.wx || pt.wxManual ? `<small>${pt.date ? esc(fmtDate(pt.date,{month:"short",day:"numeric"})) : ""}${wxChip(pt, x)}</small>` : ""}${stopNoteBlock(x, pt, true)}</td>${pt.skip ? `<td colspan="3" class="num"><small>🚫 Missed · not scored</small></td>` : `<td class="num">${pt.s1??"–"}</td><td class="num">${pt.s2??"–"}</td><td class="num"><span class="ts-avg tone-${scoreTone(portAvg(pt))}">${fmt1(portAvg(pt))}</span></td>`}</tr>`).join("")}
           </tbody><tfoot><tr><td>Average</td><td class="num">${fmt1(a1)}</td><td class="num">${fmt1(a2)}</td><td class="num"><span class="ts-big tone-${scoreTone(cruise)}" title="Cruise score">${fmt1(cruise)}</span></td></tr></tfoot></table>`
           : `<p class="ts-empty">No ports added for this trip.</p>`}
         ${editTrip===x.id ? "" : hotelSummary(x)}
@@ -2642,10 +2658,67 @@ const openNotes = {}, noteDraft = {};
 let editingNote = null, editDraft = "";
 const noteList = x => Object.values(x.notes || {}).filter(n => n && n.text).sort((a,b) => (b.at||0) - (a.at||0));
 const noteWhen = ts => new Date(ts).toLocaleDateString(undefined, {month:"short", day:"numeric", year:"numeric"}) + " · " + new Date(ts).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+/* ---------- a note for each stop (port); they also gather in the trip's Notes on the Trips page ---------- */
+const stopNoteText = pt => pt.note && pt.note.text ? pt.note.text : "";
+const canStopNote = (t, pt) => !pastLocked(t) && !(stopNoteText(pt) && isLocked(pt.note.at));
+function stopNoteBlock(t, pt, small){
+  const txt = stopNoteText(pt), can = canStopNote(t, pt);
+  if(txt) return `<${can ? "button type=\"button\"" : "div"} class="stopnote ${small ? "sm" : ""}" ${can ? `data-stopnote="${t.id}|${pt.id}" aria-label="Edit the note for ${esc(pt.name)}"` : ""}><span class="sn-ic" aria-hidden="true">📝</span><span class="sn-t">${esc(txt)}</span>${can ? "" : `<span class="lockmark">🔒</span>`}</${can ? "button" : "div"}>`;
+  return can ? `<button type="button" class="b3d addstopnote ${small ? "sm" : ""}" data-stopnote="${t.id}|${pt.id}">📝 ${small ? "Note" : "Add a note"}</button>` : "";
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-stopnote]"); if(!b) return;
+  const [tid, pid] = b.dataset.stopnote.split("|"), t = state.trips.find(x => x.id === tid), pt = t && t.ports.find(x => x.id === pid);
+  if(!pt || !canStopNote(t, pt)) return;
+  const root = $("#sheetRoot"), close = () => root.innerHTML = "", had = !!stopNoteText(pt);
+  root.innerHTML = `<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="snT">
+    <h3 id="snT">📝 ${esc((pt.name || "Stop").split(",")[0])}${pt.date ? ` · ${esc(fmtDate(pt.date, {month:"short", day:"numeric"}))}` : ""}</h3>
+    <textarea class="note-in" id="snText" rows="5" placeholder="What did we do here? Favorite restaurant, tour, tips for next time…">${esc(stopNoteText(pt))}</textarea>
+    <div class="row">${had ? `<button class="btn danger b3d" id="snDel">Delete</button>` : `<button class="btn b3d" data-close>Cancel</button>`}<button class="btn primary b3d" id="snSave">Save note</button></div>
+  </div></div>`;
+  root.querySelectorAll("[data-close]").forEach(el => el.addEventListener("click", ev => { if(ev.target === el) close(); }));
+  const done = () => { close(); commit(); const y = window.scrollY; render(); window.scrollTo(0, y); };
+  root.querySelector("#snSave").addEventListener("click", () => { const v = root.querySelector("#snText").value.trim();
+    if(!v){ delete pt.note; } else if(had){ if(v !== pt.note.text){ pt.note.text = v; pt.note.editedAt = Date.now(); } } else pt.note = {text: v, at: Date.now()};
+    done(); });
+  const d = root.querySelector("#snDel"); if(d) d.addEventListener("click", () => { delete pt.note; done(); });
+  setTimeout(() => { const ta = root.querySelector("#snText"); ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }, 0);
+});
+// the note box on the Ports tab: type straight in, it saves by itself
+function stopNoteBox(t, pt){
+  if(!canStopNote(t, pt)) return stopNoteBlock(t, pt);
+  const nm = (pt.name || "this port").split(",")[0];
+  return `<label class="snbox"><span class="snbox-h">📝 Notes about ${esc(nm)}</span>
+    <textarea class="note-in" data-stopnotein="${t.id}|${pt.id}" rows="2" placeholder="What did we do here? Favorite spots, food, tips for next time…">${esc(stopNoteText(pt))}</textarea>
+    <span class="snbox-s" data-snstatus="${pt.id}">${stopNoteText(pt) ? "Saved" : ""}</span></label>`;
+}
+let snTimer = null;
+document.addEventListener("input", e => {
+  const el = e.target; if(!el.dataset || !el.dataset.stopnotein) return;
+  const [tid, pid] = el.dataset.stopnotein.split("|"), t = state.trips.find(x => x.id === tid), pt = t && t.ports.find(x => x.id === pid);
+  if(!pt || !canStopNote(t, pt)) return;
+  el.style.height = "auto"; el.style.height = Math.min(260, el.scrollHeight + 4) + "px";
+  const st = document.querySelector(`[data-snstatus="${pid}"]`); if(st) st.textContent = "Saving…";
+  clearTimeout(snTimer);
+  snTimer = setTimeout(() => {
+    const v = el.value.trim();
+    if(!v) delete pt.note; else if(pt.note){ if(v !== pt.note.text){ pt.note.text = v; pt.note.editedAt = Date.now(); } } else pt.note = {text: v, at: Date.now()};
+    commit(); if(st) st.textContent = v ? "Saved ✓" : "";
+  }, 700);
+});
+// all the stop notes of a trip, in port order, for the trip's Notes on the Trips page
+function stopNotesList(x){
+  const list = sortPorts(x.ports || []).filter(pt => stopNoteText(pt));
+  return list.length ? `<div class="sn-group"><div class="sn-h">📍 Notes from the stops</div>${list.map(pt => `
+    <div class="note stop"><div class="sn-port"><b>${esc((pt.name || "").split(",")[0])}</b>${pt.date ? `<small>${esc(fmtDate(pt.date, {weekday:"short", month:"short", day:"numeric"}))}</small>` : ""}</div>
+      <div class="note-t">${esc(stopNoteText(pt))}</div>
+      <div class="note-f"><span>${esc(noteWhen(pt.note.at))}${pt.note.editedAt ? " · edited" : ""}</span>${canStopNote(x, pt) ? `<span><button type="button" class="xbtn" data-stopnote="${x.id}|${pt.id}">Edit</button></span>` : `<span class="lockmark" title="Locked. Unlock in Save As.">🔒</span>`}</div>
+    </div>`).join("")}</div>` : "";
+}
 function notesPanel(x){
-  const list = noteList(x);
+  const list = noteList(x), nStop = (x.ports || []).filter(pt => stopNoteText(pt)).length, total = list.length + nStop;
   return `<div class="tr-sec notes" data-notes="${x.id}">
-    <div class="tr-h">Notes${list.length ? ` · ${list.length}` : ""}</div>
+    <div class="tr-h">Notes${total ? ` · ${total}` : ""}</div>
     <div class="ts-body">
       ${pastLocked(x) ? (list.length ? "" : `<span class="port-note">No notes for this trip.</span>`) : `<label class="sr" for="note-${x.id}">New note for ${esc(x.name)}</label>
       <textarea class="note-in" id="note-${x.id}" data-notedraft="${x.id}" rows="3" placeholder="Write a note for this trip…">${esc(noteDraft[x.id] || "")}</textarea>
@@ -2660,7 +2733,8 @@ function notesPanel(x){
           <div class="note-f"><span>${esc(noteWhen(n.at))}${n.editedAt ? " · edited" : ""}</span>${(isLocked(n.at) || pastLocked(n))
             ? `<span class="lockmark" title="Locked after 48 hours. Unlock in Save As.">🔒</span>`
             : `<span><button type="button" class="xbtn" data-editnote="${x.id}|${n.id}">Edit</button><button type="button" class="xbtn" data-delnote="${x.id}|${n.id}">Delete</button></span>`}</div>
-        </div>`).join("") : `<p class="ts-empty">No notes yet.</p>`}
+        </div>`).join("") : nStop ? "" : `<p class="ts-empty">No notes yet.</p>`}
+      ${stopNotesList(x)}
     </div>
   </div>`;
 }
@@ -3443,13 +3517,34 @@ function buildPortsPDF(){
 
 /* ---------- Save As… popup (opened from the © line) ---------- */
 function backupJSON(){ return JSON.stringify(state, null, 2); }
-function triggerDownload(filename, content, mime){
+// save a file, asking where to put it:
+//  - computers (Chrome, Edge): a "Save as" window to pick the folder
+//  - iPhone / iPad / Android: the share sheet → "Save to Files" → pick the folder
+//  - anything else: a normal download
+async function triggerDownload(filename, content, mime){
+  const blob = new Blob([content], {type:mime}), ext = filename.slice(filename.lastIndexOf("."));
+  const touch = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  if(window.showSaveFilePicker && !touch){
+    try{
+      const h = await window.showSaveFilePicker({suggestedName: filename, types: [{description: filename.split(".").pop().toUpperCase() + " file", accept: {[mime]: [ext]}}]});
+      const w = await h.createWritable(); await w.write(blob); await w.close();
+      setSaveStatus("Saved “" + h.name + "” in the folder you chose."); return;
+    }catch(e){ if(e && e.name === "AbortError"){ setSaveStatus("Save canceled."); return; } }
+  }
   try{
-    const url = URL.createObjectURL(new Blob([content], {type:mime}));
+    const file = new File([blob], filename, {type:mime});
+    if(touch && navigator.canShare && navigator.canShare({files:[file]})){
+      setSaveStatus("Tap “Save to Files”, then choose your folder.");
+      await navigator.share({files:[file], title: filename});
+      setSaveStatus("Done. If you chose “Save to Files”, it's in the folder you picked."); return;
+    }
+  }catch(e){ if(e && e.name === "AbortError"){ setSaveStatus("Save canceled."); return; } }
+  try{
+    const url = URL.createObjectURL(blob);
     const a = document.createElement("a"); a.href = url; a.download = filename;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1500);
-    setSaveStatus("Download started. Check your Downloads folder.");
+    setSaveStatus("Download started. To pick the folder each time, turn on “Ask where to save each file” in your browser's download settings.");
   }catch(e){ setSaveStatus("This window can't download files. Open the scorebook file in Safari or Chrome and try again."); }
 }
 function setSaveStatus(msg){ const el = document.getElementById("saveStatus"); if(el) el.textContent = msg; }
