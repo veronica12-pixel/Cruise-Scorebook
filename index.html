@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-title" content="Scorebook">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=Caveat:wght@600;700&display=swap">
 <style>
 /* Layout: one-screen phone app — trip strip, game switch, two side-by-side player columns of raised pastel buttons, bottom-pinned tab bar */
 :root{
@@ -574,6 +574,12 @@ nav.tabs .in button.t-trips{--c:#E8DFFF;--ca:#C9B5FF;--e:#9F87E0}
 nav.tabs .in button[aria-current="page"]{color:#2F2A42;background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,0) 55%),var(--ca);transform:translateY(-3px);box-shadow:0 6px 0 var(--e),0 10px 14px rgba(60,40,90,.22)}
 nav.tabs .in button[aria-current="page"] .ic{transform:scale(1.14) rotate(-4deg)}
 nav.tabs .in button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--e),0 2px 4px rgba(60,40,90,.14)}
+/* make the open tab unmistakable: the others fade back, the open one lifts, gets a dark ring and a little bar under its name */
+nav.tabs .in button:not([aria-current="page"]){opacity:.62;filter:saturate(.55)}
+nav.tabs .in button:not([aria-current="page"]) .ic{transform:scale(.92)}
+nav.tabs .in button[aria-current="page"]{opacity:1;filter:none;color:#1E1830;font-size:13px;transform:translateY(-6px);border:2px solid #fff;
+  box-shadow:0 0 0 2.5px var(--e),0 7px 0 var(--e),0 12px 18px rgba(60,40,90,.30)}
+nav.tabs .in button[aria-current="page"]{text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:4px;text-decoration-color:var(--e)}
 @media (prefers-reduced-motion: reduce){nav.tabs .in button,nav.tabs .in button .ic{transition:none}nav.tabs .in button[aria-current="page"] .ic{transform:none}}
 /* game picker + games with any number of players */
 .glogo{--gc:#eee;--ge:#ccc;flex:none;width:52px;height:52px;border-radius:16px;display:grid;place-items:center;position:relative;overflow:hidden;
@@ -720,6 +726,100 @@ div.stopnote{cursor:default}
 .snbox-h{font-size:13px;font-weight:800;color:#6B5200}
 .snbox textarea{background:#fff;border-color:#F0D98A;min-height:58px;resize:vertical;font-size:16px}
 .snbox-s{font-size:11.5px;color:#8A7A4A;text-align:right;min-height:1.2em}
+.snview{display:inline-flex;align-items:center;gap:4px;margin:6px 0 2px;min-height:32px;padding:0 12px;font-weight:800;font-size:13px;color:#6B5200;--face:#FFF3C4;--edge:#E3C443;border-radius:11px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.snsheet{max-height:82vh}
+.sn-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.sn-top h3{margin:0}.sn-top h3 small{display:block;font-size:13px;color:var(--muted);font-weight:700;margin-top:2px}
+.sn-scroll{max-height:56vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 14px 10px 6px;border-radius:14px;background:#FFF8DC;border:1.5px solid #F0D98A;scrollbar-width:thin;scrollbar-color:#E3C443 transparent}
+.sn-scroll::-webkit-scrollbar{width:8px}.sn-scroll::-webkit-scrollbar-thumb{background:#E3C443;border-radius:8px}
+.sn-list{margin:0;padding-left:24px;display:flex;flex-direction:column;gap:8px;font-size:16px;line-height:1.4;color:#3B3551}
+.sn-list li::marker{color:#D4A20F;font-size:1.1em}
+.note.stop .sn-list{font-size:15px;gap:5px;margin:2px 0 6px}
+.sn-edit{min-height:40vh;max-height:56vh;font-size:16px;background:#FFFDF2;border-color:#F0D98A}
+.sn-toggle{width:100%}
+.hlrow{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 2px}
+.snview.add{--face:#FFFBE6;opacity:.95}
+.pvbtn{display:inline-flex;align-items:center;gap:4px;min-height:32px;padding:0 12px;font-weight:800;font-size:13px;color:#1F5A7A;--face:#DDF0FF;--edge:#8DC0E6;border-radius:11px;white-space:nowrap}
+.snview.sm,.pvbtn.sm{min-height:28px;font-size:12px;padding:4px 10px;white-space:normal;text-align:left;line-height:1.2}
+.ts-ports .hlrow{max-width:190px}
+.hlrow .snview{margin:0}
+.pv-visit{padding:4px 0 10px;border-bottom:1px dashed #E8D79A;margin-bottom:8px}.pv-visit:last-child{border:0;margin:0}
+.pv-visit b{display:block;font-size:15px}.pv-visit small{display:block;color:var(--muted);font-size:12px;margin:1px 0 6px}
+.best{margin:12px 0 4px;padding:10px 12px;border-radius:16px;background:linear-gradient(180deg,#FFF9E3,#FFF3C9);border:1.5px solid #F0D98A}
+.best .ts-h{margin:0 0 6px}
+.best-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-top:1px dashed #EAD58F}.best-row:first-of-type{border-top:0}
+.best-m{font-size:24px;flex:none}.best-t{flex:1;min-width:0}.best-t b{display:block}.best-t small{display:block;font-size:12px;color:#6B5A2A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr-score.sm{width:38px;height:38px;font-size:14px;box-shadow:0 3px 0 var(--te)}
+.best-row{width:100%;text-align:left;font:inherit;color:inherit;background:none;border-left:0;border-right:0;border-bottom:0;cursor:pointer;padding:8px 6px;border-radius:12px;transition:background .15s}
+button.best-row:hover,button.best-row:focus-visible{background:rgba(255,255,255,.6)}
+button.best-row:active{background:rgba(255,255,255,.85)}
+.best-t b{display:flex;align-items:center;gap:7px;min-width:0}
+.best-t small.go{color:#8A6A10;font-weight:700}
+.best-chev{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#FFF3C4;color:#8A6A10;font-weight:800;box-shadow:0 2px 0 #E3C443}
+.mflag{flex:none;width:24px;height:16px;border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.18);background:#fff}
+.mflag.emo{box-shadow:none;background:none;font-size:17px;line-height:16px;text-align:center;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.sn-ttl{display:flex;align-items:center;gap:8px}.sn-ttl .mflag{width:30px;height:20px}
+.edbtn{width:100%;margin-top:12px;display:flex;align-items:center;gap:8px;text-align:left;--face:#E6F4FF;--edge:#9CC8EA;color:#1F4A6B;padding:10px 12px}
+.edbtn .ed-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:7px}.ed-hd{font-weight:800;font-size:15px}
+.ed-line{display:flex;flex-direction:column;gap:4px;padding-top:6px;border-top:1px dashed #BFD9EE}
+.ed-lh{display:flex;align-items:center;gap:6px;font-size:14px;min-width:0}.ed-lh b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ed-pills{display:flex;flex-wrap:wrap;gap:4px}
+.ed-pill{display:inline-block;font-size:12px;font-weight:800;padding:3px 8px;border-radius:999px;background:#EEF1F5;color:#56607A;line-height:1.3}
+.ed-pill.g{background:#DDF5E4;color:#1E6B3A}.ed-pill.a{background:#FFF0C7;color:#7A5600}.ed-pill.r{background:#FFE0E0;color:#9A2B2B}
+.ed-port{font-weight:800;font-size:15px;margin:-2px 0 8px}
+.ed-view dd .ed-pill{font-size:13px}
+.ed-past{margin-top:12px;padding:10px;border-radius:12px;background:#FFF9E3;border:1.5px solid #F0D98A}
+.ed-past-h{font-weight:800;font-size:14px;margin-bottom:6px;color:#5A4500}
+.ed-past-i{display:flex;flex-direction:column;gap:4px;padding:6px 0;border-top:1px dashed #EAD58F}.ed-past-i:first-of-type{border-top:0;padding-top:0}
+.ed-past-i small{font-size:12px;font-weight:700;color:#6B5A2A}
+.snsheet .sn-scroll.ed-scroll{background:none;border:0;padding:0 2px;box-shadow:none}.ed-sec{margin-top:12px;padding:12px;border-radius:16px;background:#F5FAFF;border:1.5px solid #CFE3F3}
+.ed-sec h4{margin:0 0 8px;font-size:16px;display:flex;align-items:center;gap:8px}.ed-sec h4 .lockmark{margin-left:auto}
+.ed-lbl{display:block;font-size:13px;font-weight:800;color:var(--muted);margin:10px 0 5px}
+.ed-in{width:100%;box-sizing:border-box;font:inherit;font-size:16px;padding:9px 11px;border-radius:12px;border:1.5px solid var(--line);background:#fff;color:var(--ink)}
+.ed-chips{display:flex;flex-wrap:wrap;gap:6px}
+.ed-chip{font:inherit;font-size:14px;font-weight:700;padding:7px 11px;border-radius:999px;border:1.5px solid #CFE3F3;background:#fff;color:#1F4A6B;cursor:pointer}
+.ed-chip.on{background:#2F7DBF;border-color:#2F7DBF;color:#fff}
+.ed-chip:disabled{cursor:default}.ed-chip:disabled:not(.on){opacity:.55}
+.ed-view{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:15px}.ed-view dt{font-weight:800;color:var(--muted)}.ed-view dd{margin:0}
+.ed-note{margin-top:6px;font-size:15px;white-space:pre-wrap}
+.jroot{position:fixed;inset:0;z-index:9;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#FBF6EC;background-image:radial-gradient(#E6DCC8 1px,transparent 1.2px);background-size:18px 18px}
+.jwrap{max-width:720px;margin:0 auto;padding:12px 16px 40px;box-sizing:border-box}
+.jbar{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;background:linear-gradient(#FBF6EC 75%,rgba(251,246,236,0))}
+.jbar .btn{flex:none;padding:8px 14px;font-size:14px}
+.jhand{font-family:"Caveat",cursive}
+.jcover{text-align:center;margin:6px 0 18px;padding:18px 14px 16px;background:#fff;border-radius:6px;box-shadow:0 3px 10px rgba(60,40,20,.12);transform:rotate(-1deg);position:relative}
+.jcover .jhand{font-size:24px;color:#B0721E;margin:0}
+.jcover h2{font-size:28px;margin:2px 0 4px}.jcover p{margin:0;color:#6B5E4A;font-weight:700;font-size:14px}
+.jstats{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin-top:10px}.jstats span{font-size:13px;font-weight:800;padding:4px 10px;border-radius:999px;background:#FFF1D6;color:#6B4A12}
+.jtape{position:absolute;top:-9px;left:50%;width:70px;height:20px;margin-left:-35px;background:rgba(255,226,140,.75);transform:rotate(-3deg);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.jmonth{background:#fff;border-radius:6px;padding:10px 10px 12px;margin:0 0 18px;box-shadow:0 3px 10px rgba(60,40,20,.12);transform:rotate(.6deg);position:relative}
+.jmonth h3{font-family:"Caveat",cursive;font-size:26px;text-align:center;margin:0 0 6px;color:#7A3E1E}
+.jgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.jwd{font-size:11px;font-weight:800;color:#9A8C74;text-align:center;padding-bottom:2px}
+.jday{aspect-ratio:1/1.1;border-radius:6px;border:0;padding:3px 2px;font:inherit;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:1px;background:transparent;color:#C9BEA9;font-size:12px;font-weight:700;min-width:0}
+.jday.in{background:#F2F8FF;color:#2D4A63;cursor:pointer}.jday.sea{background:#EAF4FB}
+.jday.port{background:#FFF3D6;color:#5A3D0A}.jday.port.start,.jday.port.end{background:#E3F6E8;color:#1E5A33}
+.jday .jn{font-size:12px;line-height:1}.jday .mflag{width:20px;height:14px}.jday .jdc{font-size:9px;line-height:1.1;font-weight:800;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.jdeck{display:grid;grid-template-columns:1fr 1fr;gap:18px 14px;align-items:start;padding-top:6px}
+.jcard{position:relative;border:0;font:inherit;color:#3B3551;text-align:center;background:var(--paper,#FFF8E7);border-radius:4px;padding:0 10px 12px;box-shadow:0 4px 12px rgba(60,40,20,.16);transform:rotate(var(--rot,0deg)) translateY(var(--dy,0px));display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:transform .2s;scroll-margin-top:70px}
+.jcard:active{transform:rotate(0) scale(.98)}
+.jcard.wide{grid-column:span 2}
+.jcard .jtop{align-self:stretch;margin:0 -10px 6px;padding:5px 0 3px;background:var(--band,#E9604F);color:#fff;border-radius:4px 4px 0 0;font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.jcard .jnum{font-family:var(--display);font-size:40px;font-weight:800;line-height:.95;color:var(--band,#E9604F)}
+.jcard .jwk{font-size:12px;font-weight:800;color:#8A7E66;text-transform:uppercase;letter-spacing:.06em}
+.jcard .jfl .mflag{width:46px;height:32px;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.2)}.jcard .jfl .mflag.emo{font-size:30px;width:auto;height:auto;box-shadow:none}
+.jcard.wide .jfl .mflag{width:64px;height:44px}
+.jcard .jcity{font-family:"Caveat",cursive;font-size:28px;font-weight:700;line-height:1;color:#2E2A40;margin-top:2px}
+.jcard.wide .jcity{font-size:36px}
+.jcard .jctry{font-size:13px;font-weight:800;color:#6B5E4A}
+.jcard .jhl{margin-top:5px;font-size:12px;font-weight:800;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.75);color:#7A5600}
+.jcard .jhl.none{color:#9A8C74}
+.jcard .jsc{position:absolute;top:30px;right:6px;font-size:12px}
+.jcard .jstamp{position:absolute;top:34px;left:4px;transform:rotate(-12deg);font-size:10px;font-weight:800;letter-spacing:.06em;color:#2E7A4B;border:2px solid #2E7A4B;border-radius:4px;padding:1px 4px;background:rgba(255,255,255,.6)}
+.jcard.sea{cursor:default;background:#EAF4FB;padding:10px}.jcard.sea .jcity{font-size:24px;color:#2D5F86}.jcard.sea .jwk{color:#5B7C98}
+.jcard.sea .jwave{font-size:30px;line-height:1}
+.jfoot{text-align:center;color:#9A8C74;font-size:12px;margin-top:26px}
+@media (max-width:340px){.jdeck{grid-template-columns:1fr}.jcard.wide{grid-column:auto}}
+.journalbtn{width:100%;margin-top:12px;font-weight:800;--face:#FFF3C4;--edge:#E3C443;color:#5A4500}
 </style>
 </head>
 <body>
@@ -768,8 +868,8 @@ div.stopnote{cursor:default}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "13.8";
-const APP_UPDATED = "Nov 6, 2026, 1:45 AM ET";
+const APP_VERSION = "14.7";
+const APP_UPDATED = "Nov 8, 2026, 10:05 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -2056,7 +2156,7 @@ document.addEventListener("click", e => {
 });
 
 /* Delete this trip shows only for 24 hours after a trip is added, or while editing is unlocked */
-const canDeleteTrip = t => editingUnlocked || (!tripDone(t) && !!t.createdAt && Date.now() - t.createdAt < LOCK_MS);
+const canDeleteTrip = t => editingUnlocked;   // "Delete this trip" only shows while the app is unlocked
 let detailsOpen = false, hotelsOpen = false;
 // completed trips: newest first, or best cruise score first (remembered on this phone)
 let doneSort = "date"; try { doneSort = localStorage.getItem(LS_KEY + ":doneSort") || "date"; } catch(e){}
@@ -2251,11 +2351,11 @@ function renderPorts(){
             <div class="rate-nums">${[1,2,3,4,5,6,7,8,9,10].map(n => `<button type="button" class="rn" data-rate="${pt.id}" data-who="${w}" data-n="${n}" aria-pressed="${v===n}" aria-label="${n}" ${lk?"disabled":""}>${n}</button>`).join("")}</div>
           </div>`; }).join(""); })()}
         </div>
-        ${stopNoteBox(t, pt)}
+        ${highlightButtons(t, pt)}
         ${portLocked(pt) ? "" : `<button type="button" class="xbtn skipbtn" data-skip="${pt.id}">${pt.skip ? "↩️ We visited · score it" : "🚫 Didn't visit · don't score"}</button>`}
         ${portLocked(pt) ? `<span class="port-note">🔒 Scores lock 48 hours after they are given (never before sailing day). Unlock in Save As (tap © 2026 Thor).</span>` : pt.kind ? `<span class="port-note">Change it on the Trips tab</span>` : editingPort === pt.id ? `<span class="trip-btns"><button type="button" class="xbtn" data-act="pecancel">Cancel</button><button type="button" class="btn primary b3d note-save" data-act="pesave">Save</button></span>` : `<span class="trip-btns"><button type="button" class="xbtn" data-editport="${pt.id}">✏️ Edit</button><button class="xbtn" data-delport="${pt.id}">Remove port</button></span>`}
       </div>`; }).join("") : `<div class="empty">No ports yet. Add your first stop below.</div>`}
-    ${ports.some(p => p.s1 != null || p.s2 != null) ? `<button type="button" class="btn danger b3d resetports" data-act="resetports">Reset all port scores</button>` : ""}
+    ${editingUnlocked && ports.some(p => p.s1 != null || p.s2 != null) ? `<button type="button" class="btn danger b3d resetports" data-act="resetports">🔓 Reset all port scores</button>` : ""}
     <div class="addport">
       <h3>Add a port</h3>
       <div class="form">
@@ -2371,6 +2471,12 @@ const FLAG_TOP = new Set(["SG","MY","CN","TW","MM","LR","UY"]);
 function flagHalf(cc, side){
   if(cc && FLAG_VB[cc]) return `<svg class="bf ${side}" viewBox="${FLAG_VB[cc]}" preserveAspectRatio="xMidY${FLAG_TOP.has(cc) ? "Min" : "Mid"} slice" aria-hidden="true" focusable="false"><use href="#fl-${cc}" width="100%" height="100%"/></svg>`;
   return `<span class="bf ${side} emo" aria-hidden="true"><span>${cc ? flagOf(cc) : "🏳️"}</span></span>`;
+}
+// a small flag for one port, from the country in its name
+function miniFlag(name){
+  const cc = placeCC(name); if(!cc) return "";
+  return FLAG_VB[cc] ? `<svg class="mflag" viewBox="${FLAG_VB[cc]}" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><use href="#fl-${cc}" width="100%" height="100%"/></svg>`
+    : `<span class="mflag emo" aria-hidden="true">${flagOf(cc)}</span>`;
 }
 function tripFlags(x){
   const a = placeCC(x.from), b = placeCC(x.to);
@@ -2605,10 +2711,13 @@ function tripRecord(x, cur){
         ${editTrip!==x.id && routeMapFor(x) ? `<button type="button" class="mapcard photo tripmapcard" data-routezoom="${x.id}" aria-label="Enlarge the itinerary map"><img src="${esc(routeMapFor(x).src)}" alt="${esc(routeMapFor(x).alt)}"><span class="zoomtag">Tap to enlarge</span></button>`
           : editTrip!==x.id && ports.length ? `<div class="mapcard tripmapcard"><canvas data-tripmap="${x.id}" role="img" aria-label="Map of the ports on this trip"></canvas><div class="mapnote"></div></div>` : ""}
         ${editTrip===x.id ? tripEditor(x, ports) : ports.length ? `<table class="ts-ports"><thead><tr><th>Port</th><th class="c1">${esc(x.p1)}</th><th class="c2">${esc(x.p2)}</th><th>Avg</th></tr></thead><tbody>
-          ${ports.map(pt => `<tr><td><b>${esc(pt.name)}</b>${pt.date || pt.wx || pt.wxManual ? `<small>${pt.date ? esc(fmtDate(pt.date,{month:"short",day:"numeric"})) : ""}${wxChip(pt, x)}</small>` : ""}${stopNoteBlock(x, pt, true)}</td>${pt.skip ? `<td colspan="3" class="num"><small>🚫 Missed · not scored</small></td>` : `<td class="num">${pt.s1??"–"}</td><td class="num">${pt.s2??"–"}</td><td class="num"><span class="ts-avg tone-${scoreTone(portAvg(pt))}">${fmt1(portAvg(pt))}</span></td>`}</tr>`).join("")}
+          ${ports.map(pt => `<tr><td><b>${esc(pt.name)}</b>${pt.date || pt.wx || pt.wxManual ? `<small>${pt.date ? esc(fmtDate(pt.date,{month:"short",day:"numeric"})) : ""}${wxChip(pt, x)}</small>` : ""}${highlightButtons(x, pt, true)}</td>${pt.skip ? `<td colspan="3" class="num"><small>🚫 Missed · not scored</small></td>` : `<td class="num">${pt.s1??"–"}</td><td class="num">${pt.s2??"–"}</td><td class="num"><span class="ts-avg tone-${scoreTone(portAvg(pt))}">${fmt1(portAvg(pt))}</span></td>`}</tr>`).join("")}
           </tbody><tfoot><tr><td>Average</td><td class="num">${fmt1(a1)}</td><td class="num">${fmt1(a2)}</td><td class="num"><span class="ts-big tone-${scoreTone(cruise)}" title="Cruise score">${fmt1(cruise)}</span></td></tr></tfoot></table>`
           : `<p class="ts-empty">No ports added for this trip.</p>`}
+        ${editTrip===x.id ? "" : bestOfCruise(x, ports)}
         ${editTrip===x.id ? "" : hotelSummary(x)}
+        ${editTrip===x.id ? "" : edButton(x)}
+        ${editTrip===x.id ? "" : `<button type="button" class="btn b3d journalbtn" data-jopen="${x.id}">📖 Open the Cruise Journal</button>`}
       </div>
       </div>
       ${notesPanel(x)}
@@ -2669,7 +2778,7 @@ function stopNoteBlock(t, pt, small){
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-stopnote]"); if(!b) return;
   const [tid, pid] = b.dataset.stopnote.split("|"), t = state.trips.find(x => x.id === tid), pt = t && t.ports.find(x => x.id === pid);
-  if(!pt || !canStopNote(t, pt)) return;
+  if(!pt) return; return openStopNoteView(t, pt, canStopNote(t, pt) && !stopNoteText(pt));
   const root = $("#sheetRoot"), close = () => root.innerHTML = "", had = !!stopNoteText(pt);
   root.innerHTML = `<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="snT">
     <h3 id="snT">📝 ${esc((pt.name || "Stop").split(",")[0])}${pt.date ? ` · ${esc(fmtDate(pt.date, {month:"short", day:"numeric"}))}` : ""}</h3>
@@ -2689,7 +2798,7 @@ function stopNoteBox(t, pt){
   if(!canStopNote(t, pt)) return stopNoteBlock(t, pt);
   const nm = (pt.name || "this port").split(",")[0];
   return `<label class="snbox"><span class="snbox-h">📝 Notes about ${esc(nm)}</span>
-    <textarea class="note-in" data-stopnotein="${t.id}|${pt.id}" rows="2" placeholder="What did we do here? Favorite spots, food, tips for next time…">${esc(stopNoteText(pt))}</textarea>
+    <textarea class="note-in" data-stopnotein="${t.id}|${pt.id}" rows="2" placeholder="One thing per line, e.g.&#10;Sky Tower&#10;Auckland Zoo">${esc(stopNoteText(pt))}</textarea>
     <span class="snbox-s" data-snstatus="${pt.id}">${stopNoteText(pt) ? "Saved" : ""}</span></label>`;
 }
 let snTimer = null;
@@ -2706,17 +2815,355 @@ document.addEventListener("input", e => {
     commit(); if(st) st.textContent = v ? "Saved ✓" : "";
   }, 700);
 });
+// a note shown as bullet points: one bullet per line (a leading "-", "•" or "*" is tidied away)
+const noteBullets = txt => String(txt || "").split(/\n+/).map(l => l.replace(/^\s*[-•*·]\s*/, "").trim()).filter(Boolean);
+const bulletsHTML = txt => `<ul class="sn-list">${noteBullets(txt).map(l => `<li>${esc(l)}</li>`).join("")}</ul>`;
+function openStopNoteView(t, pt, editing){
+  const root = $("#sheetRoot"), close = () => { root.innerHTML = ""; const y = window.scrollY; render(); window.scrollTo(0, y); };
+  const nm = (pt.name || "Stop").split(",")[0], can = canStopNote(t, pt);
+  root.innerHTML = `<div class="scrim" data-close><div class="sheet snsheet" role="dialog" aria-modal="true" aria-labelledby="snvT">
+    <div class="sn-top"><h3 id="snvT"><span class="sn-ttl">${miniFlag(pt.name) || "⭐"}<span>${esc(hlCity(pt))} highlights</span></span><small>${esc([pt.date ? fmtDate(pt.date, {weekday:"short", month:"short", day:"numeric", year:"numeric"}) : "", splitPlace(pt.name).region, !pt.skip && (pt.s1 != null || pt.s2 != null) ? `${t.p1} ${pt.s1 ?? "–"} · ${t.p2} ${pt.s2 ?? "–"}` : ""].filter(Boolean).join(" · "))}</small></h3>
+      <button type="button" class="xclose" data-close aria-label="Close">×</button></div>
+    ${editing ? `<textarea class="note-in sn-edit" data-stopnotein="${t.id}|${pt.id}" placeholder="One thing per line — each line becomes a bullet">${esc(stopNoteText(pt))}</textarea><span class="snbox-s" data-snstatus="${pt.id}">Saves by itself</span>`
+      : `<div class="sn-scroll">${stopNoteText(pt) ? bulletsHTML(stopNoteText(pt)) : `<p class="ts-empty">No notes yet.</p>`}</div>`}
+    ${can ? `<button type="button" class="btn b3d sn-toggle" id="snToggle">${editing ? "✓ Done" : "✏️ Edit notes"}</button>` : ""}
+  </div></div>`;
+  root.querySelectorAll("[data-close]").forEach(el => el.addEventListener("click", ev => { if(ev.target === el) close(); }));
+  const tg = root.querySelector("#snToggle"); if(tg) tg.addEventListener("click", () => openStopNoteView(t, pt, !editing));
+  if(editing) setTimeout(() => { const ta = root.querySelector("textarea"); ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }, 0);
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-stopnoteview]"); if(!b) return;
+  const [tid, pid] = b.dataset.stopnoteview.split("|"), t = state.trips.find(x => x.id === tid), pt = t && t.ports.find(x => x.id === pid);
+  if(pt) openStopNoteView(t, pt, false);
+});
+/* ---------- highlights: past visits to the same port, best of the cruise, and the printable Cruise Journal ---------- */
+const hlCity = pt => (pt.name || "this port").split(",")[0].replace(/\(.*?\)/g, "").trim();
+// what we wrote about this same port on other trips
+function pastVisits(t, pt){
+  const k = placeKey(pt.name); if(!k) return [];
+  return state.trips.filter(x => x.id !== t.id).flatMap(x => (x.ports || []).filter(p => placeKey(p.name) === k && stopNoteText(p)).map(p => ({trip:x, pt:p})))
+    .sort((a, b) => ((b.pt.date || b.trip.start || "")).localeCompare(a.pt.date || a.trip.start || ""));
+}
+function openPastVisits(t, pt){
+  const list = pastVisits(t, pt), root = $("#sheetRoot"), close = () => root.innerHTML = "";
+  root.innerHTML = `<div class="scrim" data-close><div class="sheet snsheet" role="dialog" aria-modal="true" aria-labelledby="pvT">
+    <div class="sn-top"><h3 id="pvT">💡 Last time in ${esc(hlCity(pt))}<small>${list.length} earlier visit${list.length === 1 ? "" : "s"}</small></h3><button type="button" class="xclose" data-close aria-label="Close">×</button></div>
+    <div class="sn-scroll">${list.map(v => `<div class="pv-visit"><b>${esc(titleCase(v.trip.name))}</b><small>${esc(v.pt.date ? fmtDate(v.pt.date, {month:"short", day:"numeric", year:"numeric"}) : fmtRange(v.trip.start, v.trip.end))}${portAvg(v.pt) !== null ? " · scored " + fmt1(portAvg(v.pt)) : ""}</small>${bulletsHTML(stopNoteText(v.pt))}</div>`).join("")}</div>
+  </div></div>`;
+  root.querySelectorAll("[data-close]").forEach(el => el.addEventListener("click", ev => { if(ev.target === el) close(); }));
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-pastvisit]"); if(!b) return;
+  const [tid, pid] = b.dataset.pastvisit.split("|"), t = state.trips.find(x => x.id === tid), pt = t && t.ports.find(x => x.id === pid);
+  if(pt) openPastVisits(t, pt);
+});
+// the highlight buttons for one port (used on the Ports tab and in the trip summary)
+function highlightButtons(t, pt, small){
+  const has = !!stopNoteText(pt), can = canStopNote(t, pt), past = pastVisits(t, pt).length;
+  let h = "";
+  if(has) h += `<button type="button" class="b3d snview ${small ? "sm" : ""}" data-stopnoteview="${t.id}|${pt.id}">⭐ ${esc(hlCity(pt))} highlights</button>`;
+  else if(can && !pt.skip && !small) h += `<button type="button" class="b3d snview add ${small ? "sm" : ""}" data-stopnoteadd="${t.id}|${pt.id}">⭐ Add ${esc(hlCity(pt))} highlights</button>`;
+  if(past) h += `<button type="button" class="b3d pvbtn ${small ? "sm" : ""}" data-pastvisit="${t.id}|${pt.id}">💡 Last time in ${esc(hlCity(pt))}</button>`;
+  return h ? `<span class="hlrow">${h}</span>` : "";
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-stopnoteadd]"); if(!b) return;
+  const [tid, pid] = b.dataset.stopnoteadd.split("|"), t = state.trips.find(x => x.id === tid), pt = t && t.ports.find(x => x.id === pid);
+  if(pt) openStopNoteView(t, pt, true);
+});
+
+/* ---------- 🛳️ embarkation & disembarkation: port, how quick, security, elite priority lane ---------- */
+const ED_SPEED = ["Under 15 min","15–30 min","30–60 min","Over 1 hour"];
+const ED_SEC = ["Very easy","Easy","OK","Slow","Difficult"];
+const ED_PRI = ["Yes, we used it","Yes, didn't need it","No priority lane","Not sure"];
+const edOf = (t, side) => (t.ed && t.ed[side]) || null;
+const edCan = (t, side) => { const e = edOf(t, side); return !(e && isLocked(e.at)); };
+const edFilled = e => !!(e && (e.speed || e.sec || e.pri || e.note));
+const edPort = (t, side) => { const e = edOf(t, side); return (e && e.port) || (side === "embark" ? t.from : t.to) || ""; };
+// green / amber / red for how it went
+const edTone = (key, v) => { if(!v) return "";
+  if(key === "speed"){ const i = ED_SPEED.indexOf(v); return i < 2 ? "g" : i === 2 ? "a" : "r"; }
+  if(key === "sec"){ const i = ED_SEC.indexOf(v); return i < 2 ? "g" : i === 2 ? "a" : "r"; }
+  return v === ED_PRI[0] || v === ED_PRI[1] ? "g" : v === ED_PRI[2] ? "r" : ""; };
+const edPriShort = v => v === ED_PRI[0] ? "⭐ Elite lane used" : v === ED_PRI[1] ? "⭐ Elite lane (not needed)" : v === ED_PRI[2] ? "No elite lane" : v === ED_PRI[3] ? "Elite lane ?" : "";
+const edSecShort = (side, v) => v ? (side === "embark" ? "Security " : "Customs ") + v.toLowerCase() : "";
+function edPills(side, e){
+  const pill = (k, txt) => txt ? `<span class="ed-pill ${edTone(k, e[k])}">${esc(txt)}</span>` : "";
+  return pill("speed", e.speed) + pill("sec", edSecShort(side, e.sec)) + pill("pri", edPriShort(e.pri));
+}
+function edLine(t, side){
+  const e = edOf(t, side) || {}, port = edPort(t, side), ic = side === "embark" ? "🛫" : "🛬";
+  return `<span class="ed-line"><span class="ed-lh">${ic} ${miniFlag(port)}<b>${esc(port ? hlCity({name: port}) : (side === "embark" ? "Embarkation" : "Disembarkation"))}</b></span>${edFilled(e) ? `<span class="ed-pills">${edPills(side, e)}</span>` : `<span class="ed-pills"><span class="ed-pill">Not noted yet</span></span>`}</span>`;
+}
+function edButton(t){
+  return `<button type="button" class="btn b3d edbtn" data-edopen="${t.id}" aria-label="Open embarkation and disembarkation"><span class="ed-t"><span class="ed-hd">🛳️ Embarkation &amp; disembarkation</span>${edLine(t, "embark")}${edLine(t, "disembark")}</span><span class="best-chev" aria-hidden="true">›</span></button>`;
+}
+// what happened at this same port on other cruises (getting on or off there)
+function edPast(t, port){
+  const k = placeKey(port); if(!k) return [];
+  const out = [];
+  state.trips.filter(x => x.id !== t.id).forEach(x => ["embark","disembark"].forEach(side => { const e = edOf(x, side);
+    if(edFilled(e) && placeKey(edPort(x, side)) === k) out.push({trip: x, side, e}); }));
+  return out.sort((a, b) => (b.trip.start || "").localeCompare(a.trip.start || ""));
+}
+function edPastHTML(t, side){
+  const list = edPast(t, edPort(t, side)); if(!list.length) return "";
+  return `<div class="ed-past"><div class="ed-past-h">💡 Last time in ${esc(hlCity({name: edPort(t, side)}))}</div>${list.map(v => `<div class="ed-past-i"><small>${esc(titleCase(v.trip.name))} · ${v.side === "embark" ? "got on" : "got off"}${v.trip.start ? " · " + esc(fmtDate(v.side === "embark" ? v.trip.start : (v.trip.end || v.trip.start), {month:"short", year:"numeric"})) : ""}</small><span class="ed-pills">${edPills(v.side, v.e)}</span>${v.e.note ? `<div class="ed-note">${esc(v.e.note)}</div>` : ""}</div>`).join("")}</div>`;
+}
+function edView(t, side){
+  const e = edOf(t, side) || {}, on = side === "embark", port = edPort(t, side), can = edCan(t, side);
+  const row = (lbl, k, v) => `<dt>${lbl}</dt><dd>${v ? `<span class="ed-pill ${edTone(k, v)}">${esc(v)}</span>` : "–"}</dd>`;
+  return `<div class="ed-sec"><h4>${on ? "🛫 Embarkation" : "🛬 Disembarkation"}${miniFlag(port)}${can ? "" : `<span class="lockmark" title="Locked. Unlock in Save As.">🔒</span>`}</h4>
+    <div class="ed-port">${esc(port || "Port not set")}</div>
+    ${edFilled(e) ? `<dl class="ed-view">${row(on ? "Boarding" : "Getting off", "speed", e.speed)}${row(on ? "Security" : "Customs", "sec", e.sec)}${row("Elite lane", "pri", e.pri)}</dl>${e.note ? `<div class="ed-note">${esc(e.note)}</div>` : ""}` : `<p class="ts-empty">Not noted yet.</p>`}
+    ${edPastHTML(t, side)}</div>`;
+}
+function edForm(t, side){
+  const e = edOf(t, side) || {}, on = side === "embark", port = edPort(t, side);
+  if(!edCan(t, side)) return edView(t, side);
+  const chips = (key, list) => `<div class="ed-chips" role="group">${list.map(v => `<button type="button" class="ed-chip ${e[key] === v ? "on" : ""}" data-edset="${t.id}|${side}|${key}" data-v="${esc(v)}" aria-pressed="${e[key] === v}">${esc(v)}</button>`).join("")}</div>`;
+  return `<div class="ed-sec"><h4>${on ? "🛫 Embarkation" : "🛬 Disembarkation"}${miniFlag(port)}</h4>
+    <label class="ed-lbl" for="ed-${side}-port">${on ? "Embarkation port" : "Disembarkation port"}</label>
+    <input class="ed-in" id="ed-${side}-port" data-edin="${t.id}|${side}|port" value="${esc(port)}" placeholder="${on ? "e.g. Auckland, New Zealand" : "e.g. Los Angeles, California"}">
+    <span class="ed-lbl">${on ? "How quick was boarding?" : "How quick was getting off?"}</span>${chips("speed", ED_SPEED)}
+    <span class="ed-lbl">${on ? "Security" : "Customs & security"}</span>${chips("sec", ED_SEC)}
+    <span class="ed-lbl">Priority lane for elite passengers?</span>${chips("pri", ED_PRI)}
+    <label class="ed-lbl" for="ed-${side}-note">Notes</label>
+    <textarea class="note-in ed-in" id="ed-${side}-note" rows="2" data-edin="${t.id}|${side}|note" placeholder="Terminal, check-in time, luggage, tips for next time…">${esc(e.note || "")}</textarea>
+    ${edPastHTML(t, side)}</div>`;
+}
+function openEmbarkSheet(t, editing){
+  const root = $("#sheetRoot"), close = () => { root.innerHTML = ""; const y = window.scrollY; render(); window.scrollTo(0, y); };
+  const anyFilled = edFilled(edOf(t, "embark")) || edFilled(edOf(t, "disembark"));
+  const canAny = edCan(t, "embark") || edCan(t, "disembark");
+  if(editing === undefined) editing = canAny && !anyFilled;
+  const sec = side => editing ? edForm(t, side) : edView(t, side);
+  root.innerHTML = `<div class="scrim" data-close><div class="sheet snsheet" role="dialog" aria-modal="true" aria-labelledby="edT">
+    <div class="sn-top"><h3 id="edT">🛳️ Embark &amp; disembark<small>${esc([titleCase(t.name), t.ship].filter(Boolean).join(" · "))}</small></h3><button type="button" class="xclose" data-close aria-label="Close">×</button></div>
+    <div class="sn-scroll ed-scroll">${sec("embark")}${sec("disembark")}</div>
+    ${canAny ? `<button type="button" class="btn b3d sn-toggle" id="edToggle">${editing ? "✓ Done" : "✏️ Edit"}</button>` : ""}
+  </div></div>`;
+  root.querySelectorAll("[data-close]").forEach(el => el.addEventListener("click", ev => { if(ev.target === el) close(); }));
+  const tg = root.querySelector("#edToggle"); if(tg) tg.addEventListener("click", () => { clearTimeout(edTimer); edFlush(); openEmbarkSheet(t, !editing); });
+}
+function edWrite(t, side, key, val){
+  if(!edCan(t, side)) return false;
+  t.ed = t.ed || {}; const e = t.ed[side] = t.ed[side] || {};
+  if(!e.port && key !== "port") e.port = (side === "embark" ? t.from : t.to) || "";
+  if(val) e[key] = val; else delete e[key];
+  if(!e.at) e.at = Date.now(); else e.editedAt = Date.now();
+  return true;
+}
+document.addEventListener("click", e => {
+  const o = e.target.closest("[data-edopen]");
+  if(o){ const t = state.trips.find(x => x.id === o.dataset.edopen); if(t) openEmbarkSheet(t); return; }
+  const c = e.target.closest("[data-edset]"); if(!c) return;
+  const [tid, side, key] = c.dataset.edset.split("|"), t = state.trips.find(x => x.id === tid); if(!t) return;
+  const cur = edOf(t, side), v = cur && cur[key] === c.dataset.v ? "" : c.dataset.v;
+  if(!edWrite(t, side, key, v)) return;
+  commit();
+  c.parentNode.querySelectorAll(".ed-chip").forEach(b => { const on = b === c && !!v; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
+});
+let edTimer = null, edPending = null;
+const edFlush = () => { if(!edPending) return; const {t, side, key, el} = edPending; edPending = null; if(edWrite(t, side, key, el.value.trim())) commit(); };
+document.addEventListener("input", e => {
+  const el = e.target; if(!el.dataset || !el.dataset.edin) return;
+  const [tid, side, key] = el.dataset.edin.split("|"), t = state.trips.find(x => x.id === tid); if(!t) return;
+  if(edPending && edPending.el !== el) edFlush();
+  edPending = {t, side, key, el}; clearTimeout(edTimer); edTimer = setTimeout(edFlush, 600);
+});
+
+/* ---------- 📖 Cruise Journal: a scrapbook calendar of the cruise; tap a day for its highlights ---------- */
+let journalTrip = null;
+const isoAdd = (iso, n) => { const [y,m,d] = iso.split("-").map(Number), dt = new Date(y, m - 1, d + n); return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,"0")}-${String(dt.getDate()).padStart(2,"0")}`; };
+const isoDate = iso => { const [y,m,d] = iso.split("-").map(Number); return new Date(y, m - 1, d); };
+const ccName = cc => { if(cc === "US") return "USA"; try { return new Intl.DisplayNames(["en"], {type:"region"}).of(cc) || ""; } catch(e){ return ""; } };
+function placeParts(name){
+  const sp = splitPlace(name), cc = placeCC(name), country = cc ? ccName(cc) : (sp.region ? sp.country : "");
+  const lc = (country || "").toLowerCase();
+  const region = sp.region.split(",").map(x => x.trim()).filter(x => x && x.toLowerCase() !== lc && !(cc === "US" && /^(usa|u\.?s\.?a?\.?|united states)$/i.test(x))).join(", ");
+  return {city: hlCity({name}), region, country};
+}
+const jHash = str => { let h = 2166136261; for(const ch of String(str)) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); return (h >>> 0) / 4294967295; };
+const J_PAPER = [["#FFF8E7","#E9604F"],["#FDEBEF","#D9467A"],["#E9F5FF","#2F7DBF"],["#EAF7E6","#3E9A5B"],["#F3ECFF","#7D5BC9"],["#FFF1DE","#D9822B"]];
+function journalDays(t){
+  const ports = sortPorts(t.ports || []).filter(p => p.name);
+  const byDate = {}; ports.forEach(p => { if(p.date) (byDate[p.date] = byDate[p.date] || []).push(p); });
+  const dated = Object.keys(byDate).sort();
+  let a = t.start || dated[0], b = t.end || dated[dated.length - 1];
+  if(a && dated[0] && dated[0] < a) a = dated[0]; if(b && dated.length && dated[dated.length - 1] > b) b = dated[dated.length - 1];
+  const days = [];
+  if(a && b && a <= b) for(let d = a, i = 0; d <= b && i < 120; d = isoAdd(d, 1), i++) days.push({iso: d, ports: byDate[d] || []});
+  return {days, undated: ports.filter(p => !p.date || !days.some(x => x.iso === p.date))};
+}
+function journalCard(t, p, iso, idx, wideOK){
+  const r = jHash(p.id + "r"), k = Math.floor(jHash(p.id + "c") * J_PAPER.length), [paper, band] = J_PAPER[k];
+  const rot = ((r - .5) * 6).toFixed(1), dy = Math.round(jHash(p.id + "y") * 14), wide = wideOK && (p.kind === "start" || p.kind === "end" || idx % 5 === 3);
+  const pp = placeParts(p.name), n = noteBullets(stopNoteText(p)).length, dt = iso ? isoDate(iso) : null, avg = portAvg(p);
+  const stamp = p.kind === "start" ? "ALL ABOARD" : p.kind === "end" ? "HOME AGAIN" : p.skip ? "MISSED" : "";
+  return `<button type="button" class="jcard ${wide ? "wide" : ""}" id="${iso ? "jd-" + iso : ""}" style="--rot:${rot}deg;--dy:${dy}px;--paper:${paper};--band:${band}" data-stopnoteview="${t.id}|${p.id}" aria-label="${esc(pp.city)} highlights">
+    <span class="jtape" aria-hidden="true"></span>
+    <span class="jtop">${dt ? esc(dt.toLocaleDateString(undefined, {month:"long", year:"numeric"})) : "Date not set"}</span>
+    ${dt ? `<span class="jnum">${dt.getDate()}</span><span class="jwk">${esc(dt.toLocaleDateString(undefined, {weekday:"long"}))}</span>` : ""}
+    ${stamp ? `<span class="jstamp">${stamp}</span>` : ""}
+    ${avg !== null && !p.skip ? `<span class="tr-score sm jsc tone-${scoreTone(avg)}">${fmt1(avg)}</span>` : ""}
+    <span class="jfl">${miniFlag(p.name)}</span>
+    <span class="jcity">${esc(pp.city)}</span>
+    <span class="jctry">${esc([pp.region, pp.country].filter(Boolean).join(", "))}</span>
+    <span class="jhl ${n ? "" : "none"}">${n ? `⭐ ${n} highlight${n === 1 ? "" : "s"}` : "✏️ Add highlights"}</span>
+  </button>`;
+}
+function journalSea(run){
+  const a = isoDate(run[0]), b = isoDate(run[run.length - 1]), rot = ((jHash(run[0]) - .5) * 5).toFixed(1);
+  const when = run.length === 1 ? a.toLocaleDateString(undefined, {weekday:"long", month:"short", day:"numeric"}) : `${a.toLocaleDateString(undefined, {month:"short", day:"numeric"})} – ${b.toLocaleDateString(undefined, {month:"short", day:"numeric"})}`;
+  return `<div class="jcard sea" id="jd-${run[0]}" style="--rot:${rot}deg">${run.slice(1).map(d => `<span id="jd-${d}"></span>`).join("")}<span class="jwave" aria-hidden="true">🌊</span><span class="jcity">${run.length === 1 ? "At sea" : run.length + " days at sea"}</span><span class="jwk">${esc(when)}</span></div>`;
+}
+function journalCalendar(days){
+  if(!days.length) return "";
+  const months = []; days.forEach(d => { const key = d.iso.slice(0, 7); let m = months.find(x => x.key === key); if(!m) months.push(m = {key, days: {}}); m.days[d.iso] = d; });
+  const wds = Array.from({length: 7}, (_, i) => new Date(2023, 0, 1 + i).toLocaleDateString(undefined, {weekday:"narrow"}));
+  return months.map((m, mi) => { const [y, mo] = m.key.split("-").map(Number), first = new Date(y, mo - 1, 1), dim = new Date(y, mo, 0).getDate();
+    // only the weeks that have cruise days in them
+    const lead = first.getDay(), slots = Array.from({length: Math.ceil((lead + dim) / 7) * 7}, (_, i) => i - lead + 1);
+    const weekHas = w => slots.slice(w * 7, w * 7 + 7).some(d => d >= 1 && d <= dim && m.days[`${m.key}-${String(d).padStart(2, "0")}`]);
+    let cells = "";
+    for(let w = 0; w < slots.length / 7; w++){ if(!weekHas(w)) continue; for(const d of slots.slice(w * 7, w * 7 + 7)){
+      if(d < 1 || d > dim){ cells += `<span></span>`; continue; }
+      const iso = `${m.key}-${String(d).padStart(2, "0")}`, day = m.days[iso];
+      if(!day){ cells += `<span class="jday">${d}</span>`; continue; }
+      const p = day.ports[0];
+      cells += p ? `<button type="button" class="jday in port ${p.kind || ""}" data-jgo="${iso}" aria-label="${esc(hlCity(p))}, ${iso}"><span class="jn">${d}</span>${miniFlag(p.name)}<span class="jdc">${esc(hlCity(p))}</span></button>`
+        : `<button type="button" class="jday in sea" data-jgo="${iso}" aria-label="At sea, ${iso}"><span class="jn">${d}</span><span aria-hidden="true">🌊</span></button>`; } }
+    return `<div class="jmonth" style="transform:rotate(${mi % 2 ? -.6 : .6}deg)"><span class="jtape" aria-hidden="true"></span><h3>${esc(first.toLocaleDateString(undefined, {month:"long", year:"numeric"}))}</h3><div class="jgrid">${wds.map(w => `<span class="jwd">${esc(w)}</span>`).join("")}${cells}</div></div>`; }).join("");
+}
+function drawJournal(keepScroll){
+  const t = journalTrip && state.trips.find(x => x.id === journalTrip); let root = document.getElementById("journalRoot");
+  if(!t){ if(root) root.remove(); document.body.style.overflow = ""; journalTrip = null; return; }
+  const top = root && keepScroll ? root.scrollTop : 0;
+  if(!root){ root = document.createElement("div"); root.id = "journalRoot"; root.className = "jroot"; root.setAttribute("role", "dialog"); root.setAttribute("aria-label", "Cruise Journal"); document.body.appendChild(root); }
+  document.body.style.overflow = "hidden";
+  const {days, undated} = journalDays(t), ports = (t.ports || []).filter(p => p.name);
+  const countries = new Set(ports.map(p => placeCC(p.name)).filter(Boolean)), cruise = (() => { const v = ports.map(portAvg).filter(x => x !== null); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; })();
+  let deck = "", idx = 0, sea = [], col = 0;   // col: which of the 2 columns is next, so wide cards never leave a gap
+  const flushSea = () => { if(sea.length){ deck += journalSea(sea); sea = []; col ^= 1; } };
+  const put = (p, iso) => { const h = journalCard(t, p, iso, idx++, col === 0); deck += h; if(!/class="jcard wide/.test(h)) col ^= 1; };
+  days.forEach(d => { if(!d.ports.length){ sea.push(d.iso); return; } flushSea(); d.ports.forEach(p => put(p, d.iso)); });
+  flushSea(); undated.forEach(p => put(p, ""));
+  root.innerHTML = `<div class="jwrap">
+    <div class="jbar"><button type="button" class="btn b3d" data-journal="${t.id}">🖨️ Print PDF</button><button type="button" class="xclose" data-jclose aria-label="Close the journal">×</button></div>
+    <div class="jcover"><span class="jtape" aria-hidden="true"></span><p class="jhand">our Cruise Journal</p><h2>${esc(titleCase(t.name))}</h2><p>${esc([t.ship, fmtRange(t.start, t.end)].filter(Boolean).join(" · "))}</p>
+      <div class="jstats"><span>⚓ ${ports.filter(p => !p.skip).length} ports</span><span>🌍 ${countries.size} countr${countries.size === 1 ? "y" : "ies"}</span>${days.length ? `<span>📅 ${days.length} days</span>` : ""}${cruise !== null ? `<span>🏆 ${fmt1(cruise)}</span>` : ""}</div></div>
+    ${journalCalendar(days)}
+    <p class="jhand" style="text-align:center;font-size:24px;margin:4px 0 6px;color:#7A3E1E">tap a day to see what we did ✨</p>
+    <div class="jdeck">${deck || `<p class="ts-empty">No ports added for this trip yet.</p>`}</div>
+    <div class="jfoot">© 2026 Thor</div></div>`;
+  if(keepScroll) root.scrollTop = top;
+}
+document.addEventListener("click", e => {
+  const o = e.target.closest("[data-jopen]"); if(o){ journalTrip = o.dataset.jopen; drawJournal(false); return; }
+  if(e.target.closest("[data-jclose]")){ journalTrip = null; drawJournal(false); return; }
+  const g = e.target.closest("[data-jgo]"); if(g){ const c = document.getElementById("jd-" + g.dataset.jgo); if(c){ const card = c.classList.contains("jcard") ? c : c.closest(".jcard"); card.scrollIntoView({behavior:"smooth", block:"center"}); card.animate([{transform:"scale(1.06)"},{transform:"scale(1)"}], {duration:600}); } }
+});
+// when a highlights pop-up closes, refresh the journal underneath
+new MutationObserver(() => { if(journalTrip && !$("#sheetRoot").children.length) drawJournal(true); }).observe(document.getElementById("sheetRoot"), {childList: true});
+// 🏆 the three best ports of the cruise, with their highlights
+function bestOfCruise(x, ports){
+  const top = ports.filter(p => portAvg(p) !== null).sort((a, b) => portAvg(b) - portAvg(a) || (a.date || "").localeCompare(b.date || "")).slice(0, 3);
+  if(!top.length) return "";
+  const medals = ["🥇","🥈","🥉"];
+  return `<div class="best"><div class="ts-h"><span>🏆 Best of the cruise</span></div>
+    ${top.map((p, i) => { const n = noteBullets(stopNoteText(p)).length;
+      return `<button type="button" class="best-row" data-stopnoteview="${x.id}|${p.id}" aria-label="Open the ${esc(hlCity(p))} highlights"><span class="best-m" aria-hidden="true">${medals[i]}</span><span class="best-t"><b>${miniFlag(p.name)}<span>${esc(hlCity(p))}</span></b><small class="${n ? "go" : ""}">${n ? `⭐ ${n} highlight${n === 1 ? "" : "s"} · tap to see` : "No highlights yet"}</small></span><span class="tr-score sm tone-${scoreTone(portAvg(p))}">${fmt1(portAvg(p))}</span><span class="best-chev" aria-hidden="true">›</span></button>`; }).join("")}
+  </div>`;
+}
+// 📖 printable Cruise Journal for one trip (black and white, like the ports list)
+function buildJournalPDF(t){
+  const W = 612, H = 792, M = 48, BOTTOM = M + 26, pages = []; let ops, y;
+  const newPage = () => { ops = []; pages.push(ops); y = H - M; };
+  const text = (x, yy, s, size, bold) => ops.push(`BT /${bold ? "F2" : "F1"} ${size} Tf ${x.toFixed(1)} ${yy.toFixed(1)} Td (${pdfText(s)}) Tj ET`);
+  const line = (x1, y1, x2, y2, w, gray) => ops.push(`${gray ?? 0} G ${w} w ${x1.toFixed(1)} ${y1.toFixed(1)} m ${x2.toFixed(1)} ${y2.toFixed(1)} l S`);
+  const need = h => { if(y - h < BOTTOM) newPage(); };
+  const para = (s, size, bold, indent) => wrapText(s, size, W - 2*M - (indent || 0), bold).forEach(l => { need(size + 4); text(M + (indent || 0), y - size, l, size, bold); y -= size + 4; });
+  ensureEndPorts(t); const ports = sortPorts(t.ports);
+  newPage();
+  text(M, y - 12, "CRUISE JOURNAL", 10, true); y -= 18;
+  para(titleCase(t.name), 22, true); y -= 2;
+  para([t.ship, fmtRange(t.start, t.end)].filter(Boolean).join("   ·   "), 10.5, false);
+  if(t.from || t.to) para((t.from || "?") + "  to  " + (t.to || "?"), 10.5, false);
+  y -= 6; line(M, y, W - M, y, 1.4); y -= 18;
+  const cruise = avg(ports.map(portAvg)), kd = tally(t, "domino"), ks = tally(t, "scala");
+  const facts = [cruise !== null ? "Cruise score " + fmt1(cruise) + " / 10" : "", ports.filter(p => !p.skip).length + " ports",
+    `Domino ${t.p1} ${kd.w1} - ${t.p2} ${kd.w2}`, `Scala 40 ${t.p1} ${ks.w1} - ${t.p2} ${ks.w2}`].filter(Boolean);
+  para(facts.join("    ·    "), 10.5, true); y -= 8;
+  const top = ports.filter(p => portAvg(p) !== null).sort((a, b) => portAvg(b) - portAvg(a)).slice(0, 3);
+  if(top.length){ need(40); text(M, y - 14, "Best of the cruise", 14, true); y -= 22;
+    top.forEach((p, i) => para(`${i + 1}.  ${hlCity(p)}  ${fmt1(portAvg(p))}`, 11, false, 8)); y -= 10; }
+  need(40); text(M, y - 14, "Port by port", 14, true); y -= 20; line(M, y, W - M, y, 0.8); y -= 12;
+  ports.forEach((p, i) => {
+    need(60);
+    const wx = p.wxManual && (p.wxManual.hi !== "" || p.wxManual.lo !== "") ? p.wxManual : p.wx;
+    const head = `${i + 1}.  ${p.name}${p.kind === "start" ? "  (departure)" : p.kind === "end" ? "  (arrival)" : ""}`;
+    para(head, 12.5, true);
+    const meta = [p.date ? fmtDate(p.date, {weekday:"short", month:"short", day:"numeric", year:"numeric"}) : "",
+      wx ? `${wx.hi !== "" && wx.hi != null ? wx.hi + "°F" : ""}${wx.lo !== "" && wx.lo != null ? " / " + wx.lo + "°F" : ""}` : "",
+      p.skip ? "Missed - not scored" : (p.s1 != null || p.s2 != null) ? `${t.p1} ${p.s1 ?? "-"}  ·  ${t.p2} ${p.s2 ?? "-"}  ·  Avg ${fmt1(portAvg(p))}` : ""].filter(Boolean).join("     ");
+    if(meta) para(meta, 9.5, false, 14);
+    noteBullets(stopNoteText(p)).forEach(b => { const ls = wrapText(b, 10.5, W - 2*M - 34);
+      ls.forEach((l, k) => { need(15); if(!k) text(M + 18, y - 10.5, "•", 10.5, true); text(M + 30, y - 10.5, l, 10.5, false); y -= 14.5; }); });
+    y -= 6; line(M, y, W - M, y, 0.4, 0.7); y -= 10;
+  });
+  let edHead = false;
+  ["embark","disembark"].forEach(side => { const e = edOf(t, side); if(!edFilled(e)) return;
+    if(!edHead){ need(60); y -= 6; text(M, y - 14, "Embarkation & disembarkation", 14, true); y -= 22; edHead = true; }
+    para(`${side === "embark" ? "Embarkation" : "Disembarkation"}: ${edPort(t, side) || "port not set"}`, 11.5, true, 8);
+    const bits = [e.speed ? (side === "embark" ? "Boarding " : "Getting off ") + e.speed : "", e.sec ? (side === "embark" ? "Security: " : "Customs: ") + e.sec : "", e.pri ? "Elite priority lane: " + e.pri : ""].filter(Boolean);
+    if(bits.length) para(bits.join("   ·   "), 10, false, 14);
+    if(e.note) para(e.note, 10, false, 14);
+    y -= 6; });
+  const hs = sortHotels(t.hotels || []);
+  if(hs.length){ need(50); y -= 6; text(M, y - 14, "Hotels", 14, true); y -= 22;
+    hs.forEach(h => para(`${h.name || "Hotel"}${h.city ? ", " + h.city : ""}   ·   ${WHEN[h.when] || ""}${h.in ? "   ·   " + fmtRange(h.in, h.out) : ""}`, 10.5, false, 8)); y -= 8; }
+  const notes = noteList(t).slice().reverse();
+  if(notes.length){ need(50); y -= 6; text(M, y - 14, "Trip notes", 14, true); y -= 22;
+    notes.forEach(n => { para(n.text, 10.5, false, 8); y -= 6; }); }
+  const printed = new Date().toLocaleDateString(undefined, {month:"short", day:"numeric", year:"numeric"});
+  const objs = [], add = s => { objs.push(s); return objs.length; };
+  const f1 = add("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>");
+  const f2 = add("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>");
+  const pagesId = add(""), kids = [];
+  pages.forEach((p, i) => { ops = p;
+    line(M, M - 2, W - M, M - 2, 0.5, 0.6);
+    text(M, M - 16, "© 2026 Thor   ·   Cruise Journal   ·   printed " + printed, 8, false);
+    text(W - M - 52, M - 16, "Page " + (i + 1) + " of " + pages.length, 8, false);
+    const stream = p.join("\n"), c = add(`<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`);
+    kids.push(add(`<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /Font << /F1 ${f1} 0 R /F2 ${f2} 0 R >> >> /Contents ${c} 0 R >>`)); });
+  objs[pagesId - 1] = `<< /Type /Pages /Kids [${kids.map(k => k + " 0 R").join(" ")}] /Count ${kids.length} >>`;
+  const cat = add(`<< /Type /Catalog /Pages ${pagesId} 0 R >>`);
+  let out = "%PDF-1.4\n"; const offs = [];
+  objs.forEach((o, i) => { offs.push(out.length); out += `${i + 1} 0 obj\n${o}\nendobj\n`; });
+  const xref = out.length;
+  out += `xref\n0 ${objs.length + 1}\n0000000000 65535 f \n` + offs.map(o => String(o).padStart(10, "0") + " 00000 n \n").join("") + `trailer\n<< /Size ${objs.length + 1} /Root ${cat} 0 R >>\nstartxref\n${xref}\n%%EOF`;
+  return out;
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-journal]"); if(!b) return;
+  const t = state.trips.find(x => x.id === b.dataset.journal); if(!t) return;
+  try { triggerDownload("Cruise-Journal-" + (titleCase(t.name).replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "") || "trip") + ".pdf", buildJournalPDF(t), "application/pdf"); }
+  catch(err){ alert("The journal couldn't be made. Please try again."); }
+});
+
 // all the stop notes of a trip, in port order, for the trip's Notes on the Trips page
 function stopNotesList(x){
   const list = sortPorts(x.ports || []).filter(pt => stopNoteText(pt));
-  return list.length ? `<div class="sn-group"><div class="sn-h">📍 Notes from the stops</div>${list.map(pt => `
+  return list.length ? `<div class="sn-group"><div class="sn-h">📖 Cruise Journal</div>${list.map(pt => `
     <div class="note stop"><div class="sn-port"><b>${esc((pt.name || "").split(",")[0])}</b>${pt.date ? `<small>${esc(fmtDate(pt.date, {weekday:"short", month:"short", day:"numeric"}))}</small>` : ""}</div>
-      <div class="note-t">${esc(stopNoteText(pt))}</div>
-      <div class="note-f"><span>${esc(noteWhen(pt.note.at))}${pt.note.editedAt ? " · edited" : ""}</span>${canStopNote(x, pt) ? `<span><button type="button" class="xbtn" data-stopnote="${x.id}|${pt.id}">Edit</button></span>` : `<span class="lockmark" title="Locked. Unlock in Save As.">🔒</span>`}</div>
+      ${bulletsHTML(stopNoteText(pt))}
+      <div class="note-f"><span>${esc(noteWhen(pt.note.at))}${pt.note.editedAt ? " · edited" : ""}</span>${canStopNote(x, pt) ? `<span><button type="button" class="xbtn" data-stopnoteview="${x.id}|${pt.id}">Open</button></span>` : `<span class="lockmark" title="Locked. Unlock in Save As.">🔒</span>`}</div>
     </div>`).join("")}</div>` : "";
 }
 function notesPanel(x){
-  const list = noteList(x), nStop = (x.ports || []).filter(pt => stopNoteText(pt)).length, total = list.length + nStop;
+  const list = noteList(x), nStop = (x.ports || []).filter(pt => stopNoteText(pt)).length, total = list.length;
   return `<div class="tr-sec notes" data-notes="${x.id}">
     <div class="tr-h">Notes${total ? ` · ${total}` : ""}</div>
     <div class="ts-body">
@@ -2733,8 +3180,7 @@ function notesPanel(x){
           <div class="note-f"><span>${esc(noteWhen(n.at))}${n.editedAt ? " · edited" : ""}</span>${(isLocked(n.at) || pastLocked(n))
             ? `<span class="lockmark" title="Locked after 48 hours. Unlock in Save As.">🔒</span>`
             : `<span><button type="button" class="xbtn" data-editnote="${x.id}|${n.id}">Edit</button><button type="button" class="xbtn" data-delnote="${x.id}|${n.id}">Delete</button></span>`}</div>
-        </div>`).join("") : nStop ? "" : `<p class="ts-empty">No notes yet.</p>`}
-      ${stopNotesList(x)}
+        </div>`).join("") : `<p class="ts-empty">No notes yet.</p>`}
     </div>
   </div>`;
 }
@@ -3724,7 +4170,7 @@ document.addEventListener("click", e => {
   else if(a==="togglecompleted"){ completedOpen = !completedOpen; const y = window.scrollY; render(); window.scrollTo(0, y); }
   else if(a==="pesave"){ savePortEdit(); }
   else if(a==="pecancel"){ editingPort = null; const y = window.scrollY; render(); window.scrollTo(0, y); }
-  else if(a==="resetports"){
+  else if(a==="resetports" && editingUnlocked){
     const scored = t.ports.filter(p => p.s1 != null || p.s2 != null);
     if(scored.some(portLocked)){
       sheet("Some scores are locked", "Port scores lock 48 hours after they're given. Unlock editing in Save As (tap © 2026 Thor), then reset.", "Open Save As", () => showSaveAs());
