@@ -736,12 +736,13 @@ div.stopnote{cursor:default}
 .note.stop .sn-list{font-size:15px;gap:5px;margin:2px 0 6px}
 .sn-edit{min-height:40vh;max-height:56vh;font-size:16px;background:#FFFDF2;border-color:#F0D98A}
 .sn-toggle{width:100%}
-.hlrow{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 2px}
+.hlrow{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:flex-start;gap:6px;margin:8px 0 2px}
 .snview.add{--face:#FFFBE6;opacity:.95}
 .pvbtn{display:inline-flex;align-items:center;gap:4px;min-height:32px;padding:0 12px;font-weight:800;font-size:13px;color:#1F5A7A;--face:#DDF0FF;--edge:#8DC0E6;border-radius:11px;white-space:nowrap}
 .snview.sm,.pvbtn.sm{min-height:28px;font-size:12px;padding:4px 10px;white-space:normal;text-align:left;line-height:1.2}
 .ts-ports .hlrow{max-width:190px}
 .hlrow .snview{margin:0}
+.hlrow .snview,.hlrow .pvbtn{display:inline-block;width:auto;flex:0 1 auto;min-width:0;max-width:100%;white-space:normal;text-align:left;line-height:1.25;padding:6px 12px;overflow-wrap:break-word}
 .pv-visit{padding:4px 0 10px;border-bottom:1px dashed #E8D79A;margin-bottom:8px}.pv-visit:last-child{border:0;margin:0}
 .pv-visit b{display:block;font-size:15px}.pv-visit small{display:block;color:var(--muted);font-size:12px;margin:1px 0 6px}
 .best{margin:12px 0 4px;padding:10px 12px;border-radius:16px;background:linear-gradient(180deg,#FFF9E3,#FFF3C9);border:1.5px solid #F0D98A}
@@ -868,8 +869,8 @@ button.best-row:active{background:rgba(255,255,255,.85)}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "14.7";
-const APP_UPDATED = "Nov 8, 2026, 10:05 PM ET";
+const APP_VERSION = "14.8";
+const APP_UPDATED = "Nov 8, 2026, 10:15 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -2862,8 +2863,8 @@ document.addEventListener("click", e => {
 function highlightButtons(t, pt, small){
   const has = !!stopNoteText(pt), can = canStopNote(t, pt), past = pastVisits(t, pt).length;
   let h = "";
-  if(has) h += `<button type="button" class="b3d snview ${small ? "sm" : ""}" data-stopnoteview="${t.id}|${pt.id}">⭐ ${esc(hlCity(pt))} highlights</button>`;
-  else if(can && !pt.skip && !small) h += `<button type="button" class="b3d snview add ${small ? "sm" : ""}" data-stopnoteadd="${t.id}|${pt.id}">⭐ Add ${esc(hlCity(pt))} highlights</button>`;
+  if(has) h += `<button type="button" class="b3d snview ${small ? "sm" : ""}" data-stopnoteview="${t.id}|${pt.id}">${esc(hlCity(pt))} highlights</button>`;
+  else if(can && !pt.skip && !small) h += `<button type="button" class="b3d snview add ${small ? "sm" : ""}" data-stopnoteadd="${t.id}|${pt.id}">Add ${esc(hlCity(pt))} highlights</button>`;
   if(past) h += `<button type="button" class="b3d pvbtn ${small ? "sm" : ""}" data-pastvisit="${t.id}|${pt.id}">💡 Last time in ${esc(hlCity(pt))}</button>`;
   return h ? `<span class="hlrow">${h}</span>` : "";
 }
