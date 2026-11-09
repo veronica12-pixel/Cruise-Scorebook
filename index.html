@@ -115,6 +115,11 @@ body[data-game="scala"]{background:var(--sca-soft)}
 .typein{display:grid;grid-template-columns:1fr auto;gap:6px;padding-bottom:4px}
 .typein input{width:100%;min-width:0;font-size:18px;font-weight:700;text-align:center;border-color:var(--pc)}
 .typein .onebtn{padding:0 12px}
+.typein.sc40{grid-template-columns:1fr 1fr;gap:8px}
+.typein.sc40 input{grid-column:1 / -1;min-height:52px;font-size:22px}
+.typein.sc40 .onebtn{min-height:52px;font-size:17px;font-weight:800;padding:0 6px}
+.typein.sc40 .sc40undo{--face:#fff;--edge:var(--line);color:var(--muted)}
+.typein.sc40 .sc40undo:disabled{opacity:.45}
 .pwins{font-size:13px;color:var(--muted);border-top:2px dotted var(--pc);padding-top:8px}
 .pwins b{color:var(--pd);font-family:var(--display);font-size:16px}
 .flash{animation:flash .35s ease}
@@ -869,8 +874,8 @@ button.best-row:active{background:rgba(255,255,255,.85)}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "14.9";
-const APP_UPDATED = "Nov 8, 2026, 10:25 PM ET";
+const APP_VERSION = "15.1";
+const APP_UPDATED = "Nov 9, 2026, 2:30 AM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -1494,15 +1499,12 @@ function renderScala(){
       <div class="score" id="sc${n}">${s}</div>
       <div class="meter" aria-hidden="true"><span style="width:${Math.min(100, s/L*100)}%"></span></div>
       <div class="togo">${s >= L ? "Reached " + L : left + " before " + L}</div>
-      <div class="typein" data-typein="${n}">
+      <div class="typein sc40" data-typein="${n}">
         <label class="sr" for="in${n}">Points for ${esc(name)}</label>
         <input id="in${n}" type="text" inputmode="numeric" pattern="[0-9]*" enterkeyhint="done" autocomplete="off" min="0" max="500" placeholder="pts">
         <button type="button" class="onebtn plus1 b3d" data-typeadd="${n}">Add</button>
+        <button type="button" class="onebtn b3d sc40undo" data-sundo="${n}" ${sc.log.some(r => r.p === n) ? "" : "disabled"} aria-label="Undo ${esc(name)}'s last points">Undo</button>
       </div>
-      <div class="tiles">
-        ${[1,5,10,25].map(v => `<button class="tilebtn b3d" data-sadd="${n}" data-v="${v}" aria-label="Add ${v} to ${esc(name)}"><span class="plus">+</span>${v}</button>`).join("")}
-      </div>
-      <button class="onebtn b3d" data-sadd="${n}" data-v="-1" aria-label="Subtract 1 from ${esc(name)}">−1</button>
       <div class="pwins">Scala 40 wins this trip <b class="num">${wins}</b></div>
     </section>`;
   };
@@ -1513,7 +1515,6 @@ function renderScala(){
     ${out ? `<div class="banner" role="status"><h3>${winName ? esc(winName) + " reached " + L + " and wins!" : "Both players reached " + L + " · it's a tie"}</h3><div class="row"><button class="btn primary b3d" data-act="end">Record the win</button></div></div>` : ""}
     <div class="actions">
       <button class="btn primary b3d" data-act="end" ${sc.log.length ? "" : "disabled"}>End game${leader ? " · " + esc(leader) + " wins" : ""}</button>
-      <button class="btn b3d" data-act="sundo" ${sc.log.length ? "" : "disabled"}>Undo</button>
       <button class="btn b3d" data-act="reset" ${sc.log.length ? "" : "disabled"}>Clear</button>
     </div>
     <div class="target"><label for="limit">Game ends at</label>
@@ -1971,7 +1972,7 @@ function renderGames(){
       ${list.slice().reverse().map(g => `<div class="game g-${g.type}">
         <span class="gbadge">${gameIcon(g.type,"rico")}<span class="n">#${g.n}</span></span>
         <span class="res"><span class="gname">${GAMES[g.type]}</span><span class="pair c1"><span>${esc(t.p1)}</span><b>${g.s1}</b></span><span class="pair c2"><span>${esc(t.p2)}</span><b>${g.s2}</b></span></span>
-        <span class="gend">${g.winner===0?`<span class="pill tie">Tie</span>`:`<span class="pill w${g.winner}">${esc(g.winner===1?t.p1:t.p2)}</span>`}${isLocked(g.createdAt) ? `<span class="lockmark" title="Locked after 48 hours. Unlock in Save As.">🔒</span>` : `<button class="xbtn" data-del="${g.id}" aria-label="Delete game ${g.n}">Delete</button>`}</span>
+        <span class="gend">${g.winner===0?`<span class="pill tie">Tie</span>`:`<span class="pill w${g.winner}">${esc(g.winner===1?t.p1:t.p2)}</span>`}${editingUnlocked ? `<button class="xbtn" data-del="${g.id}" aria-label="Delete game ${g.n}">Delete</button>` : ""}</span>
       </div>`).join("")}</div>`;
     }).join("") : `<div class="empty">No finished games here yet. Score a game on the Score tab and tap <b>End game</b> to record who won.</div>`}
   `;
@@ -4111,13 +4112,19 @@ document.addEventListener("click", e => {
 
   const sa = e.target.closest("[data-sadd]");
   if(sa){ scalaAdd(+sa.dataset.sadd, +sa.dataset.v); return; }
+  // Scala 40: undo this player's last points
+  const su = e.target.closest("[data-sundo]");
+  if(su){ const n = +su.dataset.sundo, t = trip(), sc = t.scala; let i = -1;
+    for(let j = sc.log.length - 1; j >= 0; j--) if(sc.log[j].p === n){ i = j; break; }
+    if(i < 0) return; const [last] = sc.log.splice(i, 1), k = n === 1 ? "s1" : "s2";
+    sc[k] = Math.max(0, sc[k] - last.v); commit(); render(); return; }
 
   const fl = e.target.closest("[data-filter]");
   if(fl){ gameFilter = fl.dataset.filter; renderGames(); return; }
 
   const del = e.target.closest("[data-del]");
   if(del){
-    const t = trip(), g = t.games.find(x => x.id===del.dataset.del); if(!g || isLocked(g.createdAt)) return;
+    const t = trip(), g = t.games.find(x => x.id===del.dataset.del); if(!g || !editingUnlocked) return;
     sheet("Delete this game?", `${GAMES[g.type]}: ${esc(t.p1)} ${g.s1} · ${esc(t.p2)} ${g.s2} on ${esc(fmtDate(g.date))}. The win comes off the tally.`, "Delete game", () => { t.games = t.games.filter(x => x.id!==g.id); commit(); render(); }, true);
     return;
   }
