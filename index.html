@@ -869,8 +869,8 @@ button.best-row:active{background:rgba(255,255,255,.85)}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "14.8";
-const APP_UPDATED = "Nov 8, 2026, 10:15 PM ET";
+const APP_VERSION = "14.9";
+const APP_UPDATED = "Nov 8, 2026, 10:25 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -3075,7 +3075,7 @@ function bestOfCruise(x, ports){
   const medals = ["🥇","🥈","🥉"];
   return `<div class="best"><div class="ts-h"><span>🏆 Best of the cruise</span></div>
     ${top.map((p, i) => { const n = noteBullets(stopNoteText(p)).length;
-      return `<button type="button" class="best-row" data-stopnoteview="${x.id}|${p.id}" aria-label="Open the ${esc(hlCity(p))} highlights"><span class="best-m" aria-hidden="true">${medals[i]}</span><span class="best-t"><b>${miniFlag(p.name)}<span>${esc(hlCity(p))}</span></b><small class="${n ? "go" : ""}">${n ? `⭐ ${n} highlight${n === 1 ? "" : "s"} · tap to see` : "No highlights yet"}</small></span><span class="tr-score sm tone-${scoreTone(portAvg(p))}">${fmt1(portAvg(p))}</span><span class="best-chev" aria-hidden="true">›</span></button>`; }).join("")}
+      return `<button type="button" class="best-row" data-stopnoteview="${x.id}|${p.id}" aria-label="Open the ${esc(hlCity(p))} highlights"><span class="best-m" aria-hidden="true">${medals[i]}</span><span class="best-t"><b>${miniFlag(p.name)}<span>${esc(hlCity(p))}</span></b><small class="${n ? "go" : ""}">${n ? `⭐ ${n} highlight${n === 1 ? "" : "s"}` : "No highlights yet"}</small></span><span class="tr-score sm tone-${scoreTone(portAvg(p))}">${fmt1(portAvg(p))}</span><span class="best-chev" aria-hidden="true">›</span></button>`; }).join("")}
   </div>`;
 }
 // 📖 printable Cruise Journal for one trip (black and white, like the ports list)
