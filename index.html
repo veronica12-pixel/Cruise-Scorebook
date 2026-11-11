@@ -115,6 +115,20 @@ body[data-game="scala"]{background:var(--sca-soft)}
 .typein{display:grid;grid-template-columns:1fr auto;gap:6px;padding-bottom:4px}
 .typein input{width:100%;min-width:0;font-size:18px;font-weight:700;text-align:center;border-color:var(--pc)}
 .typein .onebtn{padding:0 12px}
+.tietoast{position:fixed;left:50%;top:22%;transform:translate(-50%,0) scale(.6);z-index:30;pointer-events:none;opacity:0;
+  background:linear-gradient(180deg,#fff,#FFF3C4);color:#5A4500;border:2px solid #E3C443;border-radius:999px;padding:10px 20px;font-weight:800;font-size:20px;box-shadow:0 8px 20px rgba(60,40,20,.2)}
+.tietoast.show{animation:tiepop 1.9s ease forwards}
+@keyframes tiepop{0%{opacity:0;transform:translate(-50%,0) scale(.6)}12%{opacity:1;transform:translate(-50%,0) scale(1.08)}20%{transform:translate(-50%,0) scale(1) rotate(-3deg)}28%{transform:translate(-50%,0) rotate(3deg)}36%{transform:translate(-50%,0) rotate(0)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-12px)}}
+
+.cabin-in{width:100%;box-sizing:border-box;font:inherit;font-size:16px;font-weight:700;padding:9px 11px;border-radius:12px;border:1.5px solid var(--line);background:#fff;color:var(--ink);margin-bottom:6px;text-transform:uppercase}
+.addp3d{display:block;margin:14px auto 0;padding:8px 20px;min-height:40px;font:800 14px var(--display);color:#1F4A45;--face:#DDF4EF;--edge:#7CC4B7;border-radius:14px}
+.oopsbtn{margin-top:8px;font-size:14px;--face:#FFF;--edge:#E0D6EE;color:#7A3E1E}
+.oopsx{--face:#FFF3C4;--edge:#E3C443;color:#6B5200;margin-right:4px}
+.board.sc40b.n3{grid-template-columns:repeat(3,1fr);gap:8px}.board.sc40b.n3 .player:last-child{grid-column:auto}
+.board.sc40b.n3 .player{padding:10px 8px}.board.sc40b.n3 .pname{font-size:13px;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;line-height:1.15}.board.sc40b.n3 .score{font-size:44px}.board.sc40b.n3 .togo{font-size:11px}.board.sc40b.n3 .pwins{font-size:11px}
+.board.sc40b.n3 .typein.sc40{grid-template-columns:1fr;gap:6px}.board.sc40b.n3 .typein.sc40 input{min-height:44px;font-size:18px}.board.sc40b.n3 .typein.sc40 .onebtn{min-height:42px;font-size:15px}
+.board.sc40b.n5 .player:last-child{grid-column:auto}
+.reachnote p{margin:2px 0 10px;font-size:15px}
 .typein.sc40{grid-template-columns:1fr 1fr;gap:8px}
 .typein.sc40 input{grid-column:1 / -1;min-height:52px;font-size:22px}
 .typein.sc40 .onebtn{min-height:52px;font-size:17px;font-weight:800;padding:0 6px}
@@ -874,8 +888,8 @@ button.best-row:active{background:rgba(255,255,255,.85)}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "15.1";
-const APP_UPDATED = "Nov 9, 2026, 2:30 AM ET";
+const APP_VERSION = "16.0";
+const APP_UPDATED = "Nov 10, 2026, 8:15 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -924,7 +938,8 @@ const PRESETS = [
   {name:"South Pacific crossing", ship:"Crown Princess", from:"Auckland, New Zealand", to:"Los Angeles, California", start:"2026-11-09", end:"2026-12-03"},
   {name:"Northern Explorer", ship:"Grand Princess", from:"Perth (Fremantle), Australia", to:"Brisbane, Australia", start:"2027-05-17", end:"2027-06-01"},
   {name:"Rome to Fort Lauderdale", ship:"Enchanted Princess", from:"Civitavecchia (Rome), Italy", to:"Fort Lauderdale (Port Everglades), Florida", start:"2027-11-20", end:"2027-12-05"},
-  {name:"Panama Canal crossing", ship:"Star Princess", from:"Port Canaveral, Florida", to:"Los Angeles, California", start:"2028-04-07", end:"2028-04-23"}
+  {name:"Panama Canal crossing", ship:"Star Princess", from:"Port Canaveral, Florida", to:"Los Angeles, California", start:"2028-04-07", end:"2028-04-23"},
+  {name:"Antarctica & Patagonia", ship:"Majestic Princess", from:"Buenos Aires, Argentina", to:"Buenos Aires, Argentina", start:"2028-12-21", end:"2029-01-07"}
 ];
 /* where known ports are, so they can be pinned on the map without internet */
 const PORT_COORDS = {
@@ -934,7 +949,9 @@ const PORT_COORDS = {
   "perth":[-32.05,115.74], "broome":[-17.96,122.24], "yampi sound":[-16.17,123.98], "kimberley coast":[-14.9,125.3], "darwin":[-12.46,130.84], "cairns":[-16.92,145.77], "willis island":[-16.29,149.96],
   "cartagena":[37.59,-0.98], "gibraltar":[36.14,-5.35], "casablanca":[33.60,-7.62], "santa cruz de tenerife":[28.47,-16.25], "king's wharf":[32.32,-64.83],
   "fort lauderdale":[26.09,-80.12], "port everglades":[26.09,-80.12], "port canaveral":[28.41,-80.62], "grand turk":[21.46,-71.14], "oranjestad":[12.52,-70.03],
-  "panama canal":[9.08,-79.68], "fuerte amador":[8.92,-79.53], "mazatlan":[23.20,-106.42], "cabo san lucas":[22.88,-109.91], "fremantle":[-32.05,115.74], "brisbane":[-27.38,153.17], "sydney":[-33.86,151.21]
+  "panama canal":[9.08,-79.68], "fuerte amador":[8.92,-79.53], "mazatlan":[23.20,-106.42], "cabo san lucas":[22.88,-109.91], "fremantle":[-32.05,115.74], "brisbane":[-27.38,153.17], "sydney":[-33.86,151.21],
+  "buenos aires":[-34.59,-58.37], "punta arenas":[-53.16,-70.91], "ushuaia":[-54.81,-68.30], "antarctic peninsula":[-64.5,-62.0],
+  "port stanley":[-51.69,-57.85], "stanley":[-51.69,-57.85], "montevideo":[-34.90,-56.21]
 };
 const PORT_ZONES = {
   "auckland":"Pacific/Auckland","tauranga":"Pacific/Auckland","suva":"Pacific/Fiji","dravuni island":"Pacific/Fiji","dravuni":"Pacific/Fiji",
@@ -943,7 +960,9 @@ const PORT_ZONES = {
   "perth":"Australia/Perth","broome":"Australia/Perth","yampi sound":"Australia/Perth","kimberley coast":"Australia/Perth","darwin":"Australia/Darwin","cairns":"Australia/Brisbane","willis island":"Australia/Brisbane",
   "cartagena":"Europe/Madrid","gibraltar":"Europe/Gibraltar","casablanca":"Africa/Casablanca","santa cruz de tenerife":"Atlantic/Canary","king's wharf":"Atlantic/Bermuda",
   "fort lauderdale":"America/New_York","port everglades":"America/New_York","port canaveral":"America/New_York","grand turk":"America/Grand_Turk","oranjestad":"America/Aruba",
-  "panama canal":"America/Panama","fuerte amador":"America/Panama","mazatlan":"America/Mazatlan","cabo san lucas":"America/Mazatlan","fremantle":"Australia/Perth","brisbane":"Australia/Brisbane","sydney":"Australia/Sydney"
+  "panama canal":"America/Panama","fuerte amador":"America/Panama","mazatlan":"America/Mazatlan","cabo san lucas":"America/Mazatlan","fremantle":"Australia/Perth","brisbane":"Australia/Brisbane","sydney":"Australia/Sydney",
+  "buenos aires":"America/Argentina/Buenos_Aires","punta arenas":"America/Punta_Arenas","ushuaia":"America/Argentina/Ushuaia","antarctic peninsula":"Antarctica/Palmer",
+  "port stanley":"Atlantic/Stanley","stanley":"Atlantic/Stanley","montevideo":"America/Montevideo"
 };
 const HOME_ZONE = "America/New_York";   // Tampa
 const placeKey = name => (name||"").toLowerCase().split(",")[0].replace(/\(.*?\)/g,"").trim();
@@ -969,6 +988,11 @@ const ITINERARIES = [{
   key: "star-princess-2028-04-07", ship: "Star Princess",
   stops: [["Grand Turk, Turks and Caicos","2028-04-09"],["Oranjestad, Aruba","2028-04-11"],["Panama Canal, Panama","2028-04-13"],
           ["Fuerte Amador (Panama City), Panama","2028-04-14"],["Mazatlan, Mexico","2028-04-19"],["Cabo San Lucas, Mexico","2028-04-20"]]
+},{
+  match: t => t.start === "2028-12-21" && /buenos aires/i.test(t.from||""),
+  key: "majestic-princess-2028-12-21", ship: "Majestic Princess",
+  stops: [["Punta Arenas, Chile","2028-12-25"],["Ushuaia, Argentina","2028-12-26"],["Antarctic Peninsula, Antarctica","2028-12-28"],
+          ["Port Stanley, Falkland Islands","2029-01-02"],["Montevideo, Uruguay","2029-01-05"]]
 }];
 const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4);
 const today = () => { const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); };
@@ -986,6 +1010,7 @@ const SMALL = new Set(["a","an","and","at","by","for","in","of","on","or","the",
 const titleCase = str => String(str || "").replace(/[A-Za-zÀ-ÿ][^\s\-/]*/g, (w, i) => (i > 0 && SMALL.has(w.toLowerCase())) ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1));
 const fmtRange = (a,b) => { if(!a && !b) return "Dates not set"; if(a && !b) return "From " + fmtDate(a,{month:"short",day:"numeric",year:"numeric"}); if(!a) return "Until " + fmtDate(b,{month:"short",day:"numeric",year:"numeric"}); return fmtDate(a,{month:"short",day:"numeric"}) + " – " + fmtDate(b,{month:"short",day:"numeric",year:"numeric"}); };
 
+const shipCabin = x => [x.ship, x.cabin ? "Cabin " + x.cabin : ""].filter(Boolean).join(" · ");
 const blankScala = () => ({s1:0, s2:0, log:[]});
 function newTrip(p, fixedId){
   p = p || {};
@@ -1020,7 +1045,7 @@ let state = null, tab = "score", gameFilter = "all", keepBanner = false;
 try { const raw = localStorage.getItem(LS_KEY); if(raw){ const s = JSON.parse(raw); if(s && Array.isArray(s.trips) && s.trips.length) state = migrate(s); } } catch(e){}
 if(!state){ const t = newTrip(PRESETS[0]); state = {v:2, updatedAt:0, activeTripId:t.id, trips:[t]}; }
 /* add the planned sailings once on each device (fixed ids so two phones never double them) */
-[[1, "grand-princess-2027-05-17", /perth|fremantle/i], [2, "enchanted-princess-2027-11-20", /civitavecchia|rome/i], [3, "star-princess-2028-04-07", /canaveral/i]].forEach(([pi, id, fromRe]) => {
+[[1, "grand-princess-2027-05-17", /perth|fremantle/i], [2, "enchanted-princess-2027-11-20", /civitavecchia|rome/i], [3, "star-princess-2028-04-07", /canaveral/i], [4, "majestic-princess-2028-12-21", /buenos aires/i]].forEach(([pi, id, fromRe]) => {
   try {
     const SEED_KEY = LS_KEY + ":seed-" + id, P = PRESETS[pi];
     if(localStorage.getItem(SEED_KEY)) return;
@@ -1426,7 +1451,7 @@ function renderHead(){
     : `<span>Add ports on the Trips tab</span>`;
   $("#tripHead").innerHTML = `
     <div class="badges" aria-hidden="true">${DOMINO.replace('<svg ','<svg class="dtile" ')}${QCARD.replace('<svg ','<svg class="qcard" ')}</div>
-    <div class="eyebrow">${esc(t.ship ? t.ship + " · " : "")}${esc(fmtRange(t.start,t.end))}</div>
+    <div class="eyebrow">${esc(shipCabin(t) ? shipCabin(t) + " · " : "")}${esc(fmtRange(t.start,t.end))}</div>
     <h1>${esc(t.name)}</h1>
     <div class="route">${route}</div>`;
 }
@@ -1448,6 +1473,7 @@ function scoreTop(t, type){
 
 function renderDomino(){
   const t = trip(), c = t.cur, tl = tally(t,"domino");
+  tieCheck(t.id + ":domino", [c.s1, c.s2]);
   const reached = t.target && (c.s1 >= t.target || c.s2 >= t.target);
   const col = (n) => {
     const s = n===1?c.s1:c.s2, name = n===1?t.p1:t.p2, wins = n===1?tl.w1:tl.w2;
@@ -1475,9 +1501,9 @@ function renderDomino(){
   const winnerName = c.s1 === c.s2 ? null : (c.s1 > c.s2 ? t.p1 : t.p2);
   $("#view").innerHTML = scoreTop(t,"domino") + `
     <div class="board">${col(1)}${col(2)}</div>
-    ${reached && !keepBanner ? `<div class="banner" role="status"><h3>${winnerName ? esc(winnerName) + " reached " + t.target : "Both reached " + t.target}</h3><div class="row"><button class="btn primary b3d" data-act="end">Record the win</button><button class="btn b3d" data-act="keep">Keep playing</button></div></div>` : ""}
+    ${reached && !keepBanner ? `<div class="banner reachnote" role="status"><h3>🏁 ${t.target} reached</h3><p>Finish the hand. When the game is really over, tap <b>Game finished</b>.</p><div class="row"><button class="btn primary b3d" data-act="end">🏁 Game finished</button><button class="btn b3d" data-act="keep">Keep playing</button></div></div>` : ""}
     <div class="actions">
-      <button class="btn primary b3d" data-act="end" ${c.s1||c.s2 ? "" : "disabled"}>End game${winnerName ? " · " + esc(winnerName) + " wins" : ""}</button>
+      <button class="btn primary b3d" data-act="end" ${c.s1||c.s2 ? "" : "disabled"}>🏁 Game finished</button>
       <button class="btn b3d" data-act="undo" ${c.log.length ? "" : "disabled"}>Undo</button>
       <button class="btn b3d" data-act="reset" ${c.s1||c.s2 ? "" : "disabled"}>Clear</button>
     </div>
@@ -1485,11 +1511,13 @@ function renderDomino(){
       <select id="target">${[150,101,200,250,300,0].map(v=>`<option value="${v}" ${t.target===v?"selected":""}>${v?v+" points":"No limit"}</option>`).join("")}</select>
     </div>
     ${pointsPanels(t, c.log)}
+    <button type="button" class="b3d addp3d" data-pkplayers="domino">Add a player</button>
   `;
 }
 
 function renderScala(){
   const t = trip(), sc = t.scala, tl = tally(t,"scala"), L = t.limit || 101;
+  tieCheck(t.id + ":scala", [sc.s1, sc.s2]);
   const out = sc.s1 >= L || sc.s2 >= L;
   const col = (n) => {
     const s = n===1?sc.s1:sc.s2, name = n===1?t.p1:t.p2, wins = n===1?tl.w1:tl.w2;
@@ -1521,6 +1549,7 @@ function renderScala(){
       <select id="limit">${[101,151,201].map(v=>`<option value="${v}" ${L===v?"selected":""}>${v} points</option>`).join("")}</select>
     </div>
     ${pointsPanels(t, sc.log)}
+    <button type="button" class="b3d addp3d" data-pkplayers="scala">Add a player</button>
   `;
 }
 function dominoAdd(n, v){
@@ -1530,7 +1559,7 @@ function dominoAdd(n, v){
   t.cur.log.push({p:n, v:nv - t.cur[key]}); t.cur[key] = nv;
   if(t.cur.log.length > 300) t.cur.log = t.cur.log.slice(-300);
   keepBanner = false;
-  if(t.target && (t.cur.s1 >= t.target || t.cur.s2 >= t.target)){ endGame(); return; }   // game over: record it and announce the winner
+  // reaching the target does NOT end the game: the hand may still be going. Only "Game finished" ends it.
   commit(); render();
   const el = $("#sc"+n); if(el) el.classList.add("flash");
 }
@@ -1541,7 +1570,7 @@ function scalaAdd(n, v){
   sc.log.push({p:n, v:nv - sc[key]}); sc[key] = nv;
   if(sc.log.length > 300) sc.log = sc.log.slice(-300);
   const L = t.limit || 101;
-  if(sc.s1 >= L || sc.s2 >= L){ endGame(); return; }   // game over: record it and announce the winner
+  if(sc.s1 >= L || sc.s2 >= L){ endGame(true); return; }   // game over: record it and announce the winner (an "Oops" button can undo it)
   commit(); render();
   const el = $("#sc"+n); if(el) el.classList.add("flash");
 }
@@ -1551,12 +1580,14 @@ function portTitle(name){
   return `<b>${esc(place)}</b>${region ? `<span class="region">${esc(region)}</span>` : ""}`;
 }
 /* ---------- more games: pick a game, how many players and their names; any game, 2–6 players ---------- */
+// live:true = points are typed in WHILE the hand is played (like Domino): reaching the target never ends
+//   the game or names a winner; only "🏁 Game finished" does. Other games end/announce at the target as before.
 // mode: "high" = most points wins (ends at the target, or when you tap End game if there's no target)
 //       "low"  = fewest points wins (ends when someone reaches the target)
 //       "elim" = a player is out at the limit; the last one left wins (Scala 40 style)
 const PARTY_GAMES = [
-  {key:"domino",   name:"Domino",        group:"Our games", mode:"high", target:150,   targets:[100,150,200,250,0], c:"#FFE9A8", e:"#E2C163"},
-  {key:"scala",    name:"Scala 40",      group:"Our games", mode:"elim", target:101,   targets:[101,151,201],       c:"#DCC8F7", e:"#B095DA"},
+  {key:"domino",   name:"Domino",        group:"Our games", live:true, mode:"high", target:150,   targets:[100,150,200,250,0], c:"#FFE9A8", e:"#E2C163"},
+  {key:"scala",    name:"Scala 40",      group:"Our games", mode:"high", target:101,   targets:[101,151,201],       c:"#DCC8F7", e:"#B095DA"},
   {key:"rummy500", name:"Rummy 500",     group:"Card games", ic:"🃏", mode:"high", target:500,  targets:[300,500,1000,0], c:"#FFD3C2", e:"#E59A80"},
   {key:"gin",      name:"Gin Rummy",     group:"Card games", ic:"🍸", mode:"high", target:100,  targets:[100,150,250,0],  c:"#D7F0C8", e:"#93C77A"},
   {key:"canasta",  name:"Canasta",       group:"Card games", ic:"🧺", mode:"high", target:5000, targets:[5000,8500,10000,0], c:"#FFE1B3", e:"#E3AE5C"},
@@ -1568,18 +1599,18 @@ const PARTY_GAMES = [
   {key:"setteemezzo",name:"Sette e mezzo",group:"Italian card games", ic:"7️⃣", mode:"high", target:0, targets:[0,50,100], steps:[1,5,10,25], c:"#D8E8FF", e:"#8DAEE0"},
   {key:"hearts",   name:"Hearts",        group:"Card games", ic:"❤️", mode:"low",  target:100,  targets:[50,100,0],       c:"#FFD0D8", e:"#E58C9C"},
   {key:"spades",   name:"Spades",        group:"Card games", ic:"♠️", mode:"high", target:500,  targets:[300,500,0],      c:"#D5DAE6", e:"#8E99B5"},
-  {key:"cribbage", name:"Cribbage",     group:"Card games", ic:"🪵", mode:"high", target:121, targets:[61,121,0], steps:[1,2,3,5], c:"#F1E1C8", e:"#C49B62"},
+  {key:"cribbage", name:"Cribbage",     group:"Card games", live:true, ic:"🪵", mode:"high", target:121, targets:[61,121,0], steps:[1,2,3,5], c:"#F1E1C8", e:"#C49B62"},
   {key:"pinochle", name:"Pinochle",     group:"Card games", ic:"👑", mode:"high", target:1500, targets:[1000,1500,0], steps:[10,20,50,100], c:"#FFF0C2", e:"#DDB955"},
   {key:"euchre",   name:"Euchre",       group:"Card games", ic:"🍀", mode:"high", target:10, targets:[5,10,11,0], steps:[1,2,4], c:"#D6F2D3", e:"#86C27F"},
   {key:"bridge",   name:"Bridge",       group:"Card games", ic:"🌉", mode:"high", target:0, targets:[0,1000,2000], steps:[20,30,50,100], c:"#D9E3F5", e:"#8FA3CF"},
   {key:"poker",    name:"Poker",        group:"Card games", ic:"🪙", mode:"high", target:0, targets:[0], steps:[5,10,25,100], c:"#FFE6B8", e:"#E0AE4F"},
   {key:"yahtzee",  name:"Yahtzee",       group:"Dice games", ic:"🎲", mode:"high", target:0,    targets:[0],              c:"#FFD9D9", e:"#E08F8F"},
-  {key:"farkle",   name:"Farkle",        group:"Dice games", ic:"🔥", mode:"high", target:10000,targets:[5000,10000,0],   c:"#FFDDB8", e:"#E9A35E"},
-  {key:"scrabble", name:"Scrabble",      group:"Board & tile games", ic:"🔤", mode:"high", target:0, targets:[0],          c:"#F7EBCB", e:"#D2B66A"},
+  {key:"farkle",   name:"Farkle",        group:"Dice games", live:true, ic:"🔥", mode:"high", target:10000,targets:[5000,10000,0],   c:"#FFDDB8", e:"#E9A35E"},
+  {key:"scrabble", name:"Scrabble",      group:"Board & tile games", live:true, ic:"🔤", mode:"high", target:0, targets:[0],          c:"#F7EBCB", e:"#D2B66A"},
   {key:"mahjong", name:"Mahjong", group:"Board & tile games", ic:"🀄", mode:"high", target:0, targets:[0,500,1000], steps:[5,10,25,50], c:"#D9F2E1", e:"#7FBF95"},
   {key:"backgammon", name:"Backgammon", group:"Board & tile games", ic:"BG", mode:"high", target:7, targets:[3,5,7,11,0], steps:[1,2,3,4], c:"#F3DCC0", e:"#B98552"},
   {key:"rummikub", name:"Rummikub",      group:"Board & tile games", ic:"🔢", mode:"high", target:0, targets:[0],          c:"#D9F2EC", e:"#86C9B8"},
-  {key:"qwirkle",  name:"Qwirkle",      group:"Board & tile games", ic:"🔷", mode:"high", target:0, targets:[0], steps:[1,5,6,12], c:"#D6E6FF", e:"#86A8E3"},
+  {key:"qwirkle",  name:"Qwirkle",      group:"Board & tile games", live:true, ic:"🔷", mode:"high", target:0, targets:[0], steps:[1,5,6,12], c:"#D6E6FF", e:"#86A8E3"},
   {key:"bananagrams",name:"Bananagrams",group:"Board & tile games", ic:"🍌", mode:"high", target:0, targets:[0,3,5], steps:[1], c:"#FFF2B8", e:"#E2C551"},
   {key:"chess",    name:"Chess",        group:"Board & tile games", ic:"♟️", mode:"high", target:0, targets:[0,3,5], steps:[1], c:"#E6E3EE", e:"#A39DB8"},
   {key:"checkers", name:"Checkers",     group:"Board & tile games", ic:"⚫", mode:"high", target:0, targets:[0,3,5], steps:[1], c:"#FFD9D9", e:"#E08F8F"},
@@ -1813,8 +1844,9 @@ function partySteps(g, L){ return g.steps || (L >= 1000 ? [10, 50, 100, 500] : L
 function renderParty(){
   const t = trip(), p = normParty(t.party); if(!p){ setViewType(t, t.lastType || "domino"); return render(); }
   const st = partyState(p), g = st.g, L = p.target || 0, steps = partySteps(g, L), cols = ["p1","p2","p3x","p4x","p5x","p6x"];
+  tieCheck(t.id + ":" + p.game, p.scores.slice());
   const games = (t.partyGames || []).filter(x => x.game === p.game), wins = name => games.filter(x => x.winnerName === name).length;
-  const leader = st.winner >= 0 ? p.players[st.winner] : null;
+  const leader = st.winner >= 0 ? p.players[st.winner] : null, simple = p.game === "scala";
   const col = i => { const s = p.scores[i], name = p.players[i];
     const note = !L ? "" : g.mode === "high" ? (s >= L ? "Reached " + L : (L - s) + " to go") : (s >= L ? (g.mode === "elim" ? "Out · reached " : "Reached ") + L : (L - s) + " before " + L);
     return `<section class="player ${cols[i]} ${st.out[i] ? "out" : ""}" aria-label="${esc(name)}">
@@ -1822,13 +1854,14 @@ function renderParty(){
       <div class="score">${s}</div>
       ${L ? `<div class="meter" aria-hidden="true"><span style="width:${Math.max(0, Math.min(100, s / L * 100))}%"></span></div>` : ""}
       <div class="togo">${note}</div>
-      <div class="typein">
+      <div class="typein ${simple ? "sc40" : ""}">
         <label class="sr" for="pin${i}">Points for ${esc(name)}</label>
         <input id="pin${i}" data-pin="${i}" type="text" inputmode="numeric" pattern="[0-9]*" enterkeyhint="done" autocomplete="off" placeholder="pts" value="${esc(partyDraft[i] || "")}" ${st.out[i] ? "disabled" : ""}>
         <button type="button" class="onebtn plus1 b3d" data-padd="${i}" ${st.out[i] ? "disabled" : ""}>Add</button>
+        ${simple ? `<button type="button" class="onebtn b3d sc40undo" data-pundoi="${i}" ${p.log.some(r => r.p === i) ? "" : "disabled"} aria-label="Undo ${esc(name)}'s last points">Undo</button>` : ""}
       </div>
-      <div class="tiles">${steps.map(v => `<button class="tilebtn b3d" data-pquick="${i}" data-v="${v}" aria-label="Add ${v} to ${esc(name)}" ${st.out[i] ? "disabled" : ""}><span class="plus">+</span>${v}</button>`).join("")}</div>
-      <button class="onebtn b3d" data-pquick="${i}" data-v="-1" aria-label="Subtract 1 from ${esc(name)}" ${st.out[i] ? "disabled" : ""}>−1</button>
+      ${simple ? "" : `<div class="tiles">${steps.map(v => `<button class="tilebtn b3d" data-pquick="${i}" data-v="${v}" aria-label="Add ${v} to ${esc(name)}" ${st.out[i] ? "disabled" : ""}><span class="plus">+</span>${v}</button>`).join("")}</div>
+      <button class="onebtn b3d" data-pquick="${i}" data-v="-1" aria-label="Subtract 1 from ${esc(name)}" ${st.out[i] ? "disabled" : ""}>−1</button>`}
       <div class="pwins">${esc(g.name)} wins this trip <b class="num">${wins(name)}</b></div>
     </section>`; };
   const tl = L ? [...new Set([...g.targets.filter(v => v), L])].sort((a, b) => a - b) : g.targets.filter(v => v);
@@ -1840,17 +1873,18 @@ function renderParty(){
       <span class="np-to">${L ? "to " + L.toLocaleString() : g.mode === "low" ? "lowest wins" : "no limit"}</span>
     </div>
     ${gameRow("party")}
-    <button type="button" class="b3d addplayers" data-pkplayers="${p.game}"><span class="ap-faces" aria-hidden="true">${p.players.slice(0, 4).map((n, i) => `<i class="ap${i}">${esc((n || "?").charAt(0).toUpperCase())}</i>`).join("")}</span><span class="ap-txt">＋ Add players to the game</span></button>
-    <div class="board n${p.players.length}">${p.players.map((_, i) => col(i)).join("")}</div>
-    ${st.over && !keepBanner ? `<div class="banner" role="status"><h3>${leader ? esc(leader) + " wins!" : "It's a tie!"}</h3><div class="row"><button class="btn primary b3d" data-act="pend">Record the win</button><button class="btn b3d" data-act="pkeep">Keep playing</button></div></div>` : ""}
+    <div class="board n${p.players.length} ${simple ? "sc40b" : ""}">${p.players.map((_, i) => col(i)).join("")}</div>
+    ${st.over && !keepBanner ? (g.live ? `<div class="banner reachnote" role="status"><h3>🏁 ${L} reached</h3><p>Finish the hand. When the game is really over, tap <b>Game finished</b>.</p><div class="row"><button class="btn primary b3d" data-act="pend">🏁 Game finished</button><button class="btn b3d" data-act="pkeep">Keep playing</button></div></div>`
+      : `<div class="banner" role="status"><h3>${leader ? esc(leader) + " wins!" : "It's a tie!"}</h3><div class="row"><button class="btn primary b3d" data-act="pend">Record the win</button><button class="btn b3d" data-act="pkeep">Keep playing</button></div></div>`) : ""}
     <div class="actions">
-      <button class="btn primary b3d" data-act="pend" ${p.log.length ? "" : "disabled"}>End game${leader ? " · " + esc(leader) + " wins" : ""}</button>
+      <button class="btn primary b3d" data-act="pend" ${p.log.length ? "" : "disabled"}>${g.live ? "🏁 Game finished" : `End game${leader ? " · " + esc(leader) + " wins" : ""}`}</button>
       <button class="btn b3d" data-act="pundo" ${p.log.length ? "" : "disabled"}>Undo</button>
       <button class="btn b3d" data-act="pclear" ${p.log.length ? "" : "disabled"}>Clear</button>
     </div>
     <div class="target"><label for="ptarget">${g.mode === "high" ? "Play to" : "Game ends at"}</label>
       <select id="ptarget">${tl.map(v => `<option value="${v}" ${L === v ? "selected" : ""}>${v.toLocaleString()} points</option>`).join("")}${g.mode !== "elim" ? `<option value="0" ${!L ? "selected" : ""}>No limit</option>` : ""}</select>
     </div>
+    <button type="button" class="b3d addp3d" data-pkplayers="${p.game}">${p.players.length > 2 ? "Add or change players" : "Add a player"}</button>
     ${/^c_/.test(p.game) && (editingUnlocked || Date.now() - (PG(p.game).createdAt || 0) < LOCK_MS) ? `<button type="button" class="btn danger b3d delcustom" data-act="pdelgame">🗑️ Delete the game “${esc(g.name)}”</button>` : ""}`;
 }
 // add points to one player, the same way as Domino and Scala 40
@@ -1869,6 +1903,12 @@ document.addEventListener("click", e => {
 });
 document.addEventListener("change", e => { if(e.target.id !== "ptarget") return; const t = trip(); if(!t.party) return; t.party.target = +e.target.value; keepBanner = false; commit(); render(); });
 document.addEventListener("input", e => { const i = e.target.dataset && e.target.dataset.pin; if(i != null) partyDraft[+i] = e.target.value.replace(/[^0-9-]/g, "").replace(/(?!^)-/g, ""); });
+document.addEventListener("click", e => {
+  const u = e.target.closest("[data-pundoi]"); if(!u) return;
+  const t = trip(), p = normParty(t.party); if(!p) return; const i = +u.dataset.pundoi;
+  for(let j = p.log.length - 1; j >= 0; j--) if(p.log[j].p === i){ const [l] = p.log.splice(j, 1); p.scores[i] -= l.v; break; }
+  keepBanner = false; commit(); const y = window.scrollY; render(); window.scrollTo(0, y);
+});
 document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.dataset && e.target.dataset.pin != null){ e.preventDefault(); const b = document.querySelector(`[data-padd="${e.target.dataset.pin}"]`); if(b) b.click(); } });
 document.addEventListener("click", e => {
   const sg = e.target.closest("[data-psign]"); if(!sg) return;
@@ -1888,7 +1928,8 @@ function partyAction(a){
   if(a === "pclear"){ sheet(`Clear this ${pgName(p.game)} game?`, "Every score goes back to zero. Finished games stay recorded.", "Clear scores", () => { p.rounds = []; p.log = []; p.scores = p.players.map(() => 0); partyDraft = {}; keepBanner = false; commit(); render(); }, true); return true; }
   if(a === "pend"){
     const who = st.winner >= 0 ? p.players[st.winner] + " wins" : "a tie";
-    sheet(`End this ${pgName(p.game)} game?`, p.players.map((n, i) => `${esc(n)} ${p.scores[i]}`).join(" · ") + ` — recorded as ${esc(who)}.`, "Record game", () => {
+    const live = PG(p.game).live;
+    sheet(live ? `Is this ${pgName(p.game)} game finished?` : `End this ${pgName(p.game)} game?`, live ? "Final score: " + p.players.map((n, i) => `${esc(n)} ${p.scores[i]}`).join(" · ") + `. It will be recorded as ${esc(who)}.` : p.players.map((n, i) => `${esc(n)} ${p.scores[i]}`).join(" · ") + ` — recorded as ${esc(who)}.`, live ? "Yes, game finished" : "Record game", () => {
       const rec = {id: uid(), game: p.game, gameName: pgName(p.game), date: today(), players: p.players.slice(), scores: p.scores.slice(), rounds: p.log.length, winner: st.winner, winnerName: st.winner >= 0 ? p.players[st.winner] : "", createdAt: Date.now()};
       t.partyGames = (t.partyGames || []).concat([rec]);
       p.rounds = []; p.log = []; p.scores = p.players.map(() => 0); partyDraft = {}; keepBanner = false; commit(); render(); partyCelebrate(t, rec);
@@ -1972,7 +2013,7 @@ function renderGames(){
       ${list.slice().reverse().map(g => `<div class="game g-${g.type}">
         <span class="gbadge">${gameIcon(g.type,"rico")}<span class="n">#${g.n}</span></span>
         <span class="res"><span class="gname">${GAMES[g.type]}</span><span class="pair c1"><span>${esc(t.p1)}</span><b>${g.s1}</b></span><span class="pair c2"><span>${esc(t.p2)}</span><b>${g.s2}</b></span></span>
-        <span class="gend">${g.winner===0?`<span class="pill tie">Tie</span>`:`<span class="pill w${g.winner}">${esc(g.winner===1?t.p1:t.p2)}</span>`}${editingUnlocked ? `<button class="xbtn" data-del="${g.id}" aria-label="Delete game ${g.n}">Delete</button>` : ""}</span>
+        <span class="gend">${g.winner===0?`<span class="pill tie">Tie</span>`:`<span class="pill w${g.winner}">${esc(g.winner===1?t.p1:t.p2)}</span>`}${canReopen(g) ? `<button class="xbtn oopsx" data-reopen="${t.id}|${g.id}" aria-label="Undo this win">↩️ Undo</button>` : ""}${editingUnlocked ? `<button class="xbtn" data-del="${g.id}" aria-label="Delete game ${g.n}">Delete</button>` : ""}</span>
       </div>`).join("")}</div>`;
     }).join("") : `<div class="empty">No finished games here yet. Score a game on the Score tab and tap <b>End game</b> to record who won.</div>`}
   `;
@@ -2015,7 +2056,8 @@ function pastTripForm(){
       <label for="pf-end">Back on<input type="date" id="pf-end" data-pf="end" value="${esc(d.end)}"></label>
       <label class="full" for="pf-from">Sailed from<input id="pf-from" data-pf="from" value="${esc(d.from)}" placeholder="e.g. Fort Lauderdale" autocomplete="off"></label>
       <label class="full" for="pf-to">Sailed to<input id="pf-to" data-pf="to" value="${esc(d.to)}" placeholder="e.g. Barcelona" autocomplete="off"></label>
-      <label class="full" for="pf-ship">Ship (optional)<input id="pf-ship" data-pf="ship" value="${esc(d.ship)}" placeholder="Ship name" autocomplete="off"></label>
+      <label for="pf-ship">Ship (optional)<input id="pf-ship" data-pf="ship" value="${esc(d.ship)}" placeholder="Ship name" autocomplete="off"></label>
+      <label for="pf-cabin">🛏️ Cabin (optional)<input id="pf-cabin" data-pf="cabin" value="${esc(d.cabin || "")}" placeholder="e.g. A512" autocomplete="off" autocapitalize="characters"></label>
     </div>
     <div class="pf-h">Score the ports from 1 to 10</div>
     <div class="pf-port end">
@@ -2083,7 +2125,7 @@ function savePastTrip(){
   if(d.end && d.end < d.start){ msg("The return date is before the sailing date."); $("#pf-end").focus(); return; }
   const now = Date.now(), num = v => v === "" || v == null ? null : +v;
   const t = newTrip();
-  Object.assign(t, {name: from + " → " + to, ship: d.ship.trim(), from, to, start: d.start, end: d.end, p1: "Alessandra", p2: "Kirk", past: true, curDate: d.start});
+  Object.assign(t, {name: from + " → " + to, ship: d.ship.trim(), cabin: (d.cabin || "").trim(), from, to, start: d.start, end: d.end, p1: "Alessandra", p2: "Kirk", past: true, curDate: d.start});
   t.ports = []; ensureEndPorts(t);
   const score = (pt, src) => { if(src.skip){ pt.skip = true; pt.s1 = null; pt.s2 = null; return; }
     pt.s1 = num(src.s1); pt.s2 = num(src.s2); if(pt.s1 != null) pt.rated1 = now; if(pt.s2 != null) pt.rated2 = now; };
@@ -2185,7 +2227,8 @@ function renderTrips(){
     </div>
     ${detailsOpen ? `<div class="form compact">
       <label class="full" for="f-name">Where we're going<input id="f-name" data-f="name" value="${esc(t.name)}" placeholder="e.g. South Pacific crossing"></label>
-      <label class="full" for="f-ship">Ship<input id="f-ship" data-f="ship" value="${esc(t.ship)}" placeholder="Ship name"></label>
+      <label for="f-ship">Ship<input id="f-ship" data-f="ship" value="${esc(t.ship)}" placeholder="Ship name"></label>
+      <label for="f-cabin">🛏️ Cabin<input id="f-cabin" data-f="cabin" value="${esc(t.cabin || "")}" placeholder="e.g. A512" autocomplete="off" autocapitalize="characters"></label>
       <label for="f-start">Trip starts<input type="date" id="f-start" data-f="start" value="${esc(t.start)}"></label>
       <label for="f-end">Trip ends<input type="date" id="f-end" data-f="end" value="${esc(t.end)}"></label>
       <label class="full" for="f-from">Departure port<input id="f-from" data-f="from" value="${esc(t.from)}" placeholder="Departure port"></label>
@@ -2470,7 +2513,12 @@ const FLAG_VB = {"US":"0 0 76 40","CA":"0 0 1000 500","MX":"0 0 28 16","PR":"0 0
 // flags whose emblem sits in the top corner: keep the top in view on the short banner
 const FLAG_TOP = new Set(["SG","MY","CN","TW","MM","LR","UY"]);
 // one half of the banner: a drawn flag, or the phone's emoji flag on a soft background for countries not drawn
+// flags made of horizontal stripes: a plain crop would show only the middle stripe (Argentina = just the sun),
+// so the stripes are stretched across the banner and the real flag sits on top, so its emblem keeps its shape
+const FLAG_HBAND = new Set(["AR","DE","NL","RU","AT","EE","LT","LV","HU","BG","LU","YE","EG","IQ","SY","IN","CR","TH","SV","NI","HN","PY","BO","GH","ET","SL","GA","CO","UA","PL","ID","MC","LB","IR","TJ"]);
 function flagHalf(cc, side){
+  if(cc && FLAG_VB[cc] && FLAG_HBAND.has(cc)){ const u = `<use href="#fl-${cc}" width="100%" height="100%"/>`;
+    return `<svg class="bf ${side}" viewBox="${FLAG_VB[cc]}" preserveAspectRatio="none" aria-hidden="true" focusable="false">${u}</svg><svg class="bf ${side}" viewBox="${FLAG_VB[cc]}" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">${u}</svg>`; }
   if(cc && FLAG_VB[cc]) return `<svg class="bf ${side}" viewBox="${FLAG_VB[cc]}" preserveAspectRatio="xMidY${FLAG_TOP.has(cc) ? "Min" : "Mid"} slice" aria-hidden="true" focusable="false"><use href="#fl-${cc}" width="100%" height="100%"/></svg>`;
   return `<span class="bf ${side} emo" aria-hidden="true"><span>${cc ? flagOf(cc) : "🏳️"}</span></span>`;
 }
@@ -2490,6 +2538,10 @@ function tripFlags(x){
 const openTripRecords = {};
 /* edit ports and hotels of any trip, right inside its summary */
 let editTrip = null;
+let cabTimer = null;
+document.addEventListener("input", e => { const el = e.target; if(!el.dataset || !el.dataset.tcab) return;
+  const t = state.trips.find(x => x.id === el.dataset.tcab); if(!t) return;
+  t.cabin = el.value.trim(); clearTimeout(cabTimer); cabTimer = setTimeout(commit, 500); });
 function tripEditor(x, ports){
   const lockNote = `<span class="port-note">🔒 Locked 48 hours after scoring. Unlock in Save As (tap © 2026 Thor).</span>`;
   const portRow = pt => { const lk = portLocked(pt), k = x.id + "|" + pt.id;
@@ -2501,7 +2553,9 @@ function tripEditor(x, ports){
     </div>`; };
   const hs = sortHotels(x.hotels);
   const tlk = pastLocked(x) || (!!x.tallyAt && isLocked(x.tallyAt));
-  return `<div class="pf-h">Final game score for the trip</div>
+  return `<div class="pf-h">🛏️ Cabin</div>
+    <input class="cabin-in" data-tcab="${x.id}" value="${esc(x.cabin || "")}" placeholder="Cabin number, e.g. A512" aria-label="Cabin number" autocomplete="off" autocapitalize="characters">
+    <div class="pf-h">Final game score for the trip</div>
     <p class="rulehint" style="margin:0">Use this when you only know the totals. Games you score in the app are added on top.</p>
     ${winsFields("data-tw", x.id + "|", x.tally, x.p1, x.p2, tlk)}
     ${tlk ? `<span class="port-note">🔒 Locked 48 hours after it was entered. Unlock in Save As (tap © 2026 Thor).</span>` : ""}
@@ -2692,7 +2746,7 @@ function tripRecord(x, cur){
   const cruise = avg(ports.map(portAvg)), a1 = avg(ports.filter(p=>!p.skip).map(p=>p.s1)), a2 = avg(ports.filter(p=>!p.skip).map(p=>p.s2));
   return `<div class="triprec ${x.id===cur.id?"active":""}">
     <button class="tripcard b3d ${x.id===cur.id?"active":""} ${placeCC(x.from)||placeCC(x.to)?"has-banner":""}" data-tripopen="${x.id}" aria-expanded="${!!openTripRecords[x.id]}" aria-controls="more-${x.id}">
-      ${tripFlags(x)}<span class="t">${cardTitle(x)}<span class="tr-line"><span class="nw">${esc(fmtRangeCard(x.start,x.end))}</span></span>${x.ship ? `<span class="tr-line tc-ship">🚢 ${esc(x.ship)}</span>` : ""}</span>
+      ${tripFlags(x)}<span class="t">${cardTitle(x)}<span class="tr-line"><span class="nw">${esc(fmtRangeCard(x.start,x.end))}</span></span>${x.ship || x.cabin ? `<span class="tr-line tc-ship">🚢 ${esc(shipCabin(x))}</span>` : ""}</span>
       <span class="tr-right">${cruise!==null?`<span class="tr-score tone-${scoreTone(cruise)}" title="Cruise score">${fmt1(cruise)}</span>`:""}${tripDone(x) ? "" : `<span class="w">${k.w1}–${k.w2}</span>`}</span>
     </button>
     <div class="tr-more" id="more-${x.id}" ${openTripRecords[x.id]?"":"hidden"}>
@@ -2700,7 +2754,7 @@ function tripRecord(x, cur){
       <div class="tr-sec">
       <div class="tr-h">Trip summary</div>
       <div class="ts-body">
-        <div class="ts-route">${esc(x.from||"Departure port?")} → ${esc(x.to||"Arrival port?")}${x.ship?` · ${esc(x.ship)}`:""}</div>
+        <div class="ts-route">${esc(x.from||"Departure port?")} → ${esc(x.to||"Arrival port?")}${shipCabin(x)?` · ${esc(shipCabin(x))}`:""}</div>
         <div class="ts-games">
           ${[["domino","Domino",kd],["scala","Scala 40",ks]].map(([k,n,w]) => `<div class="tile g-${k}">
             <div class="tname">${gameIcon(k,"tsico")}<span>${n}</span></div>
@@ -3054,7 +3108,7 @@ function drawJournal(keepScroll){
   flushSea(); undated.forEach(p => put(p, ""));
   root.innerHTML = `<div class="jwrap">
     <div class="jbar"><button type="button" class="btn b3d" data-journal="${t.id}">🖨️ Print PDF</button><button type="button" class="xclose" data-jclose aria-label="Close the journal">×</button></div>
-    <div class="jcover"><span class="jtape" aria-hidden="true"></span><p class="jhand">our Cruise Journal</p><h2>${esc(titleCase(t.name))}</h2><p>${esc([t.ship, fmtRange(t.start, t.end)].filter(Boolean).join(" · "))}</p>
+    <div class="jcover"><span class="jtape" aria-hidden="true"></span><p class="jhand">our Cruise Journal</p><h2>${esc(titleCase(t.name))}</h2><p>${esc([shipCabin(t), fmtRange(t.start, t.end)].filter(Boolean).join(" · "))}</p>
       <div class="jstats"><span>⚓ ${ports.filter(p => !p.skip).length} ports</span><span>🌍 ${countries.size} countr${countries.size === 1 ? "y" : "ies"}</span>${days.length ? `<span>📅 ${days.length} days</span>` : ""}${cruise !== null ? `<span>🏆 ${fmt1(cruise)}</span>` : ""}</div></div>
     ${journalCalendar(days)}
     <p class="jhand" style="text-align:center;font-size:24px;margin:4px 0 6px;color:#7A3E1E">tap a day to see what we did ✨</p>
@@ -3069,14 +3123,22 @@ document.addEventListener("click", e => {
 });
 // when a highlights pop-up closes, refresh the journal underneath
 new MutationObserver(() => { if(journalTrip && !$("#sheetRoot").children.length) drawJournal(true); }).observe(document.getElementById("sheetRoot"), {childList: true});
+// medals by score: equal scores share the same medal (two 10s are both 🥇); the next lower score gets the next medal.
+// Every port whose score is among the three best scores is shown.
+function medalRanks(ports){
+  const scored = ports.filter(p => portAvg(p) !== null && !p.skip);
+  const levels = [...new Set(scored.map(p => Math.round(portAvg(p) * 10) / 10))].sort((a, b) => b - a).slice(0, 3);
+  return scored.map(p => ({p, rank: levels.indexOf(Math.round(portAvg(p) * 10) / 10)})).filter(x => x.rank >= 0)
+    .sort((a, b) => a.rank - b.rank || (a.p.date || "").localeCompare(b.p.date || ""));
+}
 // 🏆 the three best ports of the cruise, with their highlights
 function bestOfCruise(x, ports){
-  const top = ports.filter(p => portAvg(p) !== null).sort((a, b) => portAvg(b) - portAvg(a) || (a.date || "").localeCompare(b.date || "")).slice(0, 3);
-  if(!top.length) return "";
-  const medals = ["🥇","🥈","🥉"];
+  const ranked = medalRanks(ports);
+  if(!ranked.length) return "";
+  const medals = ["🥇","🥈","🥉"], top = ranked.map(x => x.p), rankOf = new Map(ranked.map(x => [x.p.id, x.rank]));
   return `<div class="best"><div class="ts-h"><span>🏆 Best of the cruise</span></div>
     ${top.map((p, i) => { const n = noteBullets(stopNoteText(p)).length;
-      return `<button type="button" class="best-row" data-stopnoteview="${x.id}|${p.id}" aria-label="Open the ${esc(hlCity(p))} highlights"><span class="best-m" aria-hidden="true">${medals[i]}</span><span class="best-t"><b>${miniFlag(p.name)}<span>${esc(hlCity(p))}</span></b><small class="${n ? "go" : ""}">${n ? `⭐ ${n} highlight${n === 1 ? "" : "s"}` : "No highlights yet"}</small></span><span class="tr-score sm tone-${scoreTone(portAvg(p))}">${fmt1(portAvg(p))}</span><span class="best-chev" aria-hidden="true">›</span></button>`; }).join("")}
+      return `<button type="button" class="best-row" data-stopnoteview="${x.id}|${p.id}" aria-label="Open the ${esc(hlCity(p))} highlights"><span class="best-m" aria-hidden="true">${medals[rankOf.get(p.id)]}</span><span class="best-t"><b>${miniFlag(p.name)}<span>${esc(hlCity(p))}</span></b><small class="${n ? "go" : ""}">${n ? `⭐ ${n} highlight${n === 1 ? "" : "s"}` : "No highlights yet"}</small></span><span class="tr-score sm tone-${scoreTone(portAvg(p))}">${fmt1(portAvg(p))}</span><span class="best-chev" aria-hidden="true">›</span></button>`; }).join("")}
   </div>`;
 }
 // 📖 printable Cruise Journal for one trip (black and white, like the ports list)
@@ -3091,16 +3153,16 @@ function buildJournalPDF(t){
   newPage();
   text(M, y - 12, "CRUISE JOURNAL", 10, true); y -= 18;
   para(titleCase(t.name), 22, true); y -= 2;
-  para([t.ship, fmtRange(t.start, t.end)].filter(Boolean).join("   ·   "), 10.5, false);
+  para([shipCabin(t), fmtRange(t.start, t.end)].filter(Boolean).join("   ·   "), 10.5, false);
   if(t.from || t.to) para((t.from || "?") + "  to  " + (t.to || "?"), 10.5, false);
   y -= 6; line(M, y, W - M, y, 1.4); y -= 18;
   const cruise = avg(ports.map(portAvg)), kd = tally(t, "domino"), ks = tally(t, "scala");
   const facts = [cruise !== null ? "Cruise score " + fmt1(cruise) + " / 10" : "", ports.filter(p => !p.skip).length + " ports",
     `Domino ${t.p1} ${kd.w1} - ${t.p2} ${kd.w2}`, `Scala 40 ${t.p1} ${ks.w1} - ${t.p2} ${ks.w2}`].filter(Boolean);
   para(facts.join("    ·    "), 10.5, true); y -= 8;
-  const top = ports.filter(p => portAvg(p) !== null).sort((a, b) => portAvg(b) - portAvg(a)).slice(0, 3);
-  if(top.length){ need(40); text(M, y - 14, "Best of the cruise", 14, true); y -= 22;
-    top.forEach((p, i) => para(`${i + 1}.  ${hlCity(p)}  ${fmt1(portAvg(p))}`, 11, false, 8)); y -= 10; }
+  const best = medalRanks(ports);
+  if(best.length){ need(40); text(M, y - 14, "Best of the cruise", 14, true); y -= 22;
+    best.forEach(({p, rank}) => para(`${["1st","2nd","3rd"][rank]}   ${hlCity(p)}  ${fmt1(portAvg(p))}`, 11, false, 8)); y -= 10; }
   need(40); text(M, y - 14, "Port by port", 14, true); y -= 20; line(M, y, W - M, y, 0.8); y -= 12;
   ports.forEach((p, i) => {
     need(60);
@@ -3681,6 +3743,36 @@ function jackpotNotes(ac){
     o.connect(fl); fl.connect(g); g.connect(out); o.start(tc); l.start(tc); o.stop(tc+1.4); l.stop(tc+1.4); });
   toneAt(ac,out,2093,tc,1.2,"sine",0.16); toneAt(ac,out,3136,tc+0.02,0.9,"sine",0.06);
 }
+/* 🤝 tie jingle: plays when the players become tied during a game (not at 0–0, and not
+   when the app just opens on a tie). Game-show suspense: "dun … dun … DUNNN!" */
+const tieSeen = {};
+function tieCheck(key, scores){
+  const tied = scores.length > 1 && scores[0] > 0 && scores.every(v => v === scores[0]);
+  const now = tied ? scores.join("|") : "", prev = tieSeen[key];
+  tieSeen[key] = now;
+  if(prev === undefined || !tied || prev === now) return;
+  playTie(); tieToast();
+}
+function tieToast(){
+  let el = document.getElementById("tieToast");
+  if(!el){ el = document.createElement("div"); el.id = "tieToast"; el.className = "tietoast"; el.setAttribute("role", "status"); document.body.appendChild(el); }
+  el.textContent = "🤝 All tied up!"; el.classList.remove("show"); void el.offsetWidth; el.classList.add("show");
+}
+function playTie(){ withAudio(neckNotes); }
+function neckNotes(ac){
+  // game-show suspense: "dun … dun … DUNNN!"
+  const t0 = ac.currentTime + 0.04, out = ac.createGain(); out.gain.value = 0.6; out.connect(ac.destination);
+  tieBrass(ac, out, 196, t0, 0.22, 0.22); tieBrass(ac, out, 196, t0 + 0.3, 0.22, 0.22);
+  tieBrass(ac, out, 185, t0 + 0.6, 1.1, 0.26); tieBrass(ac, out, 233.08, t0 + 0.6, 1.1, 0.16);
+  toneAt(ac, out, 98, t0 + 0.6, 1.0, "triangle", 0.3);
+}
+function tieBrass(ac, out, f, t, d, v){
+  const o = ac.createOscillator(), o2 = ac.createOscillator(), fl = ac.createBiquadFilter(), g = ac.createGain();
+  o.type = "sawtooth"; o2.type = "sawtooth"; o.frequency.value = f; o2.frequency.value = f*1.004;
+  fl.type = "lowpass"; fl.frequency.setValueAtTime(400, t); fl.frequency.linearRampToValueAtTime(2400, t+0.08); fl.frequency.exponentialRampToValueAtTime(900, t+d);
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t+0.05); g.gain.setValueAtTime(v, t+d*0.7); g.gain.exponentialRampToValueAtTime(0.0001, t+d);
+  o.connect(fl); o2.connect(fl); fl.connect(g); g.connect(out); o.start(t); o2.start(t); o.stop(t+d+0.05); o2.stop(t+d+0.05);
+}
 function playCalypso(){ withAudio(calypsoNotes); }
 function steelPan(ac, out, f, t, d, v){
   // a steel drum: a bright fundamental plus slightly "off" overtones that fade fast
@@ -3790,6 +3882,26 @@ function imgOf(svg){ if(!/xmlns=/.test(svg)) svg = svg.replace("<svg ", '<svg xm
 const CARD_IMGS = [imgOf(QCARD), ...[["A","♠"],["Q","♥"],["K","♥"],["J","♠"],["Q","♥"],["7","♣"]].map(([r,s]) => imgOf(cardSVG(r,s))), imgOf(QCARD)];
 const TILE_IMGS = [[6,6],[3,5],[1,4],[2,2],[6,0],[4,5]].map(([a,b]) => imgOf(tileSVG(a,b)));
 
+
+/* ↩️ Oops: a Scala 40 win that came from points typed for the wrong player can be taken back for 10 minutes.
+   The win comes off, the game reopens with its scores, and the last entry (the mistake) is removed. */
+const REOPEN_MS = 10*60*1000;
+const canReopen = g => !!(g && g.reopen && Date.now() - (g.createdAt || 0) < REOPEN_MS);
+function reopenGame(t, gid){
+  const g = t.games.find(x => x.id === gid); if(!canReopen(g)) return false;
+  const r = g.reopen, log = (Array.isArray(r.log) ? r.log : Object.values(r.log || {})).map(x => ({p:+x.p, v:+x.v}));
+  const sc = {s1:+r.s1 || 0, s2:+r.s2 || 0, log};
+  const last = sc.log.pop(); if(last){ const k = last.p === 1 ? "s1" : "s2"; sc[k] = Math.max(0, sc[k] - last.v); }
+  t.games = t.games.filter(x => x.id !== gid); t.scala = sc;
+  setViewType(t, "scala"); t.days[t.curDate] = "scala"; t.lastType = "scala"; keepBanner = false;
+  $("#partyRoot").innerHTML = ""; tab = "score"; commit(); render(); window.scrollTo(0, 0);
+  return true;
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-reopen]"); if(!b) return;
+  const [tid, gid] = b.dataset.reopen.split("|"), t = state.trips.find(x => x.id === tid); if(!t) return;
+  if(!reopenGame(t, gid)) sheet("Too late to undo", "This win can only be undone in the first 10 minutes. Unlock (tap © 2026 Thor) to delete it from Wins instead.", "OK", () => {});
+});
 function celebrate(t, g, more){
   const root = $("#partyRoot"), tl = tally(t, g.type), name = g.winner===1 ? t.p1 : g.winner===2 ? t.p2 : null;
   const sameDay = t.games.filter(x => x.date===g.date && x.type===g.type).length, scala = g.type === "scala";
@@ -3806,6 +3918,7 @@ function celebrate(t, g, more){
       </div>
       <p class="tapsound" id="tapSound" hidden>🔊 Tap anywhere to hear the winning music</p>
       <button class="btn b3d" data-party-close>Play again</button>
+      ${canReopen(g) ? `<button type="button" class="btn b3d oopsbtn" data-reopen="${t.id}|${g.id}">↩️ Oops, wrong player · undo</button>` : ""}
     </div>`;
   const stage = scala
     ? `<div class="stage">${scatterCards(CARDS_BEHIND,"back")}${card}${scatterCards(CARDS_FRONT,"front")}${scatterCards(CARD_STAR,"front",true)}</div>`
@@ -4077,7 +4190,7 @@ function showSaveAs(){
 })();
 
 /* ---------- actions ---------- */
-function endGame(){
+function endGame(auto){
   const t = trip(), type = dayType(t);
   if(type === "domino"){
     const c = t.cur, winner = c.s1===c.s2 ? 0 : (c.s1>c.s2 ? 1 : 2);
@@ -4085,7 +4198,9 @@ function endGame(){
     t.cur = {s1:0, s2:0, log:[]};
   } else {
     const sc = t.scala, winner = sc.s1===sc.s2 ? 0 : (sc.s1>sc.s2 ? 1 : 2);
-    t.games.push({id:uid(), type, date:t.curDate, s1:sc.s1, s2:sc.s2, winner, hands:sc.log.length, createdAt:Date.now()});
+    const g = {id:uid(), type, date:t.curDate, s1:sc.s1, s2:sc.s2, winner, hands:sc.log.length, createdAt:Date.now()};
+    if(auto) g.reopen = {s1:sc.s1, s2:sc.s2, log:sc.log.slice(-300)};   // so a wrong last entry can be undone for a few minutes
+    t.games.push(g);
     t.scala = blankScala();
   }
   t.days[t.curDate] = type;
@@ -4162,7 +4277,8 @@ document.addEventListener("click", e => {
   if(a==="pickgame"){ openGamePicker(); return; }
   if(a==="end"){
     const sc = type==="domino" ? t.cur : t.scala;
-    sheet(`End this ${GAMES[type]} game?`, `${esc(t.p1)} ${sc.s1} · ${esc(t.p2)} ${sc.s2} — recorded as ${esc(winnerText(t,type))}.`, "Record game", endGame);
+    if(type === "domino") sheet(`Is this Domino game finished?`, `Final score: ${esc(t.p1)} ${sc.s1} · ${esc(t.p2)} ${sc.s2}. It will be recorded as ${esc(winnerText(t,type))}.`, "Yes, game finished", endGame);
+    else sheet(`End this ${GAMES[type]} game?`, `${esc(t.p1)} ${sc.s1} · ${esc(t.p2)} ${sc.s2} — recorded as ${esc(winnerText(t,type))}.`, "Record game", endGame);
   }
   else if(a==="keep"){ keepBanner = true; render(); }
   else if(a==="undo"){ const last = t.cur.log.pop(); if(last){ const k = last.p===1?"s1":"s2"; t.cur[k] = Math.max(0, t.cur[k]-last.v); commit(); render(); } }
