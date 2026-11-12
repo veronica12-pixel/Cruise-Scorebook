@@ -167,10 +167,14 @@ body[data-tab="settings"] #tripHead{display:none}
 .xpl-row{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center}
 .xpl-x{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);background:#fff;color:var(--muted);font-size:17px;line-height:1;padding:0;cursor:pointer}
 .xpl-add .addp3d{margin:6px 0 0}.xpl-add .pk-quick{margin-top:8px}
-.hc-mini{position:absolute;right:-4px;top:-2px;width:112px;display:flex;flex-direction:column;align-items:center;text-align:center;line-height:1.15}
-.hc-mini svg{width:104px;height:110px;display:block}
-.hc-mini small{display:block;width:100%;font:800 14px var(--body);color:#5A4500}.hc-mini .hc-l2{font-size:13px;color:#7A5A1A;margin-top:1px}
-.trip{min-height:150px;padding-right:114px}
+#homeClockSlot{margin:22px 0 6px}
+.hc-foot{display:flex;align-items:center;gap:14px;max-width:360px;margin:0 auto;padding:10px 18px 10px 10px;border-radius:24px;
+  background:linear-gradient(180deg,#FFFDF5,#FFF1CF);border:1.5px solid #E9C877;box-shadow:0 5px 0 #E2C06A,0 10px 18px rgba(90,60,10,.14)}
+.hc-foot svg{width:96px;height:101px;flex:none;display:block}
+.hc-ft{display:flex;flex-direction:column;gap:2px;line-height:1.2;min-width:0}
+.hc-ft small{font:800 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:#9A7A2A}
+.hc-ft b{font:800 20px var(--display);color:#3B2A00}
+.hc-ft span{font:800 15px var(--body);color:#7A5A1A}
 .reachnote p{margin:2px 0 10px;font-size:15px}
 .typein.sc40{grid-template-columns:1fr 1fr;gap:8px}
 .typein.sc40 input{grid-column:1 / -1;min-height:52px;font-size:22px}
@@ -893,6 +897,7 @@ button.best-row:active{background:rgba(255,255,255,.85)}
 <div class="wrap">
   <header class="trip" id="tripHead"></header>
   <main id="view"></main>
+  <div id="homeClockSlot"></div>
   <footer><button type="button" class="copyright" id="copyright-trigger" aria-haspopup="dialog"><span class="lockicon" id="lockicon" aria-hidden="true">🔒</span>© 2026 Thor<span class="syncdot" id="syncdot" aria-hidden="true"></span></button><div class="appver" id="appver"></div></footer>
 </div>
 
@@ -914,8 +919,8 @@ button.best-row:active{background:rgba(255,255,255,.85)}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "17.3";
-const APP_UPDATED = "Nov 11, 2026, 9:20 PM ET";
+const APP_VERSION = "17.4";
+const APP_UPDATED = "Nov 11, 2026, 9:25 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -1548,15 +1553,17 @@ function homeClockParts(){
   return {T, day, rel: !diff ? "same time" : diff < 0 ? hrs + " behind" : hrs + " ahead"};   // compared with ship time (see shipTimeInfo)
 }
 function homeClockHTML(){ const c = homeClockParts();
-  return `<div class="hc-mini" id="homeClock" role="img" aria-label="Time at home in ${esc(homeName())}: ${c.T}, ${c.day}, ${c.rel}">${homeClockSVG(c.T, c.day)}<small class="hc-l1">🏠 ${esc(homeName())}</small><small class="hc-l2">${c.rel}</small></div>`; }
-setInterval(() => { const el = document.getElementById("homeClock"); if(el) el.outerHTML = homeClockHTML(); }, 15000);
+  return `<div class="hc-foot" id="homeClock" role="img" aria-label="Time at home in ${esc(homeName())}: ${c.T}, ${c.day}, ${c.rel}">${homeClockSVG(c.T, c.day)}
+    <div class="hc-ft"><small>Time at home</small><b>🏠 ${esc(homeName())}</b><span>${c.rel === "same time" ? "Same time as the ship" : c.rel + " the ship"}</span></div></div>`; }
+function drawHomeClock(){ const slot = document.getElementById("homeClockSlot"); if(slot) slot.innerHTML = homeClockHTML(); }
+setInterval(drawHomeClock, 15000);
 function renderHead(){
   const t = trip();
   const route = (t.from || t.to)
     ? `<b>${esc(t.from||"Departure port?")}</b><span aria-hidden="true">→</span><b>${esc(t.to||"Arrival port?")}</b>`
     : `<span>Add ports on the Trips tab</span>`;
   $("#tripHead").innerHTML = `
-    ${homeClockHTML()}
+    <div class="badges" aria-hidden="true">${DOMINO.replace('<svg ','<svg class="dtile" ')}${QCARD.replace('<svg ','<svg class="qcard" ')}</div>
     <div class="eyebrow">${esc(shipCabin(t) ? shipCabin(t) + " · " : "")}${esc(fmtRange(t.start,t.end))}</div>
     <h1>${esc(t.name)}</h1>
     <div class="route">${route}</div>`;
@@ -2397,7 +2404,7 @@ document.addEventListener("focusout", e => { if(e.target.type === "date" && date
   setTimeout(() => { if(!dateBoxBusy()){ const y = window.scrollY; render(); window.scrollTo(0, y); } }, 0); } });
 function render(){
   if(dateBoxBusy()){ dateRenderWaiting = true; return; }
-  renderHead();
+  renderHead(); drawHomeClock();
   document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-current", b.dataset.tab===tab ? "page" : "false"));
   document.body.dataset.game = tab === "score" ? dayType(trip()) : "";
   document.body.dataset.tab = tab;
