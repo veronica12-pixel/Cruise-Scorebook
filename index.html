@@ -123,11 +123,54 @@ body[data-game="scala"]{background:var(--sca-soft)}
 .cabin-in{width:100%;box-sizing:border-box;font:inherit;font-size:16px;font-weight:700;padding:9px 11px;border-radius:12px;border:1.5px solid var(--line);background:#fff;color:var(--ink);margin-bottom:6px;text-transform:uppercase}
 .addp3d{display:block;margin:14px auto 0;padding:8px 20px;min-height:40px;font:800 14px var(--display);color:#1F4A45;--face:#DDF4EF;--edge:#7CC4B7;border-radius:14px}
 .oopsbtn{margin-top:8px;font-size:14px;--face:#FFF;--edge:#E0D6EE;color:#7A3E1E}
-.oopsx{--face:#FFF3C4;--edge:#E3C443;color:#6B5200;margin-right:4px}
+.xbtn.oopsx{border:1.5px solid #E3C443;background:#FFF3C4;color:#6B5200;text-decoration:none;font-size:12px;font-weight:800;padding:3px 8px;border-radius:999px;line-height:1.3;white-space:nowrap}
 .board.sc40b.n3{grid-template-columns:repeat(3,1fr);gap:8px}.board.sc40b.n3 .player:last-child{grid-column:auto}
 .board.sc40b.n3 .player{padding:10px 8px}.board.sc40b.n3 .pname{font-size:13px;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;line-height:1.15}.board.sc40b.n3 .score{font-size:44px}.board.sc40b.n3 .togo{font-size:11px}.board.sc40b.n3 .pwins{font-size:11px}
 .board.sc40b.n3 .typein.sc40{grid-template-columns:1fr;gap:6px}.board.sc40b.n3 .typein.sc40 input{min-height:44px;font-size:18px}.board.sc40b.n3 .typein.sc40 .onebtn{min-height:42px;font-size:15px}
 .board.sc40b.n5 .player:last-child{grid-column:auto}
+.gamenav.solo{display:block}.gamenav.solo .gn-add{width:100%}.gn-chev{display:inline-block;margin-left:4px;font-size:.8em}
+.gdrop{background:#fff;border:1.5px solid #D8CCF3;border-radius:18px;box-shadow:0 10px 24px rgba(60,40,90,.18);margin:8px 0 14px;max-height:62vh;overflow:auto;-webkit-overflow-scrolling:touch;padding:6px 0}
+.gd-h{font:800 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:#9A8CB8;padding:10px 16px 4px}
+.gd-i{display:flex;align-items:center;gap:12px;width:100%;padding:8px 16px;border:0;background:none;font:700 16px var(--body);color:var(--ink);text-align:left;cursor:pointer}
+.gd-i .glogo{flex:none}.gd-i small{display:block;font-size:12px;color:var(--muted);font-weight:600}
+.gd-i.cur{background:#F3ECFF}.gd-i.cur::after{content:"✓";margin-left:auto;color:#7D5BC9;font-weight:900}
+.gd-custom{display:flex;align-items:center;gap:12px;margin:8px 10px 4px;padding:11px 14px;border-radius:14px;border:1.5px dashed #B9A8E6;background:#FBF8FF;font:800 15px var(--display);color:#5B3FA0;width:calc(100% - 20px);cursor:pointer}
+.gd-custom .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:#E8DAFF;font-size:17px}
+.gd-fav{display:block;margin:2px auto 6px;border:0;background:none;font:700 13px var(--body);color:var(--muted);text-decoration:underline;text-underline-offset:3px;padding:8px}
+body[data-tab="settings"] #tripHead{display:none}
+.set-wrap{padding-bottom:20px}.set-title{font-size:28px;margin:6px 0 2px}.set-sub{margin:0 0 14px;color:var(--muted);font-size:14px}
+.set-card{background:var(--surface);border:1.5px solid var(--line);border-radius:20px;padding:14px 14px 12px;margin-bottom:14px;box-shadow:0 4px 0 var(--line)}
+.set-card h2{font-size:18px;margin:0 0 10px}.set-card h2 small{font:700 12px var(--body);color:var(--muted);margin-left:6px}
+.set-lbl{display:block;font-size:13px;font-weight:800;color:var(--muted);margin-bottom:10px}
+.set-in{display:block;width:100%;box-sizing:border-box;margin-top:4px;font:inherit;font-size:16px;font-weight:600;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:#fff;color:var(--ink)}
+.set-in.sm{width:auto;margin:0}
+.set-now{font-size:15px;margin:2px 0 10px}
+.set-mini{font:800 14px var(--display);padding:8px 14px;border-radius:12px;--face:#EEF4FF;--edge:#A9C2EA;color:#24477A}
+.set-note{font-size:12.5px;color:var(--muted);margin:10px 0 0}
+.set-seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.set-seg button{min-height:46px;font:800 14px var(--display);border-radius:14px;--face:#fff;--edge:var(--line);color:var(--muted)}
+.set-seg button.on{--face:#C9B5FF;--edge:#9F87E0;color:#2F2A42}
+.set-tog{display:flex;align-items:center;justify-content:space-between;width:100%;padding:10px 0;border:0;border-top:1px dashed var(--line);background:none;font:600 15px var(--body);color:var(--ink);text-align:left;cursor:pointer}.set-tog:first-of-type{border-top:0}
+.sw{width:46px;height:28px;border-radius:999px;background:#D9D4E5;position:relative;flex:none;transition:background .15s}.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .15s}
+.sw.on{background:#5FBF8F}.sw.on::after{left:21px}
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;font-size:15px}
+.set-two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.about .ok{color:#2E8A57;font-size:14px}.about .wait{color:#A0700A;font-size:14px}.about .off{color:#A3262A;font-size:14px}
+.up-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.up-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 6px 6px 12px;border-radius:999px;background:#FFF3C4;border:1.5px solid #E3C443;color:#5A4500;font:800 14px var(--body)}
+.up-chip button{width:22px;height:22px;border-radius:50%;border:0;background:rgba(255,255,255,.8);color:#7A6A3A;font-size:15px;line-height:22px;padding:0;cursor:pointer}
+.up-add{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.up-add .set-in{margin:0}
+.pk-quick{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 2px}.pk-quick span{width:100%;font:800 12px var(--body);color:var(--muted)}
+.up-chip.pick{padding:7px 14px;--face:#FFF3C4;--edge:#E3C443;cursor:pointer}
+.shipcab{display:grid;grid-template-columns:2fr 1fr;gap:10px}.shipcab label{min-width:0}
+.cabin-first input{font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.xpl-row{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center}
+.xpl-x{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);background:#fff;color:var(--muted);font-size:17px;line-height:1;padding:0;cursor:pointer}
+.xpl-add .addp3d{margin:6px 0 0}.xpl-add .pk-quick{margin-top:8px}
+.hc-mini{position:absolute;right:-4px;top:-2px;width:112px;display:flex;flex-direction:column;align-items:center;text-align:center;line-height:1.15}
+.hc-mini svg{width:104px;height:110px;display:block}
+.hc-mini small{display:block;width:100%;font:800 14px var(--body);color:#5A4500}.hc-mini .hc-l2{font-size:13px;color:#7A5A1A;margin-top:1px}
+.trip{min-height:150px;padding-right:114px}
 .reachnote p{margin:2px 0 10px;font-size:15px}
 .typein.sc40{grid-template-columns:1fr 1fr;gap:8px}
 .typein.sc40 input{grid-column:1 / -1;min-height:52px;font-size:22px}
@@ -240,7 +283,7 @@ footer{margin-top:28px;text-align:center;font-size:12px;color:var(--muted)}
 
 /* bottom nav */
 nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--surface);border-top:2px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -6px 16px var(--drop)}
-nav.tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;height:var(--nav-h);padding:6px 8px 10px}
+nav.tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:6px;height:var(--nav-h);padding:6px 8px 10px}
 nav.tabs button{border:none;border-radius:14px;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;font-weight:700;color:var(--muted)}
 nav.tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8}
 nav.tabs button[aria-current="page"]{color:var(--on-pastel);background:linear-gradient(180deg,var(--hi),rgba(255,255,255,0) 55%),var(--accent);box-shadow:0 4px 0 var(--accent-edge)}
@@ -590,6 +633,8 @@ nav.tabs .in button.t-score{--c:#FFE3EA;--ca:#FFB8C8;--e:#E79AAE}
 nav.tabs .in button.t-wins{--c:#FFF1C9;--ca:#FFD970;--e:#E0B348}
 nav.tabs .in button.t-ports{--c:#D8F5F2;--ca:#99E3DC;--e:#6CC2BA}
 nav.tabs .in button.t-trips{--c:#E8DFFF;--ca:#C9B5FF;--e:#9F87E0}
+nav.tabs .in button.t-set{--c:#E2EEFF;--ca:#B7D3FF;--e:#86AADF}
+nav.tabs .in{gap:6px;padding-left:8px;padding-right:8px}nav.tabs .in button{font-size:11px}
 nav.tabs .in button[aria-current="page"]{color:#2F2A42;background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,0) 55%),var(--ca);transform:translateY(-3px);box-shadow:0 6px 0 var(--e),0 10px 14px rgba(60,40,90,.22)}
 nav.tabs .in button[aria-current="page"] .ic{transform:scale(1.14) rotate(-4deg)}
 nav.tabs .in button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--e),0 2px 4px rgba(60,40,90,.14)}
@@ -852,30 +897,11 @@ button.best-row:active{background:rgba(255,255,255,.85)}
 </div>
 
 <nav class="tabs" aria-label="Sections"><div class="in">
-  <button data-tab="score" class="t-score" aria-current="page"><svg class="ic" viewBox="0 0 32 32" aria-hidden="true">
-    <rect x="9" y="2.5" width="14" height="27" rx="3.5" fill="#fff" stroke="#3B3551" stroke-width="1.8"/><path d="M9 3.5h14" stroke="#fff" opacity=".6"/>
-    <line x1="10.5" y1="16" x2="21.5" y2="16" stroke="#3B3551" stroke-width="1.6"/>
-    <circle cx="13" cy="7" r="1.8" fill="#1E1B2A"/><circle cx="19" cy="12" r="1.8" fill="#1E1B2A"/><circle cx="16" cy="9.5" r="1.8" fill="#1E1B2A"/>
-    <circle cx="13" cy="20" r="1.8" fill="#1E1B2A"/><circle cx="19" cy="20" r="1.8" fill="#1E1B2A"/><circle cx="13" cy="25.5" r="1.8" fill="#1E1B2A"/><circle cx="19" cy="25.5" r="1.8" fill="#1E1B2A"/></svg>Score</button>
-  <button data-tab="games" class="t-wins"><svg class="ic" viewBox="0 0 32 32" aria-hidden="true">
-    <path d="M9 6H4.5a4.5 4.5 0 0 0 5 5.5M23 6h4.5a4.5 4.5 0 0 1-5 5.5" fill="none" stroke="#D99A12" stroke-width="2.2" stroke-linecap="round"/>
-    <path d="M8.5 3.5h15v6.5a7.5 7.5 0 0 1-15 0z" fill="#FFC531" stroke="#B57A0A" stroke-width="1.4"/>
-    <path d="M11.5 5.5v4.5a4.5 4.5 0 0 0 2.2 3.9" fill="none" stroke="#FFF3C4" stroke-width="1.8" stroke-linecap="round"/>
-    <path d="M14 17h4l.8 5h-5.6z" fill="#F0AE1E" stroke="#B57A0A" stroke-width="1.2"/>
-    <rect x="9.5" y="22" width="13" height="5.5" rx="1.6" fill="#7A4A2A" stroke="#4E2C16" stroke-width="1.2"/><rect x="12.5" y="23.6" width="7" height="2.2" rx=".8" fill="#FFD866"/>
-    <path d="M16 6.2l.9 1.9 2 .3-1.5 1.4.4 2-1.8-1-1.8 1 .4-2-1.5-1.4 2-.3z" fill="#fff"/></svg>Wins</button>
-  <button data-tab="ports" class="t-ports"><svg class="ic" viewBox="0 0 32 32" aria-hidden="true">
-    <circle cx="24.5" cy="7.5" r="4" fill="#FFC531"/>
-    <path d="M2 26c3-1.6 5.5-1.6 8 0s5.5 1.6 8 0 5.5-1.6 8 0 4 1.2 4 1.2V30H2z" fill="#3BB3E0"/>
-    <ellipse cx="14" cy="25" rx="9" ry="3" fill="#F6D58E"/>
-    <path d="M14.5 24c.3-5 1.6-9.5 3.6-13" fill="none" stroke="#8A5A2B" stroke-width="2" stroke-linecap="round"/>
-    <path d="M18 11c-2.6-3.4-7.2-3.6-9.8-1.4 3.2-.2 6.2.5 9.8 1.4zM18 11c.6-4 4.5-6.2 8-5.2-2.9 1-5.6 2.6-8 5.2zM18 11c-3.8-.6-7.4 1.6-8.4 5 2.4-2.2 5.2-3.8 8.4-5zM18 11c3.6-.8 7 1 7.8 4.4-2.2-2-4.9-3.6-7.8-4.4z" fill="#2FAE5B" stroke="#1E7A3E" stroke-width=".8" stroke-linejoin="round"/></svg>Ports</button>
-  <button data-tab="trips" class="t-trips"><svg class="ic" viewBox="0 0 32 32" aria-hidden="true">
-    <path d="M17.5 6h4l.8 5h-5.6z" fill="#E8456B" stroke="#2B3A67" stroke-width="1"/><rect x="17.2" y="4.6" width="4.6" height="2" rx=".8" fill="#2B3A67"/>
-    <path d="M9 11h16l2 4H7z" fill="#fff" stroke="#9AA6C4" stroke-width="1"/><path d="M6 15h22l2 3H4z" fill="#fff" stroke="#9AA6C4" stroke-width="1"/>
-    <path d="M10.5 12.6h12M7.5 16.4h18" stroke="#6FA4DA" stroke-width="1.3" stroke-dasharray="1.6 1.2"/>
-    <path d="M2.5 18h27l-3.2 6H5.5z" fill="#2B3A67" stroke="#16203D" stroke-width="1" stroke-linejoin="round"/><path d="M4 21.4h24.5" stroke="#E8456B" stroke-width="1.4"/>
-    <path d="M2 27.5q3-2 6 0t6 0 6 0 6 0 4 0" fill="none" stroke="#3BB3E0" stroke-width="2" stroke-linecap="round"/></svg>Trips</button>
+  <button data-tab="score" class="t-score" aria-current="page"><svg class="ic" viewBox="0 0 32 32" aria-hidden="true"><path d="M6 5.5h16.5a2 2 0 0 1 2 2V27a1.5 1.5 0 0 1-1.5 1.5H6z" fill="#F6EBD3" stroke="#5A3A1A" stroke-width="1"/><path d="M5 4.5h16.5a2 2 0 0 1 2 2V26a1.5 1.5 0 0 1-1.5 1.5H5z" fill="#24407A" stroke="#16203D" stroke-width="1.1"/><path d="M5 4.5h2.6v23H5z" fill="#16203D"/><g stroke="#F2B84B" stroke-width="1.5" stroke-linecap="round" fill="none"><circle cx="15.3" cy="11" r="1.6"/><path d="M15.3 12.6v8.6M12.3 15h6M10.8 18.3c.5 2.6 2.3 3.9 4.5 3.9s4-1.3 4.5-3.9"/></g><path d="M20.5 4.5v6.5l1.5-1.2 1.5 1.2V5.2" fill="#E8456B"/><path d="M29 3.5c-3.5 1.6-7.6 6-10.6 12.4l1.2.6C23 10.6 27 6.2 29 3.5z" fill="#fff" stroke="#5A3A1A" stroke-width=".8" stroke-linejoin="round"/><path d="M18.4 15.9l-.9 2.4 2.1-1.8" fill="#2B3A67"/></svg>Score</button>
+  <button data-tab="games" class="t-wins"><svg class="ic" viewBox="0 0 32 32" aria-hidden="true"><path d="M4.5 12.5c0-5 5-7.5 11.5-7.5s11.5 2.5 11.5 7.5z" fill="#A86A35" stroke="#5A3A1A" stroke-width="1.1" transform="rotate(-12 16 12)"/><g fill="#F2B84B" stroke="#B07A1A" stroke-width=".7"><circle cx="10" cy="15.6" r="2.6"/><circle cx="15" cy="14.2" r="2.8"/><circle cx="20.5" cy="15.2" r="2.6"/><circle cx="12.8" cy="12.6" r="2.2"/><circle cx="18" cy="12.4" r="2.3"/></g><path d="M18 9.5l.6 1.4 1.5.1-1.1 1 .3 1.5-1.3-.8-1.3.8.3-1.5-1.1-1 1.5-.1z" fill="#fff"/><rect x="4.5" y="16" width="23" height="11.5" rx="1.6" fill="#B97A41" stroke="#5A3A1A" stroke-width="1.1"/><path d="M4.5 19.5h23" stroke="#5A3A1A" stroke-width=".8"/><g fill="#F2B84B" stroke="#8A5A10" stroke-width=".8"><rect x="8" y="16" width="2.6" height="11.5"/><rect x="21.4" y="16" width="2.6" height="11.5"/><rect x="13.6" y="18" width="4.8" height="5.4" rx="1"/></g><circle cx="16" cy="20.3" r=".9" fill="#5A3A1A"/></svg>Wins</button>
+  <button data-tab="ports" class="t-ports"><svg class="ic" viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 7.5L30 4.5v6.8z" fill="#FFE9A0" opacity=".85"/><path d="M11.5 7.5L2 4.5v6.8z" fill="#FFE9A0" opacity=".85"/><path d="M12.6 5.2h6.8v4.2h-6.8z" fill="#FFF3B0" stroke="#2B3A67" stroke-width="1"/><path d="M12 5.2L16 2l4 3.2z" fill="#E8456B" stroke="#2B3A67" stroke-width="1" stroke-linejoin="round"/><path d="M11.5 9.4h9v1.6h-9z" fill="#2B3A67"/><path d="M12.4 11h7.2l1.8 13.5H10.6z" fill="#fff" stroke="#2B3A67" stroke-width="1" stroke-linejoin="round"/><path d="M12.1 13.4h7.8l.5 3.4h-8.8zM11.2 19.6h9.6l.5 3.4H10.7z" fill="#E8456B"/><rect x="15" y="14.2" width="2" height="2.4" rx=".6" fill="#2B3A67"/><path d="M7 24.5c3-1.6 15-1.6 18 0v1.5H7z" fill="#8C8C9A" stroke="#55556A" stroke-width=".8"/><path d="M2 27.5q3-2 6 0t6 0 6 0 6 0 4 0" fill="none" stroke="#3BB3E0" stroke-width="2" stroke-linecap="round"/></svg>Ports</button>
+  <button data-tab="trips" class="t-trips"><svg class="ic" viewBox="0 0 32 32" aria-hidden="true"><path d="M3.5 7.5l8-3 9 3 8-3v20l-8 3-9-3-8 3z" fill="#F6E3B4" stroke="#8A5A10" stroke-width="1.1" stroke-linejoin="round"/><path d="M11.5 4.5v20M20.5 7.5v20" stroke="#D9B66A" stroke-width=".9"/><path d="M6 22c2-4 5-5 7.5-3.5S18 18 19 14s4-6 7-6.5" fill="none" stroke="#2B6FB5" stroke-width="1.5" stroke-dasharray="1.8 1.6" stroke-linecap="round"/><path d="M23.6 7.2l3.6 3.6M27.2 7.2l-3.6 3.6" stroke="#E8456B" stroke-width="1.9" stroke-linecap="round"/><circle cx="6" cy="22" r="1.5" fill="#2B6FB5"/><g transform="translate(8.3 10.3)"><circle r="3.2" fill="#fff" stroke="#8A5A10" stroke-width=".7"/><path d="M0-2.8L.8 0 0 2.8-.8 0z" fill="#2B3A67"/><path d="M-2.8 0L0-.8 2.8 0 0 .8z" fill="#8FA9D6"/></g></svg>Trips</button>
+  <button data-tab="settings" class="t-set"><svg class="ic" aria-hidden="true" viewBox="0 0 32 32"><g stroke="#5A3A1A" stroke-width="2.6" stroke-linecap="round"><line x1="16" y1="16" x2="29.50" y2="16.00"/><line x1="16" y1="16" x2="25.55" y2="25.55"/><line x1="16" y1="16" x2="16.00" y2="29.50"/><line x1="16" y1="16" x2="6.45" y2="25.55"/><line x1="16" y1="16" x2="2.50" y2="16.00"/><line x1="16" y1="16" x2="6.45" y2="6.45"/><line x1="16" y1="16" x2="16.00" y2="2.50"/><line x1="16" y1="16" x2="25.55" y2="6.45"/></g><g fill="#C98A4B" stroke="#5A3A1A" stroke-width="1"><circle cx="29.50" cy="16.00" r="1.9"/><circle cx="25.55" cy="25.55" r="1.9"/><circle cx="16.00" cy="29.50" r="1.9"/><circle cx="6.45" cy="25.55" r="1.9"/><circle cx="2.50" cy="16.00" r="1.9"/><circle cx="6.45" cy="6.45" r="1.9"/><circle cx="16.00" cy="2.50" r="1.9"/><circle cx="25.55" cy="6.45" r="1.9"/></g><circle cx="16" cy="16" r="9" fill="none" stroke="#5A3A1A" stroke-width="3.6"/><circle cx="16" cy="16" r="9" fill="none" stroke="#D99A55" stroke-width="2"/><circle cx="16" cy="16" r="3.4" fill="#F2B84B" stroke="#5A3A1A" stroke-width="1"/></svg>Settings</button>
 </div></nav>
 
 <button type="button" id="lockFloat" class="lockfloat" hidden aria-label="Editing is unlocked. Tap to lock."><span class="lf-in"><span class="lf-ic" aria-hidden="true">🚢<i>✏️</i></span><span class="lf-t"><b>Editing</b><small>Tap to lock</small></span></span></button>
@@ -888,8 +914,8 @@ button.best-row:active{background:rgba(255,255,255,.85)}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "16.0";
-const APP_UPDATED = "Nov 10, 2026, 8:15 PM ET";
+const APP_VERSION = "17.2";
+const APP_UPDATED = "Nov 11, 2026, 9:10 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -964,7 +990,7 @@ const PORT_ZONES = {
   "buenos aires":"America/Argentina/Buenos_Aires","punta arenas":"America/Punta_Arenas","ushuaia":"America/Argentina/Ushuaia","antarctic peninsula":"Antarctica/Palmer",
   "port stanley":"Atlantic/Stanley","stanley":"Atlantic/Stanley","montevideo":"America/Montevideo"
 };
-const HOME_ZONE = "America/New_York";   // Tampa
+const HOME_ZONE = "America/New_York";   // default only: the real home is in Settings (homeZone())
 const placeKey = name => (name||"").toLowerCase().split(",")[0].replace(/\(.*?\)/g,"").trim();
 /* published itineraries: stops between departure and arrival, loaded once per trip */
 const ITINERARIES = [{
@@ -1011,12 +1037,41 @@ const titleCase = str => String(str || "").replace(/[A-Za-zÀ-ÿ][^\s\-/]*/g, (w
 const fmtRange = (a,b) => { if(!a && !b) return "Dates not set"; if(a && !b) return "From " + fmtDate(a,{month:"short",day:"numeric",year:"numeric"}); if(!a) return "Until " + fmtDate(b,{month:"short",day:"numeric",year:"numeric"}); return fmtDate(a,{month:"short",day:"numeric"}) + " – " + fmtDate(b,{month:"short",day:"numeric",year:"numeric"}); };
 
 const shipCabin = x => [x.ship, x.cabin ? "Cabin " + x.cabin : ""].filter(Boolean).join(" · ");
+/* ---------- ⚙️ settings: shared by both phones (kept on every trip so they sync with the trips);
+   the sound switches are per phone ---------- */
+const DEF_SET = {homeCity:"Odessa, Florida", homeZone:"America/New_York", temp:"F", clock:"12", p1:"Alessandra", p2:"Kirk", dominoTarget:150, scalaLimit:101};
+function S(){
+  let best = null;
+  if(typeof state !== "undefined" && state && state.trips) state.trips.forEach(t => { if(t.prefs && (!best || (t.prefs.at || 0) > (best.at || 0))) best = t.prefs; });
+  return Object.assign({}, DEF_SET, best || {});
+}
+function setS(k, v){
+  const cur = S(); cur[k] = v; cur.at = Date.now();
+  state.trips.forEach(t => { t.prefs = Object.assign({}, cur); });
+  commit();
+}
+const homeZone = () => S().homeZone || DEF_SET.homeZone;
+const extraPlayers = t => (Array.isArray(t.extraPlayers) ? t.extraPlayers : Object.values(t.extraPlayers || {})).map(x => String(x ?? ""));
+// the trip's players beyond the first two: they become the names offered when a game is opened for more players
+function setExtras(t, list){
+  t.extraPlayers = list.slice(0, 4);
+  const named = t.extraPlayers.map(x => x.trim()).filter(Boolean);
+  t.partyNames = [t.p1, t.p2, ...named];
+}
+const usualPlayers = () => { const u = S().usual; return (Array.isArray(u) ? u : Object.values(u || {})).map(x => String(x || "").trim()).filter(Boolean); };
+const homeName = () => (S().homeCity || "home").split(",")[0].trim() || "home";
+const toUnit = f => (f === "" || f == null || isNaN(+f)) ? f : S().temp === "C" ? Math.round((+f - 32) * 5 / 9) : Math.round(+f);
+const degU = () => "°" + S().temp;
+const hr12 = () => S().clock !== "24";
+const SND_KEYS = {win:"cs-snd-win", tie:"cs-snd-tie", lead:"cs-snd-lead"};
+const sndOn = k => { try { return localStorage.getItem(SND_KEYS[k]) !== "off"; } catch(e){ return true; } };
 const blankScala = () => ({s1:0, s2:0, log:[]});
 function newTrip(p, fixedId){
   p = p || {};
   const t = {id:fixedId||uid(), createdAt:Date.now(), name:p.name||"New cruise", ship:p.ship||"", from:p.from||"", to:p.to||"", start:p.start||"", end:p.end||"",
-          p1:"Alessandra", p2:"Kirk", target:150, limit:101, rulesV:3, games:[], days:{}, lastType:"domino", curDate:today(),
+          p1:S().p1, p2:S().p2, target:+S().dominoTarget, limit:+S().scalaLimit, rulesV:3, games:[], days:{}, lastType:"domino", curDate:today(),
           cur:{s1:0, s2:0, log:[]}, scala:blankScala(), ports:[], hotels:[]};
+  if(typeof state !== "undefined" && state && state.trips && state.trips.some(x => x.prefs)) t.prefs = S();
   ensureEndPorts(t);
   loadItinerary(t);
   return t;
@@ -1424,7 +1479,7 @@ function initCloud(){
 function syncLabel(){
   const n = pendingCount(), wait = n ? n + " change" + (n === 1 ? "" : "s") + " kept on this device, waiting to send" : "";
   if(cloud.ok && cloud.online) return n ? {cls:"wait", text:"Sending changes to your other devices…", sub: wait}
-    : {cls:"ok", text:"Synced with your other devices", sub: (cloud.lastSync ? "Last synced " + new Date(cloud.lastSync).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}) + " · " : "") + trip().name + ": " + trip().games.length + " game" + (trip().games.length === 1 ? "" : "s") + " recorded"};
+    : {cls:"ok", text:"Synced with your other devices", sub: (cloud.lastSync ? "Last synced " + new Date(cloud.lastSync).toLocaleTimeString([], {hour:"numeric", minute:"2-digit", hour12:hr12()}) + " · " : "") + trip().name + ": " + trip().games.length + " game" + (trip().games.length === 1 ? "" : "s") + " recorded"};
   if((cloud.ref && !cloud.online && !cloud.error) || (!navigator.onLine && !cloud.code)) return {cls:"wait", text:"Offline. Saving on this device", sub:(wait ? wait + ". " : "") + "Everything syncs when you're back online."};
   return {cls:"off", text:"Saved on this device only", sub: (wait ? wait + ". " : "") + cloud.error + (cloud.code ? " [" + cloud.code + "]" : "")};
 }
@@ -1444,13 +1499,64 @@ function tally(t, type){
     const a = +x.w1||0, b = +x.w2||0; w1 += a; w2 += b; n += a + b; });
   return {w1,w2,ties,n};
 }
+
+/* ---------- 🕰️ home clock: a 3-D brass porthole showing the time at home (24-hour), the weekday there, and how far behind or ahead home is ---------- */
+function homeClockSVG(T, day, id){ id = id || "hc"; return `<svg viewBox="0 0 110 116" aria-hidden="true">
+<defs>
+ <linearGradient id="${id}rim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF1B8"/><stop offset=".35" stop-color="#E9B54C"/><stop offset=".7" stop-color="#B07A1E"/><stop offset="1" stop-color="#6E4710"/></linearGradient>
+ <linearGradient id="${id}rimIn" x1="1" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FFE7A0"/><stop offset=".5" stop-color="#C98E2C"/><stop offset="1" stop-color="#6E4710"/></linearGradient>
+ <radialGradient id="${id}sea" cx="45%" cy="30%" r="75%"><stop offset="0" stop-color="#3A6FB3"/><stop offset=".6" stop-color="#1B3466"/><stop offset="1" stop-color="#0C1834"/></radialGradient>
+ <radialGradient id="${id}rv" cx="35%" cy="30%"><stop offset="0" stop-color="#FFF6CF"/><stop offset=".5" stop-color="#E2B04A"/><stop offset="1" stop-color="#7A5418"/></radialGradient>
+ <linearGradient id="${id}gl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+ <filter id="${id}glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.1" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <radialGradient id="${id}rec" cx="50%" cy="56%" r="52%"><stop offset=".78" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient>
+ <filter id="${id}inset" x="-10%" y="-10%" width="120%" height="120%"><feOffset dx="0" dy="2.2"/><feGaussianBlur stdDeviation="2"/><feComposite operator="out" in="SourceGraphic"/><feComponentTransfer><feFuncA type="linear" slope=".85"/></feComponentTransfer><feFlood flood-color="#000"/><feComposite operator="in" in2="SourceAlpha"/><feComposite operator="over" in2="SourceGraphic"/></filter>
+</defs>
+<!-- shadow / 3-D edge underneath, like the app's buttons -->
+<ellipse cx="55" cy="108" rx="40" ry="6" fill="#3B2A10" opacity=".22"/>
+<circle cx="55" cy="56.5" r="51" fill="#7A5418"/>
+<!-- raised outer rim -->
+<circle cx="55" cy="52" r="51" fill="url(#${id}rim)"/>
+<circle cx="55" cy="52" r="50" fill="none" stroke="#FFF6CF" stroke-width=".9" opacity=".7"/>
+<!-- inner bevel going down to the glass -->
+<circle cx="55" cy="52" r="42.5" fill="url(#${id}rimIn)"/>
+<circle cx="55" cy="52" r="42.5" fill="none" stroke="#5A3A0C" stroke-width=".8" opacity=".6"/>
+${Array.from({length:8},(_,i)=>{const a=(i*45+22.5)*Math.PI/180,x=(55+46.6*Math.sin(a)).toFixed(1),y=(52-46.6*Math.cos(a)).toFixed(1);return `<circle cx="${x}" cy="${(+y+.8).toFixed(1)}" r="2.3" fill="#5A3A0C" opacity=".55"/><circle cx="${x}" cy="${y}" r="2.2" fill="url(#${id}rv)"/>`}).join('')}
+<!-- recessed glass -->
+<circle cx="55" cy="52" r="38" fill="url(#${id}sea)"/>
+<circle cx="55" cy="52" r="38" fill="url(#${id}rec)"/>
+<circle cx="55" cy="52" r="38" fill="none" stroke="#0A1430" stroke-width="1.4"/>
+<path d="M17.5 59q9.4-4 18.75 0t18.75 0 18.75 0 18.75 0" fill="none" stroke="#3BB3E0" stroke-width="1.6" opacity=".4"/>
+<text x="55" y="52" font-size="23.5" font-weight="800" text-anchor="middle" fill="#3B2A00" opacity=".55" font-family="ui-monospace,Menlo,monospace" letter-spacing="-1" transform="translate(0 1.4)">${T}</text>
+<text x="55" y="52" font-size="23.5" font-weight="800" text-anchor="middle" fill="#FFE9A0" font-family="ui-monospace,Menlo,monospace" letter-spacing="-1" filter="url(#${id}glow)">${T}</text>
+<text x="55" y="76" font-size="17" font-weight="900" text-anchor="middle" fill="#fff" font-family="-apple-system,system-ui,sans-serif" filter="url(#${id}glow)">${day}</text>
+<!-- glass shine -->
+<path d="M25 40a31 31 0 0 1 44-21c-10-1-26 2-36 14-3 3.6-5.4 5.5-8 7z" fill="url(#${id}gl)"/>
+
+</svg>`; }
+function homeClockParts(){
+  const z = homeZone(), now = new Date();
+  let T = "", day = "", diff = 0;
+  try {
+    const f = new Intl.DateTimeFormat("en-GB", {timeZone: z, hour: "2-digit", minute: "2-digit", hourCycle: "h23", weekday: "short", year: "numeric", month: "2-digit", day: "2-digit"}).formatToParts(now);
+    const g = k => (f.find(x => x.type === k) || {}).value;
+    T = g("hour") + ":" + g("minute"); day = g("weekday");
+    const homeAsLocal = new Date(+g("year"), +g("month") - 1, +g("day"), +g("hour"), +g("minute"));
+    diff = Math.round((homeAsLocal - new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes())) / 1800000) / 2;
+  } catch(e){ T = now.toTimeString().slice(0, 5); }
+  const n = Math.abs(diff), hrs = (Number.isInteger(n) ? n : n.toFixed(1)) + "h";
+  return {T, day, rel: !diff ? "same time" : diff < 0 ? hrs + " behind" : hrs + " ahead"};
+}
+function homeClockHTML(){ const c = homeClockParts();
+  return `<div class="hc-mini" id="homeClock" role="img" aria-label="Time at home in ${esc(homeName())}: ${c.T}, ${c.day}, ${c.rel}">${homeClockSVG(c.T, c.day)}<small class="hc-l1">🏠 ${esc(homeName())}</small><small class="hc-l2">${c.rel}</small></div>`; }
+setInterval(() => { const el = document.getElementById("homeClock"); if(el) el.outerHTML = homeClockHTML(); }, 15000);
 function renderHead(){
   const t = trip();
   const route = (t.from || t.to)
     ? `<b>${esc(t.from||"Departure port?")}</b><span aria-hidden="true">→</span><b>${esc(t.to||"Arrival port?")}</b>`
     : `<span>Add ports on the Trips tab</span>`;
   $("#tripHead").innerHTML = `
-    <div class="badges" aria-hidden="true">${DOMINO.replace('<svg ','<svg class="dtile" ')}${QCARD.replace('<svg ','<svg class="qcard" ')}</div>
+    ${homeClockHTML()}
     <div class="eyebrow">${esc(shipCabin(t) ? shipCabin(t) + " · " : "")}${esc(fmtRange(t.start,t.end))}</div>
     <h1>${esc(t.name)}</h1>
     <div class="route">${route}</div>`;
@@ -1473,7 +1579,7 @@ function scoreTop(t, type){
 
 function renderDomino(){
   const t = trip(), c = t.cur, tl = tally(t,"domino");
-  tieCheck(t.id + ":domino", [c.s1, c.s2]);
+  tieCheck(t.id + ":domino", [c.s1, c.s2]); leadCheck(t.id + ":domino", [c.s1, c.s2]);
   const reached = t.target && (c.s1 >= t.target || c.s2 >= t.target);
   const col = (n) => {
     const s = n===1?c.s1:c.s2, name = n===1?t.p1:t.p2, wins = n===1?tl.w1:tl.w2;
@@ -1517,7 +1623,7 @@ function renderDomino(){
 
 function renderScala(){
   const t = trip(), sc = t.scala, tl = tally(t,"scala"), L = t.limit || 101;
-  tieCheck(t.id + ":scala", [sc.s1, sc.s2]);
+  tieCheck(t.id + ":scala", [sc.s1, sc.s2]); leadCheck(t.id + ":scala", [sc.s1, sc.s2]);
   const out = sc.s1 >= L || sc.s2 >= L;
   const col = (n) => {
     const s = n===1?sc.s1:sc.s2, name = n===1?t.p1:t.p2, wins = n===1?tl.w1:tl.w2;
@@ -1669,6 +1775,8 @@ function drawPicker(){
       <div class="pk-count" role="group" aria-label="Number of players">${[2,3,4,5,6].map(n => `<button type="button" class="b3d" data-pkn="${n}" aria-pressed="${ps.n === n}">${n}</button>`).join("")}</div>
       <div class="pk-h">Players' names</div>
       <div class="pk-names">${Array.from({length:ps.n}, (_, i) => `<label><span>${i + 1}</span><input data-pkname="${i}" value="${esc(ps.names[i] || "")}" placeholder="Player ${i + 1}" maxlength="18" autocomplete="off"></label>`).join("")}</div>
+      ${(() => { const have = ps.names.slice(0, ps.n).map(n => (n || "").trim().toLowerCase()), left = usualPlayers().filter(n => !have.includes(n.toLowerCase()));
+        return left.length ? `<div class="pk-quick"><span>⭐ Usual players · tap to add</span>${left.map(n => `<button type="button" class="up-chip pick b3d" data-pkquick="${esc(n)}">＋ ${esc(n)}</button>`).join("")}</div>` : ""; })()}
       ${g.targets.length > 1 ? `<div class="pk-h">${g.mode === "elim" ? "Out at" : g.mode === "low" ? "Game ends at" : "Play to"}</div>
       <div class="pk-count" role="group">${g.targets.map(v => `<button type="button" class="b3d" data-pkt="${v}" aria-pressed="${ps.target === v}">${v ? v.toLocaleString() : "No limit"}</button>`).join("")}</div>` : ""}
       <p class="pf-msg" id="pkMsg" role="alert"></p>
@@ -1710,6 +1818,10 @@ document.addEventListener("click", e => {
   const gb = e.target.closest("[data-pkgame]"); if(gb){ ps.key = gb.dataset.pkgame; ps.step = 2; ps.target = null; drawPicker(); const f = document.querySelector('[data-pkname="0"]'); if(f) f.focus(); return; }
   if(e.target.closest("[data-pkback]")){ ps.step = 1; drawPicker(); return; }
   const nb = e.target.closest("[data-pkn]"); if(nb){ ps.n = +nb.dataset.pkn; drawPicker(); return; }
+  const qb = e.target.closest("[data-pkquick]"); if(qb){ const name = qb.dataset.pkquick;
+    let i = ps.names.slice(0, ps.n).findIndex(n => !(n || "").trim());
+    if(i < 0){ if(ps.n >= 6){ const m = $("#pkMsg"); if(m) m.textContent = "Six players is the most."; return; } ps.n += 1; i = ps.n - 1; }
+    ps.names[i] = name; drawPicker(); return; }
   const tb = e.target.closest("[data-pkt]"); if(tb){ ps.target = +tb.dataset.pkt; drawPicker(); return; }
   if(e.target.closest("[data-pkcont]")){ setViewType(t, "party"); $("#sheetRoot").innerHTML = ""; pickerState = null; render(); return; }
   if(e.target.closest("[data-pkstart]")){
@@ -1826,25 +1938,33 @@ function favButton(k, type, cur){
     : `<button class="b3d s-fav" data-pkpick="${k}" aria-pressed="${on}" style="--gc:${g.c};--ge:${g.e}">${icon}${on ? esc(name) : "Switch to " + esc(name)}</button>`;
 }
 function gameRow(type){
-  const t = trip(), cur = type === "party" && t.party ? t.party.game : null, favs = favGames();
-  const more = moreGamesOpen;   // the other games only show while you're choosing one
-  return `<div class="seg" role="group" aria-label="Today's game">${favs.map(k => favButton(k, type, cur)).join("")}</div>
-    ${more ? `<div class="seg gamerow" role="group" aria-label="More games">
-      <button class="b3d s-more s-pickfav" data-act="pickfavs">⭐ My favorites</button>
-      ${allGames().filter(g => !favs.includes(g.key)).map(g => `<button class="b3d s-more" data-pkpick="${g.key}" aria-pressed="${g.key===cur || g.key===type}" style="--gc:${g.c};--ge:${g.e}">${g.key === "domino" || g.key === "scala" ? ICON[g.key] : gameLogo(g.key, "sm")}${esc(g.name)}</button>`).join("")}
-      <button class="b3d s-more s-custom" data-act="customgame">✨ Custom game</button>
-    </div>` : ""}
-    <div class="gamenav">
-      <button type="button" class="b3d gn-arrow gn-prev" data-gscroll="-1" aria-label="Show previous games"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5 16.5 12 9 19.5" fill="none" stroke="#fff" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 4.5 16.5 12 9 19.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <button type="button" class="b3d gn-add" data-gscroll="1"><span class="gn-ic" aria-hidden="true"><i class="x">🀄</i>${DOMINO.replace("<svg ", '<svg class="gn-dom" ')}<i>🃏</i></span><span class="gn-txt">＋ Add Game</span><span class="gn-ic" aria-hidden="true"><i>🎲</i>${QCARD.replace("<svg ", '<svg class="gn-card" ')}<i class="x">♟️</i></span></button>
-      <button type="button" class="b3d gn-arrow gn-next" data-gscroll="1" aria-label="Show more games"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5 16.5 12 9 19.5" fill="none" stroke="#fff" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 4.5 16.5 12 9 19.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-    </div>`;
+  const t = trip(), cur = type === "party" && t.party ? t.party.game : type, favs = favGames();
+  const open = moreGamesOpen;   // the list of games drops down under "Change game"
+  const groups = [];
+  allGames().forEach(g => { const name = g.group === "Custom games" ? "Your games" : g.group; let grp = groups.find(x => x.name === name); if(!grp) groups.push(grp = {name, list: []}); grp.list.push(g); });
+  groups.sort((a, b) => (a.name === "Your games" ? -1 : 0) - (b.name === "Your games" ? -1 : 0));
+  return `<div class="seg" role="group" aria-label="Today's game">${favs.map(k => favButton(k, type, type === "party" && t.party ? t.party.game : null)).join("")}</div>
+    <div class="gamenav solo">
+      <button type="button" class="b3d gn-add" data-act="gdrop" aria-expanded="${open}"><span class="gn-ic" aria-hidden="true"><i class="x">🀄</i>${DOMINO.replace("<svg ", '<svg class="gn-dom" ')}<i>🃏</i></span><span class="gn-txt">Change game <span class="gn-chev" aria-hidden="true">${open ? "▴" : "▾"}</span></span><span class="gn-ic" aria-hidden="true"><i>🎲</i>${QCARD.replace("<svg ", '<svg class="gn-card" ')}<i class="x">♟️</i></span></button>
+    </div>
+    ${open ? `<div class="gdrop" role="listbox" aria-label="Choose a game">
+      ${groups.map(grp => `<div class="gd-h">${esc(grp.name)}</div>${grp.list.map(g => { const tgt = g.key === "domino" ? t.target : g.key === "scala" ? (t.limit || 101) : g.target;
+        const sub = g.mode === "low" ? "lowest wins" : tgt ? "to " + tgt.toLocaleString() : "";
+        return `<button type="button" class="gd-i ${g.key === cur ? "cur" : ""}" data-pkpick="${g.key}" role="option" aria-selected="${g.key === cur}">${gameLogo(g.key, "sm")}<span>${esc(g.name)}${sub ? `<small>${esc(sub)}</small>` : ""}</span></button>`; }).join("")}`).join("")}
+      <button type="button" class="gd-custom" data-act="customgame"><span class="ic" aria-hidden="true">✏️</span>Create your own game…</button>
+      <button type="button" class="gd-fav" data-act="pickfavs">⭐ Choose the two quick-switch games</button>
+    </div>` : ""}`;
 }
+// "Change game" opens and closes the list; tapping anywhere else closes it
+document.addEventListener("click", e => {
+  if(e.target.closest('[data-act="gdrop"]')){ moreGamesOpen = !moreGamesOpen; const y = window.scrollY; render(); window.scrollTo(0, y); e.stopPropagation(); return; }
+  if(moreGamesOpen && !e.target.closest(".gdrop") && !e.target.closest(".sheet") && !e.target.closest("[data-pkpick]")){ moreGamesOpen = false; const y = window.scrollY; render(); window.scrollTo(0, y); }
+}, true);
 function partySteps(g, L){ return g.steps || (L >= 1000 ? [10, 50, 100, 500] : L >= 300 ? [5, 10, 25, 50] : [1, 5, 10, 25]); }
 function renderParty(){
   const t = trip(), p = normParty(t.party); if(!p){ setViewType(t, t.lastType || "domino"); return render(); }
   const st = partyState(p), g = st.g, L = p.target || 0, steps = partySteps(g, L), cols = ["p1","p2","p3x","p4x","p5x","p6x"];
-  tieCheck(t.id + ":" + p.game, p.scores.slice());
+  tieCheck(t.id + ":" + p.game, p.scores.slice()); leadCheck(t.id + ":" + p.game, p.scores.slice(), PG(p.game).mode === "low");
   const games = (t.partyGames || []).filter(x => x.game === p.game), wins = name => games.filter(x => x.winnerName === name).length;
   const leader = st.winner >= 0 ? p.players[st.winner] : null, simple = p.game === "scala";
   const col = i => { const s = p.scores[i], name = p.players[i];
@@ -1961,7 +2081,7 @@ function partyCelebrate(t, rec){
       <div class="pp-rank">${order.map((o, k) => `<div><span>${k + 1}. ${esc(o.n)}</span><b class="num">${o.s.toLocaleString()}</b></div>`).join("")}</div>
       <div class="pp-tally">${esc(g.name)} wins this trip: ${[...new Set(wins.flatMap(x => x.players))].map(n => `${esc(n)} ${wins.filter(x => x.winnerName === n).length}`).join(" · ")}</div>
       <button class="btn b3d" data-party-close>Play again</button></div></div></div>`;
-  playJackpot();
+  if(sndOn("win")) playJackpot();
   const close = () => { root.innerHTML = ""; };
   root.querySelector("[data-party-close]").addEventListener("click", close);
   root.querySelector("[data-party]").addEventListener("click", e => { if(e.target.matches("[data-party]")) close(); });
@@ -2013,7 +2133,7 @@ function renderGames(){
       ${list.slice().reverse().map(g => `<div class="game g-${g.type}">
         <span class="gbadge">${gameIcon(g.type,"rico")}<span class="n">#${g.n}</span></span>
         <span class="res"><span class="gname">${GAMES[g.type]}</span><span class="pair c1"><span>${esc(t.p1)}</span><b>${g.s1}</b></span><span class="pair c2"><span>${esc(t.p2)}</span><b>${g.s2}</b></span></span>
-        <span class="gend">${g.winner===0?`<span class="pill tie">Tie</span>`:`<span class="pill w${g.winner}">${esc(g.winner===1?t.p1:t.p2)}</span>`}${canReopen(g) ? `<button class="xbtn oopsx" data-reopen="${t.id}|${g.id}" aria-label="Undo this win">↩️ Undo</button>` : ""}${editingUnlocked ? `<button class="xbtn" data-del="${g.id}" aria-label="Delete game ${g.n}">Delete</button>` : ""}</span>
+        <span class="gend">${g.winner===0?`<span class="pill tie">Tie</span>`:`<span class="pill w${g.winner}">${esc(g.winner===1?t.p1:t.p2)}</span>`}${canReopen(g) ? `<button class="xbtn oopsx" data-reopen="${t.id}|${g.id}" aria-label="Undo this win">↩ Undo</button>` : ""}${editingUnlocked ? `<button class="xbtn" data-del="${g.id}" aria-label="Delete game ${g.n}">Delete</button>` : ""}</span>
       </div>`).join("")}</div>`;
     }).join("") : `<div class="empty">No finished games here yet. Score a game on the Score tab and tap <b>End game</b> to record who won.</div>`}
   `;
@@ -2125,7 +2245,7 @@ function savePastTrip(){
   if(d.end && d.end < d.start){ msg("The return date is before the sailing date."); $("#pf-end").focus(); return; }
   const now = Date.now(), num = v => v === "" || v == null ? null : +v;
   const t = newTrip();
-  Object.assign(t, {name: from + " → " + to, ship: d.ship.trim(), cabin: (d.cabin || "").trim(), from, to, start: d.start, end: d.end, p1: "Alessandra", p2: "Kirk", past: true, curDate: d.start});
+  Object.assign(t, {name: from + " → " + to, ship: d.ship.trim(), cabin: (d.cabin || "").trim(), from, to, start: d.start, end: d.end, p1: S().p1, p2: S().p2, past: true, curDate: d.start});
   t.ports = []; ensureEndPorts(t);
   const score = (pt, src) => { if(src.skip){ pt.skip = true; pt.s1 = null; pt.s2 = null; return; }
     pt.s1 = num(src.s1); pt.s2 = num(src.s2); if(pt.s1 != null) pt.rated1 = now; if(pt.s2 != null) pt.rated2 = now; };
@@ -2226,15 +2346,24 @@ function renderTrips(){
       <button type="button" class="tool b3d ${hotelsOpen ? "on" : ""}" data-act="tglhotels" aria-expanded="${hotelsOpen}">🏨 Hotels${(t.hotels||[]).length ? ` · ${(t.hotels||[]).length}` : ""} <span class="tchev">${hotelsOpen ? "▴" : "▾"}</span></button>
     </div>
     ${detailsOpen ? `<div class="form compact">
+      <div class="full shipcab">
+        <label for="f-ship">Ship<input id="f-ship" data-f="ship" value="${esc(t.ship)}" placeholder="Ship name"></label>
+        <label for="f-cabin" class="cabin-first">🛏️ Cabin<input id="f-cabin" data-f="cabin" value="${esc(t.cabin || "")}" placeholder="A512" autocomplete="off" autocapitalize="characters"></label>
+      </div>
       <label class="full" for="f-name">Where we're going<input id="f-name" data-f="name" value="${esc(t.name)}" placeholder="e.g. South Pacific crossing"></label>
-      <label for="f-ship">Ship<input id="f-ship" data-f="ship" value="${esc(t.ship)}" placeholder="Ship name"></label>
-      <label for="f-cabin">🛏️ Cabin<input id="f-cabin" data-f="cabin" value="${esc(t.cabin || "")}" placeholder="e.g. A512" autocomplete="off" autocapitalize="characters"></label>
       <label for="f-start">Trip starts<input type="date" id="f-start" data-f="start" value="${esc(t.start)}"></label>
       <label for="f-end">Trip ends<input type="date" id="f-end" data-f="end" value="${esc(t.end)}"></label>
       <label class="full" for="f-from">Departure port<input id="f-from" data-f="from" value="${esc(t.from)}" placeholder="Departure port"></label>
       <label class="full" for="f-to">Arrival port<input id="f-to" data-f="to" value="${esc(t.to)}" placeholder="Arrival port"></label>
       <label for="f-p1">Player 1<input id="f-p1" data-f="p1" value="${esc(t.p1)}" maxlength="18" placeholder="Alessandra"></label>
       <label for="f-p2">Player 2<input id="f-p2" data-f="p2" value="${esc(t.p2)}" maxlength="18" placeholder="Kirk"></label>
+      ${extraPlayers(t).map((n, i) => `<label class="xpl">Player ${i + 3}<span class="xpl-row"><input data-xp="${i}" value="${esc(n)}" maxlength="18" placeholder="Name" autocomplete="off"><button type="button" class="xpl-x" data-xpdel="${i}" aria-label="Remove player ${i + 3}">×</button></span></label>`).join("")}
+      ${extraPlayers(t).length < 4 ? `<div class="full xpl-add">
+        <button type="button" class="b3d addp3d" data-xpadd>Add a player</button>
+        ${(() => { const have = [t.p1, t.p2, ...extraPlayers(t)].map(n => (n || "").trim().toLowerCase()), left = usualPlayers().filter(n => !have.includes(n.toLowerCase()));
+          return left.length ? `<div class="pk-quick"><span>⭐ Usual players · tap to add</span>${left.map(n => `<button type="button" class="up-chip pick b3d" data-xpq="${esc(n)}">＋ ${esc(n)}</button>`).join("")}</div>` : ""; })()}
+      </div>` : ""}
+      ${extraPlayers(t).length ? `<p class="full set-note" style="margin:2px 0 0">Extra players are filled in for you when you tap <b>Add a player</b> in a game on this trip.</p>` : ""}
     </div>` : ""}
     ${hotelsOpen ? `<div class="hotels-compact">${hotelsSection(t)}</div>` : ""}
     <div class="section-h"><h2>All trips</h2></div>
@@ -2274,9 +2403,86 @@ function render(){
   document.body.dataset.tab = tab;
   if(tab==="score"){ const ty = dayType(trip()); ty==="party" ? renderParty() : ty==="scala" ? renderScala() : renderDomino();
     const row = document.querySelector(".gamerow"); if(row) row.scrollLeft = 0; }
-  else if(tab==="games") renderGames(); else if(tab==="ports"){ renderPorts(); fillCoords(trip()); fillWeather(trip()); loadLand(); drawPortsMap(); } else { renderTrips(); loadLand(); drawTripMaps(); }
+  else if(tab==="games") renderGames(); else if(tab==="settings") renderSettings(); else if(tab==="ports"){ renderPorts(); fillCoords(trip()); fillWeather(trip()); loadLand(); drawPortsMap(); } else { renderTrips(); loadLand(); drawTripMaps(); }
 }
 
+const HOME_ZONES = [["Eastern Time · New York, Tampa, Miami","America/New_York"],["Central Time · Chicago, Dallas","America/Chicago"],["Mountain Time · Denver","America/Denver"],["Arizona · Phoenix","America/Phoenix"],["Pacific Time · Los Angeles, Seattle","America/Los_Angeles"],["Alaska · Anchorage","America/Anchorage"],["Hawaii · Honolulu","Pacific/Honolulu"],["Atlantic · Puerto Rico","America/Puerto_Rico"],["Canada Atlantic · Halifax","America/Halifax"],["Mexico City","America/Mexico_City"],["Bogotá, Lima","America/Bogota"],["Buenos Aires","America/Argentina/Buenos_Aires"],["São Paulo","America/Sao_Paulo"],["London, Lisbon","Europe/London"],["Rome, Paris, Madrid, Berlin","Europe/Rome"],["Athens, Istanbul","Europe/Athens"],["Dubai","Asia/Dubai"],["India","Asia/Kolkata"],["Bangkok","Asia/Bangkok"],["Singapore, Hong Kong","Asia/Singapore"],["Tokyo","Asia/Tokyo"],["Perth","Australia/Perth"],["Brisbane","Australia/Brisbane"],["Sydney, Melbourne","Australia/Sydney"],["Auckland","Pacific/Auckland"]];
+function homeNow(){ try { return new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit", hour12:hr12(), timeZone:homeZone()}); } catch(e){ return ""; } }
+function renderSettings(){
+  const st = S(), phoneZone = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch(e){ return ""; } })();
+  const zones = HOME_ZONES.some(z => z[1] === st.homeZone) ? HOME_ZONES : HOME_ZONES.concat([[st.homeZone.replace(/_/g, " "), st.homeZone]]);
+  const seg = (key, opts) => `<div class="set-seg" role="group">${opts.map(([v, label]) => `<button type="button" class="b3d ${String(st[key]) === v ? "on" : ""}" data-setv="${key}" data-v="${v}" aria-pressed="${String(st[key]) === v}">${label}</button>`).join("")}</div>`;
+  const tog = (k, label) => `<button type="button" class="set-tog" data-snd="${k}" aria-pressed="${sndOn(k)}"><span>${label}</span><i class="sw ${sndOn(k) ? "on" : ""}" aria-hidden="true"></i></button>`;
+  const l = syncLabel();
+  $("#view").innerHTML = `<div class="set-wrap">
+    <h1 class="set-title">⚙️ Settings</h1>
+    <p class="set-sub">These apply on both phones, except the sound switches.</p>
+    <section class="set-card">
+      <h2>🏠 Where we live</h2>
+      <label class="set-lbl">Home city<input class="set-in" data-sett="homeCity" value="${esc(st.homeCity)}" placeholder="e.g. Odessa, Florida" autocomplete="off"></label>
+      <label class="set-lbl">Home time zone<select class="set-in" data-sets="homeZone">${zones.map(([n, z]) => `<option value="${z}" ${z === st.homeZone ? "selected" : ""}>${esc(n)}</option>`).join("")}</select></label>
+      <div class="set-now">🕐 It's <b id="homeNow">${esc(homeNow())}</b> at home right now</div>
+      ${phoneZone && phoneZone !== st.homeZone ? `<button type="button" class="b3d set-mini" data-setv="homeZone" data-v="${esc(phoneZone)}">📍 Use this phone's time zone</button>` : ""}
+      <p class="set-note">Time differences on the Ports map and in "Time vs. ${esc(homeName())}" are counted from here.</p>
+    </section>
+    <section class="set-card"><h2>🌡️ Temperature</h2>${seg("temp", [["F", "°F Fahrenheit"], ["C", "°C Celsius"]])}</section>
+    <section class="set-card"><h2>🕐 Clock</h2>${seg("clock", [["12", "12-hour · 2:30 PM"], ["24", "24-hour · 14:30"]])}</section>
+    <section class="set-card"><h2>🔊 Sounds <small>this phone</small></h2>
+      ${tog("win", "🏆 Winning music")}${tog("tie", "🤝 Tie jingle")}${tog("lead", "🎺 “Takes the lead” bugle")}
+      ${soundOn ? "" : `<p class="set-note">All sounds are off on this phone. Turn them on in Save As (tap © 2026 Thor).</p>`}
+    </section>
+    <section class="set-card"><h2>🎯 Usual game targets <small>for new trips</small></h2>
+      <div class="set-row"><span>Domino plays to</span><select class="set-in sm" data-sets="dominoTarget">${[100,150,200,250,300].map(v => `<option value="${v}" ${+st.dominoTarget === v ? "selected" : ""}>${v} points</option>`).join("")}</select></div>
+      <div class="set-row"><span>Scala 40 ends at</span><select class="set-in sm" data-sets="scalaLimit">${[101,151,201].map(v => `<option value="${v}" ${+st.scalaLimit === v ? "selected" : ""}>${v} points</option>`).join("")}</select></div>
+    </section>
+    <section class="set-card"><h2>👥 Players <small>for new trips</small></h2>
+      <div class="set-two"><label class="set-lbl">Player 1<input class="set-in" data-sett="p1" value="${esc(st.p1)}" maxlength="18" autocomplete="off"></label><label class="set-lbl">Player 2<input class="set-in" data-sett="p2" value="${esc(st.p2)}" maxlength="18" autocomplete="off"></label></div>
+      <p class="set-note">To rename players on a trip you're already on, use ✏️ Trip details on the Trips tab.</p>
+    </section>
+    <section class="set-card"><h2>⭐ Usual players</h2>
+      <p class="set-note" style="margin:0 0 10px">People you often play with. They show up as quick choices when you tap <b>Add a player</b> in any game.</p>
+      ${usualPlayers().length ? `<div class="up-list">${usualPlayers().map((n, i) => `<span class="up-chip">${esc(n)}<button type="button" data-updel="${i}" aria-label="Remove ${esc(n)}">×</button></span>`).join("")}</div>` : `<p class="set-note" style="margin:0 0 10px">No usual players yet.</p>`}
+      <div class="up-add"><input class="set-in" id="upName" placeholder="Name, e.g. Mo" maxlength="18" autocomplete="off" enterkeyhint="done"><button type="button" class="b3d set-mini" id="upAdd">Add</button></div>
+      <p class="pf-msg" id="upMsg" role="alert"></p>
+    </section>
+    <section class="set-card about"><h2>ℹ️ About</h2>
+      <div class="set-row"><span>Version</span><b>${esc(APP_VERSION)}</b></div>
+      <div class="set-row"><span>Sync</span><b class="${l.cls}">● ${esc(l.text)}</b></div>
+      <div class="set-row"><span>Offline</span><b class="${typeof offlineReady !== "undefined" && offlineReady ? "ok" : "off"}">● ${typeof offlineReady !== "undefined" && offlineReady ? "Ready without internet" : "Needs internet to open"}</b></div>
+    </section>
+  </div>`;
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-setv]"); if(b){ setS(b.dataset.setv, b.dataset.v); render(); return; }
+  const sn = e.target.closest("[data-snd]"); if(sn){ const k = sn.dataset.snd, on = !sndOn(k); try { localStorage.setItem(SND_KEYS[k], on ? "on" : "off"); } catch(err){}
+    if(on){ if(k === "win") playJackpot(); else if(k === "tie") playTie(); else playLead(); } render(); }
+});
+document.addEventListener("change", e => { const el = e.target; if(el.dataset && el.dataset.sets){ const v = el.value; setS(el.dataset.sets, /Target|Limit/.test(el.dataset.sets) ? +v : v); render(); } });
+function addUsual(){
+  const el = document.getElementById("upName"), msg = document.getElementById("upMsg"); if(!el) return;
+  const v = el.value.trim(); if(!v){ el.focus(); return; }
+  const list = usualPlayers();
+  if(list.some(n => n.toLowerCase() === v.toLowerCase())){ if(msg) msg.textContent = v + " is already on the list."; return; }
+  setS("usual", list.concat(v)); render(); const n = document.getElementById("upName"); if(n) n.focus();
+}
+document.addEventListener("click", e => {
+  if(e.target.closest("#upAdd")){ addUsual(); return; }
+  const d = e.target.closest("[data-updel]"); if(d){ const list = usualPlayers(); list.splice(+d.dataset.updel, 1); setS("usual", list); render(); }
+});
+document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.id === "upName"){ e.preventDefault(); addUsual(); } });
+document.addEventListener("click", e => {
+  const t = trip();
+  if(e.target.closest("[data-xpadd]")){ setExtras(t, extraPlayers(t).concat("")); commit(); render(); const f = document.querySelector(`[data-xp="${extraPlayers(t).length - 1}"]`); if(f) f.focus(); return; }
+  const q = e.target.closest("[data-xpq]"); if(q){ const list = extraPlayers(t), i = list.findIndex(x => !x.trim()); if(i >= 0) list[i] = q.dataset.xpq; else list.push(q.dataset.xpq); setExtras(t, list); commit(); render(); return; }
+  const d = e.target.closest("[data-xpdel]"); if(d){ const list = extraPlayers(t); list.splice(+d.dataset.xpdel, 1); setExtras(t, list); commit(); render(); }
+});
+let xpTimer = null;
+document.addEventListener("input", e => { const el = e.target; if(!el.dataset || el.dataset.xp == null) return;
+  const t = trip(), list = extraPlayers(t); list[+el.dataset.xp] = el.value; setExtras(t, list); clearTimeout(xpTimer); xpTimer = setTimeout(commit, 500); });
+let setTimer = null;
+document.addEventListener("input", e => { const el = e.target; if(!el.dataset || !el.dataset.sett) return;
+  const k = el.dataset.sett, v = el.value; clearTimeout(setTimer); setTimer = setTimeout(() => { if(v.trim()) setS(k, v.trim()); }, 500); });
+setInterval(() => { const n = document.getElementById("homeNow"); if(n) n.textContent = homeNow(); }, 20000);
 /* ---------- confirm sheet ---------- */
 function sheet(title, text, okLabel, onOk, danger){
   const root = $("#sheetRoot");
@@ -2377,7 +2583,7 @@ function renderPorts(){
     <button type="button" class="mapcard photo" data-routezoom aria-label="Enlarge the route map"><img src="${routeMapFor(t).src}" alt="${esc(routeMapFor(t).alt)}"><span class="zoomtag">Tap to enlarge</span></button>
     ${timeStrip(t, ports)}` : `
     <div class="mapcard"><canvas id="portsMap" role="img" aria-label="World map with a pin and name for each port"></canvas><div class="mapnote" id="mapNote"></div></div>
-    <p class="maplegend">Top numbers: time-zone bands compared with Tampa. Next to each name: the real difference from Tampa on the day you\'re in port.</p>`}
+    <p class="maplegend">Top numbers: time-zone bands compared with ${esc(homeName())}. Next to each name: the real difference from ${esc(homeName())} on the day you\'re in port.</p>`}
     <div class="section-h"><h2>Ports of call</h2><span class="eyebrow">${ports.length} stop${ports.length===1?"":"s"}</span></div>
     <p class="rulehint" style="margin:-2px 0 12px">Each of you taps a score from 1 to 10 for every port. Tap the same number again to clear it.</p>
     ${ports.length ? ports.map((pt,i) => { const pa = portAvg(pt); return `
@@ -2822,7 +3028,7 @@ document.addEventListener("click", e => {
 const openNotes = {}, noteDraft = {};
 let editingNote = null, editDraft = "";
 const noteList = x => Object.values(x.notes || {}).filter(n => n && n.text).sort((a,b) => (b.at||0) - (a.at||0));
-const noteWhen = ts => new Date(ts).toLocaleDateString(undefined, {month:"short", day:"numeric", year:"numeric"}) + " · " + new Date(ts).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+const noteWhen = ts => new Date(ts).toLocaleDateString(undefined, {month:"short", day:"numeric", year:"numeric"}) + " · " + new Date(ts).toLocaleTimeString([], {hour:"numeric", minute:"2-digit", hour12:hr12()});
 /* ---------- a note for each stop (port); they also gather in the trip's Notes on the Trips page ---------- */
 const stopNoteText = pt => pt.note && pt.note.text ? pt.note.text : "";
 const canStopNote = (t, pt) => !pastLocked(t) && !(stopNoteText(pt) && isLocked(pt.note.at));
@@ -3170,7 +3376,7 @@ function buildJournalPDF(t){
     const head = `${i + 1}.  ${p.name}${p.kind === "start" ? "  (departure)" : p.kind === "end" ? "  (arrival)" : ""}`;
     para(head, 12.5, true);
     const meta = [p.date ? fmtDate(p.date, {weekday:"short", month:"short", day:"numeric", year:"numeric"}) : "",
-      wx ? `${wx.hi !== "" && wx.hi != null ? wx.hi + "°F" : ""}${wx.lo !== "" && wx.lo != null ? " / " + wx.lo + "°F" : ""}` : "",
+      wx ? `${wx.hi !== "" && wx.hi != null ? toUnit(wx.hi) + degU() : ""}${wx.lo !== "" && wx.lo != null ? " / " + toUnit(wx.lo) + degU() : ""}` : "",
       p.skip ? "Missed - not scored" : (p.s1 != null || p.s2 != null) ? `${t.p1} ${p.s1 ?? "-"}  ·  ${t.p2} ${p.s2 ?? "-"}  ·  Avg ${fmt1(portAvg(p))}` : ""].filter(Boolean).join("     ");
     if(meta) para(meta, 9.5, false, 14);
     noteBullets(stopNoteText(p)).forEach(b => { const ls = wrapText(b, 10.5, W - 2*M - 34);
@@ -3295,7 +3501,7 @@ function timeStrip(t, ports){
   const chips = [];
   ports.forEach(p => { const d = fmtDiff(portDiffHours(p, t)); if(!d) return; const nm = (p.name||"").split(",")[0].trim();
     const last = chips[chips.length-1]; if(last && last.d === d) last.names.push(nm); else chips.push({d, names:[nm]}); });
-  return chips.length ? `<div class="timestrip"><span class="eyebrow">Time vs. Tampa</span>${chips.map(c => `<span class="tchip"><b>${esc(c.d)}</b> ${esc(c.names.join(" · "))}</span>`).join("")}</div>` : "";
+  return chips.length ? `<div class="timestrip"><span class="eyebrow">Time vs. ${esc(homeName())}</span>${chips.map(c => `<span class="tchip"><b>${esc(c.d)}</b> ${esc(c.names.join(" · "))}</span>`).join("")}</div>` : "";
 }
 function openRouteZoom(id){
   const m = routeMapFor(state.trips.find(x => x.id === id) || trip()); if(!m) return;
@@ -3349,9 +3555,9 @@ const addDays = (iso, n) => { const d = new Date(iso + "T12:00"); d.setDate(d.ge
 function wxChip(pt, t){
   const m = pt.wxManual, w = pt.wx, can = wxCanEdit(pt, t);
   let inner = "";
-  if(m && (m.hi !== "" || m.lo !== "")) inner = `${WX_ICON(m.code ?? (w && w.code))} ${m.hi !== "" ? m.hi + "°" : "–"}${m.lo !== "" ? " / " + m.lo + "°" : ""}`;
-  else if(w) inner = `${WX_ICON(w.code)} ${w.hi}° / ${w.lo}°${w.kind === "forecast" ? ' <em>forecast</em>' : w.kind === "typical" ? ' <em>typical</em>' : ""}`;
-  else if(!pt.skip && can) inner = "🌡️ Add °F";
+  if(m && (m.hi !== "" || m.lo !== "")) inner = `${WX_ICON(m.code ?? (w && w.code))} ${m.hi !== "" ? toUnit(m.hi) + "°" : "–"}${m.lo !== "" ? " / " + toUnit(m.lo) + "°" : ""}`;
+  else if(w) inner = `${WX_ICON(w.code)} ${toUnit(w.hi)}° / ${toUnit(w.lo)}°${w.kind === "forecast" ? ' <em>forecast</em>' : w.kind === "typical" ? ' <em>typical</em>' : ""}`;
+  else if(!pt.skip && can) inner = "🌡️ Add " + degU();
   if(!inner) return "";
   return can ? `<button type="button" class="wxchip" data-wxedit="${t.id}|${pt.id}" aria-label="Temperature for ${esc(pt.name)}">${inner}</button>` : `<span class="wxchip">${inner}</span>`;
 }
@@ -3364,13 +3570,15 @@ document.addEventListener("click", e => {
   const m = pt.wxManual || {}, w = pt.wx, root = $("#sheetRoot"), close = () => root.innerHTML = "";
   root.innerHTML = `<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="wxT">
     <h3 id="wxT">🌡️ ${esc((pt.name || "").split(",")[0])}${wxDate(pt, t) ? " · " + esc(fmtDate(wxDate(pt, t), {month:"short", day:"numeric"})) : ""}</h3>
-    ${w ? `<p>${w.kind === "actual" ? "Recorded" : w.kind === "forecast" ? "Forecast" : "Typical for this date"}: ${WX_ICON(w.code)} high ${w.hi}°F, low ${w.lo}°F</p>` : `<p>No temperature yet. It fills in by itself when you're online, or type it here.</p>`}
-    <div class="wx-in"><label>High °F<input id="wxHi" type="text" inputmode="numeric" value="${esc(m.hi ?? "")}" placeholder="${w ? w.hi : "–"}"></label>
-      <label>Low °F<input id="wxLo" type="text" inputmode="numeric" value="${esc(m.lo ?? "")}" placeholder="${w ? w.lo : "–"}"></label></div>
+    ${w ? `<p>${w.kind === "actual" ? "Recorded" : w.kind === "forecast" ? "Forecast" : "Typical for this date"}: ${WX_ICON(w.code)} high ${toUnit(w.hi)}${degU()}, low ${toUnit(w.lo)}${degU()}</p>` : `<p>No temperature yet. It fills in by itself when you're online, or type it here.</p>`}
+    <div class="wx-in"><label>High ${degU()}<input id="wxHi" type="text" inputmode="numeric" value="${esc(m.hi != null && m.hi !== "" ? toUnit(m.hi) : "")}" placeholder="${w ? toUnit(w.hi) : "–"}"></label>
+      <label>Low ${degU()}<input id="wxLo" type="text" inputmode="numeric" value="${esc(m.lo != null && m.lo !== "" ? toUnit(m.lo) : "")}" placeholder="${w ? toUnit(w.lo) : "–"}"></label></div>
     <div class="row">${pt.wxManual ? `<button class="btn b3d" id="wxAuto">Use automatic</button>` : `<button class="btn b3d" data-close>Cancel</button>`}<button class="btn primary b3d" id="wxSave">Save</button></div>
   </div></div>`;
   root.querySelectorAll("[data-close]").forEach(el => el.addEventListener("click", ev => { if(ev.target === el) close(); }));
-  const num = v => { const n = String(v).trim().replace(/[^0-9-]/g, ""); return n === "" || n === "-" ? "" : String(Math.max(-60, Math.min(140, parseInt(n, 10)))); };
+  const num = v => { const n = String(v).trim().replace(/[^0-9-]/g, ""); if(n === "" || n === "-") return "";
+    let x = parseInt(n, 10); if(S().temp === "C") x = Math.round(x * 9 / 5 + 32);   // saved in °F, shown in your unit
+    return String(Math.max(-60, Math.min(140, x))); };
   const done = () => { close(); commit(); const y = window.scrollY; render(); window.scrollTo(0, y); };
   root.querySelector("#wxSave").addEventListener("click", () => { const hi = num(root.querySelector("#wxHi").value), lo = num(root.querySelector("#wxLo").value);
     if(hi === "" && lo === ""){ delete pt.wxManual; delete pt.wxManualAt; } else { pt.wxManual = {hi, lo}; pt.wxManualAt = pt.wxManualAt || Date.now(); } done(); });
@@ -3583,7 +3791,7 @@ function zoneOffset(zone, date){
 const CC_ZONE = {ES:"Europe/Madrid",FR:"Europe/Paris",IT:"Europe/Rome",DE:"Europe/Berlin",NL:"Europe/Amsterdam",BE:"Europe/Brussels",AT:"Europe/Vienna",CH:"Europe/Zurich",HR:"Europe/Zagreb",MT:"Europe/Malta",MC:"Europe/Monaco",NO:"Europe/Oslo",SE:"Europe/Stockholm",DK:"Europe/Copenhagen",PL:"Europe/Warsaw",GB:"Europe/London",IE:"Europe/Dublin",GR:"Europe/Athens",TR:"Europe/Istanbul",FI:"Europe/Helsinki",EE:"Europe/Tallinn",LV:"Europe/Riga",LT:"Europe/Vilnius",IS:"Atlantic/Reykjavik",EG:"Africa/Cairo",IL:"Asia/Jerusalem",MA:"Africa/Casablanca",AE:"Asia/Dubai",QA:"Asia/Qatar",OM:"Asia/Muscat",JP:"Asia/Tokyo",KR:"Asia/Seoul",VN:"Asia/Ho_Chi_Minh",TH:"Asia/Bangkok",SG:"Asia/Singapore",MY:"Asia/Kuala_Lumpur",KH:"Asia/Phnom_Penh",PH:"Asia/Manila",HK:"Asia/Hong_Kong",TW:"Asia/Taipei",IN:"Asia/Kolkata",LK:"Asia/Colombo",NZ:"Pacific/Auckland",FJ:"Pacific/Fiji",JM:"America/Jamaica",BS:"America/Nassau",DO:"America/Santo_Domingo",PR:"America/Puerto_Rico",CO:"America/Bogota",PA:"America/Panama",CR:"America/Costa_Rica",BM:"Atlantic/Bermuda",ZA:"Africa/Johannesburg"};
 function dayOf(iso){ if(!iso) return new Date(); const [y,m,d] = iso.split("-").map(Number); return new Date(Date.UTC(y, m-1, d, 12)); }
 function portDiffHours(p, t){
-  const when = dayOf(p.date || t.start), home = zoneOffset(HOME_ZONE, when);
+  const when = dayOf(p.date || t.start), home = zoneOffset(homeZone(), when);
   const z = PORT_ZONES[placeKey(p.name)] || CC_ZONE[placeCC(p.name)];
   let off = z ? zoneOffset(z, when) : null;
   if(off == null && p.lon != null){ let L = ((p.lon+540)%360)-180; off = Math.round(L/15); }
@@ -3597,7 +3805,7 @@ function fmtDiff(h){
 }
 function drawZones(c, X, x0, x1, W, H, BAND, col, t){
   // standard 15° time-zone bands; label = difference from Tampa today
-  const home = zoneOffset(HOME_ZONE, dayOf((t || trip()).start)) ?? -5;   // Tampa on the trip dates
+  const home = zoneOffset(homeZone(), dayOf((t || trip()).start)) ?? -5;   // home on the trip dates
   c.save();
   for(let k = Math.floor((x0-7.5)/15); k <= Math.ceil((x1+7.5)/15); k++){
     const left = k*15 - 7.5, right = k*15 + 7.5;
@@ -3751,7 +3959,7 @@ function tieCheck(key, scores){
   const now = tied ? scores.join("|") : "", prev = tieSeen[key];
   tieSeen[key] = now;
   if(prev === undefined || !tied || prev === now) return;
-  playTie(); tieToast();
+  if(sndOn("tie")) playTie(); tieToast();
 }
 function tieToast(){
   let el = document.getElementById("tieToast");
@@ -3771,6 +3979,32 @@ function tieBrass(ac, out, f, t, d, v){
   o.type = "sawtooth"; o2.type = "sawtooth"; o.frequency.value = f; o2.frequency.value = f*1.004;
   fl.type = "lowpass"; fl.frequency.setValueAtTime(400, t); fl.frequency.linearRampToValueAtTime(2400, t+0.08); fl.frequency.exponentialRampToValueAtTime(900, t+d);
   g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t+0.05); g.gain.setValueAtTime(v, t+d*0.7); g.gain.exponentialRampToValueAtTime(0.0001, t+d);
+  o.connect(fl); o2.connect(fl); fl.connect(g); g.connect(out); o.start(t); o2.start(t); o.stop(t+d+0.05); o2.stop(t+d+0.05);
+}
+/* 🎺 "takes the lead" bugle: plays when the player who was behind passes the leader.
+   A tie in between still counts (50–50, then 50–55 → the lead changed). Quiet when the same player
+   just pulls further ahead, at the first points of a game, and when the app just opens. */
+const leadSeen = {};
+function leadCheck(key, scores, lowWins){
+  const best = lowWins ? Math.min(...scores) : Math.max(...scores), at = scores.reduce((a, v, i) => v === best ? a.concat(i) : a, []);
+  const now = at.length === 1 ? at[0] : -1, fresh = scores.every(v => !v), prev = leadSeen[key];
+  if(fresh){ leadSeen[key] = -1; return; }                 // new game: nobody has led yet
+  if(prev === undefined){ leadSeen[key] = now; return; }   // app just opened: remember, don't play
+  if(now === -1) return;                                   // tied: keep the last leader
+  leadSeen[key] = now;
+  if(prev !== -1 && prev !== now && sndOn("lead")) playLead();
+}
+function playLead(){ withAudio(leadNotes); }
+function leadNotes(ac){
+  // bugle charge: "da-da-da-DAAA!"
+  const t0 = ac.currentTime + 0.03, out = ac.createGain(); out.gain.value = 1.2; out.connect(ac.destination);
+  [[392, 0], [523.25, 0.12], [659.25, 0.24], [783.99, 0.36]].forEach(([f, dt], i) => leadBrass(ac, out, f, t0 + dt, i === 3 ? 0.55 : 0.1, 0.2));
+}
+function leadBrass(ac, out, f, t, d, v){
+  const o = ac.createOscillator(), o2 = ac.createOscillator(), fl = ac.createBiquadFilter(), g = ac.createGain();
+  o.type = "sawtooth"; o2.type = "sawtooth"; o.frequency.value = f; o2.frequency.value = f*1.004;
+  fl.type = "lowpass"; fl.frequency.setValueAtTime(500, t); fl.frequency.linearRampToValueAtTime(2800, t+0.05); fl.frequency.exponentialRampToValueAtTime(1200, t+d);
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t+0.03); g.gain.setValueAtTime(v, t+d*0.7); g.gain.exponentialRampToValueAtTime(0.0001, t+d);
   o.connect(fl); o2.connect(fl); fl.connect(g); g.connect(out); o.start(t); o2.start(t); o.stop(t+d+0.05); o2.stop(t+d+0.05);
 }
 function playCalypso(){ withAudio(calypsoNotes); }
@@ -3883,9 +4117,9 @@ const CARD_IMGS = [imgOf(QCARD), ...[["A","♠"],["Q","♥"],["K","♥"],["J","�
 const TILE_IMGS = [[6,6],[3,5],[1,4],[2,2],[6,0],[4,5]].map(([a,b]) => imgOf(tileSVG(a,b)));
 
 
-/* ↩️ Oops: a Scala 40 win that came from points typed for the wrong player can be taken back for 10 minutes.
+/* ↩️ Oops: a Scala 40 win that came from points typed for the wrong player can be taken back for 2 minutes.
    The win comes off, the game reopens with its scores, and the last entry (the mistake) is removed. */
-const REOPEN_MS = 10*60*1000;
+const REOPEN_MS = 2*60*1000;   // the Undo shows for 2 minutes after the win
 const canReopen = g => !!(g && g.reopen && Date.now() - (g.createdAt || 0) < REOPEN_MS);
 function reopenGame(t, gid){
   const g = t.games.find(x => x.id === gid); if(!canReopen(g)) return false;
@@ -3897,10 +4131,17 @@ function reopenGame(t, gid){
   $("#partyRoot").innerHTML = ""; tab = "score"; commit(); render(); window.scrollTo(0, 0);
   return true;
 }
+// when the 2 minutes are up, the Undo buttons go away by themselves
+setInterval(() => {
+  const btns = [...document.querySelectorAll("#view [data-reopen]")]; if(!btns.length) return;
+  const gone = btns.some(b => { const [tid, gid] = b.dataset.reopen.split("|"), t = state.trips.find(x => x.id === tid);
+    return !canReopen(t && t.games.find(x => x.id === gid)); });
+  if(gone){ const y = window.scrollY; render(); window.scrollTo(0, y); }
+}, 5000);
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-reopen]"); if(!b) return;
   const [tid, gid] = b.dataset.reopen.split("|"), t = state.trips.find(x => x.id === tid); if(!t) return;
-  if(!reopenGame(t, gid)) sheet("Too late to undo", "This win can only be undone in the first 10 minutes. Unlock (tap © 2026 Thor) to delete it from Wins instead.", "OK", () => {});
+  if(!reopenGame(t, gid)) sheet("Too late to undo", "This win can only be undone in the first 2 minutes. Unlock (tap © 2026 Thor) to delete it from Wins instead.", "OK", () => {});
 });
 function celebrate(t, g, more){
   const root = $("#partyRoot"), tl = tally(t, g.type), name = g.winner===1 ? t.p1 : g.winner===2 ? t.p2 : null;
@@ -3924,7 +4165,7 @@ function celebrate(t, g, more){
     ? `<div class="stage">${scatterCards(CARDS_BEHIND,"back")}${card}${scatterCards(CARDS_FRONT,"front")}${scatterCards(CARD_STAR,"front",true)}</div>`
     : `<div class="stage">${scatter(BEHIND,"back")}${card}${scatter(FRONT,"front")}</div>`;
   root.innerHTML = `<div class="party" data-party>${stage}<canvas></canvas></div>`;
-  if(g.winner === 1) playJackpot(); else if(g.winner === 2) playCalypso(); else playTieChime();
+  if(sndOn("win")){ if(g.winner === 1) playJackpot(); else if(g.winner === 2) playCalypso(); else playTieChime(); }
   if(pendingSound) root.querySelector("#tapSound").hidden = false;
   const close = () => { root.innerHTML = ""; };
   root.querySelector("[data-party-close]").addEventListener("click", close);
@@ -4336,7 +4577,7 @@ document.addEventListener("click", e => {
 let typingTimer = null;
 document.addEventListener("input", e => {
   const el = e.target, t = trip();
-  if(el.dataset && el.dataset.f){ t[el.dataset.f] = el.value; ensureEndPorts(t); clearTimeout(typingTimer); typingTimer = setTimeout(() => { commit(); renderHead(); }, 400); }
+  if(el.dataset && el.dataset.f){ t[el.dataset.f] = el.value; ensureEndPorts(t); if((el.dataset.f === "p1" || el.dataset.f === "p2") && extraPlayers(t).length) setExtras(t, extraPlayers(t)); clearTimeout(typingTimer); typingTimer = setTimeout(() => { commit(); renderHead(); }, 400); }
 });
 document.addEventListener("change", e => {
   const el = e.target, t = trip();
