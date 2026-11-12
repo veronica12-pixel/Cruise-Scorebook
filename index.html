@@ -914,8 +914,8 @@ button.best-row:active{background:rgba(255,255,255,.85)}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "17.2";
-const APP_UPDATED = "Nov 11, 2026, 9:10 PM ET";
+const APP_VERSION = "17.3";
+const APP_UPDATED = "Nov 11, 2026, 9:20 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -1541,11 +1541,11 @@ function homeClockParts(){
     const f = new Intl.DateTimeFormat("en-GB", {timeZone: z, hour: "2-digit", minute: "2-digit", hourCycle: "h23", weekday: "short", year: "numeric", month: "2-digit", day: "2-digit"}).formatToParts(now);
     const g = k => (f.find(x => x.type === k) || {}).value;
     T = g("hour") + ":" + g("minute"); day = g("weekday");
-    const homeAsLocal = new Date(+g("year"), +g("month") - 1, +g("day"), +g("hour"), +g("minute"));
-    diff = Math.round((homeAsLocal - new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes())) / 1800000) / 2;
+    const home = zoneOffset(z, now), ship = shipTimeInfo().off;
+    diff = home == null || ship == null ? 0 : Math.round((home - ship) * 2) / 2;
   } catch(e){ T = now.toTimeString().slice(0, 5); }
   const n = Math.abs(diff), hrs = (Number.isInteger(n) ? n : n.toFixed(1)) + "h";
-  return {T, day, rel: !diff ? "same time" : diff < 0 ? hrs + " behind" : hrs + " ahead"};
+  return {T, day, rel: !diff ? "same time" : diff < 0 ? hrs + " behind" : hrs + " ahead"};   // compared with ship time (see shipTimeInfo)
 }
 function homeClockHTML(){ const c = homeClockParts();
   return `<div class="hc-mini" id="homeClock" role="img" aria-label="Time at home in ${esc(homeName())}: ${c.T}, ${c.day}, ${c.rel}">${homeClockSVG(c.T, c.day)}<small class="hc-l1">🏠 ${esc(homeName())}</small><small class="hc-l2">${c.rel}</small></div>`; }
@@ -2424,6 +2424,18 @@ function renderSettings(){
       <div class="set-now">🕐 It's <b id="homeNow">${esc(homeNow())}</b> at home right now</div>
       ${phoneZone && phoneZone !== st.homeZone ? `<button type="button" class="b3d set-mini" data-setv="homeZone" data-v="${esc(phoneZone)}">📍 Use this phone's time zone</button>` : ""}
       <p class="set-note">Time differences on the Ports map and in "Time vs. ${esc(homeName())}" are counted from here.</p>
+    </section>
+    <section class="set-card"><h2>🚢 Ship time</h2>
+      ${(() => { const info = shipTimeInfo(), mode = st.shipTime || "auto", fmtO = o => "UTC" + (o >= 0 ? "+" : "−") + (Number.isInteger(Math.abs(o)) ? Math.abs(o) : Math.abs(o).toFixed(1));
+        const shipNow = (() => { try { const n = new Date(Date.now() + info.off * 3600e3); return String(n.getUTCHours()).padStart(2, "0") + ":" + String(n.getUTCMinutes()).padStart(2, "0"); } catch(e){ return ""; } })();
+        return `<label class="set-lbl">The home clock counts the hours from
+        <select class="set-in" data-sets="shipTime">
+          <option value="auto" ${mode === "auto" ? "selected" : ""}>Automatic · from the trip's ports</option>
+          <option value="phone" ${mode === "phone" ? "selected" : ""}>This phone's clock</option>
+          ${Array.from({length: 27}, (_, i) => i - 12).map(o => `<option value="${o}" ${mode === String(o) ? "selected" : ""}>Ship clock set to ${fmtO(o)}</option>`).join("")}
+        </select></label>
+        <div class="set-now">🚢 Ship time now: <b>${esc(shipNow)}</b> · ${esc(fmtO(info.off))} <small style="color:var(--muted)">(${esc(info.src)})</small></div>
+        <p class="set-note">Automatic uses the latest port on the itinerary while you're sailing, so it's right even on a phone or computer still set to home time. If the ship changes its clocks at sea, pick "Ship clock set to…".</p>`; })()}
     </section>
     <section class="set-card"><h2>🌡️ Temperature</h2>${seg("temp", [["F", "°F Fahrenheit"], ["C", "°C Celsius"]])}</section>
     <section class="set-card"><h2>🕐 Clock</h2>${seg("clock", [["12", "12-hour · 2:30 PM"], ["24", "24-hour · 14:30"]])}</section>
@@ -3790,6 +3802,31 @@ function zoneOffset(zone, date){
 // countries on a single time zone: used when a port isn't in the list above
 const CC_ZONE = {ES:"Europe/Madrid",FR:"Europe/Paris",IT:"Europe/Rome",DE:"Europe/Berlin",NL:"Europe/Amsterdam",BE:"Europe/Brussels",AT:"Europe/Vienna",CH:"Europe/Zurich",HR:"Europe/Zagreb",MT:"Europe/Malta",MC:"Europe/Monaco",NO:"Europe/Oslo",SE:"Europe/Stockholm",DK:"Europe/Copenhagen",PL:"Europe/Warsaw",GB:"Europe/London",IE:"Europe/Dublin",GR:"Europe/Athens",TR:"Europe/Istanbul",FI:"Europe/Helsinki",EE:"Europe/Tallinn",LV:"Europe/Riga",LT:"Europe/Vilnius",IS:"Atlantic/Reykjavik",EG:"Africa/Cairo",IL:"Asia/Jerusalem",MA:"Africa/Casablanca",AE:"Asia/Dubai",QA:"Asia/Qatar",OM:"Asia/Muscat",JP:"Asia/Tokyo",KR:"Asia/Seoul",VN:"Asia/Ho_Chi_Minh",TH:"Asia/Bangkok",SG:"Asia/Singapore",MY:"Asia/Kuala_Lumpur",KH:"Asia/Phnom_Penh",PH:"Asia/Manila",HK:"Asia/Hong_Kong",TW:"Asia/Taipei",IN:"Asia/Kolkata",LK:"Asia/Colombo",NZ:"Pacific/Auckland",FJ:"Pacific/Fiji",JM:"America/Jamaica",BS:"America/Nassau",DO:"America/Santo_Domingo",PR:"America/Puerto_Rico",CO:"America/Bogota",PA:"America/Panama",CR:"America/Costa_Rica",BM:"Atlantic/Bermuda",ZA:"Africa/Johannesburg"};
 function dayOf(iso){ if(!iso) return new Date(); const [y,m,d] = iso.split("-").map(Number); return new Date(Date.UTC(y, m-1, d, 12)); }
+
+/* 🚢 ship time: what the clocks on board say. Default "auto" = while a trip is sailing, the time zone of
+   the most recent port on the itinerary (so it's right on any device, even one still on home time).
+   Settings can switch to this phone's clock, or a fixed UTC offset if the ship changed its clocks at sea. */
+function portOffsetNow(p, when){
+  const z = PORT_ZONES[placeKey(p.name)] || CC_ZONE[placeCC(p.name)];
+  let off = z ? zoneOffset(z, when) : null;
+  if(off == null && p.lon != null){ const L = ((p.lon + 540) % 360) - 180; off = Math.round(L / 15); }
+  return off;
+}
+function shipTimeInfo(){
+  const mode = S().shipTime || "auto", now = new Date(), phone = -now.getTimezoneOffset() / 60;
+  if(mode === "phone") return {off: phone, src: "this phone's clock"};
+  if(/^[+-]?\d+(\.\d+)?$/.test(mode)) return {off: +mode, src: "set by hand"};
+  // automatic: the trip sailing now, the latest port whose date has come
+  const t = trip(), d = new Date(now.getTime() + 12*3600e3).toISOString().slice(0, 10);   // a date that has started on the ship
+  if(t && t.start && t.end && t.start <= d && d <= addDays(t.end, 1)){
+    const ports = sortPorts(t.ports || []).filter(p => p.date && !p.skip).sort((a, b) => a.date.localeCompare(b.date));
+    let pick = null; ports.forEach(p => { if(p.date <= d) pick = p; });
+    pick = pick || ports[0];
+    const off = pick ? portOffsetNow(pick, now) : null;
+    if(off != null) return {off, src: hlCity(pick), auto: true};
+  }
+  return {off: phone, src: "this phone's clock"};
+}
 function portDiffHours(p, t){
   const when = dayOf(p.date || t.start), home = zoneOffset(homeZone(), when);
   const z = PORT_ZONES[placeKey(p.name)] || CC_ZONE[placeCC(p.name)];
