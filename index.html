@@ -116,7 +116,7 @@ body[data-game="scala"]{background:var(--sca-soft)}
 .typein input{width:100%;min-width:0;font-size:18px;font-weight:700;text-align:center;border-color:var(--pc)}
 .typein .onebtn{padding:0 12px}
 .tietoast{position:fixed;left:50%;top:22%;transform:translate(-50%,0) scale(.6);z-index:30;pointer-events:none;opacity:0;
-  background:linear-gradient(180deg,#fff,#FFF3C4);color:#5A4500;border:2px solid #E3C443;border-radius:999px;padding:10px 20px;font-weight:800;font-size:20px;box-shadow:0 8px 20px rgba(60,40,20,.2)}
+  background:linear-gradient(180deg,#fff,#FFF3C4);color:#5A4500;border:2px solid #E3C443;border-radius:999px;padding:14px 26px;font-weight:800;font-size:clamp(24px,6.6vw,34px);box-shadow:0 8px 20px rgba(60,40,20,.2)}
 .tietoast.show{animation:tiepop 1.9s ease forwards}
 @keyframes tiepop{0%{opacity:0;transform:translate(-50%,0) scale(.6)}12%{opacity:1;transform:translate(-50%,0) scale(1.08)}20%{transform:translate(-50%,0) scale(1) rotate(-3deg)}28%{transform:translate(-50%,0) rotate(3deg)}36%{transform:translate(-50%,0) rotate(0)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-12px)}}
 
@@ -175,6 +175,37 @@ body[data-tab="settings"] #tripHead{display:none}
 .hc-ft small{font:800 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:#9A7A2A}
 .hc-ft b{font:800 20px var(--display);color:#3B2A00}
 .hc-ft span{font:800 15px var(--body);color:#7A5A1A}
+.gd-row{display:flex;align-items:center}.gd-row .gd-i{flex:1;min-width:0}
+.gd-del{flex:none;width:40px;height:40px;margin-right:10px;border-radius:12px;border:1.5px solid #F2C4C4;background:#FFF0F0;font-size:17px;cursor:pointer}
+.cg-row{gap:10px}.cg-row .cg-n{flex:1;font-weight:700}
+.cg-del{font:800 13px var(--display);padding:7px 12px;border-radius:12px;--face:#FFF0F0;--edge:#EDB8B8;color:#A3262A}
+.home-cur{display:flex;flex-direction:column;gap:2px;padding:10px 12px;margin-bottom:12px;border-radius:14px;background:#FFF8E6;border:1.5px solid #F0D98A;font-size:15px}
+.home-cur b{font-size:17px;color:#3B2A00}.home-cur small{font-size:13px;color:#7A5A1A;font-weight:700}
+.hs-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin-top:4px}.hs-row .set-in{margin:0}
+.hs-list{display:flex;flex-direction:column;gap:6px;margin:0 0 12px}
+.hs-i{display:flex;flex-direction:column;align-items:flex-start;gap:1px;width:100%;padding:10px 12px;border-radius:14px;border:1.5px solid #CFE3F3;background:#F5FAFF;text-align:left;cursor:pointer;font:inherit;color:var(--ink)}
+.hs-i b{font-size:16px}.hs-i span{font-size:13px;color:var(--muted);font-weight:700}.hs-i small{font-size:12.5px;color:#2F6E9E;font-weight:700}
+.cheertoast{position:fixed;left:3vw;right:3vw;top:7vh;bottom:calc(var(--nav-h, 84px) + 4vh);z-index:31;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5vh;
+  text-align:center;padding:4vh 6vw;box-sizing:border-box;border-radius:34px;opacity:0;visibility:hidden;pointer-events:none;transform:scale(.6);
+  background:radial-gradient(circle at 50% 30%,#FFFFFF 0,#EAF6FF 55%,#CFE6FA 100%);border:4px solid #7FB5E6;box-shadow:0 8px 0 #7FB5E6,0 22px 50px rgba(20,40,80,.35);color:#1F3A66}
+.cheertoast .ct-ic svg{width:clamp(130px,42vw,220px);height:auto;display:block;filter:drop-shadow(0 8px 10px rgba(11,23,48,.35))}
+.cheertoast .ct-txt{font:800 clamp(34px,10vw,58px)/1.15 var(--display);text-wrap:balance}
+.cheertoast .ct-tap{font:700 14px var(--body);color:#5B7C98;opacity:.8}
+.cheertoast.show{visibility:visible;pointer-events:auto;animation:cheerpop 7s ease forwards}
+@keyframes cheerpop{0%{opacity:0;transform:scale(.6)}5%{opacity:1;transform:scale(1.04)}8%{transform:scale(1)}93%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.96) translateY(-12px)}}
+.vc-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;border:0;background:none;font:inherit;color:var(--ink);text-align:left;cursor:pointer}
+.vc-h{font:800 18px var(--display);flex:none}.vc-sum{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-end;font:700 13px var(--body);color:var(--muted)}.vc-sum b{color:#2E8A57}
+.vc-chev{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#EEF4FF;color:#24477A;font-size:14px;box-shadow:0 2px 0 #A9C2EA}
+.vc-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.vc-row{display:grid;grid-template-columns:44px 1fr;gap:4px 10px;align-items:center;padding:8px 10px;border-radius:14px;background:#F5FAFF;border:1.5px solid #CFE3F3}
+.vc-row.rec{background:#FFF0F0;border-color:#F2A9A9}
+.vc-ic svg{width:42px;height:42px;display:block;filter:drop-shadow(0 2px 3px rgba(11,23,48,.3))}
+.vc-t{font:700 15px/1.3 var(--body);color:var(--ink)}.vc-t small{display:block;font-size:12px;color:#2E8A57;font-weight:800;margin-top:2px}
+.vc-b{grid-column:1/-1;display:flex;gap:8px;justify-content:flex-end}
+.vc-b button{font:800 14px var(--display);min-height:38px;padding:0 12px;border-radius:12px}
+.vc-rec{--face:#FFF;--edge:#F2A9A9;color:#A3262A}.vc-rec.on{--face:#E8453C;--edge:#A3262A;color:#fff;animation:recpulse 1s infinite}
+.vc-play{--face:#E6F4FF;--edge:#9CC8EA;color:#1F4A6B;min-width:44px}.vc-del{--face:#fff;--edge:var(--line);color:var(--muted);min-width:40px}
+@keyframes recpulse{50%{filter:brightness(1.15)}}
 .reachnote p{margin:2px 0 10px;font-size:15px}
 .typein.sc40{grid-template-columns:1fr 1fr;gap:8px}
 .typein.sc40 input{grid-column:1 / -1;min-height:52px;font-size:22px}
@@ -919,8 +950,8 @@ button.best-row:active{background:rgba(255,255,255,.85)}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "17.4";
-const APP_UPDATED = "Nov 11, 2026, 9:25 PM ET";
+const APP_VERSION = "18.6";
+const APP_UPDATED = "Nov 14, 2026, 3:05 AM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -1068,7 +1099,7 @@ const homeName = () => (S().homeCity || "home").split(",")[0].trim() || "home";
 const toUnit = f => (f === "" || f == null || isNaN(+f)) ? f : S().temp === "C" ? Math.round((+f - 32) * 5 / 9) : Math.round(+f);
 const degU = () => "°" + S().temp;
 const hr12 = () => S().clock !== "24";
-const SND_KEYS = {win:"cs-snd-win", tie:"cs-snd-tie", lead:"cs-snd-lead"};
+const SND_KEYS = {win:"cs-snd-win", tie:"cs-snd-tie", lead:"cs-snd-lead", voice:"cs-snd-voice", ours:"cs-snd-ours"};
 const sndOn = k => { try { return localStorage.getItem(SND_KEYS[k]) !== "off"; } catch(e){ return true; } };
 const blankScala = () => ({s1:0, s2:0, log:[]});
 function newTrip(p, fixedId){
@@ -1473,6 +1504,7 @@ function initCloud(){
     if(!firebase.apps.length) firebase.initializeApp(FB_CONFIG);
     const db = firebase.database();
     cloud.ref = db.ref(CLOUD_ROOT);
+    setTimeout(() => { try { listenVoices(); } catch(e){} }, 0);   // recorded cheers from the other phones
     db.ref(".info/connected").on("value", snap => { cloud.online = !!snap.val(); renderSyncBits(); });
     cloud.ref.on("value", snap => onCloudValue(snap.val()), err => {
       cloud.ok = false; cloud.code = (err && err.code) || "denied";
@@ -1586,7 +1618,7 @@ function scoreTop(t, type){
 
 function renderDomino(){
   const t = trip(), c = t.cur, tl = tally(t,"domino");
-  tieCheck(t.id + ":domino", [c.s1, c.s2]); leadCheck(t.id + ":domino", [c.s1, c.s2]);
+  tieCheck(t.id + ":domino", [c.s1, c.s2]); leadCheck(t.id + ":domino", [c.s1, c.s2]); cheerCheck(t.id + ":domino", [t.p1, t.p2], [c.s1, c.s2], t.target, 20);
   const reached = t.target && (c.s1 >= t.target || c.s2 >= t.target);
   const col = (n) => {
     const s = n===1?c.s1:c.s2, name = n===1?t.p1:t.p2, wins = n===1?tl.w1:tl.w2;
@@ -1630,7 +1662,7 @@ function renderDomino(){
 
 function renderScala(){
   const t = trip(), sc = t.scala, tl = tally(t,"scala"), L = t.limit || 101;
-  tieCheck(t.id + ":scala", [sc.s1, sc.s2]); leadCheck(t.id + ":scala", [sc.s1, sc.s2]);
+  tieCheck(t.id + ":scala", [sc.s1, sc.s2]); leadCheck(t.id + ":scala", [sc.s1, sc.s2]); cheerCheck(t.id + ":scala", [t.p1, t.p2], [sc.s1, sc.s2], L, 15);
   const out = sc.s1 >= L || sc.s2 >= L;
   const col = (n) => {
     const s = n===1?sc.s1:sc.s2, name = n===1?t.p1:t.p2, wins = n===1?tl.w1:tl.w2;
@@ -1737,6 +1769,20 @@ const PARTY_GAMES = [
   {key:"skipbo",   name:"Skip-Bo",       group:"Party games", ic:"⏭️", mode:"high", target:500, targets:[250,500,0],      c:"#E5D8FF", e:"#A68BE0"}
 ];
 // custom games made in the app live on the trips (so they sync) and show on every trip
+// custom games can be deleted for 48 hours after they're made, or any time while unlocked (🔒 © 2026 Thor)
+const canDelCustom = g => !!g && /^c_/.test(g.key) && (editingUnlocked || Date.now() - (g.createdAt || 0) < LOCK_MS);
+function askDeleteCustom(key){
+  const g = PG(key), t = trip(); if(!/^c_/.test(g.key)) return;
+  if(!canDelCustom(g)){ sheet("This game is locked", "Custom games lock 48 hours after they're made. Tap 🔒 © 2026 Thor at the bottom to unlock, then delete it.", "OK", () => {}); return; }
+  sheet(`Delete “${g.name}”?`, "It's removed from the list of games on both phones. Games you already finished stay in the Wins tab.", "Delete game", () => {
+    state.trips.forEach(x => { if(x.customGames){ x.customGames = (Array.isArray(x.customGames) ? x.customGames : Object.values(x.customGames)).filter(c => c.key !== g.key); }
+      (x.partyGames || []).forEach(r => { if(r.game === g.key && !r.gameName) r.gameName = g.name; });
+      if(x.party && x.party.game === g.key) delete x.party; });
+    if(dayType(t) === "party" && !t.party) setViewType(t, t.lastType || "domino");
+    commit(); render();
+  }, true);
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-cgdel]"); if(!b) return; e.stopPropagation(); askDeleteCustom(b.dataset.cgdel); });
 function customGames(){ const seen = {}; (state.trips || []).forEach(t => (Array.isArray(t.customGames) ? t.customGames : Object.values(t.customGames || {})).forEach(g => { if(g && g.key) seen[g.key] = Object.assign({group:"Custom games", targets:[g.target || 0]}, g); })); return Object.values(seen); }
 const GAME_GROUPS = ["Our games","Card games","Italian card games","Dice games","Board & tile games","Party games","Custom games"];
 const allGames = () => PARTY_GAMES.concat(customGames()).map((g, i) => ({g, i})).sort((a, b) => (GAME_GROUPS.indexOf(a.g.group) - GAME_GROUPS.indexOf(b.g.group)) || a.i - b.i).map(x => x.g);
@@ -1957,13 +2003,15 @@ function gameRow(type){
     ${open ? `<div class="gdrop" role="listbox" aria-label="Choose a game">
       ${groups.map(grp => `<div class="gd-h">${esc(grp.name)}</div>${grp.list.map(g => { const tgt = g.key === "domino" ? t.target : g.key === "scala" ? (t.limit || 101) : g.target;
         const sub = g.mode === "low" ? "lowest wins" : tgt ? "to " + tgt.toLocaleString() : "";
-        return `<button type="button" class="gd-i ${g.key === cur ? "cur" : ""}" data-pkpick="${g.key}" role="option" aria-selected="${g.key === cur}">${gameLogo(g.key, "sm")}<span>${esc(g.name)}${sub ? `<small>${esc(sub)}</small>` : ""}</span></button>`; }).join("")}`).join("")}
+        const row = `<button type="button" class="gd-i ${g.key === cur ? "cur" : ""}" data-pkpick="${g.key}" role="option" aria-selected="${g.key === cur}">${gameLogo(g.key, "sm")}<span>${esc(g.name)}${sub ? `<small>${esc(sub)}</small>` : ""}</span></button>`;
+        return /^c_/.test(g.key) ? `<div class="gd-row">${row}<button type="button" class="gd-del" data-cgdel="${g.key}" aria-label="Delete ${esc(g.name)}">${canDelCustom(g) ? "🗑️" : "🔒"}</button></div>` : row; }).join("")}`).join("")}
       <button type="button" class="gd-custom" data-act="customgame"><span class="ic" aria-hidden="true">✏️</span>Create your own game…</button>
       <button type="button" class="gd-fav" data-act="pickfavs">⭐ Choose the two quick-switch games</button>
     </div>` : ""}`;
 }
 // "Change game" opens and closes the list; tapping anywhere else closes it
 document.addEventListener("click", e => {
+  if(e.target.closest(".gd-custom, .gd-fav")){ moreGamesOpen = false; return; }   // the list closes when a sheet opens from it
   if(e.target.closest('[data-act="gdrop"]')){ moreGamesOpen = !moreGamesOpen; const y = window.scrollY; render(); window.scrollTo(0, y); e.stopPropagation(); return; }
   if(moreGamesOpen && !e.target.closest(".gdrop") && !e.target.closest(".sheet") && !e.target.closest("[data-pkpick]")){ moreGamesOpen = false; const y = window.scrollY; render(); window.scrollTo(0, y); }
 }, true);
@@ -1972,8 +2020,9 @@ function renderParty(){
   const t = trip(), p = normParty(t.party); if(!p){ setViewType(t, t.lastType || "domino"); return render(); }
   const st = partyState(p), g = st.g, L = p.target || 0, steps = partySteps(g, L), cols = ["p1","p2","p3x","p4x","p5x","p6x"];
   tieCheck(t.id + ":" + p.game, p.scores.slice()); leadCheck(t.id + ":" + p.game, p.scores.slice(), PG(p.game).mode === "low");
+  cheerCheck(t.id + ":" + p.game, p.players, p.scores.slice(), p.target || 0, Math.max(5, Math.round((p.target || 0) * .15)), PG(p.game).mode !== "high");
   const games = (t.partyGames || []).filter(x => x.game === p.game), wins = name => games.filter(x => x.winnerName === name).length;
-  const leader = st.winner >= 0 ? p.players[st.winner] : null, simple = p.game === "scala";
+  const leader = st.winner >= 0 ? p.players[st.winner] : null, simple = p.game === "scala" || /^c_/.test(p.game);   // Scala 40 and custom games: just points, Add and Undo
   const col = i => { const s = p.scores[i], name = p.players[i];
     const note = !L ? "" : g.mode === "high" ? (s >= L ? "Reached " + L : (L - s) + " to go") : (s >= L ? (g.mode === "elim" ? "Out · reached " : "Reached ") + L : (L - s) + " before " + L);
     return `<section class="player ${cols[i]} ${st.out[i] ? "out" : ""}" aria-label="${esc(name)}">
@@ -2065,22 +2114,15 @@ function partyAction(a){
   }
   if(a === "pickgame"){ openGamePicker(); return true; }
   if(a === "customgame"){ openCustomGame(); return true; }
-  if(a === "pdelgame"){
-    const g = PG(p.game); if(!/^c_/.test(g.key)) return true;
-    sheet(`Delete “${g.name}”?`, "It's removed from the list of games on both phones. Games you already finished stay in the Wins tab.", "Delete game", () => {
-      state.trips.forEach(x => { if(x.customGames){ x.customGames = (Array.isArray(x.customGames) ? x.customGames : Object.values(x.customGames)).filter(c => c.key !== g.key); }
-        (x.partyGames || []).forEach(r => { if(r.game === g.key && !r.gameName) r.gameName = g.name; });
-        if(x.party && x.party.game === g.key) delete x.party; });
-      setViewType(t, t.lastType || "domino"); commit(); render(); window.scrollTo(0, 0);
-    }, true);
-    return true;
+  if(a === "pdelgame"){ askDeleteCustom(p.game); return true;
   }
   return false;
 }
 function partyCelebrate(t, rec){
   const root = $("#partyRoot"), g = PG(rec.game), wins = (t.partyGames || []).filter(x => x.game === rec.game);
   const order = rec.players.map((n, i) => ({n, s: rec.scores[i]})).sort((a, b) => g.mode === "high" ? b.s - a.s : a.s - b.s);
-  const bits = Array.from({length: 26}, (_, i) => `<i style="left:${(i * 37) % 100}%;animation-delay:${(i % 9) * .18}s;animation-duration:${2.6 + (i % 5) * .35}s">${["🎉","✨","🎊",g.ic && g.ic !== "UNO" ? g.ic : "⭐"][i % 4]}</i>`).join("");
+  const sea = seaDay(), fl = sea ? null : hereFlag(), here = sea ? "🐠" : fl ? flagOf(fl.cc) : "";
+  const bits = Array.from({length: 30}, (_, i) => `<i style="left:${(i * 37) % 100}%;animation-delay:${(i % 9) * .18}s;animation-duration:${2.6 + (i % 5) * .35}s">${(sea ? ["🎉","🐬","🐠","🐚","🐙","✨"] : here ? ["🎉", here, "✨", here, "🎊", g.ic && g.ic !== "UNO" ? g.ic : "⭐"] : ["🎉","✨","🎊",g.ic && g.ic !== "UNO" ? g.ic : "⭐"])[i % (sea || here ? 6 : 4)]}</i>`).join("");
   root.innerHTML = `<div class="party" data-party><div class="pp-rain" aria-hidden="true">${bits}</div><div class="stage"><div class="trophy-card tie" role="dialog" aria-modal="true" aria-labelledby="winT">
       ${TROPHY_A.replace('<svg ', '<svg aria-hidden="true" ')}
       <div class="wingame">${gameLogo(rec.game, "np")}<span>${esc(g.name)}</span></div>
@@ -2414,6 +2456,37 @@ function render(){
 }
 
 const HOME_ZONES = [["Eastern Time · New York, Tampa, Miami","America/New_York"],["Central Time · Chicago, Dallas","America/Chicago"],["Mountain Time · Denver","America/Denver"],["Arizona · Phoenix","America/Phoenix"],["Pacific Time · Los Angeles, Seattle","America/Los_Angeles"],["Alaska · Anchorage","America/Anchorage"],["Hawaii · Honolulu","Pacific/Honolulu"],["Atlantic · Puerto Rico","America/Puerto_Rico"],["Canada Atlantic · Halifax","America/Halifax"],["Mexico City","America/Mexico_City"],["Bogotá, Lima","America/Bogota"],["Buenos Aires","America/Argentina/Buenos_Aires"],["São Paulo","America/Sao_Paulo"],["London, Lisbon","Europe/London"],["Rome, Paris, Madrid, Berlin","Europe/Rome"],["Athens, Istanbul","Europe/Athens"],["Dubai","Asia/Dubai"],["India","Asia/Kolkata"],["Bangkok","Asia/Bangkok"],["Singapore, Hong Kong","Asia/Singapore"],["Tokyo","Asia/Tokyo"],["Perth","Australia/Perth"],["Brisbane","Australia/Brisbane"],["Sydney, Melbourne","Australia/Sydney"],["Auckland","Pacific/Auckland"]];
+/* home by city or ZIP code: looked up online (Open-Meteo place search), which gives the place's time zone */
+const homeSearch = {q: "", busy: false, results: [], msg: ""};
+const zoneLabel = z => { const hit = HOME_ZONES.find(x => x[1] === z); return hit ? hit[0] : String(z || "").replace(/_/g, " ").replace(/\//g, " · "); };
+const timeIn = z => { try { return new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit", hour12:hr12(), timeZone:z}); } catch(e){ return ""; } };
+async function findHome(){
+  const el = document.getElementById("homeQ"); if(!el) return;
+  const q = el.value.trim(); homeSearch.q = q; homeSearch.results = []; homeSearch.msg = "";
+  if(q.length < 2){ homeSearch.msg = "Type a city name or a ZIP code."; render(); return; }
+  if(!navigator.onLine){ homeSearch.msg = "Finding a place needs internet. You can still pick the time zone below."; render(); return; }
+  homeSearch.busy = true; render();
+  const zip = /^\d{5}(-\d{4})?$/.test(q), base = "https://geocoding-api.open-meteo.com/v1/search?count=8&language=en&format=json&name=";
+  const get = async url => { const r = await fetch(url); if(!r.ok) throw 0; const j = await r.json(); return (j.results || []).filter(x => x && x.timezone); };
+  try {
+    let res = await get(base + encodeURIComponent(zip ? q.slice(0, 5) : q) + (zip ? "&countryCode=US" : ""));
+    if(!res.length && zip) res = await get(base + encodeURIComponent(q.slice(0, 5)));
+    homeSearch.results = res.slice(0, 6);
+    if(!res.length) homeSearch.msg = `Nothing found for “${q}”. Try the city name, or pick the time zone below.`;
+  } catch(e){ homeSearch.msg = "Couldn't search right now. Try again, or pick the time zone below."; }
+  homeSearch.busy = false; render();
+}
+document.addEventListener("click", e => {
+  if(e.target.closest("#homeFind")){ findHome(); return; }
+  const b = e.target.closest("[data-homepick]"); if(!b) return;
+  const r = homeSearch.results[+b.dataset.homepick]; if(!r) return;
+  const region = r.country_code === "US" || r.country_code === "CA" || r.country_code === "AU" ? (r.admin1 && r.admin1 !== r.name ? r.admin1 : r.country) : r.country;   // "Odessa, Florida" · "Rome, Italy"
+  const city = [r.name, region].filter(Boolean).join(", ");
+  setS("homeCity", city); setS("homeZone", r.timezone);
+  homeSearch.q = ""; homeSearch.results = []; homeSearch.msg = ""; render();
+});
+document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.id === "homeQ"){ e.preventDefault(); findHome(); } });
+document.addEventListener("input", e => { if(e.target.id === "homeQ") homeSearch.q = e.target.value; });
 function homeNow(){ try { return new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit", hour12:hr12(), timeZone:homeZone()}); } catch(e){ return ""; } }
 function renderSettings(){
   const st = S(), phoneZone = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch(e){ return ""; } })();
@@ -2426,8 +2499,12 @@ function renderSettings(){
     <p class="set-sub">These apply on both phones, except the sound switches.</p>
     <section class="set-card">
       <h2>🏠 Where we live</h2>
-      <label class="set-lbl">Home city<input class="set-in" data-sett="homeCity" value="${esc(st.homeCity)}" placeholder="e.g. Odessa, Florida" autocomplete="off"></label>
-      <label class="set-lbl">Home time zone<select class="set-in" data-sets="homeZone">${zones.map(([n, z]) => `<option value="${z}" ${z === st.homeZone ? "selected" : ""}>${esc(n)}</option>`).join("")}</select></label>
+      <div class="home-cur"><b>🏠 ${esc(st.homeCity)}</b><small>${esc(zoneLabel(st.homeZone))}</small></div>
+      <label class="set-lbl">Change home: city or ZIP code
+        <span class="hs-row"><input class="set-in" id="homeQ" value="${esc(homeSearch.q)}" placeholder="e.g. 33556 or Orlando" autocomplete="off" enterkeyhint="search"><button type="button" class="b3d set-mini" id="homeFind">${homeSearch.busy ? "…" : "🔍 Find"}</button></span></label>
+      ${homeSearch.msg ? `<p class="pf-msg" role="alert">${esc(homeSearch.msg)}</p>` : ""}
+      ${homeSearch.results.length ? `<div class="hs-list">${homeSearch.results.map((r, i) => `<button type="button" class="hs-i" data-homepick="${i}"><b>${esc(r.name)}</b><span>${esc([r.admin1, r.country].filter(Boolean).join(", "))}${r.postcodes && r.postcodes.length && /^\d/.test(homeSearch.q) ? " · " + esc(r.postcodes[0]) : ""}</span><small>${esc(zoneLabel(r.timezone))} · now ${esc(timeIn(r.timezone))}</small></button>`).join("")}</div>` : ""}
+      <label class="set-lbl">Or pick the home time zone yourself<select class="set-in" data-sets="homeZone">${zones.map(([n, z]) => `<option value="${z}" ${z === st.homeZone ? "selected" : ""}>${esc(n)}</option>`).join("")}</select></label>
       <div class="set-now">🕐 It's <b id="homeNow">${esc(homeNow())}</b> at home right now</div>
       ${phoneZone && phoneZone !== st.homeZone ? `<button type="button" class="b3d set-mini" data-setv="homeZone" data-v="${esc(phoneZone)}">📍 Use this phone's time zone</button>` : ""}
       <p class="set-note">Time differences on the Ports map and in "Time vs. ${esc(homeName())}" are counted from here.</p>
@@ -2447,9 +2524,10 @@ function renderSettings(){
     <section class="set-card"><h2>🌡️ Temperature</h2>${seg("temp", [["F", "°F Fahrenheit"], ["C", "°C Celsius"]])}</section>
     <section class="set-card"><h2>🕐 Clock</h2>${seg("clock", [["12", "12-hour · 2:30 PM"], ["24", "24-hour · 14:30"]])}</section>
     <section class="set-card"><h2>🔊 Sounds <small>this phone</small></h2>
-      ${tog("win", "🏆 Winning music")}${tog("tie", "🤝 Tie jingle")}${tog("lead", "🎺 “Takes the lead” bugle")}
+      ${tog("win", "🏆 Winning music")}${tog("tie", "🤝 Tie jingle")}${tog("lead", "🎺 “Takes the lead” bugle")}${tog("voice", "🗣️ Read cheers out loud")}${sndOn("voice") ? tog("ours", "🎙️ Use our recorded voices") : ""}
       ${soundOn ? "" : `<p class="set-note">All sounds are off on this phone. Turn them on in Save As (tap © 2026 Thor).</p>`}
     </section>
+    ${voicesSection()}
     <section class="set-card"><h2>🎯 Usual game targets <small>for new trips</small></h2>
       <div class="set-row"><span>Domino plays to</span><select class="set-in sm" data-sets="dominoTarget">${[100,150,200,250,300].map(v => `<option value="${v}" ${+st.dominoTarget === v ? "selected" : ""}>${v} points</option>`).join("")}</select></div>
       <div class="set-row"><span>Scala 40 ends at</span><select class="set-in sm" data-sets="scalaLimit">${[101,151,201].map(v => `<option value="${v}" ${+st.scalaLimit === v ? "selected" : ""}>${v} points</option>`).join("")}</select></div>
@@ -2464,6 +2542,11 @@ function renderSettings(){
       <div class="up-add"><input class="set-in" id="upName" placeholder="Name, e.g. Mo" maxlength="18" autocomplete="off" enterkeyhint="done"><button type="button" class="b3d set-mini" id="upAdd">Add</button></div>
       <p class="pf-msg" id="upMsg" role="alert"></p>
     </section>
+    <section class="set-card"><h2>✏️ Your custom games</h2>
+      ${customGames().length ? customGames().map(g => `<div class="set-row cg-row">${gameLogo(g.key, "sm")}<span class="cg-n">${esc(g.name)}</span><button type="button" class="b3d cg-del" data-cgdel="${g.key}">${canDelCustom(g) ? "🗑️ Delete" : "🔒 Locked"}</button></div>`).join("")
+        : `<p class="set-note" style="margin:0">None yet. Make one from <b>Change game ▾</b> → <b>Create your own game…</b></p>`}
+      ${customGames().some(g => !canDelCustom(g)) ? `<p class="set-note">Custom games lock 48 hours after they're made. Tap 🔒 © 2026 Thor to unlock and delete them.</p>` : ""}
+    </section>
     <section class="set-card about"><h2>ℹ️ About</h2>
       <div class="set-row"><span>Version</span><b>${esc(APP_VERSION)}</b></div>
       <div class="set-row"><span>Sync</span><b class="${l.cls}">● ${esc(l.text)}</b></div>
@@ -2474,7 +2557,7 @@ function renderSettings(){
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-setv]"); if(b){ setS(b.dataset.setv, b.dataset.v); render(); return; }
   const sn = e.target.closest("[data-snd]"); if(sn){ const k = sn.dataset.snd, on = !sndOn(k); try { localStorage.setItem(SND_KEYS[k], on ? "on" : "off"); } catch(err){}
-    if(on){ if(k === "win") playJackpot(); else if(k === "tie") playTie(); else playLead(); } render(); }
+    if(on){ if(k === "win") playJackpot(); else if(k === "tie") playTie(); else if(k === "voice") sayAloud("Land ho! The finish line is in sight."); else if(k === "ours"){ const any = Object.keys(voiceClips).find(x => voiceClips[x] && voiceClips[x].data && !voiceClips[x].deleted); if(any) new Audio(voiceClips[any].data).play().catch(() => {}); } else playLead(); } render(); }
 });
 document.addEventListener("change", e => { const el = e.target; if(el.dataset && el.dataset.sets){ const v = el.value; setS(el.dataset.sets, /Target|Limit/.test(el.dataset.sets) ? +v : v); render(); } });
 function addUsual(){
@@ -2972,7 +3055,7 @@ function tripRecord(x, cur){
   return `<div class="triprec ${x.id===cur.id?"active":""}">
     <button class="tripcard b3d ${x.id===cur.id?"active":""} ${placeCC(x.from)||placeCC(x.to)?"has-banner":""}" data-tripopen="${x.id}" aria-expanded="${!!openTripRecords[x.id]}" aria-controls="more-${x.id}">
       ${tripFlags(x)}<span class="t">${cardTitle(x)}<span class="tr-line"><span class="nw">${esc(fmtRangeCard(x.start,x.end))}</span></span>${x.ship || x.cabin ? `<span class="tr-line tc-ship">🚢 ${esc(shipCabin(x))}</span>` : ""}</span>
-      <span class="tr-right">${cruise!==null?`<span class="tr-score tone-${scoreTone(cruise)}" title="Cruise score">${fmt1(cruise)}</span>`:""}${tripDone(x) ? "" : `<span class="w">${k.w1}–${k.w2}</span>`}</span>
+      <span class="tr-right">${cruise!==null?`<span class="tr-score tone-${scoreTone(cruise)}" title="Cruise rating">${fmt1(cruise)}</span>`:""}</span>
     </button>
     <div class="tr-more" id="more-${x.id}" ${openTripRecords[x.id]?"":"hidden"}>
       ${x.id===cur.id ? `<div class="tr-cur">✓ Current trip · new scores go here</div>` : ""}
@@ -3819,6 +3902,31 @@ function portOffsetNow(p, when){
   if(off == null && p.lon != null){ const L = ((p.lon + 540) % 360) - 180; off = Math.round(L / 15); }
   return off;
 }
+function currentPort(){
+  const t = trip(), now = new Date(), d = new Date(now.getTime() + 12*3600e3).toISOString().slice(0, 10);
+  if(!(t && t.start && t.end && t.start <= d && d <= addDays(t.end, 1))) return null;
+  const ports = sortPorts(t.ports || []).filter(p => p.date && !p.skip).sort((a, b) => a.date.localeCompare(b.date));
+  let pick = null; ports.forEach(p => { if(p.date <= d) pick = p; });
+  return pick || ports[0] || null;
+}
+// a day at sea: the trip is sailing but no port is on today's date
+function seaDay(){
+  const t = trip(), d = new Date(Date.now() + 12*3600e3).toISOString().slice(0, 10);
+  if(!(t && t.start && t.end && t.start < d && d < t.end)) return false;
+  return !(t.ports || []).some(p => p.date === d && !p.skip);
+}
+const SEA_LIFE = ["🐠","🐬","🐚","🐙","🐟","🦀","🐳","⭐"];
+// the flag of where we are, as a picture for the confetti (built from the app's own flag drawings, works offline)
+const flagImgCache = {};
+function hereFlag(){
+  const p = currentPort(), cc = p && placeCC(p.name); if(!cc) return null;
+  if(!flagImgCache[cc]){
+    if(!FLAG_VB[cc]) return {cc, img: null};
+    const sp = document.getElementById("flagSprite"), vb = FLAG_VB[cc].split(/\s+/).map(Number);
+    flagImgCache[cc] = {cc, ratio: vb[3] / vb[2], img: imgOf(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${FLAG_VB[cc]}" width="${vb[2] * 4}" height="${vb[3] * 4}">${sp ? sp.innerHTML : ""}<use href="#fl-${cc}" width="100%" height="100%"/></svg>`)};
+  }
+  return flagImgCache[cc];
+}
 function shipTimeInfo(){
   const mode = S().shipTime || "auto", now = new Date(), phone = -now.getTimezoneOffset() / 60;
   if(mode === "phone") return {off: phone, src: "this phone's clock"};
@@ -3994,6 +4102,139 @@ function jackpotNotes(ac){
     g.gain.setValueAtTime(0, tc); g.gain.linearRampToValueAtTime(0.07, tc+0.04); g.gain.setValueAtTime(0.07, tc+0.55); g.gain.exponentialRampToValueAtTime(0.0001, tc+1.3);
     o.connect(fl); fl.connect(g); g.connect(out); o.start(tc); l.start(tc); o.stop(tc+1.4); l.stop(tc+1.4); });
   toneAt(ac,out,2093,tc,1.2,"sine",0.16); toneAt(ac,out,3136,tc+0.02,0.9,"sine",0.06);
+}
+/* 📣 "almost there!": when the player in the lead gets close to the finish, a random cheer pops up (once per player per game).
+   Domino: within 20 points · Scala 40: within 15 · other games: within about 15% of the target. Quiet when the app just opens. */
+const CHEER_ICONS = {"anchor":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><circle cx=\"50\" cy=\"16\" r=\"8\" fill=\"none\" stroke=\"url(#ci-brass)\" stroke-width=\"5.5\"/>\n <rect x=\"45.5\" y=\"23\" width=\"9\" height=\"58\" rx=\"3.5\" fill=\"url(#ci-brass)\"/><rect x=\"28\" y=\"33\" width=\"44\" height=\"8\" rx=\"4\" fill=\"url(#ci-brass)\"/>\n <path d=\"M14 58c3 18 18 29 36 29s33-11 36-29\" fill=\"none\" stroke=\"url(#ci-brass)\" stroke-width=\"8\" stroke-linecap=\"round\"/>\n <path d=\"M8 63l7-12 9 9zM92 63l-7-12-9 9z\" fill=\"url(#ci-brass)\"/>\n <path d=\"M47.5 26v52\" stroke=\"#FFF6CF\" stroke-width=\"1.6\" opacity=\".7\" stroke-linecap=\"round\"/></svg>","wheel":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><line x1=\"50.0\" y1=\"20.0\" x2=\"50.0\" y2=\"4.0\" stroke=\"url(#ci-wood)\" stroke-width=\"7.5\" stroke-linecap=\"round\"/><line x1=\"71.2\" y1=\"28.8\" x2=\"82.5\" y2=\"17.5\" stroke=\"url(#ci-wood)\" stroke-width=\"7.5\" stroke-linecap=\"round\"/><line x1=\"80.0\" y1=\"50.0\" x2=\"96.0\" y2=\"50.0\" stroke=\"url(#ci-wood)\" stroke-width=\"7.5\" stroke-linecap=\"round\"/><line x1=\"71.2\" y1=\"71.2\" x2=\"82.5\" y2=\"82.5\" stroke=\"url(#ci-wood)\" stroke-width=\"7.5\" stroke-linecap=\"round\"/><line x1=\"50.0\" y1=\"80.0\" x2=\"50.0\" y2=\"96.0\" stroke=\"url(#ci-wood)\" stroke-width=\"7.5\" stroke-linecap=\"round\"/><line x1=\"28.8\" y1=\"71.2\" x2=\"17.5\" y2=\"82.5\" stroke=\"url(#ci-wood)\" stroke-width=\"7.5\" stroke-linecap=\"round\"/><line x1=\"20.0\" y1=\"50.0\" x2=\"4.0\" y2=\"50.0\" stroke=\"url(#ci-wood)\" stroke-width=\"7.5\" stroke-linecap=\"round\"/><line x1=\"28.8\" y1=\"28.8\" x2=\"17.5\" y2=\"17.5\" stroke=\"url(#ci-wood)\" stroke-width=\"7.5\" stroke-linecap=\"round\"/><circle cx=\"50.0\" cy=\"5.0\" r=\"5.2\" fill=\"url(#ci-wood)\"/><circle cx=\"81.8\" cy=\"18.2\" r=\"5.2\" fill=\"url(#ci-wood)\"/><circle cx=\"95.0\" cy=\"50.0\" r=\"5.2\" fill=\"url(#ci-wood)\"/><circle cx=\"81.8\" cy=\"81.8\" r=\"5.2\" fill=\"url(#ci-wood)\"/><circle cx=\"50.0\" cy=\"95.0\" r=\"5.2\" fill=\"url(#ci-wood)\"/><circle cx=\"18.2\" cy=\"81.8\" r=\"5.2\" fill=\"url(#ci-wood)\"/><circle cx=\"5.0\" cy=\"50.0\" r=\"5.2\" fill=\"url(#ci-wood)\"/><circle cx=\"18.2\" cy=\"18.2\" r=\"5.2\" fill=\"url(#ci-wood)\"/>\n <circle cx=\"50\" cy=\"50\" r=\"33\" fill=\"none\" stroke=\"url(#ci-wood)\" stroke-width=\"9\"/><line x1=\"50.0\" y1=\"42.0\" x2=\"50.0\" y2=\"20.0\" stroke=\"url(#ci-wood)\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"55.7\" y1=\"44.3\" x2=\"71.2\" y2=\"28.8\" stroke=\"url(#ci-wood)\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"58.0\" y1=\"50.0\" x2=\"80.0\" y2=\"50.0\" stroke=\"url(#ci-wood)\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"55.7\" y1=\"55.7\" x2=\"71.2\" y2=\"71.2\" stroke=\"url(#ci-wood)\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"50.0\" y1=\"58.0\" x2=\"50.0\" y2=\"80.0\" stroke=\"url(#ci-wood)\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"44.3\" y1=\"55.7\" x2=\"28.8\" y2=\"71.2\" stroke=\"url(#ci-wood)\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"42.0\" y1=\"50.0\" x2=\"20.0\" y2=\"50.0\" stroke=\"url(#ci-wood)\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"44.3\" y1=\"44.3\" x2=\"28.8\" y2=\"28.8\" stroke=\"url(#ci-wood)\" stroke-width=\"5\" stroke-linecap=\"round\"/>\n <circle cx=\"50\" cy=\"50\" r=\"10\" fill=\"url(#ci-brass)\"/><circle cx=\"47\" cy=\"47\" r=\"3\" fill=\"#FFF6CF\" opacity=\".8\"/></svg>","compass":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"url(#ci-brass)\"/><circle cx=\"50\" cy=\"50\" r=\"36\" fill=\"#F7F2E6\"/><circle cx=\"50\" cy=\"50\" r=\"36\" fill=\"none\" stroke=\"#6E4710\" stroke-width=\"1.5\"/>\n <line x1=\"50.0\" y1=\"20.0\" x2=\"50.0\" y2=\"15.0\" stroke=\"#22386A\" stroke-width=\"2.4\"/><line x1=\"80.0\" y1=\"50.0\" x2=\"85.0\" y2=\"50.0\" stroke=\"#22386A\" stroke-width=\"2.4\"/><line x1=\"50.0\" y1=\"80.0\" x2=\"50.0\" y2=\"85.0\" stroke=\"#22386A\" stroke-width=\"2.4\"/><line x1=\"20.0\" y1=\"50.0\" x2=\"15.0\" y2=\"50.0\" stroke=\"#22386A\" stroke-width=\"2.4\"/>\n <path d=\"M50 18l7 32H43z\" fill=\"url(#ci-red)\"/><path d=\"M50 82l-7-32h14z\" fill=\"url(#ci-navy)\"/><circle cx=\"50\" cy=\"50\" r=\"5\" fill=\"url(#ci-brass)\"/>\n <path d=\"M24 30a32 32 0 0 1 30-14\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" opacity=\".6\" stroke-linecap=\"round\"/></svg>","bell":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><rect x=\"44\" y=\"6\" width=\"12\" height=\"8\" rx=\"3\" fill=\"url(#ci-brass)\"/><path d=\"M50 12c-17 0-25 12-25 30v18c0 6-7 10-12 14h74c-5-4-12-8-12-14V42c0-18-8-30-25-30z\" fill=\"url(#ci-brass)\"/>\n <rect x=\"11\" y=\"72\" width=\"78\" height=\"7\" rx=\"3.5\" fill=\"#8A5A14\"/><circle cx=\"50\" cy=\"88\" r=\"6\" fill=\"url(#ci-brass)\"/>\n <path d=\"M33 28c3-8 9-12 15-13\" fill=\"none\" stroke=\"#FFF6CF\" stroke-width=\"4\" stroke-linecap=\"round\" opacity=\".8\"/><path d=\"M30 46v14\" stroke=\"#FFF6CF\" stroke-width=\"3\" stroke-linecap=\"round\" opacity=\".5\"/></svg>","lighthouse":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><circle cx=\"50\" cy=\"20\" r=\"22\" fill=\"url(#ci-glow)\"/><path d=\"M58 18l38-10v20zM42 18L4 8v20z\" fill=\"#FFF3B5\" opacity=\".75\"/>\n <path d=\"M38 14h24l-3-8H41z\" fill=\"url(#ci-red)\"/><rect x=\"40\" y=\"14\" width=\"20\" height=\"11\" fill=\"#FFE98A\" stroke=\"#22386A\" stroke-width=\"1.6\"/><rect x=\"36\" y=\"25\" width=\"28\" height=\"4\" rx=\"1.5\" fill=\"url(#ci-navy)\"/>\n <path d=\"M40 29h20l5 54H35z\" fill=\"url(#ci-steel)\"/><path d=\"M39.2 40h21.6l1.3 12H37.9zM37.4 62h25.2l1.2 12H36.2z\" fill=\"url(#ci-red)\"/>\n <path d=\"M44 31v50\" stroke=\"#fff\" stroke-width=\"2.5\" opacity=\".7\"/><path d=\"M22 86c8-5 48-5 56 0v6H22z\" fill=\"#5C6577\"/></svg>","telescope":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><g transform=\"rotate(-28 50 50)\"><rect x=\"8\" y=\"40\" width=\"30\" height=\"20\" rx=\"4\" fill=\"url(#ci-navy)\"/><rect x=\"36\" y=\"37\" width=\"30\" height=\"26\" rx=\"4\" fill=\"url(#ci-brass)\"/><rect x=\"64\" y=\"34\" width=\"28\" height=\"32\" rx=\"5\" fill=\"url(#ci-navy)\"/>\n <rect x=\"88\" y=\"32\" width=\"6\" height=\"36\" rx=\"2.5\" fill=\"url(#ci-brass)\"/><path d=\"M12 44h22M40 41h22M68 38h20\" stroke=\"#fff\" stroke-width=\"2.2\" opacity=\".55\" stroke-linecap=\"round\"/></g>\n <path d=\"M44 64l-12 30M50 64l0 30M56 64l12 30\" stroke=\"url(#ci-wood)\" stroke-width=\"4\" stroke-linecap=\"round\"/></svg>","sailboat":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><path d=\"M50 8v66\" stroke=\"url(#ci-wood)\" stroke-width=\"3.5\"/><path d=\"M53 12c20 12 28 34 26 56H53z\" fill=\"url(#ci-sail)\" stroke=\"#9AA9C0\" stroke-width=\"1\"/>\n <path d=\"M47 22C33 32 26 50 27 68h20z\" fill=\"url(#ci-sail)\" stroke=\"#9AA9C0\" stroke-width=\"1\"/><path d=\"M50 6l12 4-12 4z\" fill=\"url(#ci-red)\"/>\n <path d=\"M14 72h72l-10 14H24z\" fill=\"url(#ci-navy)\"/><path d=\"M18 74h64\" stroke=\"#fff\" stroke-width=\"2\" opacity=\".5\"/>\n <path d=\"M6 92q8-5 16 0t16 0 16 0 16 0 16 0 8 0\" fill=\"none\" stroke=\"#3E8FD0\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>","trophy":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><path d=\"M28 10h44v20c0 15-10 26-22 26S28 45 28 30z\" fill=\"url(#ci-brass)\"/><path d=\"M28 16H14c0 14 8 21 16 22M72 16h14c0 14-8 21-16 22\" fill=\"none\" stroke=\"url(#ci-brass)\" stroke-width=\"5\"/>\n <rect x=\"45\" y=\"55\" width=\"10\" height=\"14\" fill=\"url(#ci-brass)\"/><path d=\"M32 69h36l4 10H28z\" fill=\"url(#ci-brass)\"/><rect x=\"24\" y=\"79\" width=\"52\" height=\"11\" rx=\"3\" fill=\"url(#ci-navy)\"/>\n <path d=\"M35 16v14c0 7 3 12 7 15\" fill=\"none\" stroke=\"#FFF6CF\" stroke-width=\"3.5\" stroke-linecap=\"round\" opacity=\".85\"/><path d=\"M50 22l3 6 6.5.5-5 4.3 1.6 6.4L50 36l-5.6 3.2 1.6-6.4-5-4.3 6.5-.5z\" fill=\"#FFF6CF\" opacity=\".9\"/></svg>","cap":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><path d=\"M12 50c0-20 17-34 38-34s38 14 38 34z\" fill=\"url(#ci-sail)\" stroke=\"#9AA9C0\" stroke-width=\"1.2\"/><path d=\"M10 50h80l-3 13H13z\" fill=\"url(#ci-navy)\"/>\n <path d=\"M16 63c10 12 58 12 68 0z\" fill=\"#0E1730\"/><path d=\"M14 56h72\" stroke=\"url(#ci-brass)\" stroke-width=\"3\"/>\n <circle cx=\"50\" cy=\"34\" r=\"10\" fill=\"url(#ci-brass)\"/><circle cx=\"50\" cy=\"29.5\" r=\"2\" fill=\"none\" stroke=\"#6E4710\" stroke-width=\"1.4\"/><path d=\"M50 31.5v9M46.5 34h7M44.5 37.5c1 2.6 3 3.6 5.5 3.6s4.5-1 5.5-3.6\" fill=\"none\" stroke=\"#6E4710\" stroke-width=\"1.4\" stroke-linecap=\"round\"/><path d=\"M24 34c6-9 14-13 22-14\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" opacity=\".8\" stroke-linecap=\"round\"/></svg>"};
+const CHEERS = [
+  ["anchor", "Land ho, {n}! The finish line is in sight."], ["wheel", "Full steam ahead, {n}."], ["compass", "{n} is on course for victory."],
+  ["bell", "Ring the bell — {n} is {left} away."], ["lighthouse", "{n} can see the harbor lights."], ["telescope", "Victory in sight for {n}."],
+  ["sailboat", "Wind in your sails, {n} — just {left} to go."], ["trophy", "One good hand from glory, {n}."], ["cap", "Captain {n}, bring her home."],
+  ["anchor", "Steady as she goes, {n}. Only {left} more."], ["compass", "Hold your course, {n}."], ["lighthouse", "{n} is on the home stretch."],
+  ["telescope", "Watch out — {n} is about to win."], ["bell", "All hands on deck: {n} is closing in."], ["trophy", "Polish the trophy for {n}."]
+];
+const cheerSeen = {}; let lastCheer = -1;
+function cheerCheck(key, names, scores, target, near, lowWins){
+  if(!target || lowWins) return;
+  const fresh = scores.every(v => !v), prev = cheerSeen[key];
+  if(fresh || !prev){ cheerSeen[key] = {done: new Set(), init: !fresh && !prev}; }
+  const st = cheerSeen[key], top = Math.max(...scores), leaders = scores.reduce((a, v, i) => v === top ? a.concat(i) : a, []);
+  scores.forEach((v, i) => {
+    const close = v < target && target - v <= near && leaders.length === 1 && leaders[0] === i;
+    if(!close || st.done.has(i)) return;
+    st.done.add(i);
+    if(st.init) return;                      // the app just opened on a close game: don't pop up now
+    let k; do { k = Math.floor(Math.random() * CHEERS.length); } while(k === lastCheer && CHEERS.length > 1); lastCheer = k;
+    cheerToast(CHEERS[k][1].replace(/\{n\}/g, names[i]).replace(/\{left\}/g, target - v), CHEERS[k][0], {k, name: names[i]});
+  });
+  st.init = false;
+}
+/* 🗣️ read a cheer out loud with the phone's own voice (works offline; each phone can turn it off in Settings) */
+let sayVoice = null;
+function pickVoice(){
+  try { const vs = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang)); if(!vs.length) return null;
+    const pref = ["Samantha","Daniel","Karen","Moira","Serena","Arthur","Google US English","Google UK English Female"];
+    return pref.map(n => vs.find(v => v.name.indexOf(n) === 0)).find(Boolean) || vs.find(v => /en-US/i.test(v.lang) && v.localService) || vs[0]; } catch(e){ return null; }
+}
+try { speechSynthesis.onvoiceschanged = () => { sayVoice = pickVoice(); }; } catch(e){}
+function sayAloud(text){
+  if(!soundOn || !sndOn("voice") || !("speechSynthesis" in window)) return;
+  try {
+    const u = new SpeechSynthesisUtterance(text.replace(/\s*—\s*/g, ", "));
+    sayVoice = sayVoice || pickVoice(); if(sayVoice){ u.voice = sayVoice; u.lang = sayVoice.lang; } else u.lang = "en-US";
+    u.rate = .95; u.pitch = 1.05; u.volume = 1;
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+  } catch(e){}
+}
+
+/* 🎙️ our own voices: each cheer can be recorded for each player. Clips live under cruiseScorebook/voices in the
+   database (every phone gets them; the scores sync ignores this part) and a copy is kept on each phone so they play offline. */
+const VOICE_MAX_MS = 6000;
+const voiceKey = (k, name) => "c" + k + "_" + String(name || "").toLowerCase().replace(/[^a-z0-9]+/g, "") ;
+const voiceClips = {};   // key -> {data, mime, at, by}
+let voiceDB = null;
+function vdb(){ if(voiceDB) return voiceDB; voiceDB = new Promise(res => { try { const r = indexedDB.open("cs-voices", 1);
+  r.onupgradeneeded = () => r.result.createObjectStore("clips"); r.onsuccess = () => res(r.result); r.onerror = () => res(null); } catch(e){ res(null); } }); return voiceDB; }
+async function vput(key, val){ const d = await vdb(); if(!d) return; try { const tx = d.transaction("clips", "readwrite"); val === null ? tx.objectStore("clips").delete(key) : tx.objectStore("clips").put(val, key); } catch(e){} }
+async function vloadAll(){ const d = await vdb(); if(!d) return; try { const st = d.transaction("clips").objectStore("clips"), r = st.openCursor();
+  r.onsuccess = () => { const c = r.result; if(c){ if(c.value && c.value.data) voiceClips[c.key] = c.value; c.continue(); } else { flushVoices(); if(tab === "settings") render(); } }; } catch(e){} }
+vloadAll();
+function voiceRef(){ try { return cloud.ref ? cloud.ref.child("voices") : null; } catch(e){ return null; } }
+// clips from the other phone(s)
+let voiceListening = false;
+function listenVoices(){
+  const r = voiceRef(); if(!r || voiceListening) return; voiceListening = true;
+  r.on("value", snap => { const all = snap.val() || {};
+    Object.keys(all).forEach(k => { const v = all[k]; if(v && v.data && (!voiceClips[k] || (voiceClips[k].at || 0) < (v.at || 0))){ voiceClips[k] = Object.assign({}, v); vput(k, voiceClips[k]); } });
+    Object.keys(voiceClips).forEach(k => { if(!all[k] && !voiceClips[k].pending){ delete voiceClips[k]; vput(k, null); } });
+    if(tab === "settings" && !voiceRec.on) render(); flushVoices(); });
+}
+setInterval(listenVoices, 3000);
+// send clips recorded while offline
+function flushVoices(){
+  const r = voiceRef(); if(!r || !navigator.onLine) return;
+  Object.keys(voiceClips).forEach(k => { const v = voiceClips[k]; if(!v.pending) return;
+    if(v.deleted){ r.child(k).remove().then(() => { delete voiceClips[k]; vput(k, null); }).catch(() => {}); return; }
+    const {pending, ...clean} = v; r.child(k).set(clean).then(() => { v.pending = false; vput(k, v); }).catch(() => {}); });
+}
+window.addEventListener("online", flushVoices);
+function playOurVoice(k, name){
+  if(!soundOn || !sndOn("voice")) return true;   // voice off: stay quiet (and don't fall back to the phone voice)
+  if(!sndOn("ours")) return false;               // our recordings switched off: use the phone's voice
+  const v = voiceClips[voiceKey(k, name)]; if(!v || v.deleted || !v.data) return false;
+  try { const a = new Audio(v.data); a.volume = 1; const pr = a.play(); if(pr && pr.catch) pr.catch(() => sayAloud(CHEERS[k][1].replace(/\{n\}/g, name).replace(/\{left\}/g, ""))); return true; } catch(e){ return false; }
+}
+// recording
+const voiceRec = {on: false, key: null, mr: null, chunks: [], t: null, who: ""};
+async function startRec(key){
+  if(voiceRec.on) return stopRec();
+  if(!navigator.mediaDevices || !window.MediaRecorder){ sheet("Recording isn't available", "This browser can't record. Open the scorebook in Safari on the iPhone.", "OK", () => {}); return; }
+  let stream; try { stream = await navigator.mediaDevices.getUserMedia({audio: {echoCancellation: true, noiseSuppression: true}}); }
+  catch(e){ sheet("Microphone is off", "Allow the microphone for Safari: Settings app → Safari → Microphone → Allow, then try again.", "OK", () => {}); return; }
+  const mime = ["audio/mp4", "audio/aac", "audio/webm;codecs=opus", "audio/webm"].find(m => { try { return MediaRecorder.isTypeSupported(m); } catch(e){ return false; } }) || "";
+  const mr = new MediaRecorder(stream, mime ? {mimeType: mime, audioBitsPerSecond: 48000} : undefined);
+  Object.assign(voiceRec, {on: true, key, mr, chunks: []});
+  mr.ondataavailable = e => { if(e.data && e.data.size) voiceRec.chunks.push(e.data); };
+  mr.onstop = () => { stream.getTracks().forEach(t => t.stop());
+    const blob = new Blob(voiceRec.chunks, {type: mr.mimeType || mime || "audio/mp4"}), fr = new FileReader();
+    fr.onload = () => { const clip = {data: fr.result, mime: blob.type, at: Date.now(), by: S().p1 && voiceRec.who ? voiceRec.who : "", pending: true};
+      voiceClips[key] = clip; vput(key, clip); flushVoices(); voiceRec.on = false; voiceRec.key = null; render(); new Audio(clip.data).play().catch(() => {}); };
+    fr.readAsDataURL(blob); };
+  mr.start(); render();
+  clearTimeout(voiceRec.t); voiceRec.t = setTimeout(stopRec, VOICE_MAX_MS);
+}
+function stopRec(){ clearTimeout(voiceRec.t); try { if(voiceRec.mr && voiceRec.mr.state !== "inactive") voiceRec.mr.stop(); } catch(e){ voiceRec.on = false; render(); } }
+let voiceFor = null;   // whose lines are shown in Settings
+let voicesOpen = false; try { voicesOpen = localStorage.getItem("cs-voices-open") === "1"; } catch(e){}
+function voicesSection(){
+  const names = [S().p1 || "Alessandra", S().p2 || "Kirk"]; if(!voiceFor || !names.includes(voiceFor)) voiceFor = names[0];
+  const have = n => CHEERS.filter((c, k) => { const v = voiceClips[voiceKey(k, n)]; return v && !v.deleted; }).length;
+  if(!voicesOpen && !voiceRec.on) return `<section class="set-card vc-closed"><button type="button" class="vc-head" data-vtoggle aria-expanded="false"><span class="vc-h">🎙️ Our voices</span><span class="vc-sum">${names.map(n => `<span>${esc(n)} <b>${have(n)}/${CHEERS.length}</b></span>`).join("")}</span><span class="vc-chev" aria-hidden="true">▾</span></button></section>`;
+  return `<section class="set-card"><button type="button" class="vc-head" data-vtoggle aria-expanded="true"><span class="vc-h">🎙️ Our voices</span><span class="vc-sum">${names.map(n => `<span>${esc(n)} <b>${have(n)}/${CHEERS.length}</b></span>`).join("")}</span><span class="vc-chev" aria-hidden="true">▴</span></button>
+    <button type="button" class="set-tog" data-snd="ours" aria-pressed="${sndOn("ours")}" style="margin-top:6px"><span>🎙️ Use our recorded voices${sndOn("voice") ? "" : " <small style=\"color:var(--muted)\">(cheers are silent: “Read cheers out loud” is off)</small>"}</span><i class="sw ${sndOn("ours") ? "on" : ""}" aria-hidden="true"></i></button>
+    <p class="set-note" style="margin:10px 0 10px">Record the cheers in your own voices. They play on every phone using the app. Lines you don't record use the phone's voice. Each recording is up to 6 seconds.</p>
+    <div class="set-seg" role="group">${names.map(n => `<button type="button" class="b3d ${n === voiceFor ? "on" : ""}" data-voicefor="${esc(n)}">Lines about ${esc(n)} · ${have(n)}/${CHEERS.length}</button>`).join("")}</div>
+    <div class="vc-list">${CHEERS.map(([ic, txt], k) => { const key = voiceKey(k, voiceFor), v = voiceClips[key], has = v && !v.deleted, rec = voiceRec.on && voiceRec.key === key;
+      return `<div class="vc-row ${rec ? "rec" : ""}"><span class="vc-ic">${CHEER_ICONS[ic]}</span><span class="vc-t">${esc(txt.replace(/\{n\}/g, voiceFor).replace(/\{left\}/g, "12"))}${has ? `<small>${v.pending ? "⏳ waiting to send" : "✓ recorded"}</small>` : ""}</span>
+        <span class="vc-b"><button type="button" class="b3d vc-rec ${rec ? "on" : ""}" data-vrec="${key}" aria-label="${rec ? "Stop" : "Record"}">${rec ? "⏹ Stop" : has ? "🔴 Redo" : "🔴 Record"}</button>${has ? `<button type="button" class="b3d vc-play" data-vplay="${key}">▶</button><button type="button" class="b3d vc-del" data-vdel="${key}" aria-label="Delete recording">✕</button>` : ""}</span></div>`; }).join("")}</div>
+    <p class="set-note">Lines with "12" will say whatever number you record, so leave the number out or say it as you like. The first time, the iPhone asks to use the microphone: tap Allow.</p>
+  </section>`;
+}
+document.addEventListener("click", e => {
+  if(e.target.closest("[data-vtoggle]")){ voicesOpen = !voicesOpen; try { localStorage.setItem("cs-voices-open", voicesOpen ? "1" : "0"); } catch(err){} render(); return; }
+  const f = e.target.closest("[data-voicefor]"); if(f){ voiceFor = f.dataset.voicefor; render(); return; }
+  const r = e.target.closest("[data-vrec]"); if(r){ voiceRec.who = voiceFor; startRec(r.dataset.vrec); return; }
+  const pl = e.target.closest("[data-vplay]"); if(pl){ const v = voiceClips[pl.dataset.vplay]; if(v && v.data) new Audio(v.data).play().catch(() => {}); return; }
+  const d = e.target.closest("[data-vdel]"); if(d){ const key = d.dataset.vdel;
+    sheet("Delete this recording?", "That line goes back to the phone's voice on every phone.", "Delete", () => { voiceClips[key] = {deleted: true, pending: true, at: Date.now()}; vput(key, voiceClips[key]); flushVoices(); render(); }, true); }
+});
+function cheerToast(msg, icon, who){
+  let el = document.getElementById("cheerToast");
+  if(!el){ el = document.createElement("div"); el.id = "cheerToast"; el.className = "cheertoast"; el.setAttribute("role", "status");
+    el.addEventListener("click", () => el.classList.remove("show")); document.body.appendChild(el); }
+  el.innerHTML = `<span class="ct-ic">${CHEER_ICONS[icon] || CHEER_ICONS.trophy}</span><span class="ct-txt">${esc(msg)}</span><small class="ct-tap">tap to close</small>`;
+  el.classList.remove("show"); void el.offsetWidth; el.classList.add("show"); if(!(who && playOurVoice(who.k, who.name))) sayAloud(msg);
+  clearTimeout(cheerToast.t); cheerToast.t = setTimeout(() => el.classList.remove("show"), 7000);
 }
 /* 🤝 tie jingle: plays when the players become tied during a game (not at 0–0, and not
    when the app just opens on a tie). Game-show suspense: "dun … dun … DUNNN!" */
@@ -4222,18 +4463,32 @@ function celebrate(t, g, more){
   const css = getComputedStyle(document.documentElement);
   const main = g.winner===1 ? css.getPropertyValue("--p1") : g.winner===2 ? css.getPropertyValue("--p2") : css.getPropertyValue("--peach");
   const cols = [main, main, css.getPropertyValue("--accent"), scala ? css.getPropertyValue("--sca") : css.getPropertyValue("--dom"), "#FFE08A", "#FFFFFF"].map(c => c.trim());
-  const pics = scala ? CARD_IMGS : TILE_IMGS;
-  const bits = Array.from({length:120}, (_,i) => { const pic = i % 4 === 0;
-    return {x:Math.random()*W, y:-30-Math.random()*H*0.7, vx:(Math.random()-.5)*2.2, vy:pic ? 1.6+Math.random()*1.6 : 2+Math.random()*3.2,
-      r:Math.random()*6.28, vr:(Math.random()-.5)*(pic ? .08 : .25), img:pic ? pics[i % pics.length] : null,
-      w:pic ? (scala ? 26 : 16) : 6+Math.random()*7, h:pic ? 34 : 4+Math.random()*5, c:cols[i % cols.length]}; });
+  const sea = seaDay(), pics = scala ? CARD_IMGS : TILE_IMGS, fl = sea ? null : hereFlag(), flag = fl && fl.img ? fl : null;
+  const bits = Array.from({length:120}, (_,i) => { const isFlag = flag && i % 5 === 1, pic = !isFlag && i % 4 === 0;
+    if(sea && i % 4 === 1) return {x:Math.random()*W, y:-30-Math.random()*H*0.7, vx:(Math.random()-.5)*1.6, vy:1.2+Math.random()*1.5, r:(Math.random()-.5)*.6, vr:(Math.random()-.5)*.02,
+      emo: SEA_LIFE[((i - 1) / 4) % SEA_LIFE.length], size: 20 + Math.random()*8};
+    if(sea && i % 6 === 3) return {x:Math.random()*W, y:H*0.15 + Math.random()*H, vx:(Math.random()-.5)*.6, vy:-(0.8+Math.random()*1.2), r:0, vr:0, bubble: 4 + Math.random()*7};
+    const fw = 44 + Math.random()*12;   // flags start fairly big and grow as they fall (see "grow" below)
+    return {x:Math.random()*W, y:-30-Math.random()*H*0.7, vx:(Math.random()-.5)*2.2, vy:pic || isFlag ? 1.4+Math.random()*1.6 : 2+Math.random()*3.2,
+      r:isFlag ? (Math.random()-.5)*.6 : Math.random()*6.28, vr:(Math.random()-.5)*(isFlag ? .02 : pic ? .07 : .25), img:isFlag ? flag.img : pic ? pics[i % pics.length] : null,
+      w:isFlag ? fw : pic ? (scala ? 26 : 16) : 6+Math.random()*7, h:isFlag ? fw * flag.ratio : pic ? 34 : 4+Math.random()*5, c:cols[i % cols.length], flag:isFlag}; });
   const t0 = performance.now();
   (function frame(now){
     if(!cv.isConnected) return;
     const age = now - t0; ctx.clearRect(0,0,W,H);
     bits.forEach(b => { b.x += b.vx; b.y += b.vy; b.vy += .025; b.r += b.vr;
       ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(b.r); ctx.globalAlpha = Math.max(0, 1 - Math.max(0, age-4200)/800);
-      if(b.img && b.img.complete && b.img.naturalWidth) ctx.drawImage(b.img, -b.w/2, -b.h/2, b.w, b.h); else { ctx.fillStyle = b.c; ctx.fillRect(-b.w/2,-b.h/2,b.w,b.h); }
+      if(b.emo){ const grow = 1 + 1.4 * Math.min(1, Math.max(0, b.y / H));   // sea life grows on the way down, like the flags
+        ctx.font = `${Math.round(b.size * grow)}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(b.emo, 0, 0); }
+      else if(b.bubble){ b.vy -= .05; ctx.beginPath(); ctx.arc(0, 0, b.bubble, 0, 6.29); ctx.fillStyle = "rgba(190,230,255,.35)"; ctx.fill(); ctx.lineWidth = 1.5; ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.stroke();
+        ctx.beginPath(); ctx.arc(-b.bubble*.35, -b.bubble*.35, b.bubble*.25, 0, 6.29); ctx.fillStyle = "rgba(255,255,255,.9)"; ctx.fill(); }
+      else if(b.flag){   // a flag: grows from little to big on the way down, with a white edge and a soft shadow so it's easy to see
+        const grow = 1 + 1.3 * Math.min(1, Math.max(0, b.y / H)), w = b.w * grow, h = b.h * grow;
+        if(b.img.complete && b.img.naturalWidth){ ctx.shadowColor = "rgba(0,0,0,.28)"; ctx.shadowBlur = 6; ctx.shadowOffsetY = 2;
+          ctx.fillStyle = "#fff"; ctx.fillRect(-w/2 - 2, -h/2 - 2, w + 4, h + 4); ctx.shadowColor = "transparent";
+          ctx.drawImage(b.img, -w/2, -h/2, w, h); }
+      }
+      else if(b.img && b.img.complete && b.img.naturalWidth) ctx.drawImage(b.img, -b.w/2, -b.h/2, b.w, b.h); else { ctx.fillStyle = b.c; ctx.fillRect(-b.w/2,-b.h/2,b.w,b.h); }
       ctx.restore(); });
     if(age < 5000) requestAnimationFrame(frame); else ctx.clearRect(0,0,W,H);
   })(t0);
