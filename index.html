@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-title" content="Scorebook">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=Caveat:wght@600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=Caveat:wght@600;700&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap">
 <style>
 /* Layout: one-screen phone app — trip strip, game switch, two side-by-side player columns of raised pastel buttons, bottom-pinned tab bar */
 :root{
@@ -132,7 +132,10 @@ body[data-game="scala"]{background:var(--sca-soft)}
 .gdrop{background:#fff;border:1.5px solid #D8CCF3;border-radius:18px;box-shadow:0 10px 24px rgba(60,40,90,.18);margin:8px 0 14px;max-height:62vh;overflow:auto;-webkit-overflow-scrolling:touch;padding:6px 0}
 .gd-h{font:800 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:#9A8CB8;padding:10px 16px 4px}
 .gd-i{display:flex;align-items:center;gap:12px;width:100%;padding:8px 16px;border:0;background:none;font:700 16px var(--body);color:var(--ink);text-align:left;cursor:pointer}
-.gd-i .glogo{flex:none}.gd-i small{display:block;font-size:12px;color:var(--muted);font-weight:600}
+.gd-i .glogo{flex:none}.gd-i small{display:block;font-size:13.5px;color:var(--muted);font-weight:600}
+.gd-i{font-size:20px !important;gap:14px !important;padding:10px 16px !important}
+.gd-i .glogo.sm{width:46px;height:46px;border-radius:14px;box-shadow:0 3px 0 var(--ge)}.gd-i .glogo.sm .gl-emo{font-size:27px}.gd-i .glogo.sm .glsvg{height:36px}.gd-i .glogo.sm .gl-uno{font-size:12px;padding:6px 5px}.gd-i .glogo.sm .glsvg.bg{height:32px}
+.gd-h{font-size:12.5px !important}
 .gd-i.cur{background:#F3ECFF}.gd-i.cur::after{content:"✓";margin-left:auto;color:#7D5BC9;font-weight:900}
 .gd-custom{display:flex;align-items:center;gap:12px;margin:8px 10px 4px;padding:11px 14px;border-radius:14px;border:1.5px dashed #B9A8E6;background:#FBF8FF;font:800 15px var(--display);color:#5B3FA0;width:calc(100% - 20px);cursor:pointer}
 .gd-custom .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:#E8DAFF;font-size:17px}
@@ -185,14 +188,23 @@ body[data-tab="settings"] #tripHead{display:none}
 .hs-list{display:flex;flex-direction:column;gap:6px;margin:0 0 12px}
 .hs-i{display:flex;flex-direction:column;align-items:flex-start;gap:1px;width:100%;padding:10px 12px;border-radius:14px;border:1.5px solid #CFE3F3;background:#F5FAFF;text-align:left;cursor:pointer;font:inherit;color:var(--ink)}
 .hs-i b{font-size:16px}.hs-i span{font-size:13px;color:var(--muted);font-weight:700}.hs-i small{font-size:12.5px;color:#2F6E9E;font-weight:700}
-.cheertoast{position:fixed;left:3vw;right:3vw;top:7vh;bottom:calc(var(--nav-h, 84px) + 4vh);z-index:31;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5vh;
-  text-align:center;padding:4vh 6vw;box-sizing:border-box;border-radius:34px;opacity:0;visibility:hidden;pointer-events:none;transform:scale(.6);
-  background:radial-gradient(circle at 50% 30%,#FFFFFF 0,#EAF6FF 55%,#CFE6FA 100%);border:4px solid #7FB5E6;box-shadow:0 8px 0 #7FB5E6,0 22px 50px rgba(20,40,80,.35);color:#1F3A66}
-.cheertoast .ct-ic svg{width:clamp(130px,42vw,220px);height:auto;display:block;filter:drop-shadow(0 8px 10px rgba(11,23,48,.35))}
-.cheertoast .ct-txt{font:800 clamp(34px,10vw,58px)/1.15 var(--display);text-wrap:balance}
-.cheertoast .ct-tap{font:700 14px var(--body);color:#5B7C98;opacity:.8}
+.cheertoast{position:fixed;left:50%;top:45%;width:min(88vw,420px);z-index:31;display:flex;flex-direction:column;align-items:center;gap:8px;
+  text-align:center;padding:22px 26px 14px;box-sizing:border-box;border-radius:6px;opacity:0;visibility:hidden;pointer-events:none;transform:translate(-50%,-50%) scale(.6);overflow:hidden;color:#3A2A14;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 27px, rgba(122,90,42,.13) 27px 28px),
+    repeating-linear-gradient(90deg, transparent 0 27px, rgba(122,90,42,.13) 27px 28px),
+    radial-gradient(ellipse at 50% 45%, #FBF0D4 0%, #F1DFB4 60%, #D9BC85 100%);
+  border:3px solid #7A5A2A;outline:2px solid #E8D3A4;outline-offset:-9px;
+  box-shadow:inset 0 0 40px rgba(110,70,20,.35),0 6px 0 #5E431C,0 18px 40px rgba(40,25,5,.45)}
+.cheertoast::before{content:"";position:absolute;inset:5px;border:1.5px dashed rgba(122,90,42,.55);border-radius:3px;pointer-events:none}
+.cheertoast .ct-rose{position:absolute;right:-14px;top:-14px;width:92px;height:92px;opacity:.5;transform:rotate(12deg)}
+.cheertoast .ct-ic svg{width:clamp(80px,24vw,112px);height:auto;display:block;filter:sepia(.25) drop-shadow(0 5px 6px rgba(60,35,5,.35))}
+.cheertoast .ct-txt{position:relative;font:400 clamp(26px,7.4vw,36px)/1.15 "IM Fell English",Georgia,serif;color:#3A2A14;text-wrap:balance;letter-spacing:.01em}
+.cheertoast .ct-scale{display:flex;align-items:center;gap:0;margin-top:2px}.cheertoast .ct-scale i{width:22px;height:6px;border:1px solid #7A5A2A}.cheertoast .ct-scale i:nth-child(odd){background:#7A5A2A}
+.cheertoast .ct-scale em{font:normal 9px "IM Fell English SC",Georgia,serif;letter-spacing:.2em;color:#7A5A2A;margin-left:8px}
+.cheertoast .ct-tap{font:italic 13px "IM Fell English",Georgia,serif;color:#7A5A2A}
 .cheertoast.show{visibility:visible;pointer-events:auto;animation:cheerpop 7s ease forwards}
-@keyframes cheerpop{0%{opacity:0;transform:scale(.6)}5%{opacity:1;transform:scale(1.04)}8%{transform:scale(1)}93%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.96) translateY(-12px)}}
+@keyframes cheerpop{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}5%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}8%{transform:translate(-50%,-50%) scale(1)}93%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-52%) scale(.96)}}
 .vc-head{display:flex;align-items:center;gap:10px;width:100%;padding:0;border:0;background:none;font:inherit;color:var(--ink);text-align:left;cursor:pointer}
 .vc-h{font:800 18px var(--display);flex:none}.vc-sum{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-end;font:700 13px var(--body);color:var(--muted)}.vc-sum b{color:#2E8A57}
 .vc-chev{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#EEF4FF;color:#24477A;font-size:14px;box-shadow:0 2px 0 #A9C2EA}
@@ -200,12 +212,37 @@ body[data-tab="settings"] #tripHead{display:none}
 .vc-row{display:grid;grid-template-columns:44px 1fr;gap:4px 10px;align-items:center;padding:8px 10px;border-radius:14px;background:#F5FAFF;border:1.5px solid #CFE3F3}
 .vc-row.rec{background:#FFF0F0;border-color:#F2A9A9}
 .vc-ic svg{width:42px;height:42px;display:block;filter:drop-shadow(0 2px 3px rgba(11,23,48,.3))}
+.vc-t small.vc-redo{color:#B5650D}
 .vc-t{font:700 15px/1.3 var(--body);color:var(--ink)}.vc-t small{display:block;font-size:12px;color:#2E8A57;font-weight:800;margin-top:2px}
 .vc-b{grid-column:1/-1;display:flex;gap:8px;justify-content:flex-end}
 .vc-b button{font:800 14px var(--display);min-height:38px;padding:0 12px;border-radius:12px}
 .vc-rec{--face:#FFF;--edge:#F2A9A9;color:#A3262A}.vc-rec.on{--face:#E8453C;--edge:#A3262A;color:#fff;animation:recpulse 1s infinite}
 .vc-play{--face:#E6F4FF;--edge:#9CC8EA;color:#1F4A6B;min-width:44px}.vc-del{--face:#fff;--edge:var(--line);color:var(--muted);min-width:40px}
 @keyframes recpulse{50%{filter:brightness(1.15)}}
+.sx{display:flex;flex-direction:column;gap:10px}
+.sx-b{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:18px;border:1.5px solid rgba(255,255,255,.9);text-align:left;font:inherit;color:var(--ink);cursor:pointer;
+ background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,0) 60%),var(--c);box-shadow:0 4px 0 var(--e),0 7px 12px rgba(60,40,90,.12)}
+.sx-b .ic{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;font-size:22px;background:rgba(255,255,255,.75);box-shadow:inset 0 -2px 0 rgba(0,0,0,.05);flex:none}
+.sx-b .tx{flex:1;min-width:0}.sx-b b{display:block;font:800 17px var(--display)}.sx-b small{display:block;font:700 13px var(--body);color:#6A6380;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sx-b .ch{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#6A5ACD;font-size:13px;box-shadow:0 2px 0 var(--e)}
+.sx-item.open .sx-b{border-radius:18px 18px 0 0;box-shadow:0 2px 0 var(--e)}
+.sx-body{padding:14px;border-radius:0 0 18px 18px;background:var(--surface);border:1.5px solid var(--e);border-top:0;margin-bottom:6px;box-shadow:0 4px 0 var(--line)}
+.sx-h3{margin:16px 0 8px;font-size:16px}.sx-two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sx-body .set-tog:first-child{border-top:0}
+div.copyright{cursor:default;box-shadow:none !important;transform:none !important;background:none;pointer-events:none;user-select:none}
+/* long player names: never cut with "…"; they wrap onto a second line (and break inside very long words) */
+.pname,.pc-top .pname,.tally .who,.gbox-names span,.game .res .pair span,.series-row span,.pts-name,.cruise-players span,.rate-h span,.pf-sc span,.ts-games .who span,.ts-ports th{
+  white-space:normal !important;overflow:visible !important;text-overflow:clip !important;overflow-wrap:break-word;word-break:normal;line-height:1.15;hyphens:manual}
+.tally .who{font-size:13px}
+.ts-ports th{max-width:6.5em !important}
+.gbox-names span{flex:1 1 0}.gbox-names span:last-child{text-align:right}
+.pname.long{font-size:15px}.pname.xlong{font-size:13.5px}
+.shl{display:inline-flex;align-items:center;gap:6px;margin:8px 0 0;padding:4px 10px;border:0;border-radius:999px;background:#F2F5F9;font:700 13px var(--body);color:#5B6E86;cursor:pointer;text-align:left;max-width:100%}
+.shl b{color:#2B4A6E}.shl.empty{background:none;color:#8A97A8;text-decoration:underline;text-decoration-color:#C9D3DE;text-underline-offset:3px;padding-left:0}
+.shs-n{display:flex;align-items:center;gap:10px;margin:6px 0 12px}.shs-n button{width:46px;min-height:44px;padding:0;border-radius:14px;font:800 22px var(--display);flex:none}
+.shs-n input{width:70px;text-align:center;font:800 24px var(--display);padding:6px;border-radius:12px;border:1.5px solid var(--line)}
+.shs-names{display:flex;flex-direction:column;gap:8px;max-height:40vh;overflow:auto}.shs-names input{width:100%;box-sizing:border-box;font:600 16px var(--body);padding:10px 12px;border-radius:12px;border:1.5px solid var(--line)}
+.shs-sum{margin:10px 0 2px;padding:8px 12px;border-radius:14px;background:#F2F5F9;font:700 14px var(--body);color:#2B4A6E}.shs-sum small{display:block;font-size:12.5px;color:#5B6E86;margin-top:2px}
 .reachnote p{margin:2px 0 10px;font-size:15px}
 .typein.sc40{grid-template-columns:1fr 1fr;gap:8px}
 .typein.sc40 input{grid-column:1 / -1;min-height:52px;font-size:22px}
@@ -374,7 +411,7 @@ nav.tabs button[aria-current="page"]{color:var(--on-pastel);background:linear-gr
 
 /* copyright trigger + Save As popup */
 .copyright{border:none;background:none;color:var(--muted);font:inherit;font-size:12px;cursor:pointer;padding:6px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
-.copyright:hover{color:var(--ink);background:var(--accent-soft)}
+
 .lockicon{font-size:13px;line-height:1}
 .copyright.is-unlocked{background:var(--dom);color:var(--on-pastel)}
 .lockbtn.unlocked{--face:var(--dom);--edge:var(--dom-edge);color:var(--on-pastel)}
@@ -648,7 +685,7 @@ nav.tabs button{font-size:11.5px}
 .note-f .xbtn{margin-left:8px}
 .xclose{--face:var(--accent-soft);--edge:var(--accent-edge)}
 .copyright{border-radius:999px;color:var(--muted);margin-bottom:6px}
-.copyright:hover{--face:var(--accent-soft);color:var(--ink)}
+
 .copyright.is-unlocked{--face:var(--dom);--edge:var(--dom-edge);color:var(--on-pastel)}
 nav.tabs button:not([aria-current="page"]){color:var(--muted)}
 nav.tabs button[aria-current="page"]{box-shadow:inset 0 -2px 0 rgba(0,0,0,.06),0 4px 0 var(--accent-edge),0 7px 10px var(--drop)}
@@ -683,7 +720,7 @@ nav.tabs .in button[aria-current="page"]{text-decoration:underline;text-decorati
 /* game picker + games with any number of players */
 .glogo{--gc:#eee;--ge:#ccc;flex:none;width:52px;height:52px;border-radius:16px;display:grid;place-items:center;position:relative;overflow:hidden;
   background:radial-gradient(120% 90% at 30% 15%,rgba(255,255,255,.95),rgba(255,255,255,0) 55%),var(--gc);border:1.5px solid rgba(255,255,255,.9);box-shadow:0 4px 0 var(--ge),0 7px 12px rgba(60,40,90,.18),inset 0 -3px 0 rgba(0,0,0,.06)}
-.glogo .gl-emo{font-size:30px;line-height:1;filter:drop-shadow(0 2px 1px rgba(0,0,0,.22));font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.glogo .gl-emo{font-size:30px;line-height:1;text-shadow:0 2px 2px rgba(0,0,0,.22);-webkit-transform:translateZ(0);font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
 .glogo .glsvg{height:40px;width:auto;filter:drop-shadow(0 2px 1px rgba(0,0,0,.2));transform:rotate(-8deg)}
 .glogo .gl-uno{font:900 italic 15px/1 var(--display);color:#FFE14D;background:#E3262E;padding:7px 6px;border-radius:50%/60%;transform:rotate(-14deg);border:2px solid #fff;box-shadow:0 2px 2px rgba(0,0,0,.25);letter-spacing:-.5px}
 .glogo.big{width:64px;height:64px;border-radius:20px}.glogo.big .gl-emo{font-size:38px}.glogo.big .glsvg{height:50px}
@@ -755,7 +792,7 @@ nav.tabs .in button[aria-current="page"]{text-decoration:underline;text-decorati
   background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 60%),linear-gradient(90deg,#FFC9D6 0%,#FFE7A0 30%,#BFEFD9 62%,#D6C6FF 100%)}
 .gn-add .gn-txt{white-space:nowrap;font-family:var(--display);font-size:16px}
 .gn-add .gn-ic{display:inline-flex;align-items:center;gap:2px;flex:none}
-.gn-add .gn-ic i{font-style:normal;font-size:18px;line-height:1;filter:drop-shadow(0 1px 0 rgba(0,0,0,.15));font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.gn-add .gn-ic i{font-style:normal;font-size:18px;line-height:1;text-shadow:0 1px 0 rgba(0,0,0,.15);font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
 .gn-add .gn-dom{height:24px;width:auto;transform:rotate(-14deg);filter:drop-shadow(0 1px 0 rgba(0,0,0,.2))}
 .gn-add .gn-card{height:24px;width:auto;transform:rotate(12deg);filter:drop-shadow(0 1px 0 rgba(0,0,0,.2))}
 .gn-add .gn-ic i.x{font-size:16px}
@@ -920,6 +957,41 @@ button.best-row:active{background:rgba(255,255,255,.85)}
 .jfoot{text-align:center;color:#9A8C74;font-size:12px;margin-top:26px}
 @media (max-width:340px){.jdeck{grid-template-columns:1fr}.jcard.wide{grid-column:auto}}
 .journalbtn{width:100%;margin-top:12px;font-weight:800;--face:#FFF3C4;--edge:#E3C443;color:#5A4500}
+
+/* 🔍 search everything */
+#tripHead .route{padding-right:34px}
+.srchbtn{position:absolute;right:2px;bottom:0;width:32px;height:32px;border-radius:50%;border:0;padding:0;display:grid;place-items:center;cursor:pointer;background:transparent;opacity:.6}
+.srchbtn:active{opacity:1;background:rgba(36,52,94,.08)}
+.srchbtn svg{width:19px;height:19px}
+.section-h.has-srch{display:flex;align-items:center;justify-content:space-between}
+.section-h .srchbtn{position:static}
+.srch-scrim{position:fixed;inset:0;z-index:30;background:rgba(25,32,60,.45);display:flex;justify-content:center;align-items:flex-start}
+.srch{width:100%;max-width:560px;max-height:100%;display:flex;flex-direction:column;background:var(--surface,#fff);border-radius:0 0 22px 22px;box-shadow:0 10px 30px rgba(0,0,0,.25);
+  padding:calc(12px + env(safe-area-inset-top,0px)) 14px 10px}
+.srch-top{display:flex;gap:8px;align-items:center}
+.srch-in{flex:1;min-width:0;display:flex;align-items:center;gap:8px;background:#F1F4FA;border:1.5px solid #C9D7EE;border-radius:14px;padding:0 10px}
+.srch-in svg{width:19px;height:19px;flex:none}
+.srch-in input{flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:17px;padding:11px 0;outline:none;color:inherit}
+.srch-clear{border:0;background:#C9D2E4;color:#fff;width:22px;height:22px;border-radius:50%;font-size:14px;line-height:22px;padding:0;cursor:pointer}
+.srch-done{flex:none;border:0;background:none;font:inherit;font-weight:700;color:#3B5BA9;font-size:16px;padding:8px 4px;cursor:pointer}
+.srch-res{overflow-y:auto;-webkit-overflow-scrolling:touch;margin-top:10px;padding-bottom:6px}
+.srch-h{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#7B84A3;margin:12px 4px 6px}
+.srch-r{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;border:0;background:#fff;border-radius:14px;padding:10px 12px;margin:0 0 6px;font:inherit;cursor:pointer;color:inherit;
+  box-shadow:0 1px 0 #DDE4F2,0 2px 6px rgba(30,45,90,.06);border:1px solid #E6EBF5}
+.srch-r:active{background:#F1F4FA}
+.srch-ic{font-size:20px;line-height:1.2;flex:none;width:26px;text-align:center}
+.srch-t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.srch-t b{font-size:16px;overflow-wrap:anywhere}
+.srch-t small{font-size:13px;color:#6A7391;overflow-wrap:anywhere}
+.srch-t i{font-style:normal;font-size:14px;color:#3E4560;overflow-wrap:anywhere}
+.srch mark{background:#FFE58A;color:inherit;border-radius:3px;padding:0 1px}
+.srch-empty{color:#6A7391;text-align:center;padding:22px 10px;font-size:15px;line-height:1.45}
+.srch-tips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px}
+.srch-tips button{border:1px solid #D5DDEE;background:#F6F8FC;border-radius:999px;padding:6px 12px;font:inherit;font-size:14px;cursor:pointer;color:#3E4560}
+.srch-flash{animation:srchFlash 2.2s ease}
+tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
+@keyframes srchRow{0%,45%{background:#FFF1B8}100%{background:transparent}}
+@keyframes srchFlash{0%,40%{box-shadow:0 0 0 4px #FFD24D,0 0 18px #FFD24D}100%{box-shadow:none}}
 </style>
 </head>
 <body>
@@ -929,7 +1001,7 @@ button.best-row:active{background:rgba(255,255,255,.85)}
   <header class="trip" id="tripHead"></header>
   <main id="view"></main>
   <div id="homeClockSlot"></div>
-  <footer><button type="button" class="copyright" id="copyright-trigger" aria-haspopup="dialog"><span class="lockicon" id="lockicon" aria-hidden="true">🔒</span>© 2026 Thor<span class="syncdot" id="syncdot" aria-hidden="true"></span></button><div class="appver" id="appver"></div></footer>
+  <footer><div class="copyright" id="copyright-trigger"><span class="lockicon" id="lockicon" aria-hidden="true">🔒</span>© 2026 Thor<span class="syncdot" id="syncdot" aria-hidden="true"></span></div><div class="appver" id="appver"></div></footer>
 </div>
 
 <nav class="tabs" aria-label="Sections"><div class="in">
@@ -950,9 +1022,9 @@ button.best-row:active{background:rgba(255,255,255,.85)}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "18.6";
-const APP_UPDATED = "Nov 14, 2026, 3:05 AM ET";
-/* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (tap © 2026 Thor). */
+const APP_VERSION = "19.6";
+const APP_UPDATED = "Nov 14, 2026, 6:10 PM ET";
+/* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (⚙️ Settings → 🔒 Editing lock). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
 const isLocked = ts => !editingUnlocked && !!ts && (Date.now() - ts) > LOCK_MS;
@@ -1013,7 +1085,11 @@ const PORT_COORDS = {
   "fort lauderdale":[26.09,-80.12], "port everglades":[26.09,-80.12], "port canaveral":[28.41,-80.62], "grand turk":[21.46,-71.14], "oranjestad":[12.52,-70.03],
   "panama canal":[9.08,-79.68], "fuerte amador":[8.92,-79.53], "mazatlan":[23.20,-106.42], "cabo san lucas":[22.88,-109.91], "fremantle":[-32.05,115.74], "brisbane":[-27.38,153.17], "sydney":[-33.86,151.21],
   "buenos aires":[-34.59,-58.37], "punta arenas":[-53.16,-70.91], "ushuaia":[-54.81,-68.30], "antarctic peninsula":[-64.5,-62.0],
-  "port stanley":[-51.69,-57.85], "stanley":[-51.69,-57.85], "montevideo":[-34.90,-56.21]
+  "port stanley":[-51.69,-57.85], "stanley":[-51.69,-57.85], "montevideo":[-34.90,-56.21],
+  "vancouver":[49.29,-123.11], "ketchikan":[55.34,-131.64], "juneau":[58.30,-134.42], "skagway":[59.45,-135.32],
+  "glacier bay national park":[58.67,-136.90], "glacier bay":[58.67,-136.90], "college fjord":[61.20,-147.80], "whittier":[60.77,-148.68], "anchorage":[61.22,-149.90],
+  "muroran":[42.32,140.97], "sapporo":[42.32,140.97], "vladivostok":[43.11,131.88], "busan":[35.10,129.04], "qingdao":[36.07,120.32],
+  "dalian":[38.92,121.65], "tianjin":[38.98,117.78], "beijing":[38.98,117.78]
 };
 const PORT_ZONES = {
   "auckland":"Pacific/Auckland","tauranga":"Pacific/Auckland","suva":"Pacific/Fiji","dravuni island":"Pacific/Fiji","dravuni":"Pacific/Fiji",
@@ -1024,12 +1100,24 @@ const PORT_ZONES = {
   "fort lauderdale":"America/New_York","port everglades":"America/New_York","port canaveral":"America/New_York","grand turk":"America/Grand_Turk","oranjestad":"America/Aruba",
   "panama canal":"America/Panama","fuerte amador":"America/Panama","mazatlan":"America/Mazatlan","cabo san lucas":"America/Mazatlan","fremantle":"Australia/Perth","brisbane":"Australia/Brisbane","sydney":"Australia/Sydney",
   "buenos aires":"America/Argentina/Buenos_Aires","punta arenas":"America/Punta_Arenas","ushuaia":"America/Argentina/Ushuaia","antarctic peninsula":"Antarctica/Palmer",
-  "port stanley":"Atlantic/Stanley","stanley":"Atlantic/Stanley","montevideo":"America/Montevideo"
+  "port stanley":"Atlantic/Stanley","stanley":"Atlantic/Stanley","montevideo":"America/Montevideo",
+  "vancouver":"America/Vancouver","ketchikan":"America/Sitka","juneau":"America/Juneau","skagway":"America/Juneau",
+  "glacier bay national park":"America/Juneau","glacier bay":"America/Juneau","college fjord":"America/Anchorage","whittier":"America/Anchorage","anchorage":"America/Anchorage",
+  "muroran":"Asia/Tokyo","sapporo":"Asia/Tokyo","vladivostok":"Asia/Vladivostok","busan":"Asia/Seoul","qingdao":"Asia/Shanghai",
+  "dalian":"Asia/Shanghai","tianjin":"Asia/Shanghai","beijing":"Asia/Shanghai"
 };
 const HOME_ZONE = "America/New_York";   // default only: the real home is in Settings (homeZone())
 const placeKey = name => (name||"").toLowerCase().split(",")[0].replace(/\(.*?\)/g,"").trim();
 /* published itineraries: stops between departure and arrival, loaded once per trip */
 const ITINERARIES = [{
+  // Diamond Princess 2013, voyage M327A: Alaska (Voyage of the Glaciers) + Alaska & Far East; the ship lost a day at the Date Line
+  match: t => /^2013-09-1[34]$/.test(t.start||"") && /vancouver/i.test(t.from||""),
+  key: "diamond-princess-2013-09-14", ship: "Diamond Princess",
+  stops: [["Ketchikan, Alaska","2013-09-16"],["Juneau, Alaska","2013-09-17"],["Skagway, Alaska","2013-09-18"],
+          ["Glacier Bay National Park, Alaska","2013-09-19"],["College Fjord, Alaska","2013-09-20"],["Whittier (Anchorage), Alaska","2013-09-21"],
+          ["Muroran (Sapporo), Japan","2013-09-28"],["Vladivostok, Russia","2013-09-30"],["Busan, South Korea","2013-10-02"],
+          ["Qingdao, China","2013-10-04"],["Dalian, China","2013-10-05"]]
+},{
   match: t => t.start === "2026-11-09" && /auckland/i.test(t.from||""),
   key: "crown-princess-2026-11-09", ship: "Crown Princess",
   stops: [["Tauranga, New Zealand","2026-11-10"],["Suva, Fiji","2026-11-13"],["Dravuni Island, Fiji","2026-11-14"],
@@ -1125,6 +1213,8 @@ function migrate(s){
     if(!t.p1 || t.p1 === "AT") t.p1 = "Alessandra";
     if(!t.p2 || t.p2 === "Player 2") t.p2 = "Kirk";
     t.ports.forEach(p => { [1,2].forEach(w => { const v = w === 1 ? p.s1 : p.s2; if(v != null && !p["rated" + w]) p["rated" + w] = Date.now(); }); });
+    // 2013 Vancouver → Beijing: the ship sailed Sep 14 (entered as Sep 13); fixed once, so a later manual change sticks
+    if(t.start === "2013-09-13" && /vancouver/i.test(t.from||"") && !t.startFix){ t.start = "2013-09-14"; t.startFix = 1; }
     ensureEndPorts(t);
     if(loadItinerary(t)) s.updatedAt = Math.max(s.updatedAt||0, 1);
   });
@@ -1598,7 +1688,8 @@ function renderHead(){
     <div class="badges" aria-hidden="true">${DOMINO.replace('<svg ','<svg class="dtile" ')}${QCARD.replace('<svg ','<svg class="qcard" ')}</div>
     <div class="eyebrow">${esc(shipCabin(t) ? shipCabin(t) + " · " : "")}${esc(fmtRange(t.start,t.end))}</div>
     <h1>${esc(t.name)}</h1>
-    <div class="route">${route}</div>`;
+    <div class="route">${route}</div>
+    <button type="button" class="srchbtn" data-search aria-label="Search everything">${SRCH_ICON}</button>`;
 }
 
 function scoreTop(t, type){
@@ -1624,7 +1715,7 @@ function renderDomino(){
     const s = n===1?c.s1:c.s2, name = n===1?t.p1:t.p2, wins = n===1?tl.w1:tl.w2;
     const togo = t.target ? Math.max(0, t.target - s) : null;
     return `<section class="player p${n}" aria-label="${esc(name)}">
-      <div class="pname">${esc(name)}</div>
+      <div class="pname ${name.length > 16 ? "xlong" : name.length > 11 ? "long" : ""}">${esc(name)}</div>
       <div class="score" id="sc${n}">${s}</div>
       ${t.target ? `<div class="meter" aria-hidden="true"><span style="width:${Math.min(100, s/t.target*100)}%"></span></div>` : ""}
       <div class="togo">${togo === null ? "" : togo === 0 ? "Reached " + t.target : togo + " to go"}</div>
@@ -1668,7 +1759,7 @@ function renderScala(){
     const s = n===1?sc.s1:sc.s2, name = n===1?t.p1:t.p2, wins = n===1?tl.w1:tl.w2;
     const left = Math.max(0, L - s);
     return `<section class="player p${n}" aria-label="${esc(name)}">
-      <div class="pname">${esc(name)}</div>
+      <div class="pname ${name.length > 16 ? "xlong" : name.length > 11 ? "long" : ""}">${esc(name)}</div>
       <div class="score" id="sc${n}">${s}</div>
       <div class="meter" aria-hidden="true"><span style="width:${Math.min(100, s/L*100)}%"></span></div>
       <div class="togo">${s >= L ? "Reached " + L : left + " before " + L}</div>
@@ -1773,7 +1864,7 @@ const PARTY_GAMES = [
 const canDelCustom = g => !!g && /^c_/.test(g.key) && (editingUnlocked || Date.now() - (g.createdAt || 0) < LOCK_MS);
 function askDeleteCustom(key){
   const g = PG(key), t = trip(); if(!/^c_/.test(g.key)) return;
-  if(!canDelCustom(g)){ sheet("This game is locked", "Custom games lock 48 hours after they're made. Tap 🔒 © 2026 Thor at the bottom to unlock, then delete it.", "OK", () => {}); return; }
+  if(!canDelCustom(g)){ sheet("This game is locked", "Custom games lock 48 hours after they're made. Unlock in ⚙️ Settings → 🔒 Editing lock, then delete it.", "OK", () => {}); return; }
   sheet(`Delete “${g.name}”?`, "It's removed from the list of games on both phones. Games you already finished stay in the Wins tab.", "Delete game", () => {
     state.trips.forEach(x => { if(x.customGames){ x.customGames = (Array.isArray(x.customGames) ? x.customGames : Object.values(x.customGames)).filter(c => c.key !== g.key); }
       (x.partyGames || []).forEach(r => { if(r.game === g.key && !r.gameName) r.gameName = g.name; });
@@ -2026,7 +2117,7 @@ function renderParty(){
   const col = i => { const s = p.scores[i], name = p.players[i];
     const note = !L ? "" : g.mode === "high" ? (s >= L ? "Reached " + L : (L - s) + " to go") : (s >= L ? (g.mode === "elim" ? "Out · reached " : "Reached ") + L : (L - s) + " before " + L);
     return `<section class="player ${cols[i]} ${st.out[i] ? "out" : ""}" aria-label="${esc(name)}">
-      <div class="pname">${esc(name)}${st.lead.includes(i) && !st.out[i] && p.log.length ? ' <span class="crown" title="' + (g.mode === "high" ? "Leading" : "Lowest score") + '">👑</span>' : ""}</div>
+      <div class="pname ${name.length > 16 ? "xlong" : name.length > 11 ? "long" : ""}">${esc(name)}${st.lead.includes(i) && !st.out[i] && p.log.length ? ' <span class="crown" title="' + (g.mode === "high" ? "Leading" : "Lowest score") + '">👑</span>' : ""}</div>
       <div class="score">${s}</div>
       ${L ? `<div class="meter" aria-hidden="true"><span style="width:${Math.max(0, Math.min(100, s / L * 100))}%"></span></div>` : ""}
       <div class="togo">${note}</div>
@@ -2337,7 +2428,7 @@ function hotelsSection(t){
   return `<div class="section-h"><h2>Hotels</h2><span class="eyebrow">${hs.length} stay${hs.length === 1 ? "" : "s"}</span></div>
     ${hs.length ? hs.map(h => { const lk = hotelLocked(h); return `<div class="hotel" id="hotel-${h.id}">
       ${hotelFields(h, "data-h", lk)}
-      ${lk ? `<span class="port-note">🔒 Locked 48 hours after it was added. Unlock in Save As (tap © 2026 Thor).</span>` : `<button type="button" class="xbtn" data-delhotel="${h.id}">Remove hotel</button>`}
+      ${lk ? `<span class="port-note">🔒 Locked 48 hours after it was added. Unlock in ⚙️ Settings.</span>` : `<button type="button" class="xbtn" data-delhotel="${h.id}">Remove hotel</button>`}
     </div>`; }).join("") : `<div class="empty">No hotels for this trip. Add the hotels where you stay before or after the cruise.</div>`}
     <button type="button" class="btn b3d pf-add" data-act="addhotel">+ Add a hotel</button>`;
 }
@@ -2382,6 +2473,115 @@ function sortDone(list){
 document.addEventListener("click", e => { const b = e.target.closest("[data-donesort]"); if(!b) return;
   doneSort = b.dataset.donesort; try { localStorage.setItem(LS_KEY + ":doneSort", doneSort); } catch(err){}
   const y = window.scrollY; render(); window.scrollTo(0, y); });   // the Trips page opens compact; tap to show the forms
+/* ---------- 🔍 search everything: ships, ports, countries, highlights, notes, hotels, games ---------- */
+const SRCH_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.5" fill="none" stroke="#24345E" stroke-width="2.2"/><path d="M15 15l5.5 5.5" stroke="#24345E" stroke-width="2.6" stroke-linecap="round"/></svg>`;
+let srchQ = "";
+const fold = v => String(v ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+function srchItems(){
+  const out = [], longD = d => d ? fmtDate(d, {weekday:"long", month:"long", day:"numeric", year:"numeric"}) : "";
+  const tripLine = x => [titleCase(x.name), fmtRangeCard(x.start, x.end)].filter(Boolean).join(" · "), tripShort = x => titleCase(x.name) + (x.start ? " " + x.start.slice(0, 4) : "");
+  const countries = names => [...new Set(names.map(placeCC).filter(Boolean))].map(ccName);
+  state.trips.forEach(x => {
+    const ports = sortPorts(x.ports || []), players = [x.p1, x.p2, ...extraPlayers(x)].filter(Boolean);
+    out.push({g:"Trips", ic:"🛳️", tid:x.id, title:titleCase(x.name), sub:[fmtRangeCard(x.start, x.end), shipCabin(x)].filter(Boolean).join(" · "),
+      hay:[x.name, x.ship, x.cabin ? "cabin " + x.cabin : "", x.from, x.to, longD(x.start), longD(x.end), ...players, ...countries([x.from, x.to])]});
+    ports.forEach(pt => {
+      const cc = placeCC(pt.name), kind = pt.kind === "start" ? "Departure" : pt.kind === "end" ? "Arrival" : "";
+      out.push({g:"Ports", ic:pt.kind ? "⚓" : "📍", tid:x.id, pid:pt.id, title:pt.name, sub:[kind, pt.date ? fmtDate(pt.date, {month:"short", day:"numeric", year:"numeric"}) : "", tripShort(x)].filter(Boolean).join(" · "),
+        hay:[pt.name, cc ? ccName(cc) : "", longD(pt.date)]});
+      const hl = stopNoteText(pt);
+      if(hl) out.push({g:"Highlights & notes", ic:"✨", tid:x.id, pid:pt.id, hl:1, title:hlCity(pt) + " highlights", sub:tripLine(x), text:hl, hay:[hl]});
+      const sh = shipsOf(pt);
+      if(sh && sh.names.some(Boolean)) out.push({g:"Ships we saw", ic:"🚢", tid:x.id, pid:pt.id, title:sh.names.filter(Boolean).join(" · "), sub:"In " + hlCity(pt) + " · " + tripShort(x), hay:sh.names});
+    });
+    noteList(x).forEach(n => out.push({g:"Highlights & notes", ic:"📝", tid:x.id, note:1, title:"Trip note", sub:tripLine(x), text:n.text, hay:[n.text]}));
+    ["embark", "disembark"].forEach(side => { const e = edOf(x, side); if(!e) return;
+      const txt = [e.speed, e.sec, e.pri, e.note].filter(Boolean).join(" · "); if(!txt && !e.port) return;
+      out.push({g:"Highlights & notes", ic:side === "embark" ? "🛫" : "🛬", tid:x.id, title:(side === "embark" ? "Embarkation · " : "Disembarkation · ") + (edPort(x, side) || ""), sub:tripLine(x), text:e.note || "", hay:[edPort(x, side), side === "embark" ? "embarkation boarding" : "disembarkation", txt]}); });
+    (x.hotels || []).forEach(h => out.push({g:"Hotels", ic:"🏨", tid:x.id, title:h.name || h.city || "Hotel", sub:[h.name && h.city ? h.city : "", h.in ? fmtDate(h.in, {month:"short", day:"numeric", year:"numeric"}) : "", tripLine(x)].filter(Boolean).join(" · "),
+      hay:[h.name, h.city, "hotel", longD(h.in), countries([h.city]).join(" ")]}));
+    [["domino", "Domino"], ["scala", "Scala 40"]].forEach(([k, n]) => { const w = tally(x, k); if(!(w.w1 + w.w2)) return;
+      out.push({g:"Games", ic:k === "domino" ? "🁫" : "🃏", tid:x.id, title:n, sub:`${x.p1} ${w.w1} · ${x.p2} ${w.w2} · ` + tripLine(x), hay:[n, k, x.p1, x.p2, "games"]}); });
+    const pg = {}; (x.partyGames || []).forEach(r => { (pg[r.game] = pg[r.game] || []).push(r); });
+    Object.entries(pg).forEach(([key, list]) => { const name = list[0].gameName || pgName(key), wins = {};
+      list.forEach(r => { if(r.winnerName) wins[r.winnerName] = (wins[r.winnerName] || 0) + 1; });
+      out.push({g:"Games", ic:PG(key).ic || "⭐", tid:x.id, title:name, sub:Object.entries(wins).map(([n, c]) => n + " " + c).join(" · ") + " · " + tripLine(x), hay:[name, "games", ...Object.keys(wins)]}); });
+  });
+  return out;
+}
+function srchFind(q){
+  const words = fold(q).split(/\s+/).filter(Boolean); if(!words.length) return [];
+  return srchItems().filter(it => { const h = fold([it.title, it.sub, ...(it.hay || [])].join(" ")); return words.every(w => h.includes(w)); });
+}
+function srchMark(text, q){
+  const words = fold(q).split(/\s+/).filter(Boolean), f = fold(text), hit = new Array(f.length).fill(false);
+  words.forEach(w => { let i = f.indexOf(w); while(i >= 0){ for(let k = i; k < i + w.length; k++) hit[k] = true; i = f.indexOf(w, i + 1); } });
+  // fold() keeps one character per character for ordinary text, so the marks line up with the original
+  if(f.length !== String(text).length) return esc(text);
+  let h = "", on = false; String(text).split("").forEach((c, i) => { if(hit[i] !== on){ h += hit[i] ? "<mark>" : "</mark>"; on = hit[i]; } h += esc(c); });
+  return h + (on ? "</mark>" : "");
+}
+function srchSnippet(text, q){
+  const words = fold(q).split(/\s+/).filter(Boolean), f = fold(text); let at = -1;
+  words.forEach(w => { const i = f.indexOf(w); if(i >= 0 && (at < 0 || i < at)) at = i; });
+  const t = String(text); if(t.length <= 110) return t;
+  const a = Math.max(0, at - 40), b = Math.min(t.length, a + 110);
+  return (a > 0 ? "…" : "") + t.slice(a, b).trim() + (b < t.length ? "…" : "");
+}
+const SRCH_ORDER = ["Trips", "Ports", "Highlights & notes", "Ships we saw", "Hotels", "Games"];
+function srchResults(q){
+  if(fold(q).trim().length < 2){
+    const tips = [...new Set(state.trips.map(x => x.ship).filter(Boolean))].slice(0, 3).concat(["Alaska", "Italy"]).slice(0, 5);
+    return `<div class="srch-empty">Search everything you've entered: ships, cabins, ports, countries, highlights, notes, hotels, other ships and games.
+      <div class="srch-tips">${tips.map(v => `<button type="button" data-srchtip="${esc(v)}">${esc(v)}</button>`).join("")}</div></div>`;
+  }
+  const hits = srchFind(q); if(!hits.length) return `<div class="srch-empty">Nothing found for “${esc(q)}”.<br>Try fewer letters, or another spelling.</div>`;
+  return SRCH_ORDER.map(g => { const list = hits.filter(h => h.g === g); if(!list.length) return "";
+    const shown = list.slice(0, 25);
+    return `<div class="srch-h">${esc(g)} · ${list.length}</div>` + shown.map(h => `<button type="button" class="srch-r" data-srchgo="${hits.indexOf(h)}">
+      <span class="srch-ic" aria-hidden="true">${h.ic}</span><span class="srch-t"><b>${srchMark(h.title, q)}</b>${h.text ? `<i>${srchMark(srchSnippet(h.text, q), q)}</i>` : ""}<small>${srchMark(h.sub, q)}</small></span></button>`).join("")
+      + (list.length > shown.length ? `<div class="srch-empty" style="padding:6px">+ ${list.length - shown.length} more. Add another word to narrow it down.</div>` : "");
+  }).join("");
+}
+let srchHits = [];
+function openSearch(){
+  const root = $("#sheetRoot");
+  root.innerHTML = `<div class="srch-scrim" data-srchclose><div class="srch" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="srch-top"><label class="srch-in">${SRCH_ICON}<input id="srchQ" type="text" enterkeyhint="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Ship, port, country, note…" value="${esc(srchQ)}" aria-label="Search">
+      <button type="button" class="srch-clear" data-srchclear aria-label="Clear" ${srchQ ? "" : "hidden"}>×</button></label>
+      <button type="button" class="srch-done" data-srchclose>Done</button></div>
+    <div class="srch-res" id="srchRes" aria-live="polite"></div></div></div>`;
+  const draw = () => { srchHits = fold(srchQ).trim().length >= 2 ? srchFind(srchQ) : []; $("#srchRes").innerHTML = srchResults(srchQ);
+    const c = root.querySelector("[data-srchclear]"); if(c) c.hidden = !srchQ; };
+  draw();
+  const inp = $("#srchQ"); inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length);
+  inp.addEventListener("input", () => { srchQ = inp.value; draw(); });
+  inp.addEventListener("keydown", e => { if(e.key === "Enter"){ e.preventDefault(); inp.blur(); } if(e.key === "Escape") root.innerHTML = ""; });
+  root.querySelector(".srch").addEventListener("click", e => {
+    const tip = e.target.closest("[data-srchtip]"); if(tip){ srchQ = inp.value = tip.dataset.srchtip; draw(); return; }
+    if(e.target.closest("[data-srchclear]")){ srchQ = inp.value = ""; draw(); inp.focus(); return; }
+    const go = e.target.closest("[data-srchgo]"); if(go){ srchGo(srchHits[+go.dataset.srchgo]); return; }
+  });
+  root.querySelector(".srch-scrim").addEventListener("click", e => { if(e.target.matches("[data-srchclose]")) root.innerHTML = ""; });
+}
+// open the trip the result belongs to on the Trips tab, scroll to it, and flash it (highlights open straight away)
+function srchGo(h){
+  if(!h) return; const x = state.trips.find(t => t.id === h.tid); if(!x) return;
+  $("#sheetRoot").innerHTML = "";
+  tab = "trips"; openTripRecords[x.id] = true;
+  if(tripGroups()[2][1].some(t => t.id === x.id)) completedOpen = true;
+  render();
+  setTimeout(() => {
+    const card = document.querySelector(`[data-tripopen="${x.id}"]`), more = document.getElementById("more-" + x.id);
+    let target = card;
+    if(h.pid && more){ const row = more.querySelector(`[data-srow="${h.pid}"]`); if(row) target = row; }
+    else if(h.note && more){ target = more.querySelector(`[data-notes="${x.id}"]`) || card; }
+    if(target){ target.scrollIntoView({block:"center"}); target.classList.remove("srch-flash"); void target.offsetWidth; target.classList.add("srch-flash"); }
+    if(h.hl){ const pt = x.ports.find(p => p.id === h.pid); if(pt) setTimeout(() => openStopNoteView(x, pt), 650); }
+  }, 60);
+}
+document.addEventListener("click", e => { if(e.target.closest("[data-search]")) openSearch(); });
+
 function renderTrips(){
   const t = trip();
   if(!t.from && !t.start && !t.to) detailsOpen = true;   // a blank trip needs its details
@@ -2415,7 +2615,7 @@ function renderTrips(){
       ${extraPlayers(t).length ? `<p class="full set-note" style="margin:2px 0 0">Extra players are filled in for you when you tap <b>Add a player</b> in a game on this trip.</p>` : ""}
     </div>` : ""}
     ${hotelsOpen ? `<div class="hotels-compact">${hotelsSection(t)}</div>` : ""}
-    <div class="section-h"><h2>All trips</h2></div>
+    <div class="section-h has-srch"><h2>All trips</h2><button type="button" class="srchbtn" data-search aria-label="Search everything">${SRCH_ICON}</button></div>
     ${tripGroups().map(([label, list], gi) => !list.length ? "" : gi === 2
       ? `<button type="button" class="b3d voyages" data-act="togglecompleted" aria-expanded="${completedOpen}" aria-label="Completed trips, ${list.length}">
            <span class="vy-deco" aria-hidden="true"><i style="left:4%;bottom:26%">🗺️</i><i style="left:22%;top:6%">✈️</i><i style="right:25%;bottom:22%">🌴</i><i style="left:46%;bottom:18%">🧳</i><i style="right:6%;bottom:34%">📸</i></span>
@@ -2446,7 +2646,7 @@ document.addEventListener("focusout", e => { if(e.target.type === "date" && date
   setTimeout(() => { if(!dateBoxBusy()){ const y = window.scrollY; render(); window.scrollTo(0, y); } }, 0); } });
 function render(){
   if(dateBoxBusy()){ dateRenderWaiting = true; return; }
-  renderHead(); drawHomeClock();
+  renderHead(); drawHomeClock(); requestAnimationFrame(fitNames);
   document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-current", b.dataset.tab===tab ? "page" : "false"));
   document.body.dataset.game = tab === "score" ? dayType(trip()) : "";
   document.body.dataset.tab = tab;
@@ -2458,6 +2658,10 @@ function render(){
 const HOME_ZONES = [["Eastern Time · New York, Tampa, Miami","America/New_York"],["Central Time · Chicago, Dallas","America/Chicago"],["Mountain Time · Denver","America/Denver"],["Arizona · Phoenix","America/Phoenix"],["Pacific Time · Los Angeles, Seattle","America/Los_Angeles"],["Alaska · Anchorage","America/Anchorage"],["Hawaii · Honolulu","Pacific/Honolulu"],["Atlantic · Puerto Rico","America/Puerto_Rico"],["Canada Atlantic · Halifax","America/Halifax"],["Mexico City","America/Mexico_City"],["Bogotá, Lima","America/Bogota"],["Buenos Aires","America/Argentina/Buenos_Aires"],["São Paulo","America/Sao_Paulo"],["London, Lisbon","Europe/London"],["Rome, Paris, Madrid, Berlin","Europe/Rome"],["Athens, Istanbul","Europe/Athens"],["Dubai","Asia/Dubai"],["India","Asia/Kolkata"],["Bangkok","Asia/Bangkok"],["Singapore, Hong Kong","Asia/Singapore"],["Tokyo","Asia/Tokyo"],["Perth","Australia/Perth"],["Brisbane","Australia/Brisbane"],["Sydney, Melbourne","Australia/Sydney"],["Auckland","Pacific/Auckland"]];
 /* home by city or ZIP code: looked up online (Open-Meteo place search), which gives the place's time zone */
 const homeSearch = {q: "", busy: false, results: [], msg: ""};
+let openSet = null;   // which Settings section is open (only one at a time)
+document.addEventListener("click", e => { const b = e.target.closest("[data-sxopen]"); if(!b) return;
+  openSet = openSet === b.dataset.sxopen ? null : b.dataset.sxopen; render();
+  if(openSet){ const el = document.querySelector(`[data-sxopen="${openSet}"]`); if(el) el.scrollIntoView({block:"start", behavior:"smooth"}); } });
 const zoneLabel = z => { const hit = HOME_ZONES.find(x => x[1] === z); return hit ? hit[0] : String(z || "").replace(/_/g, " ").replace(/\//g, " · "); };
 const timeIn = z => { try { return new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit", hour12:hr12(), timeZone:z}); } catch(e){ return ""; } };
 async function findHome(){
@@ -2494,12 +2698,19 @@ function renderSettings(){
   const seg = (key, opts) => `<div class="set-seg" role="group">${opts.map(([v, label]) => `<button type="button" class="b3d ${String(st[key]) === v ? "on" : ""}" data-setv="${key}" data-v="${v}" aria-pressed="${String(st[key]) === v}">${label}</button>`).join("")}</div>`;
   const tog = (k, label) => `<button type="button" class="set-tog" data-snd="${k}" aria-pressed="${sndOn(k)}"><span>${label}</span><i class="sw ${sndOn(k) ? "on" : ""}" aria-hidden="true"></i></button>`;
   const l = syncLabel();
-  $("#view").innerHTML = `<div class="set-wrap">
-    <h1 class="set-title">⚙️ Settings</h1>
-    <p class="set-sub">These apply on both phones, except the sound switches.</p>
-    <section class="set-card">
-      <h2>🏠 Where we live</h2>
-      <div class="home-cur"><b>🏠 ${esc(st.homeCity)}</b><small>${esc(zoneLabel(st.homeZone))}</small></div>
+  const ON = sndOn, on = ["win","tie","lead","voice"].filter(k => ON(k)).length;
+  const fmtO = o => "UTC" + (o >= 0 ? "+" : "−") + (Number.isInteger(Math.abs(o)) ? Math.abs(o) : Math.abs(o).toFixed(1));
+  const ship = shipTimeInfo(), shipNow = (() => { try { const d = new Date(Date.now() + ship.off * 3600e3); return String(d.getUTCHours()).padStart(2, "0") + ":" + String(d.getUTCMinutes()).padStart(2, "0"); } catch(e){ return ""; } })();
+  const vcount = n => CHEERS.filter((c, k) => { const v = voiceClips[voiceKey(k, n)]; return v && !v.deleted; }).length;
+  const ready = typeof offlineReady !== "undefined" && offlineReady;
+  const SECS = [
+    ["lock", "🔒", "Editing lock", editingUnlocked ? "🔓 Unlocked · tap Lock when you're done" : `Locked · entries lock after ${LOCK_HOURS} hours`, "#FFE3EA", "#E79AAE",
+      `<p class="set-note" style="margin:0 0 10px">Games and port scores lock ${LOCK_HOURS} hours after they're entered. Unlock to change or delete anything, then lock it again.</p>
+       <button type="button" class="btn b3d lockbtn ${editingUnlocked ? "unlocked" : ""}" id="lockToggle" style="width:100%">${editingUnlocked ? "🔓 Editing unlocked · tap to lock" : "🔒 Unlock editing"}</button>`],
+    ["sync", "🔄", "Sync & offline", `● ${l.text}${ready ? " · ready at sea" : ""}`, "#D8F5F2", "#6CC2BA",
+      `<div id="syncStatus" class="sync-line"></div><div id="offlineStatus" class="sync-line" style="margin-top:8px"></div>
+       <button type="button" class="btn b3d" id="syncNow" style="width:100%;margin-top:10px">Sync now</button><p class="save-status" id="saveStatus" role="status"></p>`],
+    ["home", "🏠", "Where we live", `${st.homeCity} · ${zoneLabel(st.homeZone).split(" · ")[0]}`, "#FFF1C9", "#E0B348", `<div class="home-cur"><b>🏠 ${esc(st.homeCity)}</b><small>${esc(zoneLabel(st.homeZone))}</small></div>
       <label class="set-lbl">Change home: city or ZIP code
         <span class="hs-row"><input class="set-in" id="homeQ" value="${esc(homeSearch.q)}" placeholder="e.g. 33556 or Orlando" autocomplete="off" enterkeyhint="search"><button type="button" class="b3d set-mini" id="homeFind">${homeSearch.busy ? "…" : "🔍 Find"}</button></span></label>
       ${homeSearch.msg ? `<p class="pf-msg" role="alert">${esc(homeSearch.msg)}</p>` : ""}
@@ -2508,9 +2719,8 @@ function renderSettings(){
       <div class="set-now">🕐 It's <b id="homeNow">${esc(homeNow())}</b> at home right now</div>
       ${phoneZone && phoneZone !== st.homeZone ? `<button type="button" class="b3d set-mini" data-setv="homeZone" data-v="${esc(phoneZone)}">📍 Use this phone's time zone</button>` : ""}
       <p class="set-note">Time differences on the Ports map and in "Time vs. ${esc(homeName())}" are counted from here.</p>
-    </section>
-    <section class="set-card"><h2>🚢 Ship time</h2>
-      ${(() => { const info = shipTimeInfo(), mode = st.shipTime || "auto", fmtO = o => "UTC" + (o >= 0 ? "+" : "−") + (Number.isInteger(Math.abs(o)) ? Math.abs(o) : Math.abs(o).toFixed(1));
+    `],
+    ["ship", "🚢", "Ship time", `${(st.shipTime || "auto") === "auto" ? "Automatic" : (st.shipTime === "phone" ? "This phone" : "Set by hand")} · now ${shipNow} (${fmtO(ship.off)})`, "#E2EEFF", "#86AADF", `${(() => { const info = shipTimeInfo(), mode = st.shipTime || "auto", fmtO = o => "UTC" + (o >= 0 ? "+" : "−") + (Number.isInteger(Math.abs(o)) ? Math.abs(o) : Math.abs(o).toFixed(1));
         const shipNow = (() => { try { const n = new Date(Date.now() + info.off * 3600e3); return String(n.getUTCHours()).padStart(2, "0") + ":" + String(n.getUTCMinutes()).padStart(2, "0"); } catch(e){ return ""; } })();
         return `<label class="set-lbl">The home clock counts the hours from
         <select class="set-in" data-sets="shipTime">
@@ -2520,42 +2730,46 @@ function renderSettings(){
         </select></label>
         <div class="set-now">🚢 Ship time now: <b>${esc(shipNow)}</b> · ${esc(fmtO(info.off))} <small style="color:var(--muted)">(${esc(info.src)})</small></div>
         <p class="set-note">Automatic uses the latest port on the itinerary while you're sailing, so it's right even on a phone or computer still set to home time. If the ship changes its clocks at sea, pick "Ship clock set to…".</p>`; })()}
-    </section>
-    <section class="set-card"><h2>🌡️ Temperature</h2>${seg("temp", [["F", "°F Fahrenheit"], ["C", "°C Celsius"]])}</section>
-    <section class="set-card"><h2>🕐 Clock</h2>${seg("clock", [["12", "12-hour · 2:30 PM"], ["24", "24-hour · 14:30"]])}</section>
-    <section class="set-card"><h2>🔊 Sounds <small>this phone</small></h2>
-      ${tog("win", "🏆 Winning music")}${tog("tie", "🤝 Tie jingle")}${tog("lead", "🎺 “Takes the lead” bugle")}${tog("voice", "🗣️ Read cheers out loud")}${sndOn("voice") ? tog("ours", "🎙️ Use our recorded voices") : ""}
-      ${soundOn ? "" : `<p class="set-note">All sounds are off on this phone. Turn them on in Save As (tap © 2026 Thor).</p>`}
-    </section>
-    ${voicesSection()}
-    <section class="set-card"><h2>🎯 Usual game targets <small>for new trips</small></h2>
-      <div class="set-row"><span>Domino plays to</span><select class="set-in sm" data-sets="dominoTarget">${[100,150,200,250,300].map(v => `<option value="${v}" ${+st.dominoTarget === v ? "selected" : ""}>${v} points</option>`).join("")}</select></div>
-      <div class="set-row"><span>Scala 40 ends at</span><select class="set-in sm" data-sets="scalaLimit">${[101,151,201].map(v => `<option value="${v}" ${+st.scalaLimit === v ? "selected" : ""}>${v} points</option>`).join("")}</select></div>
-    </section>
-    <section class="set-card"><h2>👥 Players <small>for new trips</small></h2>
-      <div class="set-two"><label class="set-lbl">Player 1<input class="set-in" data-sett="p1" value="${esc(st.p1)}" maxlength="18" autocomplete="off"></label><label class="set-lbl">Player 2<input class="set-in" data-sett="p2" value="${esc(st.p2)}" maxlength="18" autocomplete="off"></label></div>
+    `],
+    ["sounds", "🔊", "Sounds", !soundOn ? "All off on this phone" : on === 4 ? "All on" + (sndOn("ours") ? " · our voices" : "") : on + " of 4 on", "#E8DFFF", "#9F87E0", `<button type="button" class="set-tog" data-sndall aria-pressed="${soundOn}"><span><b>🔔 All sounds</b></span><i class="sw ${soundOn ? "on" : ""}" aria-hidden="true"></i></button>
+      ${soundOn ? tog("win", "🏆 Winning music") : ""}${soundOn ? tog("tie", "🤝 Tie jingle") : ""}${soundOn ? tog("lead", "🎺 “Takes the lead” bugle") + tog("voice", "🗣️ Read cheers out loud") + (sndOn("voice") ? tog("ours", "🎙️ Use our recorded voices") : "") : `<p class="set-note">All sounds are off on this phone.</p>`}
+
+    `],
+    ["voices", "🎙️", "Our voices", `${S().p1} ${vcount(S().p1)}/${CHEERS.length} · ${S().p2} ${vcount(S().p2)}/${CHEERS.length}`, "#FFE3EA", "#E79AAE", voicesSection(true)],
+    ["display", "🌡️", "Temperature & clock", `°${st.temp} · ${st.clock === "24" ? "24-hour" : "12-hour"}`, "#D8F5F2", "#6CC2BA", `${seg("temp", [["F", "°F Fahrenheit"], ["C", "°C Celsius"]])}<div style="height:8px"></div>${seg("clock", [["12", "12-hour · 2:30 PM"], ["24", "24-hour · 14:30"]])}`],
+    ["players", "👥", "Players", `${st.p1} & ${st.p2}${usualPlayers().length ? " · " + usualPlayers().length + " usual player" + (usualPlayers().length === 1 ? "" : "s") : ""}`, "#FFF1C9", "#E0B348",
+      `<div class="set-two"><label class="set-lbl">Player 1<input class="set-in" data-sett="p1" value="${esc(st.p1)}" maxlength="18" autocomplete="off"></label><label class="set-lbl">Player 2<input class="set-in" data-sett="p2" value="${esc(st.p2)}" maxlength="18" autocomplete="off"></label></div>
       <p class="set-note">To rename players on a trip you're already on, use ✏️ Trip details on the Trips tab.</p>
-    </section>
-    <section class="set-card"><h2>⭐ Usual players</h2>
-      <p class="set-note" style="margin:0 0 10px">People you often play with. They show up as quick choices when you tap <b>Add a player</b> in any game.</p>
+    <h3 class="sx-h3">⭐ Usual players</h3><p class="set-note" style="margin:0 0 10px">People you often play with. They show up as quick choices when you tap <b>Add a player</b> in any game.</p>
       ${usualPlayers().length ? `<div class="up-list">${usualPlayers().map((n, i) => `<span class="up-chip">${esc(n)}<button type="button" data-updel="${i}" aria-label="Remove ${esc(n)}">×</button></span>`).join("")}</div>` : `<p class="set-note" style="margin:0 0 10px">No usual players yet.</p>`}
       <div class="up-add"><input class="set-in" id="upName" placeholder="Name, e.g. Mo" maxlength="18" autocomplete="off" enterkeyhint="done"><button type="button" class="b3d set-mini" id="upAdd">Add</button></div>
       <p class="pf-msg" id="upMsg" role="alert"></p>
-    </section>
-    <section class="set-card"><h2>✏️ Your custom games</h2>
-      ${customGames().length ? customGames().map(g => `<div class="set-row cg-row">${gameLogo(g.key, "sm")}<span class="cg-n">${esc(g.name)}</span><button type="button" class="b3d cg-del" data-cgdel="${g.key}">${canDelCustom(g) ? "🗑️ Delete" : "🔒 Locked"}</button></div>`).join("")
+    `],
+    ["targets", "🎯", "Usual game targets", `Domino ${st.dominoTarget} · Scala 40 ${st.scalaLimit}`, "#E2EEFF", "#86AADF", `<div class="set-row"><span>Domino plays to</span><select class="set-in sm" data-sets="dominoTarget">${[100,150,200,250,300].map(v => `<option value="${v}" ${+st.dominoTarget === v ? "selected" : ""}>${v} points</option>`).join("")}</select></div>
+      <div class="set-row"><span>Scala 40 ends at</span><select class="set-in sm" data-sets="scalaLimit">${[101,151,201].map(v => `<option value="${v}" ${+st.scalaLimit === v ? "selected" : ""}>${v} points</option>`).join("")}</select></div>
+    `],
+    ["custom", "✏️", "Your custom games", customGames().length ? customGames().length + " game" + (customGames().length === 1 ? "" : "s") : "None yet", "#E8DFFF", "#9F87E0", `${customGames().length ? customGames().map(g => `<div class="set-row cg-row">${gameLogo(g.key, "sm")}<span class="cg-n">${esc(g.name)}</span><button type="button" class="b3d cg-del" data-cgdel="${g.key}">${canDelCustom(g) ? "🗑️ Delete" : "🔒 Locked"}</button></div>`).join("")
         : `<p class="set-note" style="margin:0">None yet. Make one from <b>Change game ▾</b> → <b>Create your own game…</b></p>`}
-      ${customGames().some(g => !canDelCustom(g)) ? `<p class="set-note">Custom games lock 48 hours after they're made. Tap 🔒 © 2026 Thor to unlock and delete them.</p>` : ""}
-    </section>
-    <section class="set-card about"><h2>ℹ️ About</h2>
-      <div class="set-row"><span>Version</span><b>${esc(APP_VERSION)}</b></div>
-      <div class="set-row"><span>Sync</span><b class="${l.cls}">● ${esc(l.text)}</b></div>
-      <div class="set-row"><span>Offline</span><b class="${typeof offlineReady !== "undefined" && offlineReady ? "ok" : "off"}">● ${typeof offlineReady !== "undefined" && offlineReady ? "Ready without internet" : "Needs internet to open"}</b></div>
-    </section>
+      ${customGames().some(g => !canDelCustom(g)) ? `<p class="set-note">Custom games lock 48 hours after they're made. Unlock in ⚙️ Settings → 🔒 Editing lock to delete them.</p>` : ""}
+    `],
+    ["backup", "📥", "Backup & print", "Save a copy · printable list", "#FFE3EA", "#E79AAE",
+      `<p class="set-note" style="margin:0 0 10px">“Save app” keeps the app itself, “Save data” keeps your trips and games. The printable list is a black-and-white PDF of every city and country on your trips.</p>
+       <div class="sx-two"><button type="button" class="btn b3d" id="saveHtml">Save app (HTML)</button><button type="button" class="btn b3d" id="saveJson">Save data (JSON)</button></div>
+       <button type="button" class="btn b3d" id="savePdf" style="width:100%;margin-top:8px">🖨️ Printable list (PDF)</button><p class="save-status" id="saveStatus" role="status"></p>`],
+    ["about", "ℹ️", "About", "Version " + APP_VERSION, "#EEF1F5", "#B9C2D0",
+      `<div class="set-row"><span>Version</span><b>${esc(APP_VERSION)}</b></div><div class="set-row"><span>Updated</span><b>${esc(APP_UPDATED)}</b></div>`]
+  ];
+  $("#view").innerHTML = `<div class="set-wrap">
+    <h1 class="set-title">⚙️ Settings</h1>
+    <p class="set-sub">Tap a section to open it.</p>
+    <div class="sx">${SECS.map(([id, ic, title, sum, c, e2, html]) => { const open = openSet === id;
+      return `<div class="sx-item ${open ? "open" : ""}" style="--c:${c};--e:${e2}"><button type="button" class="sx-b b3d" data-sxopen="${id}" aria-expanded="${open}"><span class="ic" aria-hidden="true">${ic}</span><span class="tx"><b>${esc(title)}</b><small>${esc(sum)}</small></span><span class="ch" aria-hidden="true">${open ? "▴" : "▾"}</span></button>${open ? `<div class="sx-body">${html}</div>` : ""}</div>`; }).join("")}</div>
   </div>`;
+  if(openSet === "sync"){ renderSyncBits(); renderOffline(); }
 }
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-setv]"); if(b){ setS(b.dataset.setv, b.dataset.v); render(); return; }
+  if(e.target.closest("[data-sndall]")){ soundOn = !soundOn; try { localStorage.setItem(SOUND_KEY, soundOn ? "on" : "off"); } catch(err){} if(soundOn) playJackpot(); render(); return; }
   const sn = e.target.closest("[data-snd]"); if(sn){ const k = sn.dataset.snd, on = !sndOn(k); try { localStorage.setItem(SND_KEYS[k], on ? "on" : "off"); } catch(err){}
     if(on){ if(k === "win") playJackpot(); else if(k === "tie") playTie(); else if(k === "voice") sayAloud("Land ho! The finish line is in sight."); else if(k === "ours"){ const any = Object.keys(voiceClips).find(x => voiceClips[x] && voiceClips[x].data && !voiceClips[x].deleted); if(any) new Audio(voiceClips[any].data).play().catch(() => {}); } else playLead(); } render(); }
 });
@@ -2585,6 +2799,24 @@ let setTimer = null;
 document.addEventListener("input", e => { const el = e.target; if(!el.dataset || !el.dataset.sett) return;
   const k = el.dataset.sett, v = el.value; clearTimeout(setTimer); setTimer = setTimeout(() => { if(v.trim()) setS(k, v.trim()); }, 500); });
 setInterval(() => { const n = document.getElementById("homeNow"); if(n) n.textContent = homeNow(); }, 20000);
+
+/* long names: if a single word doesn't fit its box, shrink that label just enough (never "…", never split a word) */
+const NAME_SEL = ".pname,.pc-top .pname,.tally .who,.gbox-names span,.game .res .pair span,.series-row span,.pts-name,.cruise-players span,.rate-h span,.pf-sc span,.ts-games .who span,.ts-ports th,.gend .pill";
+function fitNames(){
+  document.querySelectorAll(NAME_SEL).forEach(el => {
+    if(!el.offsetParent) return;
+    el.style.fontSize = "";
+    const cs = getComputedStyle(el), w = el.clientWidth - parseFloat(cs.paddingLeft || 0) - parseFloat(cs.paddingRight || 0); if(w <= 0) return;
+    // measure the longest word on screen, in the label's own font
+    const probe = document.createElement("span"); probe.style.cssText = "position:absolute;visibility:hidden;white-space:nowrap;left:-9999px;top:0";
+    el.appendChild(probe);
+    const longest = () => Math.max(0, ...el.textContent.replace(probe.textContent, "").trim().split(/\s+/).map(x => { probe.textContent = x; return probe.getBoundingClientRect().width; }));
+    let size = parseFloat(cs.fontSize), guard = 0;
+    while(longest() > w && size > 9 && guard++ < 30){ size -= .5; el.style.fontSize = size + "px"; }
+    probe.remove();
+  });
+}
+window.addEventListener("resize", () => requestAnimationFrame(fitNames));
 /* ---------- confirm sheet ---------- */
 function sheet(title, text, okLabel, onOk, danger){
   const root = $("#sheetRoot");
@@ -2705,8 +2937,9 @@ function renderPorts(){
           </div>`; }).join(""); })()}
         </div>
         ${highlightButtons(t, pt)}
+        ${pt.skip ? "" : shipsLine(t, pt)}
         ${portLocked(pt) ? "" : `<button type="button" class="xbtn skipbtn" data-skip="${pt.id}">${pt.skip ? "↩️ We visited · score it" : "🚫 Didn't visit · don't score"}</button>`}
-        ${portLocked(pt) ? `<span class="port-note">🔒 Scores lock 48 hours after they are given (never before sailing day). Unlock in Save As (tap © 2026 Thor).</span>` : pt.kind ? `<span class="port-note">Change it on the Trips tab</span>` : editingPort === pt.id ? `<span class="trip-btns"><button type="button" class="xbtn" data-act="pecancel">Cancel</button><button type="button" class="btn primary b3d note-save" data-act="pesave">Save</button></span>` : `<span class="trip-btns"><button type="button" class="xbtn" data-editport="${pt.id}">✏️ Edit</button><button class="xbtn" data-delport="${pt.id}">Remove port</button></span>`}
+        ${portLocked(pt) ? `<span class="port-note">🔒 Scores lock 48 hours after they are given (never before sailing day). Unlock in ⚙️ Settings.</span>` : pt.kind ? `<span class="port-note">Change it on the Trips tab</span>` : editingPort === pt.id ? `<span class="trip-btns"><button type="button" class="xbtn" data-act="pecancel">Cancel</button><button type="button" class="btn primary b3d note-save" data-act="pesave">Save</button></span>` : `<span class="trip-btns"><button type="button" class="xbtn" data-editport="${pt.id}">✏️ Edit</button><button class="xbtn" data-delport="${pt.id}">Remove port</button></span>`}
       </div>`; }).join("") : `<div class="empty">No ports yet. Add your first stop below.</div>`}
     ${editingUnlocked && ports.some(p => p.s1 != null || p.s2 != null) ? `<button type="button" class="btn danger b3d resetports" data-act="resetports">🔓 Reset all port scores</button>` : ""}
     <div class="addport">
@@ -2851,7 +3084,7 @@ document.addEventListener("input", e => { const el = e.target; if(!el.dataset ||
   const t = state.trips.find(x => x.id === el.dataset.tcab); if(!t) return;
   t.cabin = el.value.trim(); clearTimeout(cabTimer); cabTimer = setTimeout(commit, 500); });
 function tripEditor(x, ports){
-  const lockNote = `<span class="port-note">🔒 Locked 48 hours after scoring. Unlock in Save As (tap © 2026 Thor).</span>`;
+  const lockNote = `<span class="port-note">🔒 Locked 48 hours after scoring. Unlock in ⚙️ Settings.</span>`;
   const portRow = pt => { const lk = portLocked(pt), k = x.id + "|" + pt.id;
     return `<div class="pf-port">
       ${pt.kind ? `<span class="port-kind">${pt.kind === "start" ? "Departure" : "Arrival"}</span>` : ""}
@@ -2866,7 +3099,7 @@ function tripEditor(x, ports){
     <div class="pf-h">Final game score for the trip</div>
     <p class="rulehint" style="margin:0">Use this when you only know the totals. Games you score in the app are added on top.</p>
     ${winsFields("data-tw", x.id + "|", x.tally, x.p1, x.p2, tlk)}
-    ${tlk ? `<span class="port-note">🔒 Locked 48 hours after it was entered. Unlock in Save As (tap © 2026 Thor).</span>` : ""}
+    ${tlk ? `<span class="port-note">🔒 Locked 48 hours after it was entered. Unlock in ⚙️ Settings.</span>` : ""}
     <div class="pf-h">Ports of call</div>
     ${ports.map(portRow).join("")}
     <div class="pf-addrow">
@@ -2886,7 +3119,7 @@ function tripEditor(x, ports){
     </div>
     <div class="pf-h">Hotels</div>
     ${hs.map(h => { const lk = hotelLocked(h); return `<div class="pf-port">${hotelFields(Object.assign({}, h, {id: x.id + "|" + h.id}), "data-th", lk)}
-      ${lk ? `<span class="port-note">🔒 Locked 48 hours after it was added. Unlock in Save As (tap © 2026 Thor).</span>` : `<button type="button" class="xbtn" data-thdel="${x.id}|${h.id}">Remove hotel</button>`}</div>`; }).join("")}
+      ${lk ? `<span class="port-note">🔒 Locked 48 hours after it was added. Unlock in ⚙️ Settings.</span>` : `<button type="button" class="xbtn" data-thdel="${x.id}|${h.id}">Remove hotel</button>`}</div>`; }).join("")}
     <button type="button" class="btn b3d pf-add" data-thadd="${x.id}">+ Add a hotel</button>`;
 }
 /* ---------- paste a cruise itinerary (copied from the cruise line's website or email) ---------- */
@@ -3070,16 +3303,17 @@ function tripRecord(x, cur){
             <div class="who k"><span>${esc(x.p2)}</span><b class="num">${w.w2}</b></div></div>`).join("")}
         </div>
         ${pastLocked(x) ? "" : `<button type="button" class="btn primary b3d ts-rate" data-rateports="${x.id}">Rate these ports</button>`}
-        ${pastLocked(x) ? `<span class="port-note">🔒 Completed trip · locked. Unlock in Save As (tap © 2026 Thor) to edit or delete.</span>` : `<button type="button" class="btn b3d ts-rate ${editTrip===x.id ? "lockbtn unlocked" : ""}" data-edittrip="${x.id}">${editTrip===x.id ? "✓ Done editing" : "✏️ Edit score, ports and hotels"}</button>`}
+        ${pastLocked(x) ? `<span class="port-note">🔒 Completed trip · locked. Unlock in ⚙️ Settings to edit or delete.</span>` : `<button type="button" class="btn b3d ts-rate ${editTrip===x.id ? "lockbtn unlocked" : ""}" data-edittrip="${x.id}">${editTrip===x.id ? "✓ Done editing" : "✏️ Edit score, ports and hotels"}</button>`}
         <div class="ts-h"><span>Ports of call</span><span>${cruise!==null?`Cruise score <b>${fmt1(cruise)}</b>/10`:"Not rated yet"}</span></div>
         ${editTrip!==x.id && routeMapFor(x) ? `<button type="button" class="mapcard photo tripmapcard" data-routezoom="${x.id}" aria-label="Enlarge the itinerary map"><img src="${esc(routeMapFor(x).src)}" alt="${esc(routeMapFor(x).alt)}"><span class="zoomtag">Tap to enlarge</span></button>`
           : editTrip!==x.id && ports.length ? `<div class="mapcard tripmapcard"><canvas data-tripmap="${x.id}" role="img" aria-label="Map of the ports on this trip"></canvas><div class="mapnote"></div></div>` : ""}
         ${editTrip===x.id ? tripEditor(x, ports) : ports.length ? `<table class="ts-ports"><thead><tr><th>Port</th><th class="c1">${esc(x.p1)}</th><th class="c2">${esc(x.p2)}</th><th>Avg</th></tr></thead><tbody>
-          ${ports.map(pt => `<tr><td><b>${esc(pt.name)}</b>${pt.date || pt.wx || pt.wxManual ? `<small>${pt.date ? esc(fmtDate(pt.date,{month:"short",day:"numeric"})) : ""}${wxChip(pt, x)}</small>` : ""}${highlightButtons(x, pt, true)}</td>${pt.skip ? `<td colspan="3" class="num"><small>🚫 Missed · not scored</small></td>` : `<td class="num">${pt.s1??"–"}</td><td class="num">${pt.s2??"–"}</td><td class="num"><span class="ts-avg tone-${scoreTone(portAvg(pt))}">${fmt1(portAvg(pt))}</span></td>`}</tr>`).join("")}
+          ${ports.map(pt => `<tr data-srow="${pt.id}"><td><b>${esc(pt.name)}</b>${pt.date || pt.wx || pt.wxManual ? `<small>${pt.date ? esc(fmtDate(pt.date,{month:"short",day:"numeric"})) : ""}${wxChip(pt, x)}</small>` : ""}${highlightButtons(x, pt, true)}</td>${pt.skip ? `<td colspan="3" class="num"><small>🚫 Missed · not scored</small></td>` : `<td class="num">${pt.s1??"–"}</td><td class="num">${pt.s2??"–"}</td><td class="num"><span class="ts-avg tone-${scoreTone(portAvg(pt))}">${fmt1(portAvg(pt))}</span></td>`}</tr>`).join("")}
           </tbody><tfoot><tr><td>Average</td><td class="num">${fmt1(a1)}</td><td class="num">${fmt1(a2)}</td><td class="num"><span class="ts-big tone-${scoreTone(cruise)}" title="Cruise score">${fmt1(cruise)}</span></td></tr></tfoot></table>`
           : `<p class="ts-empty">No ports added for this trip.</p>`}
         ${editTrip===x.id ? "" : bestOfCruise(x, ports)}
         ${editTrip===x.id ? "" : hotelSummary(x)}
+        ${editTrip===x.id ? "" : shipsSummary(x)}
         ${editTrip===x.id ? "" : edButton(x)}
         ${editTrip===x.id ? "" : `<button type="button" class="btn b3d journalbtn" data-jopen="${x.id}">📖 Open the Cruise Journal</button>`}
       </div>
@@ -3120,7 +3354,7 @@ document.addEventListener("click", e => {
     const type = b.dataset.rg, label = type === "all" ? "Domino and Scala 40" : GAMES[type];
     const locked = t.games.some(g => (type === "all" || g.type === type) && isLocked(g.createdAt));
     close();
-    if(locked){ sheet("Some games are locked", "Games lock 48 hours after they're recorded. Unlock editing in Save As (tap © 2026 Thor), then reset.", "Open Save As", () => showSaveAs()); return; }
+    if(locked){ sheet("Some games are locked", "Games lock 48 hours after they're recorded. Unlock editing in ⚙️ Settings → 🔒 Editing lock, then reset.", "Open Settings", () => showSaveAs("lock")); return; }
     sheet(`Reset all ${label} games?`, `This clears ${count(type)} finished game${count(type)===1?"":"s"} and any game in progress for ${esc(t.name)}, on both phones. It can't be undone.`, "Reset games", () => resetGames(type, t), true);
   }));
   root.querySelector("[data-rg]").focus();
@@ -3278,7 +3512,7 @@ function edPastHTML(t, side){
 function edView(t, side){
   const e = edOf(t, side) || {}, on = side === "embark", port = edPort(t, side), can = edCan(t, side);
   const row = (lbl, k, v) => `<dt>${lbl}</dt><dd>${v ? `<span class="ed-pill ${edTone(k, v)}">${esc(v)}</span>` : "–"}</dd>`;
-  return `<div class="ed-sec"><h4>${on ? "🛫 Embarkation" : "🛬 Disembarkation"}${miniFlag(port)}${can ? "" : `<span class="lockmark" title="Locked. Unlock in Save As.">🔒</span>`}</h4>
+  return `<div class="ed-sec"><h4>${on ? "🛫 Embarkation" : "🛬 Disembarkation"}${miniFlag(port)}${can ? "" : `<span class="lockmark" title="Locked. Unlock in ⚙️ Settings.">🔒</span>`}</h4>
     <div class="ed-port">${esc(port || "Port not set")}</div>
     ${edFilled(e) ? `<dl class="ed-view">${row(on ? "Boarding" : "Getting off", "speed", e.speed)}${row(on ? "Security" : "Customs", "sec", e.sec)}${row("Elite lane", "pri", e.pri)}</dl>${e.note ? `<div class="ed-note">${esc(e.note)}</div>` : ""}` : `<p class="ts-empty">Not noted yet.</p>`}
     ${edPastHTML(t, side)}</div>`;
@@ -3439,6 +3673,48 @@ function medalRanks(ports){
   return scored.map(p => ({p, rank: levels.indexOf(Math.round(portAvg(p) * 10) / 10)})).filter(x => x.rank >= 0)
     .sort((a, b) => a.rank - b.rank || (a.p.date || "").localeCompare(b.p.date || ""));
 }
+/* 🚢 other ships in port: one small line per port; tap it to set how many and (optionally) their names */
+const shipsOf = pt => { const v = pt && pt.ships; if(!v || v.n == null) return null; const names = (Array.isArray(v.names) ? v.names : Object.values(v.names || {})).map(x => String(x || "").trim()); return {n: +v.n || 0, names}; };
+const canShips = (t, pt) => !pastLocked(t) && !(shipsOf(pt) && isLocked(pt.shipsAt));
+function shipsLine(t, pt){
+  const v = shipsOf(pt), can = canShips(t, pt), named = v ? v.names.filter(Boolean) : [];
+  if(!v) return can ? `<div><button type="button" class="shl empty" data-ships="${t.id}|${pt.id}">🚢 Log other ships</button></div>` : "";
+  const txt = `<span aria-hidden="true">🚢</span> Other ships: <b>${v.n}</b>${named.length ? " · " + esc(named.join(", ")) : ""}`;
+  return `<div>${can ? `<button type="button" class="shl" data-ships="${t.id}|${pt.id}">${txt}</button>` : `<span class="shl">${txt} <span class="lockmark" title="Locked. Unlock in ⚙️ Settings.">🔒</span></span>`}</div>`;
+}
+function shipsSummary(x){
+  const logged = (x.ports || []).map(shipsOf).filter(Boolean); if(!logged.length) return "";
+  const total = logged.reduce((a, v) => a + v.n, 0), named = [...new Set(logged.flatMap(v => v.names.filter(Boolean)))];
+  return `<div class="shs-sum">🚢 <b>${total}</b> other ship${total === 1 ? "" : "s"} this cruise${named.length ? `<small>${esc(named.join(" · "))}</small>` : ""}</div>`;
+}
+function openShips(t, pt){
+  const v = shipsOf(pt) || {n: 0, names: []}, root = $("#sheetRoot"), close = () => { root.innerHTML = ""; };
+  let n = v.n, names = v.names.slice();
+  const draw = () => {
+    while(names.length < n) names.push(""); 
+    root.innerHTML = `<div class="scrim" data-close><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shT">
+      <h3 id="shT">🚢 Other ships in ${esc(hlCity(pt))}</h3>
+      <p class="set-note" style="margin:0 0 6px">How many other ships were in port?</p>
+      <div class="shs-n"><button type="button" class="btn b3d" data-shn="-1" aria-label="One less">−</button><input id="shN" type="text" inputmode="numeric" pattern="[0-9]*" value="${n}" aria-label="Number of ships"><button type="button" class="btn b3d" data-shn="1" aria-label="One more">+</button></div>
+      ${n ? `<p class="set-note" style="margin:0 0 6px">Names (optional)</p><div class="shs-names">${Array.from({length: n}, (_, i) => `<input data-shname="${i}" value="${esc(names[i] || "")}" placeholder="Ship ${i + 1} name" maxlength="40" autocomplete="off">`).join("")}</div>` : ""}
+      <div class="row" style="margin-top:14px">${shipsOf(pt) ? `<button type="button" class="btn b3d" id="shClear">Clear</button>` : `<button type="button" class="btn b3d" data-close>Cancel</button>`}<button type="button" class="btn primary b3d" id="shSave">Save</button></div>
+    </div></div>`;
+    root.querySelectorAll("[data-close]").forEach(el => el.addEventListener("click", ev => { if(ev.target === el) close(); }));
+    root.querySelectorAll("[data-shn]").forEach(b => b.addEventListener("click", () => { n = Math.max(0, Math.min(30, n + +b.dataset.shn)); draw(); }));
+    root.querySelectorAll("[data-shname]").forEach(i => i.addEventListener("input", () => { names[+i.dataset.shname] = i.value; }));
+    const ni = root.querySelector("#shN"); ni.addEventListener("change", () => { n = Math.max(0, Math.min(30, parseInt(ni.value, 10) || 0)); draw(); });
+    const done = () => { close(); commit(); const y = window.scrollY; render(); window.scrollTo(0, y); };
+    root.querySelector("#shSave").addEventListener("click", () => { const typed = parseInt(ni.value, 10); if(!isNaN(typed)) n = Math.max(0, Math.min(30, typed));
+      pt.ships = {n, names: names.slice(0, n).map(x => String(x || "").trim())}; pt.shipsAt = pt.shipsAt || Date.now(); done(); });
+    const cl = root.querySelector("#shClear"); if(cl) cl.addEventListener("click", () => { delete pt.ships; delete pt.shipsAt; done(); });
+  };
+  draw();
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-ships]"); if(!b) return;
+  const [tid, pid] = b.dataset.ships.split("|"), t = state.trips.find(x => x.id === tid), pt = t && t.ports.find(x => x.id === pid);
+  if(pt && canShips(t, pt)) openShips(t, pt);
+});
 // 🏆 the three best ports of the cruise, with their highlights
 function bestOfCruise(x, ports){
   const ranked = medalRanks(ports);
@@ -3531,7 +3807,7 @@ function stopNotesList(x){
   return list.length ? `<div class="sn-group"><div class="sn-h">📖 Cruise Journal</div>${list.map(pt => `
     <div class="note stop"><div class="sn-port"><b>${esc((pt.name || "").split(",")[0])}</b>${pt.date ? `<small>${esc(fmtDate(pt.date, {weekday:"short", month:"short", day:"numeric"}))}</small>` : ""}</div>
       ${bulletsHTML(stopNoteText(pt))}
-      <div class="note-f"><span>${esc(noteWhen(pt.note.at))}${pt.note.editedAt ? " · edited" : ""}</span>${canStopNote(x, pt) ? `<span><button type="button" class="xbtn" data-stopnoteview="${x.id}|${pt.id}">Open</button></span>` : `<span class="lockmark" title="Locked. Unlock in Save As.">🔒</span>`}</div>
+      <div class="note-f"><span>${esc(noteWhen(pt.note.at))}${pt.note.editedAt ? " · edited" : ""}</span>${canStopNote(x, pt) ? `<span><button type="button" class="xbtn" data-stopnoteview="${x.id}|${pt.id}">Open</button></span>` : `<span class="lockmark" title="Locked. Unlock in ⚙️ Settings.">🔒</span>`}</div>
     </div>`).join("")}</div>` : "";
 }
 function notesPanel(x){
@@ -3550,7 +3826,7 @@ function notesPanel(x){
         <div class="note">
           <div class="note-t">${esc(n.text)}</div>
           <div class="note-f"><span>${esc(noteWhen(n.at))}${n.editedAt ? " · edited" : ""}</span>${(isLocked(n.at) || pastLocked(n))
-            ? `<span class="lockmark" title="Locked after 48 hours. Unlock in Save As.">🔒</span>`
+            ? `<span class="lockmark" title="Locked after 48 hours. Unlock in ⚙️ Settings.">🔒</span>`
             : `<span><button type="button" class="xbtn" data-editnote="${x.id}|${n.id}">Edit</button><button type="button" class="xbtn" data-delnote="${x.id}|${n.id}">Delete</button></span>`}</div>
         </div>`).join("") : `<p class="ts-empty">No notes yet.</p>`}
     </div>
@@ -4108,12 +4384,15 @@ function jackpotNotes(ac){
 const CHEER_ICONS = {"anchor":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><circle cx=\"50\" cy=\"16\" r=\"8\" fill=\"none\" stroke=\"url(#ci-brass)\" stroke-width=\"5.5\"/>\n <rect x=\"45.5\" y=\"23\" width=\"9\" height=\"58\" rx=\"3.5\" fill=\"url(#ci-brass)\"/><rect x=\"28\" y=\"33\" width=\"44\" height=\"8\" rx=\"4\" fill=\"url(#ci-brass)\"/>\n <path d=\"M14 58c3 18 18 29 36 29s33-11 36-29\" fill=\"none\" stroke=\"url(#ci-brass)\" stroke-width=\"8\" stroke-linecap=\"round\"/>\n <path d=\"M8 63l7-12 9 9zM92 63l-7-12-9 9z\" fill=\"url(#ci-brass)\"/>\n <path d=\"M47.5 26v52\" stroke=\"#FFF6CF\" stroke-width=\"1.6\" opacity=\".7\" stroke-linecap=\"round\"/></svg>","wheel":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><line x1=\"50.0\" y1=\"20.0\" x2=\"50.0\" y2=\"4.0\" stroke=\"url(#ci-wood)\" stroke-width=\"7.5\" stroke-linecap=\"round\"/><line x1=\"71.2\" y1=\"28.8\" x2=\"82.5\" y2=\"17.5\" stroke=\"url(#ci-wood)\" stroke-width=\"7.5\" stroke-linecap=\"round\"/><line x1=\"80.0\" y1=\"50.0\" x2=\"96.0\" y2=\"50.0\" stroke=\"url(#ci-wood)\" stroke-width=\"7.5\" stroke-linecap=\"round\"/><line x1=\"71.2\" y1=\"71.2\" x2=\"82.5\" y2=\"82.5\" stroke=\"url(#ci-wood)\" stroke-width=\"7.5\" stroke-linecap=\"round\"/><line x1=\"50.0\" y1=\"80.0\" x2=\"50.0\" y2=\"96.0\" stroke=\"url(#ci-wood)\" stroke-width=\"7.5\" stroke-linecap=\"round\"/><line x1=\"28.8\" y1=\"71.2\" x2=\"17.5\" y2=\"82.5\" stroke=\"url(#ci-wood)\" stroke-width=\"7.5\" stroke-linecap=\"round\"/><line x1=\"20.0\" y1=\"50.0\" x2=\"4.0\" y2=\"50.0\" stroke=\"url(#ci-wood)\" stroke-width=\"7.5\" stroke-linecap=\"round\"/><line x1=\"28.8\" y1=\"28.8\" x2=\"17.5\" y2=\"17.5\" stroke=\"url(#ci-wood)\" stroke-width=\"7.5\" stroke-linecap=\"round\"/><circle cx=\"50.0\" cy=\"5.0\" r=\"5.2\" fill=\"url(#ci-wood)\"/><circle cx=\"81.8\" cy=\"18.2\" r=\"5.2\" fill=\"url(#ci-wood)\"/><circle cx=\"95.0\" cy=\"50.0\" r=\"5.2\" fill=\"url(#ci-wood)\"/><circle cx=\"81.8\" cy=\"81.8\" r=\"5.2\" fill=\"url(#ci-wood)\"/><circle cx=\"50.0\" cy=\"95.0\" r=\"5.2\" fill=\"url(#ci-wood)\"/><circle cx=\"18.2\" cy=\"81.8\" r=\"5.2\" fill=\"url(#ci-wood)\"/><circle cx=\"5.0\" cy=\"50.0\" r=\"5.2\" fill=\"url(#ci-wood)\"/><circle cx=\"18.2\" cy=\"18.2\" r=\"5.2\" fill=\"url(#ci-wood)\"/>\n <circle cx=\"50\" cy=\"50\" r=\"33\" fill=\"none\" stroke=\"url(#ci-wood)\" stroke-width=\"9\"/><line x1=\"50.0\" y1=\"42.0\" x2=\"50.0\" y2=\"20.0\" stroke=\"url(#ci-wood)\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"55.7\" y1=\"44.3\" x2=\"71.2\" y2=\"28.8\" stroke=\"url(#ci-wood)\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"58.0\" y1=\"50.0\" x2=\"80.0\" y2=\"50.0\" stroke=\"url(#ci-wood)\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"55.7\" y1=\"55.7\" x2=\"71.2\" y2=\"71.2\" stroke=\"url(#ci-wood)\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"50.0\" y1=\"58.0\" x2=\"50.0\" y2=\"80.0\" stroke=\"url(#ci-wood)\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"44.3\" y1=\"55.7\" x2=\"28.8\" y2=\"71.2\" stroke=\"url(#ci-wood)\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"42.0\" y1=\"50.0\" x2=\"20.0\" y2=\"50.0\" stroke=\"url(#ci-wood)\" stroke-width=\"5\" stroke-linecap=\"round\"/><line x1=\"44.3\" y1=\"44.3\" x2=\"28.8\" y2=\"28.8\" stroke=\"url(#ci-wood)\" stroke-width=\"5\" stroke-linecap=\"round\"/>\n <circle cx=\"50\" cy=\"50\" r=\"10\" fill=\"url(#ci-brass)\"/><circle cx=\"47\" cy=\"47\" r=\"3\" fill=\"#FFF6CF\" opacity=\".8\"/></svg>","compass":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"url(#ci-brass)\"/><circle cx=\"50\" cy=\"50\" r=\"36\" fill=\"#F7F2E6\"/><circle cx=\"50\" cy=\"50\" r=\"36\" fill=\"none\" stroke=\"#6E4710\" stroke-width=\"1.5\"/>\n <line x1=\"50.0\" y1=\"20.0\" x2=\"50.0\" y2=\"15.0\" stroke=\"#22386A\" stroke-width=\"2.4\"/><line x1=\"80.0\" y1=\"50.0\" x2=\"85.0\" y2=\"50.0\" stroke=\"#22386A\" stroke-width=\"2.4\"/><line x1=\"50.0\" y1=\"80.0\" x2=\"50.0\" y2=\"85.0\" stroke=\"#22386A\" stroke-width=\"2.4\"/><line x1=\"20.0\" y1=\"50.0\" x2=\"15.0\" y2=\"50.0\" stroke=\"#22386A\" stroke-width=\"2.4\"/>\n <path d=\"M50 18l7 32H43z\" fill=\"url(#ci-red)\"/><path d=\"M50 82l-7-32h14z\" fill=\"url(#ci-navy)\"/><circle cx=\"50\" cy=\"50\" r=\"5\" fill=\"url(#ci-brass)\"/>\n <path d=\"M24 30a32 32 0 0 1 30-14\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" opacity=\".6\" stroke-linecap=\"round\"/></svg>","bell":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><rect x=\"44\" y=\"6\" width=\"12\" height=\"8\" rx=\"3\" fill=\"url(#ci-brass)\"/><path d=\"M50 12c-17 0-25 12-25 30v18c0 6-7 10-12 14h74c-5-4-12-8-12-14V42c0-18-8-30-25-30z\" fill=\"url(#ci-brass)\"/>\n <rect x=\"11\" y=\"72\" width=\"78\" height=\"7\" rx=\"3.5\" fill=\"#8A5A14\"/><circle cx=\"50\" cy=\"88\" r=\"6\" fill=\"url(#ci-brass)\"/>\n <path d=\"M33 28c3-8 9-12 15-13\" fill=\"none\" stroke=\"#FFF6CF\" stroke-width=\"4\" stroke-linecap=\"round\" opacity=\".8\"/><path d=\"M30 46v14\" stroke=\"#FFF6CF\" stroke-width=\"3\" stroke-linecap=\"round\" opacity=\".5\"/></svg>","lighthouse":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><circle cx=\"50\" cy=\"20\" r=\"22\" fill=\"url(#ci-glow)\"/><path d=\"M58 18l38-10v20zM42 18L4 8v20z\" fill=\"#FFF3B5\" opacity=\".75\"/>\n <path d=\"M38 14h24l-3-8H41z\" fill=\"url(#ci-red)\"/><rect x=\"40\" y=\"14\" width=\"20\" height=\"11\" fill=\"#FFE98A\" stroke=\"#22386A\" stroke-width=\"1.6\"/><rect x=\"36\" y=\"25\" width=\"28\" height=\"4\" rx=\"1.5\" fill=\"url(#ci-navy)\"/>\n <path d=\"M40 29h20l5 54H35z\" fill=\"url(#ci-steel)\"/><path d=\"M39.2 40h21.6l1.3 12H37.9zM37.4 62h25.2l1.2 12H36.2z\" fill=\"url(#ci-red)\"/>\n <path d=\"M44 31v50\" stroke=\"#fff\" stroke-width=\"2.5\" opacity=\".7\"/><path d=\"M22 86c8-5 48-5 56 0v6H22z\" fill=\"#5C6577\"/></svg>","telescope":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><g transform=\"rotate(-28 50 50)\"><rect x=\"8\" y=\"40\" width=\"30\" height=\"20\" rx=\"4\" fill=\"url(#ci-navy)\"/><rect x=\"36\" y=\"37\" width=\"30\" height=\"26\" rx=\"4\" fill=\"url(#ci-brass)\"/><rect x=\"64\" y=\"34\" width=\"28\" height=\"32\" rx=\"5\" fill=\"url(#ci-navy)\"/>\n <rect x=\"88\" y=\"32\" width=\"6\" height=\"36\" rx=\"2.5\" fill=\"url(#ci-brass)\"/><path d=\"M12 44h22M40 41h22M68 38h20\" stroke=\"#fff\" stroke-width=\"2.2\" opacity=\".55\" stroke-linecap=\"round\"/></g>\n <path d=\"M44 64l-12 30M50 64l0 30M56 64l12 30\" stroke=\"url(#ci-wood)\" stroke-width=\"4\" stroke-linecap=\"round\"/></svg>","sailboat":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><path d=\"M50 8v66\" stroke=\"url(#ci-wood)\" stroke-width=\"3.5\"/><path d=\"M53 12c20 12 28 34 26 56H53z\" fill=\"url(#ci-sail)\" stroke=\"#9AA9C0\" stroke-width=\"1\"/>\n <path d=\"M47 22C33 32 26 50 27 68h20z\" fill=\"url(#ci-sail)\" stroke=\"#9AA9C0\" stroke-width=\"1\"/><path d=\"M50 6l12 4-12 4z\" fill=\"url(#ci-red)\"/>\n <path d=\"M14 72h72l-10 14H24z\" fill=\"url(#ci-navy)\"/><path d=\"M18 74h64\" stroke=\"#fff\" stroke-width=\"2\" opacity=\".5\"/>\n <path d=\"M6 92q8-5 16 0t16 0 16 0 16 0 16 0 8 0\" fill=\"none\" stroke=\"#3E8FD0\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>","trophy":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><path d=\"M28 10h44v20c0 15-10 26-22 26S28 45 28 30z\" fill=\"url(#ci-brass)\"/><path d=\"M28 16H14c0 14 8 21 16 22M72 16h14c0 14-8 21-16 22\" fill=\"none\" stroke=\"url(#ci-brass)\" stroke-width=\"5\"/>\n <rect x=\"45\" y=\"55\" width=\"10\" height=\"14\" fill=\"url(#ci-brass)\"/><path d=\"M32 69h36l4 10H28z\" fill=\"url(#ci-brass)\"/><rect x=\"24\" y=\"79\" width=\"52\" height=\"11\" rx=\"3\" fill=\"url(#ci-navy)\"/>\n <path d=\"M35 16v14c0 7 3 12 7 15\" fill=\"none\" stroke=\"#FFF6CF\" stroke-width=\"3.5\" stroke-linecap=\"round\" opacity=\".85\"/><path d=\"M50 22l3 6 6.5.5-5 4.3 1.6 6.4L50 36l-5.6 3.2 1.6-6.4-5-4.3 6.5-.5z\" fill=\"#FFF6CF\" opacity=\".9\"/></svg>","cap":"<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><defs>\n<linearGradient id=\"ci-brass\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFF0B3\"/><stop offset=\".35\" stop-color=\"#E7B54A\"/><stop offset=\".7\" stop-color=\"#B07A1E\"/><stop offset=\"1\" stop-color=\"#6E4710\"/></linearGradient>\n<linearGradient id=\"ci-navy\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#4F6FAE\"/><stop offset=\".5\" stop-color=\"#22386A\"/><stop offset=\"1\" stop-color=\"#101C3A\"/></linearGradient>\n<linearGradient id=\"ci-steel\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\".45\" stop-color=\"#C9D3E2\"/><stop offset=\"1\" stop-color=\"#7D8BA3\"/></linearGradient>\n<linearGradient id=\"ci-red\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#FF8A8A\"/><stop offset=\".5\" stop-color=\"#D7263D\"/><stop offset=\"1\" stop-color=\"#8E1426\"/></linearGradient>\n<linearGradient id=\"ci-wood\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#E9B27A\"/><stop offset=\".5\" stop-color=\"#A9662E\"/><stop offset=\"1\" stop-color=\"#5E3415\"/></linearGradient>\n<linearGradient id=\"ci-sail\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\"><stop offset=\"0\" stop-color=\"#FFFFFF\"/><stop offset=\"1\" stop-color=\"#D6DFEC\"/></linearGradient>\n<radialGradient id=\"ci-glow\" cx=\"50%\" cy=\"50%\"><stop offset=\"0\" stop-color=\"#FFF6C8\"/><stop offset=\"1\" stop-color=\"#FFF6C8\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ci-sh\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"150%\"><feDropShadow dx=\"0\" dy=\"4\" stdDeviation=\"3.5\" flood-color=\"#0B1730\" flood-opacity=\".35\"/></filter>\n</defs><path d=\"M12 50c0-20 17-34 38-34s38 14 38 34z\" fill=\"url(#ci-sail)\" stroke=\"#9AA9C0\" stroke-width=\"1.2\"/><path d=\"M10 50h80l-3 13H13z\" fill=\"url(#ci-navy)\"/>\n <path d=\"M16 63c10 12 58 12 68 0z\" fill=\"#0E1730\"/><path d=\"M14 56h72\" stroke=\"url(#ci-brass)\" stroke-width=\"3\"/>\n <circle cx=\"50\" cy=\"34\" r=\"10\" fill=\"url(#ci-brass)\"/><circle cx=\"50\" cy=\"29.5\" r=\"2\" fill=\"none\" stroke=\"#6E4710\" stroke-width=\"1.4\"/><path d=\"M50 31.5v9M46.5 34h7M44.5 37.5c1 2.6 3 3.6 5.5 3.6s4.5-1 5.5-3.6\" fill=\"none\" stroke=\"#6E4710\" stroke-width=\"1.4\" stroke-linecap=\"round\"/><path d=\"M24 34c6-9 14-13 22-14\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" opacity=\".8\" stroke-linecap=\"round\"/></svg>"};
 const CHEERS = [
   ["anchor", "Land ho, {n}! The finish line is in sight."], ["wheel", "Full steam ahead, {n}."], ["compass", "{n} is on course for victory."],
-  ["bell", "Ring the bell — {n} is {left} away."], ["lighthouse", "{n} can see the harbor lights."], ["telescope", "Victory in sight for {n}."],
-  ["sailboat", "Wind in your sails, {n} — just {left} to go."], ["trophy", "One good hand from glory, {n}."], ["cap", "Captain {n}, bring her home."],
-  ["anchor", "Steady as she goes, {n}. Only {left} more."], ["compass", "Hold your course, {n}."], ["lighthouse", "{n} is on the home stretch."],
+  ["bell", "Ring the bell — {n} is {left} away.", "Ring the bell — {n} is almost there."], ["lighthouse", "{n} can see the harbor lights."], ["telescope", "Victory in sight for {n}."],
+  ["sailboat", "Wind in your sails, {n} — just {left} to go.", "Wind in your sails, {n} — almost home."], ["trophy", "One good hand from glory, {n}."], ["cap", "Captain {n}, bring her home."],
+  ["anchor", "Steady as she goes, {n}. Nearly there."], ["compass", "Hold your course, {n}."], ["lighthouse", "{n} is on the home stretch."],
   ["telescope", "Watch out — {n} is about to win."], ["bell", "All hands on deck: {n} is closing in."], ["trophy", "Polish the trophy for {n}."]
 ];
 const cheerSeen = {}; let lastCheer = -1;
+const NUMBERED = new Set(CHEERS.map((c, i) => /\{left\}/.test(c[1]) || /Nearly there\./.test(c[1]) ? i : -1).filter(i => i >= 0));   // lines that used to have a number in them
+const cheerText = (k, name, left, recorded) => ((recorded && CHEERS[k][2]) || CHEERS[k][1]).replace(/\{n\}/g, name).replace(/\{left\}/g, left);
+const hasOurClip = (k, name) => { const v = typeof voiceClips !== "undefined" && voiceClips[voiceKey(k, name)]; return !!(v && v.data && !v.deleted && (v.v === 2 || !NUMBERED.has(k))) && soundOn && sndOn("voice") && sndOn("ours"); };
 function cheerCheck(key, names, scores, target, near, lowWins){
   if(!target || lowWins) return;
   const fresh = scores.every(v => !v), prev = cheerSeen[key];
@@ -4125,7 +4404,7 @@ function cheerCheck(key, names, scores, target, near, lowWins){
     st.done.add(i);
     if(st.init) return;                      // the app just opened on a close game: don't pop up now
     let k; do { k = Math.floor(Math.random() * CHEERS.length); } while(k === lastCheer && CHEERS.length > 1); lastCheer = k;
-    cheerToast(CHEERS[k][1].replace(/\{n\}/g, names[i]).replace(/\{left\}/g, target - v), CHEERS[k][0], {k, name: names[i]});
+    cheerToast(cheerText(k, names[i], target - v, hasOurClip(k, names[i])), CHEERS[k][0], {k, name: names[i]});
   });
   st.init = false;
 }
@@ -4181,7 +4460,8 @@ window.addEventListener("online", flushVoices);
 function playOurVoice(k, name){
   if(!soundOn || !sndOn("voice")) return true;   // voice off: stay quiet (and don't fall back to the phone voice)
   if(!sndOn("ours")) return false;               // our recordings switched off: use the phone's voice
-  const v = voiceClips[voiceKey(k, name)]; if(!v || v.deleted || !v.data) return false;
+  if(!hasOurClip(k, name)) return false;
+  const v = voiceClips[voiceKey(k, name)];
   try { const a = new Audio(v.data); a.volume = 1; const pr = a.play(); if(pr && pr.catch) pr.catch(() => sayAloud(CHEERS[k][1].replace(/\{n\}/g, name).replace(/\{left\}/g, ""))); return true; } catch(e){ return false; }
 }
 // recording
@@ -4197,7 +4477,7 @@ async function startRec(key){
   mr.ondataavailable = e => { if(e.data && e.data.size) voiceRec.chunks.push(e.data); };
   mr.onstop = () => { stream.getTracks().forEach(t => t.stop());
     const blob = new Blob(voiceRec.chunks, {type: mr.mimeType || mime || "audio/mp4"}), fr = new FileReader();
-    fr.onload = () => { const clip = {data: fr.result, mime: blob.type, at: Date.now(), by: S().p1 && voiceRec.who ? voiceRec.who : "", pending: true};
+    fr.onload = () => { const clip = {v: 2, data: fr.result, mime: blob.type, at: Date.now(), by: S().p1 && voiceRec.who ? voiceRec.who : "", pending: true};
       voiceClips[key] = clip; vput(key, clip); flushVoices(); voiceRec.on = false; voiceRec.key = null; render(); new Audio(clip.data).play().catch(() => {}); };
     fr.readAsDataURL(blob); };
   mr.start(); render();
@@ -4206,18 +4486,26 @@ async function startRec(key){
 function stopRec(){ clearTimeout(voiceRec.t); try { if(voiceRec.mr && voiceRec.mr.state !== "inactive") voiceRec.mr.stop(); } catch(e){ voiceRec.on = false; render(); } }
 let voiceFor = null;   // whose lines are shown in Settings
 let voicesOpen = false; try { voicesOpen = localStorage.getItem("cs-voices-open") === "1"; } catch(e){}
-function voicesSection(){
+function voicesBody(){
   const names = [S().p1 || "Alessandra", S().p2 || "Kirk"]; if(!voiceFor || !names.includes(voiceFor)) voiceFor = names[0];
   const have = n => CHEERS.filter((c, k) => { const v = voiceClips[voiceKey(k, n)]; return v && !v.deleted; }).length;
+  return `<div class="set-seg" role="group">${names.map(n => `<button type="button" class="b3d ${n === voiceFor ? "on" : ""}" data-voicefor="${esc(n)}">Lines about ${esc(n)} · ${have(n)}/${CHEERS.length}</button>`).join("")}</div>
+    <div class="vc-list">${CHEERS.map(([ic, txt], k) => { const key = voiceKey(k, voiceFor), v = voiceClips[key], has = v && !v.deleted, rec = voiceRec.on && voiceRec.key === key;
+      return `<div class="vc-row ${rec ? "rec" : ""}"><span class="vc-ic">${CHEER_ICONS[ic]}</span><span class="vc-t">${esc(cheerText(k, voiceFor, "", true))}${has ? (NUMBERED.has(k) && v.v !== 2 ? `<small class="vc-redo">⚠️ Please redo: say it as written (no number)</small>` : `<small>${v.pending ? "⏳ waiting to send" : "✓ recorded"}</small>`) : ""}</span>
+        <span class="vc-b"><button type="button" class="b3d vc-rec ${rec ? "on" : ""}" data-vrec="${key}" aria-label="${rec ? "Stop" : "Record"}">${rec ? "⏹ Stop" : has ? "🔴 Redo" : "🔴 Record"}</button>${has ? `<button type="button" class="b3d vc-play" data-vplay="${key}">▶</button><button type="button" class="b3d vc-del" data-vdel="${key}" aria-label="Delete recording">✕</button>` : ""}</span></div>`; }).join("")}</div>
+    <p class="set-note">Say each line just as written. The first time, the iPhone asks to use the microphone: tap Allow.</p>`;
+}
+function voicesSection(bare){
+  const names = [S().p1 || "Alessandra", S().p2 || "Kirk"]; if(!voiceFor || !names.includes(voiceFor)) voiceFor = names[0];
+  const have = n => CHEERS.filter((c, k) => { const v = voiceClips[voiceKey(k, n)]; return v && !v.deleted; }).length;
+  if(bare) return `<button type="button" class="set-tog" data-snd="ours" aria-pressed="${sndOn("ours")}"><span>🎙️ Use our recorded voices${sndOn("voice") ? "" : " <small style=\"color:var(--muted)\">(cheers are silent: “Read cheers out loud” is off)</small>"}</span><i class="sw ${sndOn("ours") ? "on" : ""}" aria-hidden="true"></i></button>
+    <p class="set-note" style="margin:10px 0 10px">Record the cheers in your own voices. They play on every phone using the app. Lines you don't record use the phone's voice. Each recording is up to 6 seconds.</p>
+    ${voicesBody()}`;
   if(!voicesOpen && !voiceRec.on) return `<section class="set-card vc-closed"><button type="button" class="vc-head" data-vtoggle aria-expanded="false"><span class="vc-h">🎙️ Our voices</span><span class="vc-sum">${names.map(n => `<span>${esc(n)} <b>${have(n)}/${CHEERS.length}</b></span>`).join("")}</span><span class="vc-chev" aria-hidden="true">▾</span></button></section>`;
   return `<section class="set-card"><button type="button" class="vc-head" data-vtoggle aria-expanded="true"><span class="vc-h">🎙️ Our voices</span><span class="vc-sum">${names.map(n => `<span>${esc(n)} <b>${have(n)}/${CHEERS.length}</b></span>`).join("")}</span><span class="vc-chev" aria-hidden="true">▴</span></button>
     <button type="button" class="set-tog" data-snd="ours" aria-pressed="${sndOn("ours")}" style="margin-top:6px"><span>🎙️ Use our recorded voices${sndOn("voice") ? "" : " <small style=\"color:var(--muted)\">(cheers are silent: “Read cheers out loud” is off)</small>"}</span><i class="sw ${sndOn("ours") ? "on" : ""}" aria-hidden="true"></i></button>
     <p class="set-note" style="margin:10px 0 10px">Record the cheers in your own voices. They play on every phone using the app. Lines you don't record use the phone's voice. Each recording is up to 6 seconds.</p>
-    <div class="set-seg" role="group">${names.map(n => `<button type="button" class="b3d ${n === voiceFor ? "on" : ""}" data-voicefor="${esc(n)}">Lines about ${esc(n)} · ${have(n)}/${CHEERS.length}</button>`).join("")}</div>
-    <div class="vc-list">${CHEERS.map(([ic, txt], k) => { const key = voiceKey(k, voiceFor), v = voiceClips[key], has = v && !v.deleted, rec = voiceRec.on && voiceRec.key === key;
-      return `<div class="vc-row ${rec ? "rec" : ""}"><span class="vc-ic">${CHEER_ICONS[ic]}</span><span class="vc-t">${esc(txt.replace(/\{n\}/g, voiceFor).replace(/\{left\}/g, "12"))}${has ? `<small>${v.pending ? "⏳ waiting to send" : "✓ recorded"}</small>` : ""}</span>
-        <span class="vc-b"><button type="button" class="b3d vc-rec ${rec ? "on" : ""}" data-vrec="${key}" aria-label="${rec ? "Stop" : "Record"}">${rec ? "⏹ Stop" : has ? "🔴 Redo" : "🔴 Record"}</button>${has ? `<button type="button" class="b3d vc-play" data-vplay="${key}">▶</button><button type="button" class="b3d vc-del" data-vdel="${key}" aria-label="Delete recording">✕</button>` : ""}</span></div>`; }).join("")}</div>
-    <p class="set-note">Lines with "12" will say whatever number you record, so leave the number out or say it as you like. The first time, the iPhone asks to use the microphone: tap Allow.</p>
+    ${voicesBody()}
   </section>`;
 }
 document.addEventListener("click", e => {
@@ -4232,7 +4520,12 @@ function cheerToast(msg, icon, who){
   let el = document.getElementById("cheerToast");
   if(!el){ el = document.createElement("div"); el.id = "cheerToast"; el.className = "cheertoast"; el.setAttribute("role", "status");
     el.addEventListener("click", () => el.classList.remove("show")); document.body.appendChild(el); }
-  el.innerHTML = `<span class="ct-ic">${CHEER_ICONS[icon] || CHEER_ICONS.trophy}</span><span class="ct-txt">${esc(msg)}</span><small class="ct-tap">tap to close</small>`;
+  el.innerHTML = `<svg class="ct-rose" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="#7A5A2A" stroke-width=".8"><circle cx="50" cy="50" r="44"/><circle cx="50" cy="50" r="38"/></g>
+      <g fill="#7A5A2A">${[0,90,180,270].map(a => `<path transform="rotate(${a} 50 50)" d="M50 8 L55 50 L50 56 L45 50z"/>`).join("")}</g>
+      <g fill="#B5986A">${[45,135,225,315].map(a => `<path transform="rotate(${a} 50 50)" d="M50 20 L53 50 L50 53 L47 50z"/>`).join("")}</g>
+      <text x="50" y="6" font-size="9" text-anchor="middle" fill="#8E1E1E" font-family="IM Fell English SC,Georgia,serif">N</text></svg>
+    <span class="ct-ic">${CHEER_ICONS[icon] || CHEER_ICONS.trophy}</span><span class="ct-txt">${esc(msg)}</span>
+    <span class="ct-scale" aria-hidden="true"><i></i><i></i><i></i><i></i><em>LEAGUES</em></span><small class="ct-tap">tap to close</small>`;
   el.classList.remove("show"); void el.offsetWidth; el.classList.add("show"); if(!(who && playOurVoice(who.k, who.name))) sayAloud(msg);
   clearTimeout(cheerToast.t); cheerToast.t = setTimeout(() => el.classList.remove("show"), 7000);
 }
@@ -4426,7 +4719,7 @@ setInterval(() => {
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-reopen]"); if(!b) return;
   const [tid, gid] = b.dataset.reopen.split("|"), t = state.trips.find(x => x.id === tid); if(!t) return;
-  if(!reopenGame(t, gid)) sheet("Too late to undo", "This win can only be undone in the first 2 minutes. Unlock (tap © 2026 Thor) to delete it from Wins instead.", "OK", () => {});
+  if(!reopenGame(t, gid)) sheet("Too late to undo", "This win can only be undone in the first 2 minutes. Unlock (⚙️ Settings → 🔒 Editing lock) to delete it from Wins instead.", "OK", () => {});
 });
 function celebrate(t, g, more){
   const root = $("#partyRoot"), tl = tally(t, g.type), name = g.winner===1 ? t.p1 : g.winner===2 ? t.p2 : null;
@@ -4650,83 +4943,27 @@ async function triggerDownload(filename, content, mime){
 }
 function setSaveStatus(msg){ const el = document.getElementById("saveStatus"); if(el) el.textContent = msg; }
 function stamp(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
-function showSaveAs(){
-  const root = document.getElementById("saveRoot");
-  if(root.firstChild) return;
-  root.innerHTML = `<div class="scrim save-scrim" id="saveScrim"><div class="sheet save-sheet" role="dialog" aria-modal="true" aria-labelledby="saveT">
-    <div class="save-h"><h3 id="saveT">Save As…</h3><button type="button" class="xclose" id="saveClose" aria-label="Close">×</button></div>
-    <section class="save-sec">
-      <p class="eyebrow">Editing lock</p>
-      <p class="save-help">Games and port scores lock ${LOCK_HOURS} hours after they're entered. Unlock to change or delete anything, then lock it again.</p>
-      <div class="save-row"><button type="button" class="btn b3d lockbtn ${editingUnlocked ? "unlocked" : ""}" id="lockToggle">${editingUnlocked ? "🔓 Editing unlocked · tap to lock" : "🔒 Unlock editing"}</button></div>
-    </section>
-    <section class="save-sec">
-      <p class="eyebrow">Winning sound</p>
-      <p class="save-help">Each player has their own winning music: ${esc(trip().p1)} gets the slot-machine jackpot, ${esc(trip().p2)} gets the steel-drum calypso. The on/off setting is for this device only.</p>
-      <div class="save-row"><button type="button" class="btn b3d" id="soundToggle">${soundOn ? "🔔 Sound on · tap to turn off" : "🔕 Sound off · tap to turn on"}</button></div>
-      <div class="save-row"><button type="button" class="btn b3d" id="soundTest">🎰 ${esc(trip().p1)}'s music</button><button type="button" class="btn b3d" id="soundTest2">🛳️ ${esc(trip().p2)}'s music</button></div>
-    </section>
-    <section class="save-sec">
-      <p class="eyebrow">Phone and computer sync</p>
-      <div id="syncStatus" class="sync-line"></div>
-      <div class="save-row"><button type="button" class="btn b3d" id="syncNow">Sync now</button></div>
-    </section>
-    <section class="save-sec">
-      <p class="eyebrow">Using it at sea</p>
-      <div id="offlineStatus" class="sync-line"></div>
-    </section>
-    <section class="save-sec">
-      <p class="eyebrow">Download a copy</p>
-      <p class="save-help">HTML saves the app itself. JSON saves your trips and games.</p>
-      <div class="save-row"><button type="button" class="btn primary b3d" id="saveHtml">Save as HTML</button><button type="button" class="btn primary b3d" id="saveJson">Save as JSON</button></div>
-    </section>
-    <section class="save-sec">
-      <p class="eyebrow">Printable list</p>
-      <p class="save-help">A black-and-white PDF of every city and country on your trips, ready to print.</p>
-      <div class="save-row"><button type="button" class="btn primary b3d" id="savePdf">🖨️ Export to PDF</button></div>
-    </section>
-    <p class="save-status" id="saveStatus" role="status"></p>
-    <p class="save-ver">Version ${APP_VERSION} · updated ${APP_UPDATED}</p>
-  </div></div>`;
-  renderSyncBits(); renderOffline();
-  const close = () => { root.innerHTML = ""; };
-  document.getElementById("soundToggle").addEventListener("click", () => {
-    soundOn = !soundOn; try { localStorage.setItem(SOUND_KEY, soundOn ? "on" : "off"); } catch(e){}
-    document.getElementById("soundToggle").textContent = soundOn ? "🔔 Sound on · tap to turn off" : "🔕 Sound off · tap to turn on";
-  });
-  document.getElementById("soundTest").addEventListener("click", () => { const was = soundOn; soundOn = true; playJackpot(); soundOn = was; });
-  document.getElementById("soundTest2").addEventListener("click", () => { const was = soundOn; soundOn = true; playCalypso(); soundOn = was; });
-  document.getElementById("lockToggle").addEventListener("click", () => {
-    editingUnlocked = !editingUnlocked; updateLockIcon(); render();
-    root.innerHTML = ""; showSaveAs();          // redraw the window so the button shows the new state
-  });
-  document.getElementById("saveClose").addEventListener("click", close);
-  document.getElementById("saveScrim").addEventListener("click", e => { if(e.target.id === "saveScrim") close(); });
-  document.getElementById("syncNow").addEventListener("click", () => {
+function showSaveAs(sec){ tab = "settings"; openSet = sec || null; moreGamesOpen = false; render(); window.scrollTo(0, 0);
+  if(openSet){ const el = document.querySelector(`[data-sxopen="${openSet}"]`); if(el) el.scrollIntoView({block:"start"}); } }
+// the buttons that used to live in the Save As window, now in Settings
+document.addEventListener("click", e => {
+  const id = e.target.closest("button") && e.target.closest("button").id; if(!id) return;
+  if(id === "lockToggle"){ editingUnlocked = !editingUnlocked; updateLockIcon(); render(); return; }
+  if(id === "syncNow"){
     if(!cloud.ref){ setSaveStatus(cloud.error || "Sync isn't available here."); return; }
     if(!cloud.ready || !cloud.online){ setSaveStatus("No connection right now. Your changes are safe on this device and will send when you're back online."); return; }
-    setSaveStatus("Syncing…");
-    pushCloud();
-    flush().then(() => cloud.ref.once("value")).then(snap => {
-      onCloudValue(snap.val());
-      setSaveStatus(pendingCount() ? "Some changes are still waiting to send. They're safe on this device." : "Synced. This device now matches your other devices.");
-      renderSyncBits();
-    }).catch(e => setSaveStatus("Couldn't sync: " + ((e && e.code) || "no connection") + ". Your changes are kept on this device."));
-  });
-  document.getElementById("saveHtml").addEventListener("click", () => {
-    const html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML.replace(/<div id="saveRoot">[\s\S]*?<\/div>\s*<script/, '<div id="saveRoot"></div>\n<script');
-    triggerDownload("Cruise_Scorebook.html", html, "text/html");
-  });
-  document.getElementById("savePdf").addEventListener("click", () => {
-    try { triggerDownload("Cruise-Ports-" + stamp() + ".pdf", buildPortsPDF(), "application/pdf"); }
-    catch(e){ setSaveStatus("Couldn't make the PDF: " + (e && e.message || e)); }
-  });
-  document.getElementById("saveJson").addEventListener("click", () => triggerDownload("cruise-scorebook-" + stamp() + ".json", backupJSON(), "application/json"));
-  document.getElementById("saveClose").focus();
-}
+    setSaveStatus("Syncing…"); pushCloud();
+    flush().then(() => cloud.ref.once("value")).then(snap => { onCloudValue(snap.val());
+      setSaveStatus(pendingCount() ? "Some changes are still waiting to send. They're safe on this device." : "Synced. This device now matches your other devices."); renderSyncBits();
+    }).catch(err => setSaveStatus("Couldn't sync: " + ((err && err.code) || "no connection") + ". Your changes are kept on this device."));
+    return; }
+  if(id === "saveHtml"){ const html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML.replace(/<div id="saveRoot">[\s\S]*?<\/div>\s*<script/, '<div id="saveRoot"></div>\n<script'); triggerDownload("Cruise_Scorebook.html", html, "text/html"); return; }
+  if(id === "savePdf"){ try { triggerDownload("Cruise-Ports-" + stamp() + ".pdf", buildPortsPDF(), "application/pdf"); } catch(err){ setSaveStatus("Couldn't make the PDF: " + (err && err.message || err)); } return; }
+  if(id === "saveJson"){ triggerDownload("cruise-scorebook-" + stamp() + ".json", backupJSON(), "application/json"); return; }
+});
 (function wireCopyright(){
   const trig = document.getElementById("copyright-trigger");
-  trig.addEventListener("click", showSaveAs);
+  // © 2026 Thor is just a label now; Settings has everything
 })();
 
 /* ---------- actions ---------- */
@@ -4837,7 +5074,7 @@ document.addEventListener("click", e => {
   else if(a==="resetports" && editingUnlocked){
     const scored = t.ports.filter(p => p.s1 != null || p.s2 != null);
     if(scored.some(portLocked)){
-      sheet("Some scores are locked", "Port scores lock 48 hours after they're given. Unlock editing in Save As (tap © 2026 Thor), then reset.", "Open Save As", () => showSaveAs());
+      sheet("Some scores are locked", "Port scores lock 48 hours after they're given. Unlock editing in ⚙️ Settings → 🔒 Editing lock, then reset.", "Open Settings", () => showSaveAs("lock"));
     } else {
       sheet("Reset all port scores?", `Clears ${esc(t.p1)}'s and ${esc(t.p2)}'s scores on all ${scored.length} scored port${scored.length===1?"":"s"} of this trip, on every device. The ports stay in the list.`, "Reset scores", () => {
         t.ports.forEach(p => { p.s1 = null; p.s2 = null; delete p.ratedAt; delete p.rated1; delete p.rated2; });
@@ -4868,7 +5105,7 @@ document.addEventListener("click", e => {
   else if(a==="deltrip"){ const dt = state.trips.find(x => x.id === act.dataset.tid);
     if(!dt || !canDeleteTrip(dt) || state.trips.length < 2){ render(); }
     else if(dt.games.some(g => isLocked(g.createdAt)) || dt.ports.some(portLocked)){
-      sheet("This trip has locked entries", "Games and port scores lock 48 hours after they're entered. Unlock editing in Save As (tap © 2026 Thor), then delete the trip.", "Open Save As", () => showSaveAs()); }
+      sheet("This trip has locked entries", "Games and port scores lock 48 hours after they're entered. Unlock editing in ⚙️ Settings → 🔒 Editing lock, then delete the trip.", "Open Settings", () => showSaveAs("lock")); }
     else sheet(`Delete “${dt.name}”?`, `Its ${dt.games.length} recorded game${dt.games.length===1?"":"s"}, ports, hotels and notes will be removed too, on every device.`, "Delete trip", () => {
       state.trips = state.trips.filter(x => x.id !== dt.id); if(state.activeTripId === dt.id) state.activeTripId = state.trips[0].id; commit(); render(); }, true); }
 });
