@@ -1022,8 +1022,8 @@ tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "19.6";
-const APP_UPDATED = "Nov 14, 2026, 6:10 PM ET";
+const APP_VERSION = "19.7";
+const APP_UPDATED = "Nov 14, 2026, 9:50 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (⚙️ Settings → 🔒 Editing lock). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -4340,6 +4340,23 @@ function wakeAudio(){
   if(pendingSound && Date.now() - pendingAt < 10*60*1000){ const fn = pendingSound; pendingSound = null; fn(ac); }
   else pendingSound = null;
   const hint = document.getElementById("tapSound"); if(hint) hint.hidden = true;
+  unlockVoices();
+}
+/* iPhone only lets a web page talk or play a recording if that started from a tap. So the very first tap
+   (and the first tap after the app comes back from the background) quietly "opens" the speech voice and
+   one shared recording player; after that the cheers can speak even when the score came from the other phone. */
+const SILENT_WAV = "data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==";
+let speechReady = false, voiceEl = null, voiceElReady = false;
+const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+document.addEventListener("visibilitychange", () => { if(document.hidden){ speechReady = false; voiceElReady = false; } });
+function unlockVoices(){
+  if(!speechReady && "speechSynthesis" in window){
+    try { speechSynthesis.resume(); const u = new SpeechSynthesisUtterance(" "); u.volume = 0; u.lang = "en-US"; speechSynthesis.speak(u); speechReady = true; } catch(e){}
+  }
+  if(!voiceElReady){
+    try { voiceEl = voiceEl || new Audio(); voiceEl.setAttribute("playsinline", ""); voiceEl.muted = false;
+      if(!voiceEl.src || voiceEl.ended || voiceEl.paused){ voiceEl.src = SILENT_WAV; const pr = voiceEl.play(); if(pr && pr.then) pr.then(() => { voiceElReady = true; }).catch(() => {}); else voiceElReady = true; } } catch(e){}
+  }
 }
 ["touchend","pointerdown","click","keydown"].forEach(ev => document.addEventListener(ev, wakeAudio, {capture:true}));
 function audio(){
@@ -4409,7 +4426,7 @@ function cheerCheck(key, names, scores, target, near, lowWins){
   st.init = false;
 }
 /* 🗣️ read a cheer out loud with the phone's own voice (works offline; each phone can turn it off in Settings) */
-let sayVoice = null;
+let sayVoice = null, lastSaid = 0;
 function pickVoice(){
   try { const vs = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang)); if(!vs.length) return null;
     const pref = ["Samantha","Daniel","Karen","Moira","Serena","Arthur","Google US English","Google UK English Female"];
@@ -4420,9 +4437,13 @@ function sayAloud(text){
   if(!soundOn || !sndOn("voice") || !("speechSynthesis" in window)) return;
   try {
     const u = new SpeechSynthesisUtterance(text.replace(/\s*—\s*/g, ", "));
-    sayVoice = sayVoice || pickVoice(); if(sayVoice){ u.voice = sayVoice; u.lang = sayVoice.lang; } else u.lang = "en-US";
-    u.rate = .95; u.pitch = 1.05; u.volume = 1;
-    speechSynthesis.cancel(); speechSynthesis.speak(u);
+    // on iPhone, naming a voice can pick one that isn't downloaded and stays silent: let the phone choose its English voice
+    sayVoice = sayVoice || pickVoice(); if(sayVoice && !isiOS){ u.voice = sayVoice; u.lang = sayVoice.lang; } else u.lang = "en-US";
+    u.rate = isiOS ? 1 : .95; u.pitch = 1.05; u.volume = 1;
+    // iPhone drops a sentence spoken right after "stop talking", so only stop a real cheer that's still going
+    try { speechSynthesis.resume(); } catch(e){}
+    if(speechSynthesis.speaking && lastSaid && Date.now() - lastSaid < 6000) speechSynthesis.cancel();
+    window.__lastUtter = u; lastSaid = Date.now(); speechSynthesis.speak(u);
   } catch(e){}
 }
 
@@ -4462,7 +4483,7 @@ function playOurVoice(k, name){
   if(!sndOn("ours")) return false;               // our recordings switched off: use the phone's voice
   if(!hasOurClip(k, name)) return false;
   const v = voiceClips[voiceKey(k, name)];
-  try { const a = new Audio(v.data); a.volume = 1; const pr = a.play(); if(pr && pr.catch) pr.catch(() => sayAloud(CHEERS[k][1].replace(/\{n\}/g, name).replace(/\{left\}/g, ""))); return true; } catch(e){ return false; }
+  try { const a = voiceEl || new Audio(); a.src = v.data; a.volume = 1; a.muted = false; const pr = a.play(); if(pr && pr.catch) pr.catch(() => sayAloud(CHEERS[k][1].replace(/\{n\}/g, name).replace(/\{left\}/g, ""))); return true; } catch(e){ return false; }
 }
 // recording
 const voiceRec = {on: false, key: null, mr: null, chunks: [], t: null, who: ""};
