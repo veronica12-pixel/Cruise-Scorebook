@@ -1022,8 +1022,8 @@ tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "19.7";
-const APP_UPDATED = "Nov 14, 2026, 9:50 PM ET";
+const APP_VERSION = "19.8";
+const APP_UPDATED = "Nov 17, 2026, 7:25 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (⚙️ Settings → 🔒 Editing lock). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -2731,11 +2731,10 @@ function renderSettings(){
         <div class="set-now">🚢 Ship time now: <b>${esc(shipNow)}</b> · ${esc(fmtO(info.off))} <small style="color:var(--muted)">(${esc(info.src)})</small></div>
         <p class="set-note">Automatic uses the latest port on the itinerary while you're sailing, so it's right even on a phone or computer still set to home time. If the ship changes its clocks at sea, pick "Ship clock set to…".</p>`; })()}
     `],
-    ["sounds", "🔊", "Sounds", !soundOn ? "All off on this phone" : on === 4 ? "All on" + (sndOn("ours") ? " · our voices" : "") : on + " of 4 on", "#E8DFFF", "#9F87E0", `<button type="button" class="set-tog" data-sndall aria-pressed="${soundOn}"><span><b>🔔 All sounds</b></span><i class="sw ${soundOn ? "on" : ""}" aria-hidden="true"></i></button>
-      ${soundOn ? tog("win", "🏆 Winning music") : ""}${soundOn ? tog("tie", "🤝 Tie jingle") : ""}${soundOn ? tog("lead", "🎺 “Takes the lead” bugle") + tog("voice", "🗣️ Read cheers out loud") + (sndOn("voice") ? tog("ours", "🎙️ Use our recorded voices") : "") : `<p class="set-note">All sounds are off on this phone.</p>`}
+    ["sounds", "🔊", "Sounds", !soundOn ? "All off on this phone" : on === 4 ? "All on" : on + " of 4 on", "#E8DFFF", "#9F87E0", `<button type="button" class="set-tog" data-sndall aria-pressed="${soundOn}"><span><b>🔔 All sounds</b></span><i class="sw ${soundOn ? "on" : ""}" aria-hidden="true"></i></button>
+      ${soundOn ? tog("win", "🏆 Winning music") : ""}${soundOn ? tog("tie", "🤝 Tie jingle") : ""}${soundOn ? tog("lead", "🎺 “Takes the lead” bugle") + tog("voice", "🗣️ Read cheers out loud") : `<p class="set-note">All sounds are off on this phone.</p>`}
 
     `],
-    ["voices", "🎙️", "Our voices", `${S().p1} ${vcount(S().p1)}/${CHEERS.length} · ${S().p2} ${vcount(S().p2)}/${CHEERS.length}`, "#FFE3EA", "#E79AAE", voicesSection(true)],
     ["display", "🌡️", "Temperature & clock", `°${st.temp} · ${st.clock === "24" ? "24-hour" : "12-hour"}`, "#D8F5F2", "#6CC2BA", `${seg("temp", [["F", "°F Fahrenheit"], ["C", "°C Celsius"]])}<div style="height:8px"></div>${seg("clock", [["12", "12-hour · 2:30 PM"], ["24", "24-hour · 14:30"]])}`],
     ["players", "👥", "Players", `${st.p1} & ${st.p2}${usualPlayers().length ? " · " + usualPlayers().length + " usual player" + (usualPlayers().length === 1 ? "" : "s") : ""}`, "#FFF1C9", "#E0B348",
       `<div class="set-two"><label class="set-lbl">Player 1<input class="set-in" data-sett="p1" value="${esc(st.p1)}" maxlength="18" autocomplete="off"></label><label class="set-lbl">Player 2<input class="set-in" data-sett="p2" value="${esc(st.p2)}" maxlength="18" autocomplete="off"></label></div>
@@ -4409,7 +4408,8 @@ const CHEERS = [
 const cheerSeen = {}; let lastCheer = -1;
 const NUMBERED = new Set(CHEERS.map((c, i) => /\{left\}/.test(c[1]) || /Nearly there\./.test(c[1]) ? i : -1).filter(i => i >= 0));   // lines that used to have a number in them
 const cheerText = (k, name, left, recorded) => ((recorded && CHEERS[k][2]) || CHEERS[k][1]).replace(/\{n\}/g, name).replace(/\{left\}/g, left);
-const hasOurClip = (k, name) => { const v = typeof voiceClips !== "undefined" && voiceClips[voiceKey(k, name)]; return !!(v && v.data && !v.deleted && (v.v === 2 || !NUMBERED.has(k))) && soundOn && sndOn("voice") && sndOn("ours"); };
+const OUR_VOICES = false;   // recorded voices removed from Settings (Nov 2026); the clips stay saved
+const hasOurClip = (k, name) => { if(!OUR_VOICES) return false; const v = typeof voiceClips !== "undefined" && voiceClips[voiceKey(k, name)]; return !!(v && v.data && !v.deleted && (v.v === 2 || !NUMBERED.has(k))) && soundOn && sndOn("voice") && sndOn("ours"); };
 function cheerCheck(key, names, scores, target, near, lowWins){
   if(!target || lowWins) return;
   const fresh = scores.every(v => !v), prev = cheerSeen[key];
@@ -4480,7 +4480,7 @@ function flushVoices(){
 window.addEventListener("online", flushVoices);
 function playOurVoice(k, name){
   if(!soundOn || !sndOn("voice")) return true;   // voice off: stay quiet (and don't fall back to the phone voice)
-  if(!sndOn("ours")) return false;               // our recordings switched off: use the phone's voice
+  if(!OUR_VOICES || !sndOn("ours")) return false;   // recordings not used: the phone's voice reads the cheer
   if(!hasOurClip(k, name)) return false;
   const v = voiceClips[voiceKey(k, name)];
   try { const a = voiceEl || new Audio(); a.src = v.data; a.volume = 1; a.muted = false; const pr = a.play(); if(pr && pr.catch) pr.catch(() => sayAloud(CHEERS[k][1].replace(/\{n\}/g, name).replace(/\{left\}/g, ""))); return true; } catch(e){ return false; }
