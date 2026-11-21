@@ -810,7 +810,7 @@ nav.tabs .in button[aria-current="page"]{text-decoration:underline;text-decorati
 span.wxchip{cursor:default}
 .wxchip em{font-style:normal;font-weight:700;font-size:10.5px;opacity:.7}
 .ts-ports small .wxchip{margin-left:6px}
-.wx-in{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 12px}.wx-in label{display:flex;flex-direction:column;gap:3px;font-size:13px;font-weight:700;color:var(--muted)}
+.wx-in{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 12px}.wx-in label{display:flex;flex-direction:column;gap:3px;min-width:0;font-size:13px;font-weight:700;color:var(--muted)}
 .addplayers{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:46px;margin:-2px 0 12px;font:800 16px var(--display);color:#1F4A45;border:1.5px solid rgba(255,255,255,.9);--edge:#5FB3A6;
   background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,0) 60%),linear-gradient(90deg,#BDF0E2,#C9E4FF 55%,#E3D3FF)}
 .ap-faces{display:inline-flex}
@@ -992,6 +992,40 @@ button.best-row:active{background:rgba(255,255,255,.85)}
 tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 @keyframes srchRow{0%,45%{background:#FFF1B8}100%{background:transparent}}
 @keyframes srchFlash{0%,40%{box-shadow:0 0 0 4px #FFD24D,0 0 18px #FFD24D}100%{box-shadow:none}}
+
+/* 🚢 other ships: one small button */
+.hl-ships{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:8px 0 2px}
+.hl-ships .hlrow{margin:0}
+.hl-ships:empty{display:none}
+.shipb{position:relative;display:inline-flex;align-items:center;gap:5px;height:38px;min-width:46px;padding:0 10px;border-radius:999px;border:1.5px solid #D5DEEA;background:#F4F7FB;cursor:pointer;font:800 16px var(--body);color:#2B4A6E;box-shadow:0 2px 0 #D5DEEA}
+.shipb .shipe{font-size:21px;line-height:1}
+.shipb:active{transform:translateY(1px);box-shadow:none}
+.shipb.empty{border-style:dashed;background:transparent;box-shadow:none;opacity:.65;padding:0 12px 0 9px}
+.shipb.empty i{font-style:normal;font-weight:800;font-size:15px;color:#6A7F99}
+.shipb.ro{cursor:default}
+.shipb.sm{height:30px;min-width:0;padding:0 8px 0 7px;gap:3px;font-size:13px;margin:0;vertical-align:middle;box-shadow:none;align-self:center}
+.ts-ports .hlrow.withship{flex-wrap:nowrap;align-items:center}
+.ts-ports .hlrow.withship{gap:4px}
+.ts-ports .hlrow.withship .snview.sm{white-space:nowrap;padding-left:9px;padding-right:9px;flex:none}
+.ts-ports .hlrow.withship .shipb.sm{flex:none;padding:0 6px 0 5px;gap:2px}
+.shipb.sm .shipe{font-size:15px}
+
+/* weather picker */
+.wx-in input{width:100%;min-width:0;box-sizing:border-box}
+.wx-pick-h{font-weight:700;font-size:14px;color:var(--muted,#6A7391);margin-top:2px}
+.wx-pick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.wx-pick button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px 8px;border-radius:14px;border:2px solid transparent;background:#F4F6FB;font:inherit;cursor:pointer}
+.wx-pick button span{font-size:28px;line-height:1.1}
+.wx-pick button small{font-size:13px;font-weight:700;color:#4A5370}
+.wx-pick button[aria-pressed="true"]{border-color:#7E63C9;background:#EEE8FB}
+
+/* search in the Change game list */
+.gd-search{position:sticky;top:-6px;z-index:2;display:flex;align-items:center;gap:8px;margin:-6px 0 4px;padding:10px 12px;background:#fff;border-bottom:1px solid #EEE8FA}
+.gd-search svg{width:19px;height:19px;flex:none}
+.gd-search input{flex:1;min-width:0;border:1.5px solid #D8CCF3;border-radius:12px;background:#F7F4FD;font:600 16px var(--body);padding:9px 12px;color:var(--ink);outline:none}
+.gd-search input:focus{border-color:#9F87E0;background:#fff}
+.gd-sx{border:0;background:#C9C0DD;color:#fff;width:24px;height:24px;border-radius:50%;font-size:15px;line-height:24px;padding:0;cursor:pointer;flex:none}
+.gd-none{padding:14px 16px;color:var(--muted);font-size:15px}
 </style>
 </head>
 <body>
@@ -1022,8 +1056,8 @@ tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "19.8";
-const APP_UPDATED = "Nov 17, 2026, 7:25 PM ET";
+const APP_VERSION = "20.5";
+const APP_UPDATED = "Nov 20, 2026, 8:35 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (⚙️ Settings → 🔒 Editing lock). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -1845,6 +1879,7 @@ const PARTY_GAMES = [
   {key:"scrabble", name:"Scrabble",      group:"Board & tile games", live:true, ic:"🔤", mode:"high", target:0, targets:[0],          c:"#F7EBCB", e:"#D2B66A"},
   {key:"mahjong", name:"Mahjong", group:"Board & tile games", ic:"🀄", mode:"high", target:0, targets:[0,500,1000], steps:[5,10,25,50], c:"#D9F2E1", e:"#7FBF95"},
   {key:"backgammon", name:"Backgammon", group:"Board & tile games", ic:"BG", mode:"high", target:7, targets:[3,5,7,11,0], steps:[1,2,3,4], c:"#F3DCC0", e:"#B98552"},
+  {key:"monopoly", name:"Monopoly",     group:"Board & tile games", live:true, ic:"🎩", mode:"high", target:0, targets:[0], steps:[10,50,100,500], c:"#DDF1DC", e:"#86BF84"},
   {key:"rummikub", name:"Rummikub",      group:"Board & tile games", ic:"🔢", mode:"high", target:0, targets:[0],          c:"#D9F2EC", e:"#86C9B8"},
   {key:"qwirkle",  name:"Qwirkle",      group:"Board & tile games", live:true, ic:"🔷", mode:"high", target:0, targets:[0], steps:[1,5,6,12], c:"#D6E6FF", e:"#86A8E3"},
   {key:"bananagrams",name:"Bananagrams",group:"Board & tile games", ic:"🍌", mode:"high", target:0, targets:[0,3,5], steps:[1], c:"#FFF2B8", e:"#E2C551"},
@@ -2092,14 +2127,29 @@ function gameRow(type){
       <button type="button" class="b3d gn-add" data-act="gdrop" aria-expanded="${open}"><span class="gn-ic" aria-hidden="true"><i class="x">🀄</i>${DOMINO.replace("<svg ", '<svg class="gn-dom" ')}<i>🃏</i></span><span class="gn-txt">Change game <span class="gn-chev" aria-hidden="true">${open ? "▴" : "▾"}</span></span><span class="gn-ic" aria-hidden="true"><i>🎲</i>${QCARD.replace("<svg ", '<svg class="gn-card" ')}<i class="x">♟️</i></span></button>
     </div>
     ${open ? `<div class="gdrop" role="listbox" aria-label="Choose a game">
-      ${groups.map(grp => `<div class="gd-h">${esc(grp.name)}</div>${grp.list.map(g => { const tgt = g.key === "domino" ? t.target : g.key === "scala" ? (t.limit || 101) : g.target;
+      <label class="gd-search">${typeof SRCH_ICON !== "undefined" ? SRCH_ICON : "🔍"}<input id="gdQ" type="text" placeholder="Search games" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Search games"><button type="button" class="gd-sx" data-gdclear hidden aria-label="Clear">×</button></label>
+      ${groups.map(grp => `<div class="gd-grp"><div class="gd-h">${esc(grp.name)}</div>${grp.list.map(g => { const tgt = g.key === "domino" ? t.target : g.key === "scala" ? (t.limit || 101) : g.target;
         const sub = g.mode === "low" ? "lowest wins" : tgt ? "to " + tgt.toLocaleString() : "";
         const row = `<button type="button" class="gd-i ${g.key === cur ? "cur" : ""}" data-pkpick="${g.key}" role="option" aria-selected="${g.key === cur}">${gameLogo(g.key, "sm")}<span>${esc(g.name)}${sub ? `<small>${esc(sub)}</small>` : ""}</span></button>`;
-        return /^c_/.test(g.key) ? `<div class="gd-row">${row}<button type="button" class="gd-del" data-cgdel="${g.key}" aria-label="Delete ${esc(g.name)}">${canDelCustom(g) ? "🗑️" : "🔒"}</button></div>` : row; }).join("")}`).join("")}
+        const q = esc(fold(g.name + " " + grp.name));
+        return /^c_/.test(g.key) ? `<div class="gd-row" data-gq="${q}">${row}<button type="button" class="gd-del" data-cgdel="${g.key}" aria-label="Delete ${esc(g.name)}">${canDelCustom(g) ? "🗑️" : "🔒"}</button></div>` : `<div data-gq="${q}">${row}</div>`; }).join("")}</div>`).join("")}
+      <div class="gd-none" hidden>No game with that name. You can create it below.</div>
       <button type="button" class="gd-custom" data-act="customgame"><span class="ic" aria-hidden="true">✏️</span>Create your own game…</button>
       <button type="button" class="gd-fav" data-act="pickfavs">⭐ Choose the two quick-switch games</button>
     </div>` : ""}`;
 }
+// search inside the list: hides the games that don't match, as you type (no redraw, so the keyboard stays up)
+function gdFilter(q){
+  const box = document.querySelector(".gdrop"); if(!box) return;
+  const words = fold(q).split(/\s+/).filter(Boolean); let any = false;
+  box.querySelectorAll(".gd-grp").forEach(grp => { let n = 0;
+    grp.querySelectorAll("[data-gq]").forEach(r => { const ok = words.every(w => r.dataset.gq.includes(w)); r.hidden = !ok; if(ok) n++; });
+    grp.hidden = !n; if(n) any = true; });
+  const none = box.querySelector(".gd-none"); if(none) none.hidden = any;
+  const x = box.querySelector("[data-gdclear]"); if(x) x.hidden = !q;
+}
+document.addEventListener("input", e => { if(e.target.id === "gdQ") gdFilter(e.target.value); });
+document.addEventListener("click", e => { if(e.target.closest("[data-gdclear]")){ const i = document.getElementById("gdQ"); if(i){ i.value = ""; gdFilter(""); i.focus(); } } });
 // "Change game" opens and closes the list; tapping anywhere else closes it
 document.addEventListener("click", e => {
   if(e.target.closest(".gd-custom, .gd-fav")){ moreGamesOpen = false; return; }   // the list closes when a sheet opens from it
@@ -2698,7 +2748,7 @@ function renderSettings(){
   const seg = (key, opts) => `<div class="set-seg" role="group">${opts.map(([v, label]) => `<button type="button" class="b3d ${String(st[key]) === v ? "on" : ""}" data-setv="${key}" data-v="${v}" aria-pressed="${String(st[key]) === v}">${label}</button>`).join("")}</div>`;
   const tog = (k, label) => `<button type="button" class="set-tog" data-snd="${k}" aria-pressed="${sndOn(k)}"><span>${label}</span><i class="sw ${sndOn(k) ? "on" : ""}" aria-hidden="true"></i></button>`;
   const l = syncLabel();
-  const ON = sndOn, on = ["win","tie","lead","voice"].filter(k => ON(k)).length;
+  const ON = sndOn, on = ["win","tie","lead"].filter(k => ON(k)).length;
   const fmtO = o => "UTC" + (o >= 0 ? "+" : "−") + (Number.isInteger(Math.abs(o)) ? Math.abs(o) : Math.abs(o).toFixed(1));
   const ship = shipTimeInfo(), shipNow = (() => { try { const d = new Date(Date.now() + ship.off * 3600e3); return String(d.getUTCHours()).padStart(2, "0") + ":" + String(d.getUTCMinutes()).padStart(2, "0"); } catch(e){ return ""; } })();
   const vcount = n => CHEERS.filter((c, k) => { const v = voiceClips[voiceKey(k, n)]; return v && !v.deleted; }).length;
@@ -2731,8 +2781,8 @@ function renderSettings(){
         <div class="set-now">🚢 Ship time now: <b>${esc(shipNow)}</b> · ${esc(fmtO(info.off))} <small style="color:var(--muted)">(${esc(info.src)})</small></div>
         <p class="set-note">Automatic uses the latest port on the itinerary while you're sailing, so it's right even on a phone or computer still set to home time. If the ship changes its clocks at sea, pick "Ship clock set to…".</p>`; })()}
     `],
-    ["sounds", "🔊", "Sounds", !soundOn ? "All off on this phone" : on === 4 ? "All on" : on + " of 4 on", "#E8DFFF", "#9F87E0", `<button type="button" class="set-tog" data-sndall aria-pressed="${soundOn}"><span><b>🔔 All sounds</b></span><i class="sw ${soundOn ? "on" : ""}" aria-hidden="true"></i></button>
-      ${soundOn ? tog("win", "🏆 Winning music") : ""}${soundOn ? tog("tie", "🤝 Tie jingle") : ""}${soundOn ? tog("lead", "🎺 “Takes the lead” bugle") + tog("voice", "🗣️ Read cheers out loud") : `<p class="set-note">All sounds are off on this phone.</p>`}
+    ["sounds", "🔊", "Sounds", !soundOn ? "All off on this phone" : on === 3 ? "All on" : on + " of 3 on", "#E8DFFF", "#9F87E0", `<button type="button" class="set-tog" data-sndall aria-pressed="${soundOn}"><span><b>🔔 All sounds</b></span><i class="sw ${soundOn ? "on" : ""}" aria-hidden="true"></i></button>
+      ${soundOn ? tog("win", "🏆 Winning music") : ""}${soundOn ? tog("tie", "🤝 Tie jingle") : ""}${soundOn ? tog("lead", "🎺 “Takes the lead” bugle") : `<p class="set-note">All sounds are off on this phone.</p>`}
 
     `],
     ["display", "🌡️", "Temperature & clock", `°${st.temp} · ${st.clock === "24" ? "24-hour" : "12-hour"}`, "#D8F5F2", "#6CC2BA", `${seg("temp", [["F", "°F Fahrenheit"], ["C", "°C Celsius"]])}<div style="height:8px"></div>${seg("clock", [["12", "12-hour · 2:30 PM"], ["24", "24-hour · 14:30"]])}`],
@@ -2935,10 +2985,9 @@ function renderPorts(){
             <div class="rate-nums">${[1,2,3,4,5,6,7,8,9,10].map(n => `<button type="button" class="rn" data-rate="${pt.id}" data-who="${w}" data-n="${n}" aria-pressed="${v===n}" aria-label="${n}" ${lk?"disabled":""}>${n}</button>`).join("")}</div>
           </div>`; }).join(""); })()}
         </div>
-        ${highlightButtons(t, pt)}
-        ${pt.skip ? "" : shipsLine(t, pt)}
+        <div class="hl-ships">${highlightButtons(t, pt)}${pt.skip ? "" : shipsLine(t, pt)}</div>
         ${portLocked(pt) ? "" : `<button type="button" class="xbtn skipbtn" data-skip="${pt.id}">${pt.skip ? "↩️ We visited · score it" : "🚫 Didn't visit · don't score"}</button>`}
-        ${portLocked(pt) ? `<span class="port-note">🔒 Scores lock 48 hours after they are given (never before sailing day). Unlock in ⚙️ Settings.</span>` : pt.kind ? `<span class="port-note">Change it on the Trips tab</span>` : editingPort === pt.id ? `<span class="trip-btns"><button type="button" class="xbtn" data-act="pecancel">Cancel</button><button type="button" class="btn primary b3d note-save" data-act="pesave">Save</button></span>` : `<span class="trip-btns"><button type="button" class="xbtn" data-editport="${pt.id}">✏️ Edit</button><button class="xbtn" data-delport="${pt.id}">Remove port</button></span>`}
+        ${portLocked(pt) ? "" : pt.kind ? `<span class="port-note">Change it on the Trips tab</span>` : editingPort === pt.id ? `<span class="trip-btns"><button type="button" class="xbtn" data-act="pecancel">Cancel</button><button type="button" class="btn primary b3d note-save" data-act="pesave">Save</button></span>` : `<span class="trip-btns"><button type="button" class="xbtn" data-editport="${pt.id}">✏️ Edit</button><button class="xbtn" data-delport="${pt.id}">Remove port</button></span>`}
       </div>`; }).join("") : `<div class="empty">No ports yet. Add your first stop below.</div>`}
     ${editingUnlocked && ports.some(p => p.s1 != null || p.s2 != null) ? `<button type="button" class="btn danger b3d resetports" data-act="resetports">🔓 Reset all port scores</button>` : ""}
     <div class="addport">
@@ -3307,7 +3356,7 @@ function tripRecord(x, cur){
         ${editTrip!==x.id && routeMapFor(x) ? `<button type="button" class="mapcard photo tripmapcard" data-routezoom="${x.id}" aria-label="Enlarge the itinerary map"><img src="${esc(routeMapFor(x).src)}" alt="${esc(routeMapFor(x).alt)}"><span class="zoomtag">Tap to enlarge</span></button>`
           : editTrip!==x.id && ports.length ? `<div class="mapcard tripmapcard"><canvas data-tripmap="${x.id}" role="img" aria-label="Map of the ports on this trip"></canvas><div class="mapnote"></div></div>` : ""}
         ${editTrip===x.id ? tripEditor(x, ports) : ports.length ? `<table class="ts-ports"><thead><tr><th>Port</th><th class="c1">${esc(x.p1)}</th><th class="c2">${esc(x.p2)}</th><th>Avg</th></tr></thead><tbody>
-          ${ports.map(pt => `<tr data-srow="${pt.id}"><td><b>${esc(pt.name)}</b>${pt.date || pt.wx || pt.wxManual ? `<small>${pt.date ? esc(fmtDate(pt.date,{month:"short",day:"numeric"})) : ""}${wxChip(pt, x)}</small>` : ""}${highlightButtons(x, pt, true)}</td>${pt.skip ? `<td colspan="3" class="num"><small>🚫 Missed · not scored</small></td>` : `<td class="num">${pt.s1??"–"}</td><td class="num">${pt.s2??"–"}</td><td class="num"><span class="ts-avg tone-${scoreTone(portAvg(pt))}">${fmt1(portAvg(pt))}</span></td>`}</tr>`).join("")}
+          ${ports.map(pt => `<tr data-srow="${pt.id}"><td><b>${esc(pt.name)}</b>${pt.date || pt.wx || pt.wxManual ? `<small>${pt.date ? esc(fmtDate(pt.date,{month:"short",day:"numeric"})) : ""}${wxChip(pt, x)}</small>` : ""}${hlAndShips(x, pt)}</td>${pt.skip ? `<td colspan="3" class="num"><small>🚫 Missed · not scored</small></td>` : `<td class="num">${pt.s1??"–"}</td><td class="num">${pt.s2??"–"}</td><td class="num"><span class="ts-avg tone-${scoreTone(portAvg(pt))}">${fmt1(portAvg(pt))}</span></td>`}</tr>`).join("")}
           </tbody><tfoot><tr><td>Average</td><td class="num">${fmt1(a1)}</td><td class="num">${fmt1(a2)}</td><td class="num"><span class="ts-big tone-${scoreTone(cruise)}" title="Cruise score">${fmt1(cruise)}</span></td></tr></tfoot></table>`
           : `<p class="ts-empty">No ports added for this trip.</p>`}
         ${editTrip===x.id ? "" : bestOfCruise(x, ports)}
@@ -3459,7 +3508,7 @@ document.addEventListener("click", e => {
 function highlightButtons(t, pt, small){
   const has = !!stopNoteText(pt), can = canStopNote(t, pt), past = pastVisits(t, pt).length;
   let h = "";
-  if(has) h += `<button type="button" class="b3d snview ${small ? "sm" : ""}" data-stopnoteview="${t.id}|${pt.id}">${esc(hlCity(pt))} highlights</button>`;
+  if(has) h += `<button type="button" class="b3d snview ${small ? "sm" : ""}" data-stopnoteview="${t.id}|${pt.id}" aria-label="${esc(hlCity(pt))} highlights">${small ? "✨ Highlights" : esc(hlCity(pt)) + " highlights"}</button>`;
   else if(can && !pt.skip && !small) h += `<button type="button" class="b3d snview add ${small ? "sm" : ""}" data-stopnoteadd="${t.id}|${pt.id}">Add ${esc(hlCity(pt))} highlights</button>`;
   if(past) h += `<button type="button" class="b3d pvbtn ${small ? "sm" : ""}" data-pastvisit="${t.id}|${pt.id}">💡 Last time in ${esc(hlCity(pt))}</button>`;
   return h ? `<span class="hlrow">${h}</span>` : "";
@@ -3675,11 +3724,21 @@ function medalRanks(ports){
 /* 🚢 other ships in port: one small line per port; tap it to set how many and (optionally) their names */
 const shipsOf = pt => { const v = pt && pt.ships; if(!v || v.n == null) return null; const names = (Array.isArray(v.names) ? v.names : Object.values(v.names || {})).map(x => String(x || "").trim()); return {n: +v.n || 0, names}; };
 const canShips = (t, pt) => !pastLocked(t) && !(shipsOf(pt) && isLocked(pt.shipsAt));
-function shipsLine(t, pt){
-  const v = shipsOf(pt), can = canShips(t, pt), named = v ? v.names.filter(Boolean) : [];
-  if(!v) return can ? `<div><button type="button" class="shl empty" data-ships="${t.id}|${pt.id}">🚢 Log other ships</button></div>` : "";
-  const txt = `<span aria-hidden="true">🚢</span> Other ships: <b>${v.n}</b>${named.length ? " · " + esc(named.join(", ")) : ""}`;
-  return `<div>${can ? `<button type="button" class="shl" data-ships="${t.id}|${pt.id}">${txt}</button>` : `<span class="shl">${txt} <span class="lockmark" title="Locked. Unlock in ⚙️ Settings.">🔒</span></span>`}</div>`;
+// other ships in port: one small ship button. Empty = a faint ship to tap; after logging = the ship with how many we saw.
+const SHIP_ICON = `<span class="shipe" aria-hidden="true">🚢</span>`;
+function shipsLine(t, pt, small){
+  const v = shipsOf(pt), can = !small && canShips(t, pt), named = v ? v.names.filter(Boolean) : [];
+  if(!v || !v.n){ return can ? `<button type="button" class="shipb empty" data-ships="${t.id}|${pt.id}" aria-label="Log other ships in ${esc(hlCity(pt))}">${SHIP_ICON}<i>+</i></button>` : ""; }
+  const label = `${v.n} other ship${v.n === 1 ? "" : "s"} in ${hlCity(pt)}${named.length ? ": " + named.join(", ") : ""}`;
+  const inner = `${SHIP_ICON}<b class="num">${v.n}</b>`;
+  return can ? `<button type="button" class="shipb" data-ships="${t.id}|${pt.id}" aria-label="${esc(label)}" title="${esc(label)}">${inner}</button>`
+    : `<span class="shipb ro ${small ? "sm" : ""}" role="img" aria-label="${esc(label)}" title="${esc(label)}">${inner}</span>`;
+}
+// Trips page: highlights and the ship chip share one row
+function hlAndShips(x, pt){
+  const h = highlightButtons(x, pt, true), sh = pt.skip ? "" : shipsLine(x, pt, true);
+  if(!sh) return h;
+  return h ? h.replace(/<\/span>$/, sh + "</span>").replace('class="hlrow"', 'class="hlrow withship"') : `<span class="hlrow withship">${sh}</span>`;
 }
 function shipsSummary(x){
   const logged = (x.ports || []).map(shipsOf).filter(Boolean); if(!logged.length) return "";
@@ -3932,12 +3991,18 @@ const addDays = (iso, n) => { const d = new Date(iso + "T12:00"); d.setDate(d.ge
 function wxChip(pt, t){
   const m = pt.wxManual, w = pt.wx, can = wxCanEdit(pt, t);
   let inner = "";
-  if(m && (m.hi !== "" || m.lo !== "")) inner = `${WX_ICON(m.code ?? (w && w.code))} ${m.hi !== "" ? toUnit(m.hi) + "°" : "–"}${m.lo !== "" ? " / " + toUnit(m.lo) + "°" : ""}`;
+  const has = v => v != null && v !== "";
+  if(m && (has(m.hi) || has(m.lo) || m.code != null)){   // what we typed or picked wins; anything left blank comes from the weather service
+    const hi = has(m.hi) ? m.hi : w ? w.hi : "", lo = has(m.lo) ? m.lo : w ? w.lo : "", code = m.code != null ? m.code : w ? w.code : null;
+    inner = `${WX_ICON(code)} ${has(hi) ? toUnit(hi) + "°" : "–"}${has(lo) ? " / " + toUnit(lo) + "°" : ""}`;
+  }
   else if(w) inner = `${WX_ICON(w.code)} ${toUnit(w.hi)}° / ${toUnit(w.lo)}°${w.kind === "forecast" ? ' <em>forecast</em>' : w.kind === "typical" ? ' <em>typical</em>' : ""}`;
   else if(!pt.skip && can) inner = "🌡️ Add " + degU();
   if(!inner) return "";
   return can ? `<button type="button" class="wxchip" data-wxedit="${t.id}|${pt.id}" aria-label="Temperature for ${esc(pt.name)}">${inner}</button>` : `<span class="wxchip">${inner}</span>`;
 }
+// the weather we can pick by hand (codes match the weather service's, so the same icons show)
+const WX_PICKS = [[0, "☀️", "Sunny"], [3, "☁️", "Cloudy"], [63, "🌧️", "Rain"], [95, "⛈️", "Storm"]];
 const wxCanEdit = (pt, t) => !pastLocked(t) && !(pt.wxManual && pt.wxManualAt && isLocked(pt.wxManualAt));
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-wxedit]"); if(!b) return;
@@ -3950,6 +4015,8 @@ document.addEventListener("click", e => {
     ${w ? `<p>${w.kind === "actual" ? "Recorded" : w.kind === "forecast" ? "Forecast" : "Typical for this date"}: ${WX_ICON(w.code)} high ${toUnit(w.hi)}${degU()}, low ${toUnit(w.lo)}${degU()}</p>` : `<p>No temperature yet. It fills in by itself when you're online, or type it here.</p>`}
     <div class="wx-in"><label>High ${degU()}<input id="wxHi" type="text" inputmode="numeric" value="${esc(m.hi != null && m.hi !== "" ? toUnit(m.hi) : "")}" placeholder="${w ? toUnit(w.hi) : "–"}"></label>
       <label>Low ${degU()}<input id="wxLo" type="text" inputmode="numeric" value="${esc(m.lo != null && m.lo !== "" ? toUnit(m.lo) : "")}" placeholder="${w ? toUnit(w.lo) : "–"}"></label></div>
+    <div class="wx-pick-h">What was the weather like?</div>
+    <div class="wx-pick" role="group" aria-label="Weather">${WX_PICKS.map(([c, ic, label]) => `<button type="button" class="b3d" data-wxpick="${c}" aria-pressed="${m.code === c}"><span aria-hidden="true">${ic}</span><small>${label}</small></button>`).join("")}</div>
     <div class="row">${pt.wxManual ? `<button class="btn b3d" id="wxAuto">Use automatic</button>` : `<button class="btn b3d" data-close>Cancel</button>`}<button class="btn primary b3d" id="wxSave">Save</button></div>
   </div></div>`;
   root.querySelectorAll("[data-close]").forEach(el => el.addEventListener("click", ev => { if(ev.target === el) close(); }));
@@ -3957,8 +4024,11 @@ document.addEventListener("click", e => {
     let x = parseInt(n, 10); if(S().temp === "C") x = Math.round(x * 9 / 5 + 32);   // saved in °F, shown in your unit
     return String(Math.max(-60, Math.min(140, x))); };
   const done = () => { close(); commit(); const y = window.scrollY; render(); window.scrollTo(0, y); };
+  let pick = m.code != null ? m.code : null;
+  root.querySelectorAll("[data-wxpick]").forEach(b => b.addEventListener("click", () => { const c = +b.dataset.wxpick; pick = pick === c ? null : c;   // tap again to go back to automatic
+    root.querySelectorAll("[data-wxpick]").forEach(x => x.setAttribute("aria-pressed", String(+x.dataset.wxpick === pick))); }));
   root.querySelector("#wxSave").addEventListener("click", () => { const hi = num(root.querySelector("#wxHi").value), lo = num(root.querySelector("#wxLo").value);
-    if(hi === "" && lo === ""){ delete pt.wxManual; delete pt.wxManualAt; } else { pt.wxManual = {hi, lo}; pt.wxManualAt = pt.wxManualAt || Date.now(); } done(); });
+    if(hi === "" && lo === "" && pick == null){ delete pt.wxManual; delete pt.wxManualAt; } else { pt.wxManual = {hi, lo}; if(pick != null) pt.wxManual.code = pick; pt.wxManualAt = pt.wxManualAt || Date.now(); } done(); });
   const au = root.querySelector("#wxAuto"); if(au) au.addEventListener("click", () => { delete pt.wxManual; delete pt.wxManualAt; done(); });
   setTimeout(() => root.querySelector("#wxHi").focus(), 0);
 });
@@ -4433,8 +4503,9 @@ function pickVoice(){
     return pref.map(n => vs.find(v => v.name.indexOf(n) === 0)).find(Boolean) || vs.find(v => /en-US/i.test(v.lang) && v.localService) || vs[0]; } catch(e){ return null; }
 }
 try { speechSynthesis.onvoiceschanged = () => { sayVoice = pickVoice(); }; } catch(e){}
+const SPEAK_CHEERS = false;   // spoken cheers removed from Settings (Nov 2026): the cheer cards still show, silently
 function sayAloud(text){
-  if(!soundOn || !sndOn("voice") || !("speechSynthesis" in window)) return;
+  if(!SPEAK_CHEERS || !soundOn || !sndOn("voice") || !("speechSynthesis" in window)) return;
   try {
     const u = new SpeechSynthesisUtterance(text.replace(/\s*—\s*/g, ", "));
     // on iPhone, naming a voice can pick one that isn't downloaded and stays silent: let the phone choose its English voice
@@ -4584,14 +4655,17 @@ function tieBrass(ac, out, f, t, d, v){
    A tie in between still counts (50–50, then 50–55 → the lead changed). Quiet when the same player
    just pulls further ahead, at the first points of a game, and when the app just opens. */
 const leadSeen = {};
+const leadTied = {};   // game -> the scores were tied a moment ago
 function leadCheck(key, scores, lowWins){
   const best = lowWins ? Math.min(...scores) : Math.max(...scores), at = scores.reduce((a, v, i) => v === best ? a.concat(i) : a, []);
   const now = at.length === 1 ? at[0] : -1, fresh = scores.every(v => !v), prev = leadSeen[key];
-  if(fresh){ leadSeen[key] = -1; return; }                 // new game: nobody has led yet
-  if(prev === undefined){ leadSeen[key] = now; return; }   // app just opened: remember, don't play
-  if(now === -1) return;                                   // tied: keep the last leader
+  if(fresh){ leadSeen[key] = -1; leadTied[key] = false; return; }   // new game: nobody has led yet
+  if(prev === undefined){ leadSeen[key] = now; leadTied[key] = now === -1; return; }   // app just opened: remember, don't play
+  if(now === -1){ leadTied[key] = true; return; }        // tied: keep the last leader, and the next one ahead gets the bugle
+  const afterTie = leadTied[key]; leadTied[key] = false;
   leadSeen[key] = now;
-  if(prev !== -1 && prev !== now && sndOn("lead")) playLead();
+  // the bugle: a new leader, or whoever breaks a tie (even the one who led before it)
+  if(((prev !== -1 && prev !== now) || afterTie) && sndOn("lead")) playLead();
 }
 function playLead(){ withAudio(leadNotes); }
 function leadNotes(ac){
