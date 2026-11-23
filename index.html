@@ -1026,6 +1026,15 @@ tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 .gd-search input:focus{border-color:#9F87E0;background:#fff}
 .gd-sx{border:0;background:#C9C0DD;color:#fff;width:24px;height:24px;border-radius:50%;font-size:15px;line-height:24px;padding:0;cursor:pointer;flex:none}
 .gd-none{padding:14px 16px;color:var(--muted);font-size:15px}
+
+/* port card: highlights + ship on the left, visit / edit / remove on the right, one row when there's room */
+.port-acts{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:8px 8px;margin-top:8px}
+.port-acts .hl-ships{margin:0}
+.port-acts .pa-right{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:6px}
+.port-acts .pa-right:empty{display:none}
+.port-acts .pa-right .xbtn,.port-acts .pa-right .trip-btns{margin:0;align-self:center}
+.port-acts .pa-right .trip-btns{display:flex;gap:6px}
+.port-acts .pa-right .xbtn{padding:7px 11px}
 </style>
 </head>
 <body>
@@ -1056,8 +1065,8 @@ tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "20.5";
-const APP_UPDATED = "Nov 20, 2026, 8:35 PM ET";
+const APP_VERSION = "20.7";
+const APP_UPDATED = "Nov 23, 2026, 2:00 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (⚙️ Settings → 🔒 Editing lock). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -2985,9 +2994,10 @@ function renderPorts(){
             <div class="rate-nums">${[1,2,3,4,5,6,7,8,9,10].map(n => `<button type="button" class="rn" data-rate="${pt.id}" data-who="${w}" data-n="${n}" aria-pressed="${v===n}" aria-label="${n}" ${lk?"disabled":""}>${n}</button>`).join("")}</div>
           </div>`; }).join(""); })()}
         </div>
-        <div class="hl-ships">${highlightButtons(t, pt)}${pt.skip ? "" : shipsLine(t, pt)}</div>
-        ${portLocked(pt) ? "" : `<button type="button" class="xbtn skipbtn" data-skip="${pt.id}">${pt.skip ? "↩️ We visited · score it" : "🚫 Didn't visit · don't score"}</button>`}
-        ${portLocked(pt) ? "" : pt.kind ? `<span class="port-note">Change it on the Trips tab</span>` : editingPort === pt.id ? `<span class="trip-btns"><button type="button" class="xbtn" data-act="pecancel">Cancel</button><button type="button" class="btn primary b3d note-save" data-act="pesave">Save</button></span>` : `<span class="trip-btns"><button type="button" class="xbtn" data-editport="${pt.id}">✏️ Edit</button><button class="xbtn" data-delport="${pt.id}">Remove port</button></span>`}
+        <div class="port-acts"><div class="hl-ships">${highlightButtons(t, pt)}${pt.skip ? "" : shipsLine(t, pt)}</div><div class="pa-right">
+        ${portLocked(pt) ? "" : `<button type="button" class="xbtn skipbtn" data-skip="${pt.id}">${pt.skip ? "↩️ We visited" : "🚫 Didn't visit"}</button>`}
+        ${portLocked(pt) ? "" : pt.kind ? `<span class="port-note">Change it on the Trips tab</span>` : editingPort === pt.id ? `<span class="trip-btns"><button type="button" class="xbtn" data-act="pecancel">Cancel</button><button type="button" class="btn primary b3d note-save" data-act="pesave">Save</button></span>` : `<span class="trip-btns"><button type="button" class="xbtn" data-editport="${pt.id}">✏️ Edit</button><button class="xbtn" data-delport="${pt.id}" aria-label="Remove this port">🗑️ Remove</button></span>`}
+        </div></div>
       </div>`; }).join("") : `<div class="empty">No ports yet. Add your first stop below.</div>`}
     ${editingUnlocked && ports.some(p => p.s1 != null || p.s2 != null) ? `<button type="button" class="btn danger b3d resetports" data-act="resetports">🔓 Reset all port scores</button>` : ""}
     <div class="addport">
@@ -3728,7 +3738,8 @@ const canShips = (t, pt) => !pastLocked(t) && !(shipsOf(pt) && isLocked(pt.ships
 const SHIP_ICON = `<span class="shipe" aria-hidden="true">🚢</span>`;
 function shipsLine(t, pt, small){
   const v = shipsOf(pt), can = !small && canShips(t, pt), named = v ? v.names.filter(Boolean) : [];
-  if(!v || !v.n){ return can ? `<button type="button" class="shipb empty" data-ships="${t.id}|${pt.id}" aria-label="Log other ships in ${esc(hlCity(pt))}">${SHIP_ICON}<i>+</i></button>` : ""; }
+  // a port whose day is over: no empty ship button (ports where we logged ships keep theirs)
+  if(!v || !v.n){ return can && !(pt.date && pt.date < today()) ? `<button type="button" class="shipb empty" data-ships="${t.id}|${pt.id}" aria-label="Log other ships in ${esc(hlCity(pt))}">${SHIP_ICON}<i>+</i></button>` : ""; }
   const label = `${v.n} other ship${v.n === 1 ? "" : "s"} in ${hlCity(pt)}${named.length ? ": " + named.join(", ") : ""}`;
   const inner = `${SHIP_ICON}<b class="num">${v.n}</b>`;
   return can ? `<button type="button" class="shipb" data-ships="${t.id}|${pt.id}" aria-label="${esc(label)}" title="${esc(label)}">${inner}</button>`
