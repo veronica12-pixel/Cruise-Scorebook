@@ -1019,7 +1019,7 @@ tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 .wx-pick button small{font-size:13px;font-weight:700;color:#4A5370}
 .wx-pick button[aria-pressed="true"]{border-color:#7E63C9;background:#EEE8FB}
 
-/* search in the Change game list */
+/* search in the Select game list */
 .gd-search{position:sticky;top:-6px;z-index:2;display:flex;align-items:center;gap:8px;margin:-6px 0 4px;padding:10px 12px;background:#fff;border-bottom:1px solid #EEE8FA}
 .gd-search svg{width:19px;height:19px;flex:none}
 .gd-search input{flex:1;min-width:0;border:1.5px solid #D8CCF3;border-radius:12px;background:#F7F4FD;font:600 16px var(--body);padding:9px 12px;color:var(--ink);outline:none}
@@ -1035,6 +1035,37 @@ tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 .port-acts .pa-right .xbtn,.port-acts .pa-right .trip-btns{margin:0;align-self:center}
 .port-acts .pa-right .trip-btns{display:flex;gap:6px}
 .port-acts .pa-right .xbtn{padding:7px 11px}
+
+/* ⚓ losing-streak banner */
+.sk{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:20px max(16px,env(safe-area-inset-right,0px)) 20px max(16px,env(safe-area-inset-left,0px));background:rgba(30,26,60,0);animation:skIn .35s ease forwards}
+@keyframes skIn{to{background:rgba(30,26,60,.45)}}
+.sk canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+.sk-card{position:relative;z-index:1;width:100%;max-width:360px;border-radius:26px;padding:24px 22px 20px;text-align:center;box-shadow:0 18px 40px rgba(0,0,0,.35);transform:scale(.5);opacity:0;animation:skPop .55s cubic-bezier(.2,1.4,.4,1) .1s forwards}
+@keyframes skPop{to{transform:scale(1);opacity:1}}
+.sk-card h2{margin:10px 0 6px;font:800 27px/1.15 var(--body);text-wrap:balance}
+.sk-card p{margin:0 0 14px;font-size:16px;line-height:1.4}
+.sk-ls{display:inline-flex;gap:8px;margin:2px 0 16px}
+.sk-ls b{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:18px;opacity:0;transform:translateY(-26px);animation:skSink .5s cubic-bezier(.3,1.6,.5,1) forwards}
+.sk-ls b:nth-child(1){animation-delay:.55s}.sk-ls b:nth-child(2){animation-delay:.75s}.sk-ls b:nth-child(3){animation-delay:.95s}
+@keyframes skSink{to{opacity:1;transform:none}}
+.sk-card .sk-ok{display:block;width:100%;border:0;border-radius:16px;font:800 18px var(--body);padding:14px 20px;cursor:pointer}
+.sk-card .sk-ok:active{transform:translateY(2px);box-shadow:none}
+.sk-card small{display:block;margin-top:10px;font-size:13px;opacity:.7}
+.sk-art{display:inline-block}
+.sk-buoy{background:linear-gradient(#FFFFFF,#EAF4FB);border:3px solid #CFE3F2;color:#1F3556}
+.sk-buoy .sk-ls b{background:#DCEBFA}
+.sk-buoy .sk-ok{background:#1F3556;color:#fff;box-shadow:0 4px 0 #0F1D33}
+.sk-buoy .sk-art{animation:buoyIn .9s cubic-bezier(.2,1.2,.4,1) .15s both,buoyBob 2.4s ease-in-out 1.1s infinite}
+@keyframes buoyIn{from{transform:translateY(-160px) rotate(-260deg) scale(.6)}to{transform:none}}
+@keyframes buoyBob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(5px) rotate(4deg)}}
+.sk-medal{background:linear-gradient(#FFF9EC,#FFEFD2);border:3px solid #F0C77A;color:#4A2E12}
+.sk-medal .sk-ls b{background:#F8E6BE}
+.sk-medal .sk-ok{background:linear-gradient(#F7D27A,#E3AE45);color:#4A2E12;box-shadow:0 4px 0 #B8862D}
+.sk-medal .sk-art{transform-origin:50% 0;animation:medalIn 1.6s cubic-bezier(.3,1.5,.5,1) .15s both}
+@keyframes medalIn{0%{transform:translateY(-140px) rotate(0)}35%{transform:translateY(0) rotate(14deg)}55%{transform:rotate(-9deg)}72%{transform:rotate(5deg)}86%{transform:rotate(-2deg)}100%{transform:none}}
+.sk-medal .shine{opacity:0;animation:skShine 2.2s ease 1.2s infinite}
+@keyframes skShine{0%,60%,100%{opacity:0}75%{opacity:.9}}
+@media (prefers-reduced-motion: reduce){.sk-card,.sk-art,.sk-ls b{animation:none!important;opacity:1;transform:none}}
 </style>
 </head>
 <body>
@@ -1065,8 +1096,8 @@ tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "20.7";
-const APP_UPDATED = "Nov 23, 2026, 2:00 PM ET";
+const APP_VERSION = "21.1";
+const APP_UPDATED = "Nov 23, 2026, 7:55 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (⚙️ Settings → 🔒 Editing lock). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -1729,8 +1760,8 @@ function renderHead(){
     : `<span>Add ports on the Trips tab</span>`;
   $("#tripHead").innerHTML = `
     <div class="badges" aria-hidden="true">${DOMINO.replace('<svg ','<svg class="dtile" ')}${QCARD.replace('<svg ','<svg class="qcard" ')}</div>
-    <div class="eyebrow">${esc(shipCabin(t) ? shipCabin(t) + " · " : "")}${esc(fmtRange(t.start,t.end))}</div>
-    <h1>${esc(t.name)}</h1>
+    <div class="eyebrow">${t.ship ? esc(t.ship) + "<br>" : ""}${t.cabin ? "Cabin " + esc(t.cabin) + " · " : ""}${esc(fmtRange(t.start,t.end))}</div>
+    <h1>${esc(titleCase(t.name))}</h1>
     <div class="route">${route}</div>
     <button type="button" class="srchbtn" data-search aria-label="Search everything">${SRCH_ICON}</button>`;
 }
@@ -1742,12 +1773,12 @@ function scoreTop(t, type){
     <div class="dayrow">
       <span class="eyebrow num">${esc(fmtDate(t.curDate,{weekday:"long",month:"short",day:"numeric"}))} · ${GAMES[type]} game ${gameNo}</span>
     </div>
+    ${gameRow(type)}
     <div class="nowplaying g-${type}" role="status">
       ${gameIcon(type,"npico")}
       <div class="np-t"><small>Now playing</small><b>${GAMES[type]}</b></div>
       <span class="np-to">to ${type === "domino" ? (t.target || "no limit") : (t.limit || 101)}</span>
-    </div>
-    ${gameRow(type)}`;
+    </div>`;
 }
 
 function renderDomino(){
@@ -2127,13 +2158,12 @@ function favButton(k, type, cur){
 }
 function gameRow(type){
   const t = trip(), cur = type === "party" && t.party ? t.party.game : type, favs = favGames();
-  const open = moreGamesOpen;   // the list of games drops down under "Change game"
+  const open = moreGamesOpen;   // the list of games drops down under "Select game"
   const groups = [];
   allGames().forEach(g => { const name = g.group === "Custom games" ? "Your games" : g.group; let grp = groups.find(x => x.name === name); if(!grp) groups.push(grp = {name, list: []}); grp.list.push(g); });
   groups.sort((a, b) => (a.name === "Your games" ? -1 : 0) - (b.name === "Your games" ? -1 : 0));
-  return `<div class="seg" role="group" aria-label="Today's game">${favs.map(k => favButton(k, type, type === "party" && t.party ? t.party.game : null)).join("")}</div>
-    <div class="gamenav solo">
-      <button type="button" class="b3d gn-add" data-act="gdrop" aria-expanded="${open}"><span class="gn-ic" aria-hidden="true"><i class="x">🀄</i>${DOMINO.replace("<svg ", '<svg class="gn-dom" ')}<i>🃏</i></span><span class="gn-txt">Change game <span class="gn-chev" aria-hidden="true">${open ? "▴" : "▾"}</span></span><span class="gn-ic" aria-hidden="true"><i>🎲</i>${QCARD.replace("<svg ", '<svg class="gn-card" ')}<i class="x">♟️</i></span></button>
+  return `<div class="gamenav solo">
+      <button type="button" class="b3d gn-add" data-act="gdrop" aria-expanded="${open}"><span class="gn-ic" aria-hidden="true"><i class="x">🀄</i>${DOMINO.replace("<svg ", '<svg class="gn-dom" ')}<i>🃏</i></span><span class="gn-txt">Select game <span class="gn-chev" aria-hidden="true">${open ? "▴" : "▾"}</span></span><span class="gn-ic" aria-hidden="true"><i>🎲</i>${QCARD.replace("<svg ", '<svg class="gn-card" ')}<i class="x">♟️</i></span></button>
     </div>
     ${open ? `<div class="gdrop" role="listbox" aria-label="Choose a game">
       <label class="gd-search">${typeof SRCH_ICON !== "undefined" ? SRCH_ICON : "🔍"}<input id="gdQ" type="text" placeholder="Search games" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Search games"><button type="button" class="gd-sx" data-gdclear hidden aria-label="Clear">×</button></label>
@@ -2145,7 +2175,8 @@ function gameRow(type){
       <div class="gd-none" hidden>No game with that name. You can create it below.</div>
       <button type="button" class="gd-custom" data-act="customgame"><span class="ic" aria-hidden="true">✏️</span>Create your own game…</button>
       <button type="button" class="gd-fav" data-act="pickfavs">⭐ Choose the two quick-switch games</button>
-    </div>` : ""}`;
+    </div>` : ""}
+    <div class="seg" role="group" aria-label="Today's game">${favs.map(k => favButton(k, type, type === "party" && t.party ? t.party.game : null)).join("")}</div>`;
 }
 // search inside the list: hides the games that don't match, as you type (no redraw, so the keyboard stays up)
 function gdFilter(q){
@@ -2159,7 +2190,7 @@ function gdFilter(q){
 }
 document.addEventListener("input", e => { if(e.target.id === "gdQ") gdFilter(e.target.value); });
 document.addEventListener("click", e => { if(e.target.closest("[data-gdclear]")){ const i = document.getElementById("gdQ"); if(i){ i.value = ""; gdFilter(""); i.focus(); } } });
-// "Change game" opens and closes the list; tapping anywhere else closes it
+// "Select game" opens and closes the list; tapping anywhere else closes it
 document.addEventListener("click", e => {
   if(e.target.closest(".gd-custom, .gd-fav")){ moreGamesOpen = false; return; }   // the list closes when a sheet opens from it
   if(e.target.closest('[data-act="gdrop"]')){ moreGamesOpen = !moreGamesOpen; const y = window.scrollY; render(); window.scrollTo(0, y); e.stopPropagation(); return; }
@@ -2193,12 +2224,12 @@ function renderParty(){
   const tl = L ? [...new Set([...g.targets.filter(v => v), L])].sort((a, b) => a - b) : g.targets.filter(v => v);
   $("#view").innerHTML = `
     <div class="dayrow"><span class="eyebrow num">${esc(fmtDate(today(),{weekday:"long",month:"short",day:"numeric"}))} · ${esc(g.name)} game ${games.filter(x => x.date === today()).length + 1}</span></div>
+    ${gameRow("party")}
     <div class="nowplaying party-np" style="--gc:${g.c};--ge:${g.e}" role="status">
       ${gameLogo(g.key, "np")}
       <div class="np-t"><small>Now playing${p.players.length > 2 ? " · " + p.players.length + " players" : ""}</small><b>${esc(g.name)}</b></div>
       <span class="np-to">${L ? "to " + L.toLocaleString() : g.mode === "low" ? "lowest wins" : "no limit"}</span>
     </div>
-    ${gameRow("party")}
     <div class="board n${p.players.length} ${simple ? "sc40b" : ""}">${p.players.map((_, i) => col(i)).join("")}</div>
     ${st.over && !keepBanner ? (g.live ? `<div class="banner reachnote" role="status"><h3>🏁 ${L} reached</h3><p>Finish the hand. When the game is really over, tap <b>Game finished</b>.</p><div class="row"><button class="btn primary b3d" data-act="pend">🏁 Game finished</button><button class="btn b3d" data-act="pkeep">Keep playing</button></div></div>`
       : `<div class="banner" role="status"><h3>${leader ? esc(leader) + " wins!" : "It's a tie!"}</h3><div class="row"><button class="btn primary b3d" data-act="pend">Record the win</button><button class="btn b3d" data-act="pkeep">Keep playing</button></div></div>`) : ""}
@@ -2281,10 +2312,80 @@ function partyCelebrate(t, rec){
       <div class="pp-tally">${esc(g.name)} wins this trip: ${[...new Set(wins.flatMap(x => x.players))].map(n => `${esc(n)} ${wins.filter(x => x.winnerName === n).length}`).join(" · ")}</div>
       <button class="btn b3d" data-party-close>Play again</button></div></div></div>`;
   if(sndOn("win")) playJackpot();
-  const close = () => { root.innerHTML = ""; };
+  streakNext = streakForParty(t, rec);
+  const close = () => { root.innerHTML = ""; showStreakSoon(); };
   root.querySelector("[data-party-close]").addEventListener("click", close);
   root.querySelector("[data-party]").addEventListener("click", e => { if(e.target.matches("[data-party]")) close(); });
   root.querySelector("[data-party-close]").focus();
+}
+
+/* ---------- ⚓ losing streak: three games in a row lost (same game) → a cheer-up banner with confetti ---------- */
+const STREAK_N = 3;
+let streakNext = null;
+// two-player games (Domino, Scala 40): count the loser's games lost in a row, newest first
+function streakFor2(t, g){
+  if(!g || !g.winner) return null;
+  const loser = g.winner === 1 ? 2 : 1, list = t.games.filter(x => x.type === g.type).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+  let n = 0; for(let i = list.length - 1; i >= 0 && list[i].winner && list[i].winner !== loser; i--) n++;
+  return n === STREAK_N ? {name: loser === 1 ? t.p1 : t.p2, winner: g.winner === 1 ? t.p1 : t.p2, game: GAMES[g.type]} : null;
+}
+// games with more players: anyone who hasn't won the last three of this game
+function streakForParty(t, rec){
+  if(!rec || !rec.winnerName) return null;
+  const list = (t.partyGames || []).filter(x => x.game === rec.game).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+  const who = rec.players.filter(n => n !== rec.winnerName).find(n => {
+    let k = 0; for(let i = list.length - 1; i >= 0; i--){ const x = list[i]; if(!x.players.includes(n)) continue; if(!x.winnerName || x.winnerName === n) break; k++; }
+    return k === STREAK_N; });
+  return who ? {name: who, winner: rec.winnerName, game: rec.gameName || pgName(rec.game)} : null;
+}
+function showStreakSoon(){ const s = streakNext; streakNext = null; if(s) setTimeout(() => streakPop(s), 250); }
+const SK_BUOY = `<svg width="104" height="104" viewBox="0 0 100 100" aria-hidden="true"><defs><radialGradient id="skbg" cx="40%" cy="35%"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#E3E9F0"/></radialGradient></defs><circle cx="50" cy="53" r="38" fill="none" stroke="rgba(0,0,0,.13)" stroke-width="20"/><circle cx="50" cy="49" r="38" fill="none" stroke="url(#skbg)" stroke-width="20"/><g fill="none" stroke="#E0453B" stroke-width="20"><path d="M50 11a38 38 0 0 1 26.9 11.1"/><path d="M88 49a38 38 0 0 1-11.1 26.9"/><path d="M50 87a38 38 0 0 1-26.9-11.1"/><path d="M12 49a38 38 0 0 1 11.1-26.9"/></g><path d="M30 30a30 30 0 0 1 16-8" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none" opacity=".8"/><circle cx="50" cy="49" r="48" fill="none" stroke="#C9A36A" stroke-width="2.4" stroke-dasharray="6 5"/></svg>`;
+const SK_MEDAL = `<svg width="100" height="118" viewBox="0 0 96 114" aria-hidden="true"><path d="M30 0h14l10 42H40zM52 0h14L56 42H42z" fill="#2B6CB0"/><path d="M36 0h4l10 42h-4zM58 0h4L52 42h-4z" fill="#fff" opacity=".8"/><circle cx="48" cy="74" r="36" fill="#E9B949"/><circle cx="48" cy="74" r="29" fill="#F7D97A" stroke="#C99528" stroke-width="2"/><path d="M48 54l6 13 14 1-11 9 4 14-13-8-13 8 4-14-11-9 14-1z" fill="#fff" opacity=".92"/><path class="shine" d="M30 62a22 22 0 0 1 14-14" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none"/><text x="48" y="108" text-anchor="middle" font-size="9" font-weight="800" fill="#7A5310" font-family="Arial">BRAVE SAILOR</text></svg>`;
+const SK_MINI_BUOY = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="37" fill="none" stroke="#F4F6F9" stroke-width="22"/><g fill="none" stroke="#E0453B" stroke-width="22"><path d="M50 13a37 37 0 0 1 26.2 10.8"/><path d="M87 50a37 37 0 0 1-10.8 26.2"/><path d="M50 87a37 37 0 0 1-26.2-10.8"/><path d="M13 50a37 37 0 0 1 10.8-26.2"/></g><circle cx="50" cy="50" r="48" fill="none" stroke="#B48A4E" stroke-width="3" stroke-dasharray="6 5"/></svg>`;
+const SK_MINI_MEDAL = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 95"><path d="M24 0h12l8 34H32zM44 0h12l-8 34H36z" fill="#2B6CB0"/><circle cx="40" cy="60" r="30" fill="#E9B949"/><circle cx="40" cy="60" r="23" fill="#F7D97A" stroke="#C99528" stroke-width="2"/><path d="M40 44l5 10 11 1-9 7 3 11-10-6-10 6 3-11-9-7 11-1z" fill="#fff"/></svg>`;
+function streakPop(st){
+  const kind = Math.random() < .5 ? "buoy" : "medal", name = esc(st.name), game = esc(st.game), n = STREAK_N;
+  const d = kind === "buoy"
+    ? {cls: "sk-buoy", art: SK_BUOY, h: `Hold on, ${name}!`, p: `Three games of ${game} lost in a row. We’re throwing you a lifebuoy: the tide is about to turn.`, b: "Next game is mine", col: ["#E0453B","#FFFFFF","#7FB8E6","#1F3556","#F4D35E"], mini: SK_MINI_BUOY, ratio: 1}
+    : {cls: "sk-medal", art: SK_MEDAL, h: "Brave Sailor Award", p: `Presented to <b>${name}</b> for losing three games of ${game} in a row with style. ${esc(st.winner)}, enjoy it while it lasts.`, b: "Accept the medal", col: ["#E9B949","#2B6CB0","#E0453B","#FFFFFF","#F7D97A"], mini: SK_MINI_MEDAL, ratio: 1.19};
+  document.querySelectorAll(".sk").forEach(x => x.remove());
+  const el = document.createElement("div"); el.className = "sk";
+  el.innerHTML = `<div class="sk-card ${d.cls}" role="dialog" aria-modal="true" aria-labelledby="skT"><span class="sk-art">${d.art}</span><h2 id="skT">${d.h}</h2><p>${d.p}</p>
+    <div class="sk-ls" role="img" aria-label="${n} games lost in a row">${"<b>⚓</b>".repeat(n)}</div><button type="button" class="sk-ok">${d.b}</button><small>Losing streak · ${game}</small></div><canvas aria-hidden="true"></canvas>`;
+  document.body.appendChild(el);
+  const done = () => el.remove();
+  el.querySelector(".sk-ok").addEventListener("click", done);
+  el.addEventListener("click", e => { if(e.target === el) done(); });
+  if(soundOn) withAudio(streakNotes);
+  if(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches){ el.querySelector("canvas").remove(); return; }
+  // confetti with little lifebuoys or little medals: two bursts from the bottom corners, then it floats down
+  const cv = el.querySelector("canvas"), ctx = cv.getContext("2d"), dpr = window.devicePixelRatio || 1, W = innerWidth, H = innerHeight;
+  cv.width = W*dpr; cv.height = H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+  const pic = new Image(); pic.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(d.mini);
+  const bits = Array.from({length: 150}, (_, i) => { const left = i % 2 === 0, isPic = i % 5 === 0, a = 0.2 + Math.random()*0.55, sp = 10 + Math.random()*9;
+    return {x: left ? 6 : W - 6, y: H - 30, vx: (left ? 1 : -1) * Math.sin(a) * sp, vy: -Math.cos(a) * sp * 1.25, r: Math.random()*6.28, vr: (Math.random()-.5)*(isPic ? .12 : .3),
+      w: isPic ? 22 + Math.random()*10 : 6 + Math.random()*7, h: 4 + Math.random()*6, c: d.col[i % d.col.length], wob: Math.random()*6.28, pic: isPic}; });
+  const t0 = performance.now();
+  (function frame(now){
+    if(!cv.isConnected) return; const age = now - t0; ctx.clearRect(0,0,W,H);
+    bits.forEach(b => { b.vy += .32; b.vx *= .985; const cap = b.pic ? 2.1 : 2.6; if(b.vy > cap){ b.vy = cap; b.vx = Math.sin((b.wob += .05)) * (b.pic ? .6 : .9); } b.x += b.vx; b.y += b.vy; b.r += b.vr;
+      ctx.save(); ctx.globalAlpha = Math.max(0, Math.min(1, (6000 - age)/1200)); ctx.translate(b.x, b.y); ctx.rotate(b.pic ? Math.sin(b.r) * .6 : b.r);
+      if(b.pic){ if(pic.complete) ctx.drawImage(pic, -b.w/2, -b.w/2 * d.ratio, b.w, b.w * d.ratio); }
+      else { ctx.fillStyle = b.c; ctx.fillRect(-b.w/2, -b.h/2, b.w, b.h*Math.abs(Math.cos(b.r*2))+1); }
+      ctx.restore(); });
+    if(age < 6000) requestAnimationFrame(frame); else cv.remove();
+  })(t0);
+}
+// the confetti jingle: a party-popper pop, a quick rising chime, then sparkles landing
+function streakNotes(ac){
+  const t0 = ac.currentTime + 0.03, out = ac.createGain(); out.gain.value = 0.9; out.connect(ac.destination);
+  try { const len = Math.floor(ac.sampleRate * 0.12), buf = ac.createBuffer(1, len, ac.sampleRate), ch = buf.getChannelData(0); let last = 0;
+    for(let i = 0; i < len; i++){ const w = Math.random()*2 - 1; ch[i] = (w - last) * Math.exp(-i / (ac.sampleRate * 0.03)); last = w; }
+    const src = ac.createBufferSource(), g = ac.createGain(); g.gain.value = 0.7; src.buffer = buf; src.connect(g); g.connect(out); src.start(t0); } catch(e){}
+  toneAt(ac, out, 180, t0, 0.12, "sine", 0.45, 0.5);
+  [523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) => { const t = t0 + 0.12 + i*0.075; toneAt(ac, out, f, t, 0.45, "triangle", 0.22); toneAt(ac, out, f*2, t, 0.25, "sine", 0.07); });
+  for(let k = 0; k < 24; k++){ const t = t0 + 0.25 + k*0.04 + Math.random()*0.03, f = 2600 + Math.random()*2600; toneAt(ac, out, f, t, 0.15, "sine", 0.06, 0.9); }
+  toneAt(ac, out, 1046.5, t0 + 0.55, 0.9, "sine", 0.16); toneAt(ac, out, 1567.98, t0 + 0.55, 0.8, "sine", 0.08);
 }
 // Wins tab: games with more players or other games
 function partyWinsSection(t){
@@ -2807,7 +2908,7 @@ function renderSettings(){
       <div class="set-row"><span>Scala 40 ends at</span><select class="set-in sm" data-sets="scalaLimit">${[101,151,201].map(v => `<option value="${v}" ${+st.scalaLimit === v ? "selected" : ""}>${v} points</option>`).join("")}</select></div>
     `],
     ["custom", "✏️", "Your custom games", customGames().length ? customGames().length + " game" + (customGames().length === 1 ? "" : "s") : "None yet", "#E8DFFF", "#9F87E0", `${customGames().length ? customGames().map(g => `<div class="set-row cg-row">${gameLogo(g.key, "sm")}<span class="cg-n">${esc(g.name)}</span><button type="button" class="b3d cg-del" data-cgdel="${g.key}">${canDelCustom(g) ? "🗑️ Delete" : "🔒 Locked"}</button></div>`).join("")
-        : `<p class="set-note" style="margin:0">None yet. Make one from <b>Change game ▾</b> → <b>Create your own game…</b></p>`}
+        : `<p class="set-note" style="margin:0">None yet. Make one from <b>Select game ▾</b> → <b>Create your own game…</b></p>`}
       ${customGames().some(g => !canDelCustom(g)) ? `<p class="set-note">Custom games lock 48 hours after they're made. Unlock in ⚙️ Settings → 🔒 Editing lock to delete them.</p>` : ""}
     `],
     ["backup", "📥", "Backup & print", "Save a copy · printable list", "#FFE3EA", "#E79AAE",
@@ -4491,8 +4592,9 @@ const NUMBERED = new Set(CHEERS.map((c, i) => /\{left\}/.test(c[1]) || /Nearly t
 const cheerText = (k, name, left, recorded) => ((recorded && CHEERS[k][2]) || CHEERS[k][1]).replace(/\{n\}/g, name).replace(/\{left\}/g, left);
 const OUR_VOICES = false;   // recorded voices removed from Settings (Nov 2026); the clips stay saved
 const hasOurClip = (k, name) => { if(!OUR_VOICES) return false; const v = typeof voiceClips !== "undefined" && voiceClips[voiceKey(k, name)]; return !!(v && v.data && !v.deleted && (v.v === 2 || !NUMBERED.has(k))) && soundOn && sndOn("voice") && sndOn("ours"); };
+const SHOW_CHEERS = false;   // "almost there" cheer cards removed (Nov 2026)
 function cheerCheck(key, names, scores, target, near, lowWins){
-  if(!target || lowWins) return;
+  if(!SHOW_CHEERS || !target || lowWins) return;
   const fresh = scores.every(v => !v), prev = cheerSeen[key];
   if(fresh || !prev){ cheerSeen[key] = {done: new Set(), init: !fresh && !prev}; }
   const st = cheerSeen[key], top = Math.max(...scores), leaders = scores.reduce((a, v, i) => v === top ? a.concat(i) : a, []);
@@ -4620,6 +4722,7 @@ document.addEventListener("click", e => {
     sheet("Delete this recording?", "That line goes back to the phone's voice on every phone.", "Delete", () => { voiceClips[key] = {deleted: true, pending: true, at: Date.now()}; vput(key, voiceClips[key]); flushVoices(); render(); }, true); }
 });
 function cheerToast(msg, icon, who){
+  if(!SHOW_CHEERS) return;   // parchment pop-ups are off everywhere
   let el = document.getElementById("cheerToast");
   if(!el){ el = document.createElement("div"); el.id = "cheerToast"; el.className = "cheertoast"; el.setAttribute("role", "status");
     el.addEventListener("click", () => el.classList.remove("show")); document.body.appendChild(el); }
@@ -4824,6 +4927,7 @@ setInterval(() => {
 }, 5000);
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-reopen]"); if(!b) return;
+  streakNext = null;
   const [tid, gid] = b.dataset.reopen.split("|"), t = state.trips.find(x => x.id === tid); if(!t) return;
   if(!reopenGame(t, gid)) sheet("Too late to undo", "This win can only be undone in the first 2 minutes. Unlock (⚙️ Settings → 🔒 Editing lock) to delete it from Wins instead.", "OK", () => {});
 });
@@ -4850,8 +4954,9 @@ function celebrate(t, g, more){
     : `<div class="stage">${scatter(BEHIND,"back")}${card}${scatter(FRONT,"front")}</div>`;
   root.innerHTML = `<div class="party" data-party>${stage}<canvas></canvas></div>`;
   if(sndOn("win")){ if(g.winner === 1) playJackpot(); else if(g.winner === 2) playCalypso(); else playTieChime(); }
+  streakNext = streakFor2(t, g);
   if(pendingSound) root.querySelector("#tapSound").hidden = false;
-  const close = () => { root.innerHTML = ""; };
+  const close = () => { root.innerHTML = ""; showStreakSoon(); };
   root.querySelector("[data-party-close]").addEventListener("click", close);
   root.querySelector("[data-party]").addEventListener("click", e => { if(e.target.matches("[data-party]")) close(); });
   root.querySelector("[data-party-close]").focus();
