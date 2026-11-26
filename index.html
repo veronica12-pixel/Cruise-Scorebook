@@ -791,13 +791,14 @@ nav.tabs .in button[aria-current="page"]{text-decoration:underline;text-decorati
 .gamenav .gn-add{flex:1;min-width:0;font-size:15px;display:flex;align-items:center;justify-content:center;gap:6px;color:#2F2A42;--edge:#B58FD8;border:1.5px solid rgba(255,255,255,.9);
   background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 60%),linear-gradient(90deg,#FFC9D6 0%,#FFE7A0 30%,#BFEFD9 62%,#D6C6FF 100%)}
 .gn-add .gn-txt{white-space:nowrap;font-family:var(--display);font-size:16px}
-.gn-add .gn-ic{display:inline-flex;align-items:center;gap:2px;flex:none}
+.gn-add .gn-ic{display:inline-flex;align-items:center;gap:0;flex:none}
+.gn-add .gn-ic i{margin:0 -1px}
 .gn-add .gn-ic i{font-style:normal;font-size:18px;line-height:1;text-shadow:0 1px 0 rgba(0,0,0,.15);font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
 .gn-add .gn-dom{height:24px;width:auto;transform:rotate(-14deg);filter:drop-shadow(0 1px 0 rgba(0,0,0,.2))}
 .gn-add .gn-card{height:24px;width:auto;transform:rotate(12deg);filter:drop-shadow(0 1px 0 rgba(0,0,0,.2))}
 .gn-add .gn-ic i.x{font-size:16px}
 .gamenav .gn-add{padding-inline:6px}
-@media (max-width:389px){.gn-add .gn-ic i.x{display:none}}
+@media (max-width:389px){.gn-add .gn-l i:first-child,.gn-add .gn-r i:last-child{display:none}}
 @media (max-width:340px){.gn-add .gn-ic i{display:none}}
 .gamerow .s-custom{--gc:#FFE58F;--ge:#E0B53C;color:#5A3E00}
 .gn-custom{display:block;width:100%;min-height:40px;margin:-6px 0 14px;font-weight:800;font-size:15px;color:#5A3E00;--face:#FFE58F;--edge:#E0B53C;
@@ -956,7 +957,7 @@ button.best-row:active{background:rgba(255,255,255,.85)}
 .jcard.sea .jwave{font-size:30px;line-height:1}
 .jfoot{text-align:center;color:#9A8C74;font-size:12px;margin-top:26px}
 @media (max-width:340px){.jdeck{grid-template-columns:1fr}.jcard.wide{grid-column:auto}}
-.journalbtn{width:100%;margin-top:12px;font-weight:800;--face:#FFF3C4;--edge:#E3C443;color:#5A4500}
+.journalbtn{font-weight:800;--face:#FFF3C4;--edge:#E3C443;color:#5A4500}
 
 /* 🔍 search everything */
 #tripHead .route{padding-right:34px}
@@ -1066,6 +1067,43 @@ tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 .sk-medal .shine{opacity:0;animation:skShine 2.2s ease 1.2s infinite}
 @keyframes skShine{0%,60%,100%{opacity:0}75%{opacity:.9}}
 @media (prefers-reduced-motion: reduce){.sk-card,.sk-art,.sk-ls b{animation:none!important;opacity:1;transform:none}}
+
+/* games won this trip */
+.series2{margin:16px 0 4px;padding:12px 14px 14px;border-radius:18px;background:#fff;border:1.5px solid #E6DEF5;box-shadow:0 3px 0 #E6DEF5}
+.s2-h{font:800 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:#8A7FA8;text-align:center;margin-bottom:6px}
+.s2-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px}
+.s2-p{display:flex;flex-direction:column;align-items:center;min-width:0}
+.s2-p b{font:800 34px/1 var(--display);}
+.s2-p span{font-weight:700;font-size:14px;overflow-wrap:anywhere;text-align:center}
+.s2-p b,.s2-p span{color:var(--pd)}
+.s2-vs{font-size:12.5px;color:var(--muted);text-align:center}
+.s2-bar{display:flex;height:10px;border-radius:999px;overflow:hidden;margin-top:10px;background:#EEE}
+.s2-bar i{display:block;height:100%}.s2-bar .p1{background:var(--p1-edge)}.s2-bar .p2{background:var(--p2-edge)}
+.s2-many{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.s2-many span{padding:6px 12px;border-radius:999px;background:#F5F1FC;font-weight:700;font-size:14px}
+.s2-many b{font-size:17px}
+
+/* 📝 trip notes button + pop-up */
+.notes-row{display:flex;justify-content:flex-start;margin:10px 0 4px}
+.jn-row{display:flex;gap:10px;margin-top:12px}
+.jn-row .btn{flex:1 1 0;min-width:0;margin:0;display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap}
+.notesbtn{font-weight:800;--face:#EAF4FD;--edge:#A9C8E8;color:#24476F}
+.notesbtn .nb-ic{font-size:18px}
+.notesbtn b{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#EEE6FB;color:#5B3F9E;font-size:13px}
+.notes-scrim{z-index:9}
+.notes-sheet{max-height:86vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.ns-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ns-top h3{margin:0;font-size:20px}
+.notes-sheet .tr-sec.notes{border:0;box-shadow:none;padding:0;margin:0;background:none}
+.notes-sheet .tr-sec.notes .tr-h{display:none}
+
+/* 🛏️ cabin button → the cruise line's deck plan: white 3-D like the other secondary buttons, the app's own font */
+.cabbtn{width:max-content;max-width:calc(100% - 40px);text-decoration:none;display:inline-flex;align-items:center;flex-wrap:nowrap;gap:7px;margin:8px 0 6px;padding:5px 14px 5px 6px;border-radius:13px;font-family:var(--body);font-weight:700;font-size:14px;color:var(--ink);cursor:pointer;--face:#E6F1FC;--edge:#A9C8E8;background:linear-gradient(180deg,#FFFFFF 0%,#EAF4FD 45%,#CFE4F7 100%);box-shadow:inset 0 -2px 0 rgba(0,0,0,.05),0 4px 0 var(--edge),0 8px 14px rgba(60,110,170,.22)}
+.cabbtn .cb-k{width:30px;height:30px;display:grid;place-items:center;flex:none}
+.cabbtn > span:nth-child(2){white-space:nowrap}
+.cabbtn small{font-weight:600;color:#557091;font-size:13px}
+.cabbtn:active{box-shadow:inset 0 -1px 0 rgba(0,0,0,.05),0 1px 0 var(--edge),0 2px 4px rgba(60,110,170,.2)}
+.cabbtn .cb-q{font-size:14px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -1087,6 +1125,7 @@ tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 </div></nav>
 
 <button type="button" id="lockFloat" class="lockfloat" hidden aria-label="Editing is unlocked. Tap to lock."><span class="lf-in"><span class="lf-ic" aria-hidden="true">🚢<i>✏️</i></span><span class="lf-t"><b>Editing</b><small>Tap to lock</small></span></span></button>
+<div id="notesRoot"></div>
 <div id="sheetRoot"></div>
 <div id="partyRoot"></div>
 <div id="saveRoot"></div>
@@ -1096,8 +1135,8 @@ tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "21.1";
-const APP_UPDATED = "Nov 23, 2026, 7:55 PM ET";
+const APP_VERSION = "22.3";
+const APP_UPDATED = "Nov 26, 2026, 5:15 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (⚙️ Settings → 🔒 Editing lock). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -1284,6 +1323,7 @@ function migrate(s){
     t.scala = t.scala || blankScala(); if(!Array.isArray(t.scala.log)) t.scala.log = [];
     t.games.forEach(g => { g.type = g.type || "domino"; if(!g.createdAt) g.createdAt = Date.now(); });
     t.ports = Array.isArray(t.ports) ? t.ports : [];
+    if(t.cabin && t.cabin !== String(t.cabin).toUpperCase()) t.cabin = String(t.cabin).toUpperCase();
     if(!t.p1 || t.p1 === "AT") t.p1 = "Alessandra";
     if(!t.p2 || t.p2 === "Player 2") t.p2 = "Kirk";
     t.ports.forEach(p => { [1,2].forEach(w => { const v = w === 1 ? p.s1 : p.s2; if(v != null && !p["rated" + w]) p["rated" + w] = Date.now(); }); });
@@ -1760,9 +1800,10 @@ function renderHead(){
     : `<span>Add ports on the Trips tab</span>`;
   $("#tripHead").innerHTML = `
     <div class="badges" aria-hidden="true">${DOMINO.replace('<svg ','<svg class="dtile" ')}${QCARD.replace('<svg ','<svg class="qcard" ')}</div>
-    <div class="eyebrow">${t.ship ? esc(t.ship) + "<br>" : ""}${t.cabin ? "Cabin " + esc(t.cabin) + " · " : ""}${esc(fmtRange(t.start,t.end))}</div>
+    <div class="eyebrow">${t.ship ? esc(t.ship) + "<br>" : ""}${esc(fmtRange(t.start,t.end))}</div>
     <h1>${esc(titleCase(t.name))}</h1>
     <div class="route">${route}</div>
+    ${t.ship && !tripDone(t) ? `<a class="cabbtn b3d" href="${esc(deckPlanUrl(t))}" target="_blank" rel="noopener" aria-label="${t.cabin ? "Cabin " + esc(t.cabin) + ": open" : "Open"} the ${esc(t.ship)} deck plan"><span class="cb-k" aria-hidden="true">${CABIN_ICON}</span><span>${t.cabin ? `Cabin ${esc(t.cabin)}${cabinDeck(t) ? ` <small>· Deck ${cabinDeck(t).n}</small>` : ""}` : "Deck plan"}</span><span class="cb-q" aria-hidden="true">↗</span></a>` : ""}
     <button type="button" class="srchbtn" data-search aria-label="Search everything">${SRCH_ICON}</button>`;
 }
 
@@ -1781,6 +1822,23 @@ function scoreTop(t, type){
     </div>`;
 }
 
+/* games won this trip: one clear scoreboard under the player cards (not mixed in with the points) */
+function tripSeries(game, rows){
+  const total = rows.reduce((a, r) => a + r[1], 0), top = Math.max(...rows.map(r => r[1]));
+  const crown = w => total && w === top && rows.filter(r => r[1] === top).length === 1 ? ' <span aria-label="leading">👑</span>' : "";
+  if(rows.length === 2){
+    const [a, b] = rows, pa = total ? Math.round(a[1] / total * 100) : 50;
+    return `<div class="series2" role="group" aria-label="${esc(game)} games won this trip">
+      <div class="s2-h">🏆 ${esc(game)} games won this trip</div>
+      <div class="s2-row"><div class="s2-p p1"><b class="num">${a[1]}</b><span>${esc(a[0])}${crown(a[1])}</span></div>
+        <div class="s2-vs">${total ? `${total} game${total === 1 ? "" : "s"}` : "no games yet"}</div>
+        <div class="s2-p p2"><b class="num">${b[1]}</b><span>${esc(b[0])}${crown(b[1])}</span></div></div>
+      ${total ? `<div class="s2-bar" aria-hidden="true"><i class="p1" style="width:${pa}%"></i><i class="p2" style="width:${100 - pa}%"></i></div>` : ""}
+    </div>`;
+  }
+  return `<div class="series2" role="group" aria-label="${esc(game)} games won this trip"><div class="s2-h">🏆 ${esc(game)} games won this trip</div>
+    <div class="s2-many">${rows.map((r, i) => `<span class="pc${i}"><b class="num">${r[1]}</b> ${esc(r[0])}${crown(r[1])}</span>`).join("")}</div></div>`;
+}
 function renderDomino(){
   const t = trip(), c = t.cur, tl = tally(t,"domino");
   tieCheck(t.id + ":domino", [c.s1, c.s2]); leadCheck(t.id + ":domino", [c.s1, c.s2]); cheerCheck(t.id + ":domino", [t.p1, t.p2], [c.s1, c.s2], t.target, 20);
@@ -1805,7 +1863,6 @@ function renderDomino(){
         <button class="onebtn b3d" data-add="${n}" data-v="-1" aria-label="Subtract 1 from ${esc(name)}">−1</button>
         <button class="onebtn plus1 b3d" data-add="${n}" data-v="1" aria-label="Add 1 to ${esc(name)}">+1</button>
       </div>
-      <div class="pwins">Domino wins this trip <b class="num">${wins}</b></div>
     </section>`;
   };
   const winnerName = c.s1 === c.s2 ? null : (c.s1 > c.s2 ? t.p1 : t.p2);
@@ -1815,13 +1872,13 @@ function renderDomino(){
     <div class="actions">
       <button class="btn primary b3d" data-act="end" ${c.s1||c.s2 ? "" : "disabled"}>🏁 Game finished</button>
       <button class="btn b3d" data-act="undo" ${c.log.length ? "" : "disabled"}>Undo</button>
-      <button class="btn b3d" data-act="reset" ${c.s1||c.s2 ? "" : "disabled"}>Clear</button>
     </div>
     <div class="target"><label for="target">Play to</label>
       <select id="target">${[150,101,200,250,300,0].map(v=>`<option value="${v}" ${t.target===v?"selected":""}>${v?v+" points":"No limit"}</option>`).join("")}</select>
     </div>
     ${pointsPanels(t, c.log)}
     <button type="button" class="b3d addp3d" data-pkplayers="domino">Add a player</button>
+    ${tripSeries(GAMES.domino, [[t.p1, tl.w1], [t.p2, tl.w2]])}
   `;
 }
 
@@ -1843,7 +1900,6 @@ function renderScala(){
         <button type="button" class="onebtn plus1 b3d" data-typeadd="${n}">Add</button>
         <button type="button" class="onebtn b3d sc40undo" data-sundo="${n}" ${sc.log.some(r => r.p === n) ? "" : "disabled"} aria-label="Undo ${esc(name)}'s last points">Undo</button>
       </div>
-      <div class="pwins">Scala 40 wins this trip <b class="num">${wins}</b></div>
     </section>`;
   };
   const leader = sc.s1===sc.s2 ? null : (sc.s1 > sc.s2 ? t.p1 : t.p2);
@@ -1851,15 +1907,12 @@ function renderScala(){
   $("#view").innerHTML = scoreTop(t,"scala") + `
     <div class="board">${col(1)}${col(2)}</div>
     ${out ? `<div class="banner" role="status"><h3>${winName ? esc(winName) + " reached " + L + " and wins!" : "Both players reached " + L + " · it's a tie"}</h3><div class="row"><button class="btn primary b3d" data-act="end">Record the win</button></div></div>` : ""}
-    <div class="actions">
-      <button class="btn primary b3d" data-act="end" ${sc.log.length ? "" : "disabled"}>End game${leader ? " · " + esc(leader) + " wins" : ""}</button>
-      <button class="btn b3d" data-act="reset" ${sc.log.length ? "" : "disabled"}>Clear</button>
-    </div>
     <div class="target"><label for="limit">Game ends at</label>
       <select id="limit">${[101,151,201].map(v=>`<option value="${v}" ${L===v?"selected":""}>${v} points</option>`).join("")}</select>
     </div>
     ${pointsPanels(t, sc.log)}
     <button type="button" class="b3d addp3d" data-pkplayers="scala">Add a player</button>
+    ${tripSeries(GAMES.scala, [[t.p1, tl.w1], [t.p2, tl.w2]])}
   `;
 }
 function dominoAdd(n, v){
@@ -2156,6 +2209,9 @@ function favButton(k, type, cur){
   return classic ? `<button class="b3d s-${k}" data-type="${k}" aria-pressed="${on}">${icon}${on ? name : "Switch to " + name}</button>`
     : `<button class="b3d s-fav" data-pkpick="${k}" aria-pressed="${on}" style="--gc:${g.c};--ge:${g.e}">${icon}${on ? esc(name) : "Switch to " + esc(name)}</button>`;
 }
+// a random handful of game icons on each side of "Select game" (picked once each time the app opens)
+const GN_POOL = ["🀄","🃏","🎲","♟️","🎩","🎴","🔷","🍌","🚂","♣️","👑","🍀","🪙","♦️","🎯","🧩","♠️","❤️","🔢","🎱"];
+const GN_PICK = GN_POOL.slice().sort(() => Math.random() - .5), GN_LEFT = GN_PICK.slice(0, 3), GN_RIGHT = GN_PICK.slice(3, 6);
 function gameRow(type){
   const t = trip(), cur = type === "party" && t.party ? t.party.game : type, favs = favGames();
   const open = moreGamesOpen;   // the list of games drops down under "Select game"
@@ -2163,7 +2219,7 @@ function gameRow(type){
   allGames().forEach(g => { const name = g.group === "Custom games" ? "Your games" : g.group; let grp = groups.find(x => x.name === name); if(!grp) groups.push(grp = {name, list: []}); grp.list.push(g); });
   groups.sort((a, b) => (a.name === "Your games" ? -1 : 0) - (b.name === "Your games" ? -1 : 0));
   return `<div class="gamenav solo">
-      <button type="button" class="b3d gn-add" data-act="gdrop" aria-expanded="${open}"><span class="gn-ic" aria-hidden="true"><i class="x">🀄</i>${DOMINO.replace("<svg ", '<svg class="gn-dom" ')}<i>🃏</i></span><span class="gn-txt">Select game <span class="gn-chev" aria-hidden="true">${open ? "▴" : "▾"}</span></span><span class="gn-ic" aria-hidden="true"><i>🎲</i>${QCARD.replace("<svg ", '<svg class="gn-card" ')}<i class="x">♟️</i></span></button>
+      <button type="button" class="b3d gn-add" data-act="gdrop" aria-expanded="${open}"><span class="gn-ic gn-l" aria-hidden="true">${GN_LEFT.map(e => `<i>${e}</i>`).join("")}${DOMINO.replace("<svg ", '<svg class="gn-dom" ')}</span><span class="gn-txt">Select game <span class="gn-chev" aria-hidden="true">${open ? "▴" : "▾"}</span></span><span class="gn-ic gn-r" aria-hidden="true">${QCARD.replace("<svg ", '<svg class="gn-card" ')}${GN_RIGHT.map(e => `<i>${e}</i>`).join("")}</span></button>
     </div>
     ${open ? `<div class="gdrop" role="listbox" aria-label="Choose a game">
       <label class="gd-search">${typeof SRCH_ICON !== "undefined" ? SRCH_ICON : "🔍"}<input id="gdQ" type="text" placeholder="Search games" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Search games"><button type="button" class="gd-sx" data-gdclear hidden aria-label="Clear">×</button></label>
@@ -2219,7 +2275,6 @@ function renderParty(){
       </div>
       ${simple ? "" : `<div class="tiles">${steps.map(v => `<button class="tilebtn b3d" data-pquick="${i}" data-v="${v}" aria-label="Add ${v} to ${esc(name)}" ${st.out[i] ? "disabled" : ""}><span class="plus">+</span>${v}</button>`).join("")}</div>
       <button class="onebtn b3d" data-pquick="${i}" data-v="-1" aria-label="Subtract 1 from ${esc(name)}" ${st.out[i] ? "disabled" : ""}>−1</button>`}
-      <div class="pwins">${esc(g.name)} wins this trip <b class="num">${wins(name)}</b></div>
     </section>`; };
   const tl = L ? [...new Set([...g.targets.filter(v => v), L])].sort((a, b) => a - b) : g.targets.filter(v => v);
   $("#view").innerHTML = `
@@ -2234,14 +2289,14 @@ function renderParty(){
     ${st.over && !keepBanner ? (g.live ? `<div class="banner reachnote" role="status"><h3>🏁 ${L} reached</h3><p>Finish the hand. When the game is really over, tap <b>Game finished</b>.</p><div class="row"><button class="btn primary b3d" data-act="pend">🏁 Game finished</button><button class="btn b3d" data-act="pkeep">Keep playing</button></div></div>`
       : `<div class="banner" role="status"><h3>${leader ? esc(leader) + " wins!" : "It's a tie!"}</h3><div class="row"><button class="btn primary b3d" data-act="pend">Record the win</button><button class="btn b3d" data-act="pkeep">Keep playing</button></div></div>`) : ""}
     <div class="actions">
-      <button class="btn primary b3d" data-act="pend" ${p.log.length ? "" : "disabled"}>${g.live ? "🏁 Game finished" : `End game${leader ? " · " + esc(leader) + " wins" : ""}`}</button>
+      ${g.live || !L ? `<button class="btn primary b3d" data-act="pend" ${p.log.length ? "" : "disabled"}>🏁 Game finished</button>` : ""}
       <button class="btn b3d" data-act="pundo" ${p.log.length ? "" : "disabled"}>Undo</button>
-      <button class="btn b3d" data-act="pclear" ${p.log.length ? "" : "disabled"}>Clear</button>
     </div>
     <div class="target"><label for="ptarget">${g.mode === "high" ? "Play to" : "Game ends at"}</label>
       <select id="ptarget">${tl.map(v => `<option value="${v}" ${L === v ? "selected" : ""}>${v.toLocaleString()} points</option>`).join("")}${g.mode !== "elim" ? `<option value="0" ${!L ? "selected" : ""}>No limit</option>` : ""}</select>
     </div>
     <button type="button" class="b3d addp3d" data-pkplayers="${p.game}">${p.players.length > 2 ? "Add or change players" : "Add a player"}</button>
+    ${tripSeries(g.name, p.players.map(n => [n, wins(n)]))}
     ${/^c_/.test(p.game) && (editingUnlocked || Date.now() - (PG(p.game).createdAt || 0) < LOCK_MS) ? `<button type="button" class="btn danger b3d delcustom" data-act="pdelgame">🗑️ Delete the game “${esc(g.name)}”</button>` : ""}`;
 }
 // add points to one player, the same way as Domino and Scala 40
@@ -2757,7 +2812,7 @@ function renderTrips(){
     ${detailsOpen ? `<div class="form compact">
       <div class="full shipcab">
         <label for="f-ship">Ship<input id="f-ship" data-f="ship" value="${esc(t.ship)}" placeholder="Ship name"></label>
-        <label for="f-cabin" class="cabin-first">🛏️ Cabin<input id="f-cabin" data-f="cabin" value="${esc(t.cabin || "")}" placeholder="A512" autocomplete="off" autocapitalize="characters"></label>
+        <label for="f-cabin" class="cabin-first">🛏️ Cabin<input id="f-cabin" data-f="cabin" style="text-transform:uppercase" value="${esc(t.cabin || "")}" placeholder="A512" autocomplete="off" autocapitalize="characters"></label>
       </div>
       <label class="full" for="f-name">Where we're going<input id="f-name" data-f="name" value="${esc(t.name)}" placeholder="e.g. South Pacific crossing"></label>
       <label for="f-start">Trip starts<input type="date" id="f-start" data-f="start" value="${esc(t.start)}"></label>
@@ -2806,6 +2861,7 @@ document.addEventListener("focusout", e => { if(e.target.type === "date" && date
   setTimeout(() => { if(!dateBoxBusy()){ const y = window.scrollY; render(); window.scrollTo(0, y); } }, 0); } });
 function render(){
   if(dateBoxBusy()){ dateRenderWaiting = true; return; }
+  if(notesOpenFor) setTimeout(drawNotesSheet, 0);
   renderHead(); drawHomeClock(); requestAnimationFrame(fitNames);
   document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-current", b.dataset.tab===tab ? "page" : "false"));
   document.body.dataset.game = tab === "score" ? dayType(trip()) : "";
@@ -3363,6 +3419,22 @@ document.addEventListener("click", e => {
   const a = e.target.closest("[data-itinadd]"); if(a){ const id = a.dataset.itinadd, t = tripOf(id); if(!t || pastLocked(t) || !itinFound[id]) return;
     addItinerary(t, itinFound[id], !!itinReplace[id]); itinOpen[id] = false; itinFound[id] = null; itinDraft[id] = ""; commit(); render(); window.scrollTo(0, y); return; }
 });
+/* ---------- 🛏️ cabin button: opens the cruise line's deck plan for the ship ---------- */
+// Princess cabin letters → deck (Grand-class ships such as Crown, Emerald, Ruby and Caribbean Princess)
+const CABIN_DECKS = {P:{n:5, name:"Plaza"}, E:{n:8, name:"Emerald"}, D:{n:9, name:"Dolphin"}, C:{n:10, name:"Caribe"}, B:{n:11, name:"Baja"}, A:{n:12, name:"Aloha"}, R:{n:14, name:"Riviera"}, L:{n:15, name:"Lido"}};
+const GRAND_CLASS = /^(crown|grand|emerald|ruby|caribbean) princess$/i;
+const cabinDeck = t => { const m = /^\s*([A-Za-z])\s*-?\s*\d/.exec(t.cabin || ""); return m && GRAND_CLASS.test((t.ship || "").trim()) ? CABIN_DECKS[m[1].toUpperCase()] || null : null; };
+// a light door-with-number icon for the cabin button
+const CABIN_ICON = `<svg viewBox="0 0 32 32" width="30" height="30"><defs><radialGradient id="mdl" cx="38%" cy="32%" r="70%"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".45" stop-color="#E4E8EF"/><stop offset="1" stop-color="#A9B3C3"/></radialGradient></defs><circle cx="16" cy="17" r="13" fill="rgba(40,50,80,.18)"/><circle cx="16" cy="16" r="13" fill="url(#mdl)" stroke="#8B96A9" stroke-width="1"/><circle cx="16" cy="16" r="9.5" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity=".85"/><circle cx="16" cy="16" r="9.5" fill="none" stroke="#9AA5B8" stroke-width=".6"/><path d="M10.5 18.5c1.8-1.6 3.6-1.6 5.5 0s3.7 1.6 5.5 0" fill="none" stroke="#2E5C8A" stroke-width="1.6" stroke-linecap="round"/><path d="M10.5 15c1.8-1.6 3.6-1.6 5.5 0s3.7 1.6 5.5 0" fill="none" stroke="#2E5C8A" stroke-width="1.6" stroke-linecap="round" opacity=".55"/><path d="M9 9.5a9 9 0 0 1 6-3.4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>`;
+// Princess's own deck plan pages, by ship code
+// codes checked against Princess's own deck plan pages (deckPlans.do / accessible-route pages)
+const PRINCESS_CODES = {"crown princess": "KP", "grand princess": "AP", "enchanted princess": "EX", "star princess": "ST", "majestic princess": "MJ",
+  "emerald princess": "EP", "caribbean princess": "CB", "royal princess": "RP", "sapphire princess": "SA", "coral princess": "CO", "island princess": "IP"};
+function deckPlanUrl(t){
+  const code = PRINCESS_CODES[(t.ship || "").trim().toLowerCase()];
+  return code ? "https://www.princess.com/deckPlans.do?shipCode=" + code
+    : "https://www.google.com/search?q=" + encodeURIComponent(`${t.ship || "cruise ship"} deck plan`);
+}
 /* ---------- itinerary picture: pasted or chosen, shrunk so it syncs quickly ---------- */
 function shrinkImage(file){
   return new Promise((ok, bad) => { const url = URL.createObjectURL(file), img = new Image();
@@ -3474,10 +3546,9 @@ function tripRecord(x, cur){
         ${editTrip===x.id ? "" : hotelSummary(x)}
         ${editTrip===x.id ? "" : shipsSummary(x)}
         ${editTrip===x.id ? "" : edButton(x)}
-        ${editTrip===x.id ? "" : `<button type="button" class="btn b3d journalbtn" data-jopen="${x.id}">📖 Open the Cruise Journal</button>`}
+        ${editTrip===x.id ? "" : `<div class="jn-row"><button type="button" class="btn b3d journalbtn" data-jopen="${x.id}">📖 Journal</button>${notesButton(x)}</div>`}
       </div>
       </div>
-      ${notesPanel(x)}
       ${editingUnlocked ? `<button type="button" class="btn danger b3d resetgames" data-resetgames="${x.id}">🔓 Reset games for this trip</button>` : ""}
       ${state.trips.length > 1 && canDeleteTrip(x) ? `<button type="button" class="btn danger b3d" data-act="deltrip" data-tid="${x.id}">🗑️ Delete this trip</button>` : ""}
     </div>
@@ -3980,6 +4051,33 @@ function stopNotesList(x){
       <div class="note-f"><span>${esc(noteWhen(pt.note.at))}${pt.note.editedAt ? " · edited" : ""}</span>${canStopNote(x, pt) ? `<span><button type="button" class="xbtn" data-stopnoteview="${x.id}|${pt.id}">Open</button></span>` : `<span class="lockmark" title="Locked. Unlock in ⚙️ Settings.">🔒</span>`}</div>
     </div>`).join("")}</div>` : "";
 }
+// the trip's notes live in a pop-up; the trip page only has a small 📝 button
+let notesOpenFor = null;
+function notesButton(x){
+  const n = noteList(x).length;
+  if(!n && pastLocked(x)) return "";
+  return `<button type="button" class="btn b3d notesbtn" data-notesopen="${x.id}" aria-label="Notes for ${esc(x.name)}${n ? ", " + n : ""}"><span class="nb-ic" aria-hidden="true">📝</span>${n ? `Notes <b class="num">${n}</b>` : "Add a note"}</button>`;
+}
+function drawNotesSheet(){
+  const root = document.getElementById("notesRoot"); if(!root) return;
+  const x = notesOpenFor && state.trips.find(t => t.id === notesOpenFor);
+  if(!x){ notesOpenFor = null; root.innerHTML = ""; return; }
+  const keep = root.querySelector(".sheet"), y = keep ? keep.scrollTop : 0;
+  // a redraw (a sync from the other phone, say) keeps the box you're typing in and where the cursor was
+  const a = document.activeElement, typing = a && root.contains(a) && a.tagName === "TEXTAREA" ? {id: a.id, ed: a.dataset.noteedit, s: a.selectionStart, e: a.selectionEnd} : null;
+  root.innerHTML = `<div class="scrim notes-scrim" data-notesclose><div class="sheet notes-sheet" role="dialog" aria-modal="true" aria-label="Notes for ${esc(x.name)}">
+    <div class="ns-top"><h3>📝 ${esc(titleCase(x.name))}</h3><button type="button" class="xclose" data-notesclose aria-label="Close">×</button></div>
+    ${notesPanel(x)}</div></div>`;
+  root.querySelector(".sheet").scrollTop = y;
+  if(typing){ const f = typing.id ? document.getElementById(typing.id) : root.querySelector(`[data-noteedit="${typing.ed}"]`);
+    if(f){ f.focus({preventScroll: true}); try { f.setSelectionRange(typing.s, typing.e); } catch(e){} } }
+}
+document.addEventListener("click", e => {
+  const o = e.target.closest("[data-notesopen]");
+  if(o){ notesOpenFor = o.dataset.notesopen; drawNotesSheet(); return; }
+  const c = e.target.closest("[data-notesclose]");
+  if(c && (e.target === c || c.matches("button"))){ notesOpenFor = null; editingNote = null; drawNotesSheet(); }
+});
 function notesPanel(x){
   const list = noteList(x), nStop = (x.ports || []).filter(pt => stopNoteText(pt)).length, total = list.length;
   return `<div class="tr-sec notes" data-notes="${x.id}">
@@ -5324,14 +5422,15 @@ document.addEventListener("click", e => {
 let typingTimer = null;
 document.addEventListener("input", e => {
   const el = e.target, t = trip();
-  if(el.dataset && el.dataset.f){ t[el.dataset.f] = el.value; ensureEndPorts(t); if((el.dataset.f === "p1" || el.dataset.f === "p2") && extraPlayers(t).length) setExtras(t, extraPlayers(t)); clearTimeout(typingTimer); typingTimer = setTimeout(() => { commit(); renderHead(); }, 400); }
+  if(el.dataset && el.dataset.f){ if(el.dataset.f === "cabin" && el.value !== el.value.toUpperCase()){ const c = el.selectionStart; el.value = el.value.toUpperCase(); try { el.setSelectionRange(c, c); } catch(e){} }   // cabin numbers are always capitals: C216
+    t[el.dataset.f] = el.value; ensureEndPorts(t); if((el.dataset.f === "p1" || el.dataset.f === "p2") && extraPlayers(t).length) setExtras(t, extraPlayers(t)); clearTimeout(typingTimer); typingTimer = setTimeout(() => { commit(); renderHead(); }, 400); }
 });
 document.addEventListener("change", e => {
   const el = e.target, t = trip();
   if(el.id === "curTrip"){ state.activeTripId = el.value; editTrip = null; commit(); render(); window.scrollTo(0,0); return; }
   if(el.id === "target"){ t.target = +el.value; keepBanner=false; commit(); render(); }
   else if(el.id === "limit"){ t.limit = +el.value; commit(); render(); }
-  else if(el.dataset && el.dataset.f){ t[el.dataset.f] = el.value; ensureEndPorts(t); commit(); renderHead(); }
+  else if(el.dataset && el.dataset.f){ t[el.dataset.f] = el.dataset.f === "cabin" ? el.value.toUpperCase() : el.value; ensureEndPorts(t); commit(); renderHead(); }
 });
 function typedAdd(n){
   const box = document.querySelector(`[data-typein="${n}"]`); if(!box) return;
