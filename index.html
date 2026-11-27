@@ -69,7 +69,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .trip h1{font-size:22px;font-weight:800;line-height:1.15;min-width:0}
 /* Trips tab: the current-trip picker already names the trip, so the big header steps aside */
 body[data-tab="trips"] #tripHead{display:none}
-.route{display:flex;flex-wrap:wrap;align-items:center;gap:6px;color:var(--muted);font-size:14px}
+.route{display:flex;flex-wrap:wrap;align-items:center;gap:2px 6px;color:var(--muted);font-size:14px}
+.route .rt-arrow{color:var(--muted);font-weight:400}
 .route b{color:var(--ink);font-weight:700}
 .dayrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
 input,select,textarea{font:inherit;font-size:max(16px,1em);color:var(--ink);background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:8px 10px;min-height:44px;max-width:100%}
@@ -1098,12 +1099,21 @@ tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 .notes-sheet .tr-sec.notes .tr-h{display:none}
 
 /* 🛏️ cabin button → the cruise line's deck plan: white 3-D like the other secondary buttons, the app's own font */
-.cabbtn{width:max-content;max-width:calc(100% - 40px);text-decoration:none;display:inline-flex;align-items:center;flex-wrap:nowrap;gap:7px;margin:8px 0 6px;padding:5px 14px 5px 6px;border-radius:13px;font-family:var(--body);font-weight:700;font-size:14px;color:var(--ink);cursor:pointer;--face:#E6F1FC;--edge:#A9C8E8;background:linear-gradient(180deg,#FFFFFF 0%,#EAF4FD 45%,#CFE4F7 100%);box-shadow:inset 0 -2px 0 rgba(0,0,0,.05),0 4px 0 var(--edge),0 8px 14px rgba(60,110,170,.22)}
+.cabbtn{width:auto;max-width:calc(100% + 96px - 46px);box-sizing:border-box;text-decoration:none;display:inline-flex;align-items:center;flex-wrap:nowrap;gap:7px;margin:8px 0 6px;padding:5px 14px 5px 6px;border-radius:13px;font-family:var(--body);font-weight:700;font-size:14px;color:var(--ink);cursor:pointer;--face:#E6F1FC;--edge:#A9C8E8;background:linear-gradient(180deg,#FFFFFF 0%,#EAF4FD 45%,#CFE4F7 100%);box-shadow:inset 0 -2px 0 rgba(0,0,0,.05),0 4px 0 var(--edge),0 8px 14px rgba(60,110,170,.22)}
 .cabbtn .cb-k{width:30px;height:30px;display:grid;place-items:center;flex:none}
-.cabbtn > span:nth-child(2){white-space:nowrap}
+.cabbtn > span:nth-child(2){min-width:0;white-space:normal;line-height:1.25}
+.cabbtn .cb-n{white-space:nowrap}
+.cabbtn small{white-space:nowrap}
+.cabbtn .cb-q,.cabbtn .cb-k{flex:none}
 .cabbtn small{font-weight:600;color:#557091;font-size:13px}
 .cabbtn:active{box-shadow:inset 0 -1px 0 rgba(0,0,0,.05),0 1px 0 var(--edge),0 2px 4px rgba(60,110,170,.2)}
 .cabbtn .cb-q{font-size:14px;color:var(--muted)}
+
+/* points list: each hand (one player's run of points until the other scores) in its own color */
+.pts-list li[class^="hc"]{border-left:4px solid var(--hcol);padding-left:6px}
+.pts-list li[class^="hc"] .pts-v{color:var(--hcol)}
+.pts-list li.hc0{--hcol:#2E5C8A}.pts-list li.hc1{--hcol:#B24A2B}.pts-list li.hc2{--hcol:#2E7D4F}.pts-list li.hc3{--hcol:#7A3FA0}
+.pts-hand{font-style:normal;font-size:11.5px;font-weight:700;margin-left:6px;padding:1px 6px;border-radius:999px;background:#fff;color:var(--hcol);border:1px solid var(--hcol);vertical-align:2px}
 </style>
 </head>
 <body>
@@ -1135,8 +1145,8 @@ tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "22.3";
-const APP_UPDATED = "Nov 26, 2026, 5:15 PM ET";
+const APP_VERSION = "22.6";
+const APP_UPDATED = "Nov 26, 2026, 8:25 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (⚙️ Settings → 🔒 Editing lock). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -1300,7 +1310,7 @@ const homeName = () => (S().homeCity || "home").split(",")[0].trim() || "home";
 const toUnit = f => (f === "" || f == null || isNaN(+f)) ? f : S().temp === "C" ? Math.round((+f - 32) * 5 / 9) : Math.round(+f);
 const degU = () => "°" + S().temp;
 const hr12 = () => S().clock !== "24";
-const SND_KEYS = {win:"cs-snd-win", tie:"cs-snd-tie", lead:"cs-snd-lead", voice:"cs-snd-voice", ours:"cs-snd-ours"};
+const SND_KEYS = {ding:"cs-snd-ding", win:"cs-snd-win", tie:"cs-snd-tie", lead:"cs-snd-lead", voice:"cs-snd-voice", ours:"cs-snd-ours"};
 const sndOn = k => { try { return localStorage.getItem(SND_KEYS[k]) !== "off"; } catch(e){ return true; } };
 const blankScala = () => ({s1:0, s2:0, log:[]});
 function newTrip(p, fixedId){
@@ -1796,14 +1806,14 @@ setInterval(drawHomeClock, 15000);
 function renderHead(){
   const t = trip();
   const route = (t.from || t.to)
-    ? `<b>${esc(t.from||"Departure port?")}</b><span aria-hidden="true">→</span><b>${esc(t.to||"Arrival port?")}</b>`
+    ? `<b>${esc(t.from||"Departure port?")}&nbsp;<span class="rt-arrow" aria-label="to">→</span></b><b>${esc(t.to||"Arrival port?")}</b>`
     : `<span>Add ports on the Trips tab</span>`;
   $("#tripHead").innerHTML = `
     <div class="badges" aria-hidden="true">${DOMINO.replace('<svg ','<svg class="dtile" ')}${QCARD.replace('<svg ','<svg class="qcard" ')}</div>
     <div class="eyebrow">${t.ship ? esc(t.ship) + "<br>" : ""}${esc(fmtRange(t.start,t.end))}</div>
     <h1>${esc(titleCase(t.name))}</h1>
     <div class="route">${route}</div>
-    ${t.ship && !tripDone(t) ? `<a class="cabbtn b3d" href="${esc(deckPlanUrl(t))}" target="_blank" rel="noopener" aria-label="${t.cabin ? "Cabin " + esc(t.cabin) + ": open" : "Open"} the ${esc(t.ship)} deck plan"><span class="cb-k" aria-hidden="true">${CABIN_ICON}</span><span>${t.cabin ? `Cabin ${esc(t.cabin)}${cabinDeck(t) ? ` <small>· Deck ${cabinDeck(t).n}</small>` : ""}` : "Deck plan"}</span><span class="cb-q" aria-hidden="true">↗</span></a>` : ""}
+    ${t.ship && !tripDone(t) ? `<a class="cabbtn b3d" href="${esc(deckPlanUrl(t))}" target="_blank" rel="noopener" aria-label="${t.cabin ? "Cabin " + esc(t.cabin) + ": open" : "Open"} the ${esc(t.ship)} deck plan"><span class="cb-k" aria-hidden="true">${CABIN_ICON}</span><span>${t.cabin ? `<span class="cb-n">Cabin ${esc(t.cabin)}</span>${cabinDeck(t) ? ` <small>· Deck ${cabinDeck(t).n}</small>` : ""}` : `<span class="cb-n">Deck plan</span>`}</span><span class="cb-q" aria-hidden="true">↗</span></a>` : ""}
     <button type="button" class="srchbtn" data-search aria-label="Search everything">${SRCH_ICON}</button>`;
 }
 
@@ -1919,6 +1929,7 @@ function dominoAdd(n, v){
   const t = trip(), key = n===1?"s1":"s2";
   const nv = Math.max(0, t.cur[key] + v);
   if(nv === t.cur[key]) return;
+  if(nv > t.cur[key]) scoreDing();
   t.cur.log.push({p:n, v:nv - t.cur[key]}); t.cur[key] = nv;
   if(t.cur.log.length > 300) t.cur.log = t.cur.log.slice(-300);
   keepBanner = false;
@@ -1930,6 +1941,7 @@ function scalaAdd(n, v){
   const t = trip(), sc = t.scala, key = n===1?"s1":"s2";
   const nv = Math.max(0, sc[key] + v);
   if(nv === sc[key]) return;
+  if(nv > sc[key]) scoreDing();
   sc.log.push({p:n, v:nv - sc[key]}); sc[key] = nv;
   if(sc.log.length > 300) sc.log = sc.log.slice(-300);
   const L = t.limit || 101;
@@ -2303,6 +2315,7 @@ function renderParty(){
 function partyAdd(i, v){
   const t = trip(), p = normParty(t.party); if(!p || !v) return;
   const nv = p.scores[i] + v; if(nv < 0 && v < 0 && p.scores[i] <= 0) return;
+  if(v > 0) scoreDing();
   p.scores[i] = nv; p.log.push({p: i, v}); if(p.log.length > 400) p.log = p.log.slice(-400);
   partyDraft[i] = ""; keepBanner = false; commit(); const y = window.scrollY; render(); window.scrollTo(0, y);
 }
@@ -2333,6 +2346,7 @@ function partyAction(a){
   if(a === "pround"){
     const pts = p.players.map((_, i) => { const raw = String(partyDraft[i] ?? "").trim(); if(raw === "" || raw === "-") return st.out[i] ? null : 0; const v = parseInt(raw, 10); return isNaN(v) ? 0 : v; });
     if(pts.every(v => !v)){ const f = document.querySelector('[data-pin]:not([disabled])'); if(f) f.focus(); return true; }
+    if(pts.some(v => v > 0)) scoreDing();
     p.rounds.push(pts); pts.forEach((v, i) => { p.scores[i] += v || 0; }); partyDraft = {}; keepBanner = false; commit(); render(); return true;
   }
   if(a === "pundo"){ const l = p.log.pop(); if(l){ p.scores[l.p] -= l.v; keepBanner = false; commit(); const y = window.scrollY; render(); window.scrollTo(0, y); } return true; }
@@ -2914,7 +2928,7 @@ function renderSettings(){
   const seg = (key, opts) => `<div class="set-seg" role="group">${opts.map(([v, label]) => `<button type="button" class="b3d ${String(st[key]) === v ? "on" : ""}" data-setv="${key}" data-v="${v}" aria-pressed="${String(st[key]) === v}">${label}</button>`).join("")}</div>`;
   const tog = (k, label) => `<button type="button" class="set-tog" data-snd="${k}" aria-pressed="${sndOn(k)}"><span>${label}</span><i class="sw ${sndOn(k) ? "on" : ""}" aria-hidden="true"></i></button>`;
   const l = syncLabel();
-  const ON = sndOn, on = ["win","tie","lead"].filter(k => ON(k)).length;
+  const ON = sndOn, on = ["ding","win","tie","lead"].filter(k => ON(k)).length;
   const fmtO = o => "UTC" + (o >= 0 ? "+" : "−") + (Number.isInteger(Math.abs(o)) ? Math.abs(o) : Math.abs(o).toFixed(1));
   const ship = shipTimeInfo(), shipNow = (() => { try { const d = new Date(Date.now() + ship.off * 3600e3); return String(d.getUTCHours()).padStart(2, "0") + ":" + String(d.getUTCMinutes()).padStart(2, "0"); } catch(e){ return ""; } })();
   const vcount = n => CHEERS.filter((c, k) => { const v = voiceClips[voiceKey(k, n)]; return v && !v.deleted; }).length;
@@ -2947,8 +2961,8 @@ function renderSettings(){
         <div class="set-now">🚢 Ship time now: <b>${esc(shipNow)}</b> · ${esc(fmtO(info.off))} <small style="color:var(--muted)">(${esc(info.src)})</small></div>
         <p class="set-note">Automatic uses the latest port on the itinerary while you're sailing, so it's right even on a phone or computer still set to home time. If the ship changes its clocks at sea, pick "Ship clock set to…".</p>`; })()}
     `],
-    ["sounds", "🔊", "Sounds", !soundOn ? "All off on this phone" : on === 3 ? "All on" : on + " of 3 on", "#E8DFFF", "#9F87E0", `<button type="button" class="set-tog" data-sndall aria-pressed="${soundOn}"><span><b>🔔 All sounds</b></span><i class="sw ${soundOn ? "on" : ""}" aria-hidden="true"></i></button>
-      ${soundOn ? tog("win", "🏆 Winning music") : ""}${soundOn ? tog("tie", "🤝 Tie jingle") : ""}${soundOn ? tog("lead", "🎺 “Takes the lead” bugle") : `<p class="set-note">All sounds are off on this phone.</p>`}
+    ["sounds", "🔊", "Sounds", !soundOn ? "All off on this phone" : on === 4 ? "All on" : on + " of 4 on", "#E8DFFF", "#9F87E0", `<button type="button" class="set-tog" data-sndall aria-pressed="${soundOn}"><span><b>🔔 All sounds</b></span><i class="sw ${soundOn ? "on" : ""}" aria-hidden="true"></i></button>
+      ${soundOn ? tog("ding", "🎵 Score ding") : ""}${soundOn ? tog("win", "🏆 Winning music") : ""}${soundOn ? tog("tie", "🤝 Tie jingle") : ""}${soundOn ? tog("lead", "🎺 “Takes the lead” bugle") : `<p class="set-note">All sounds are off on this phone.</p>`}
 
     `],
     ["display", "🌡️", "Temperature & clock", `°${st.temp} · ${st.clock === "24" ? "24-hour" : "12-hour"}`, "#D8F5F2", "#6CC2BA", `${seg("temp", [["F", "°F Fahrenheit"], ["C", "°C Celsius"]])}<div style="height:8px"></div>${seg("clock", [["12", "12-hour · 2:30 PM"], ["24", "24-hour · 14:30"]])}`],
@@ -2986,7 +3000,7 @@ document.addEventListener("click", e => {
   const b = e.target.closest("[data-setv]"); if(b){ setS(b.dataset.setv, b.dataset.v); render(); return; }
   if(e.target.closest("[data-sndall]")){ soundOn = !soundOn; try { localStorage.setItem(SOUND_KEY, soundOn ? "on" : "off"); } catch(err){} if(soundOn) playJackpot(); render(); return; }
   const sn = e.target.closest("[data-snd]"); if(sn){ const k = sn.dataset.snd, on = !sndOn(k); try { localStorage.setItem(SND_KEYS[k], on ? "on" : "off"); } catch(err){}
-    if(on){ if(k === "win") playJackpot(); else if(k === "tie") playTie(); else if(k === "voice") sayAloud("Land ho! The finish line is in sight."); else if(k === "ours"){ const any = Object.keys(voiceClips).find(x => voiceClips[x] && voiceClips[x].data && !voiceClips[x].deleted); if(any) new Audio(voiceClips[any].data).play().catch(() => {}); } else playLead(); } render(); }
+    if(on){ if(k === "ding") withAudio(dingNote); else if(k === "win") playJackpot(); else if(k === "tie") playTie(); else if(k === "voice") sayAloud("Land ho! The finish line is in sight."); else if(k === "ours"){ const any = Object.keys(voiceClips).find(x => voiceClips[x] && voiceClips[x].data && !voiceClips[x].deleted); if(any) new Audio(voiceClips[any].data).play().catch(() => {}); } else playLead(); } render(); }
 });
 document.addEventListener("change", e => { const el = e.target; if(el.dataset && el.dataset.sets){ const v = el.value; setS(el.dataset.sets, /Target|Limit/.test(el.dataset.sets) ? +v : v); render(); } });
 function addUsual(){
@@ -3050,13 +3064,17 @@ function sheet(title, text, okLabel, onOk, danger){
 /* per-player points drop-downs */
 const openPanels = {1:false, 2:false};
 function pointsPanels(t, log){
-  const tot = {1:0, 2:0}, rows = {1:[], 2:[]};
-  log.forEach(e => { tot[e.p] += e.v; rows[e.p].push({v:e.v, total:tot[e.p]}); });
+  // a "hand" = one player's run of points until the other player scores; each hand gets the next color
+  const tot = {1:0, 2:0}, rows = {1:[], 2:[]}; let hand = -1, prev = null;
+  log.forEach(e => { if(e.p !== prev){ hand++; prev = e.p; } tot[e.p] += e.v; rows[e.p].push({v:e.v, total:tot[e.p], hand}); });
+  [1, 2].forEach(n => { const list = rows[n]; list.forEach((r, i) => { r.last = !list[i + 1] || list[i + 1].hand !== r.hand;
+    if(r.last){ const same = list.filter(x => x.hand === r.hand); r.sum = same.length > 1 ? same.reduce((a, x) => a + x.v, 0) : null; } });
+    let k = -1, ph = null; list.forEach(r => { if(r.hand !== ph){ k++; ph = r.hand; } r.col = k % 4; }); });
   const panel = n => {
     const name = n===1 ? t.p1 : t.p2, list = rows[n];
     return `<details class="pts p${n}" data-panel="${n}" ${openPanels[n] ? "open" : ""}>
       <summary><span class="pts-name">${esc(name)}</span><span class="pts-count">Points · ${list.length ? list.length + (list.length===1?" entry":" entries") : "none yet"}</span><span class="chev" aria-hidden="true">▾</span></summary>
-      ${list.length ? `<ol class="pts-list"><li class="pts-hd" aria-hidden="true"><span></span><span>Added</span><span>Total</span></li>${list.map((r,i) => `<li><span class="pts-i">${i+1}</span><span class="pts-v ${r.v<0?"neg":""}">${r.v>0?"+":"−"}${Math.abs(r.v)}</span><span class="pts-t">${r.total}</span></li>`).reverse().join("")}</ol>` : `<p class="pts-empty">No points added yet.</p>`}
+      ${list.length ? `<ol class="pts-list"><li class="pts-hd" aria-hidden="true"><span></span><span>Added</span><span>Total</span></li>${list.map((r,i) => `<li class="hc${r.col}"><span class="pts-i">${i+1}</span><span class="pts-v ${r.v<0?"neg":""}">${r.v>0?"+":"−"}${Math.abs(r.v)}${r.last && r.sum != null ? `<em class="pts-hand" title="Points this hand">= ${r.sum}</em>` : ""}</span><span class="pts-t">${r.total}</span></li>`).reverse().join("")}</ol>` : `<p class="pts-empty">No points added yet.</p>`}
     </details>`;
   };
   return `<div class="pts-wrap"><div class="pts-head"><span>#</span><span>Points</span><span>Total</span></div>${panel(1)}${panel(2)}</div>`;
@@ -4880,6 +4898,15 @@ function leadCheck(key, scores, lowWins){
   if(((prev !== -1 && prev !== now) || afterTie) && sndOn("lead")) playLead();
 }
 function playLead(){ withAudio(leadNotes); }
+// 🎵 a single soft marimba note every time points are added
+function scoreDing(){ if(sndOn("ding")) withAudio(dingNote); }
+function dingNote(ac){
+  const t = ac.currentTime + 0.01, out = ac.createGain(); out.gain.value = 0.55; out.connect(ac.destination);
+  [[523.25, 1, .18], [2093, .35, .04], [1569.8, .1, .05]].forEach(([f, v, d]) => {
+    const o = ac.createOscillator(), g = ac.createGain(); o.type = "sine"; o.frequency.value = f;
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, t + d * 5);
+    o.connect(g); g.connect(out); o.start(t); o.stop(t + d * 5 + 0.05); });
+}
 function leadNotes(ac){
   // bugle charge: "da-da-da-DAAA!"
   const t0 = ac.currentTime + 0.03, out = ac.createGain(); out.gain.value = 1.2; out.connect(ac.destination);
