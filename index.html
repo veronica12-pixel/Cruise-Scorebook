@@ -1044,13 +1044,17 @@ tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 .sk canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
 .sk-card{position:relative;z-index:1;width:100%;max-width:360px;border-radius:26px;padding:24px 22px 20px;text-align:center;box-shadow:0 18px 40px rgba(0,0,0,.35);transform:scale(.5);opacity:0;animation:skPop .55s cubic-bezier(.2,1.4,.4,1) .1s forwards}
 @keyframes skPop{to{transform:scale(1);opacity:1}}
-.sk-card h2{margin:10px 0 6px;font:800 27px/1.15 var(--body);text-wrap:balance}
-.sk-card p{margin:0 0 14px;font-size:16px;line-height:1.4}
+.sk-card{--skfs:clamp(21px,6.6vw,27px)}
+.sk-card h2{margin:10px 0 6px;font:800 var(--skfs)/1.15 var(--body);text-wrap:balance}
+.sk-card p{margin:0 0 14px;font-size:19px;line-height:1.4;text-align:center;display:flex;flex-direction:column;align-items:center}
+.sk-card p span{display:block;text-wrap:balance}
+.sk-card p .sk-g{font-style:normal;white-space:nowrap}
+.sk-card p .sk-dig{margin-top:6px;font-size:16px;opacity:.85}
 .sk-ls{display:inline-flex;gap:8px;margin:2px 0 16px}
 .sk-ls b{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:18px;opacity:0;transform:translateY(-26px);animation:skSink .5s cubic-bezier(.3,1.6,.5,1) forwards}
 .sk-ls b:nth-child(1){animation-delay:.55s}.sk-ls b:nth-child(2){animation-delay:.75s}.sk-ls b:nth-child(3){animation-delay:.95s}
 @keyframes skSink{to{opacity:1;transform:none}}
-.sk-card .sk-ok{display:block;width:100%;border:0;border-radius:16px;font:800 18px var(--body);padding:14px 20px;cursor:pointer}
+.sk-card .sk-ok{display:block;width:100%;border:0;border-radius:16px;font:800 var(--skfs)/1.15 var(--body);padding:14px 16px;cursor:pointer}
 .sk-card .sk-ok:active{transform:translateY(2px);box-shadow:none}
 .sk-card small{display:block;margin-top:10px;font-size:13px;opacity:.7}
 .sk-art{display:inline-block}
@@ -1099,7 +1103,7 @@ tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 .notes-sheet .tr-sec.notes .tr-h{display:none}
 
 /* 🛏️ cabin button → the cruise line's deck plan: white 3-D like the other secondary buttons, the app's own font */
-.cabbtn{width:auto;max-width:calc(100% + 96px - 46px);box-sizing:border-box;text-decoration:none;display:inline-flex;align-items:center;flex-wrap:nowrap;gap:7px;margin:8px 0 6px;padding:5px 14px 5px 6px;border-radius:13px;font-family:var(--body);font-weight:700;font-size:14px;color:var(--ink);cursor:pointer;--face:#E6F1FC;--edge:#A9C8E8;background:linear-gradient(180deg,#FFFFFF 0%,#EAF4FD 45%,#CFE4F7 100%);box-shadow:inset 0 -2px 0 rgba(0,0,0,.05),0 4px 0 var(--edge),0 8px 14px rgba(60,110,170,.22)}
+.cabbtn{width:fit-content;align-self:flex-start;max-width:calc(100% + 96px - 46px);box-sizing:border-box;text-decoration:none;display:inline-flex;align-items:center;flex-wrap:nowrap;gap:7px;margin:8px 0 6px;padding:5px 14px 5px 6px;border-radius:13px;font-family:var(--body);font-weight:700;font-size:14px;color:var(--ink);cursor:pointer;--face:#E6F1FC;--edge:#A9C8E8;background:linear-gradient(180deg,#FFFFFF 0%,#EAF4FD 45%,#CFE4F7 100%);box-shadow:inset 0 -2px 0 rgba(0,0,0,.05),0 4px 0 var(--edge),0 8px 14px rgba(60,110,170,.22)}
 .cabbtn .cb-k{width:30px;height:30px;display:grid;place-items:center;flex:none}
 .cabbtn > span:nth-child(2){min-width:0;white-space:normal;line-height:1.25}
 .cabbtn .cb-n{white-space:nowrap}
@@ -1114,6 +1118,28 @@ tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 .pts-list li[class^="hc"] .pts-v{color:var(--hcol)}
 .pts-list li.hc0{--hcol:#2E5C8A}.pts-list li.hc1{--hcol:#B24A2B}.pts-list li.hc2{--hcol:#2E7D4F}.pts-list li.hc3{--hcol:#7A3FA0}
 .pts-hand{font-style:normal;font-size:11.5px;font-weight:700;margin-left:6px;padding:1px 6px;border-radius:999px;background:#fff;color:var(--hcol);border:1px solid var(--hcol);vertical-align:2px}
+
+.sk-bottle{background:linear-gradient(#F3FBFD,#DDF1F6);border:3px solid #A9DCE6;color:#1F4E5E}
+.sk-bottle .sk-ls b{background:#D2EEF4}
+.sk-bottle .sk-ok{background:linear-gradient(#3BA6BF,#2E8FA8);color:#fff;box-shadow:0 4px 0 #1F6E82}
+.sk-bottle .sk-art{animation:bottleIn 1.1s cubic-bezier(.2,1.2,.4,1) .15s both,bottleBob 2.6s ease-in-out 1.3s infinite}
+@keyframes bottleIn{from{transform:translateX(-140px) rotate(-20deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes bottleBob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(4px) rotate(-3deg)}}
+
+.sk-over{background:linear-gradient(#FFFDF2,#E6F4FA);border:3px solid #9FD6E8;color:#1F3556}
+.sk-over .sk-ls b{background:#DDF0F7}.sk-over .sk-ok{background:linear-gradient(#FFE066,#FFD43B);color:#3A2E00;box-shadow:0 4px 0 #C9A21F}
+.sk-over .sk-art{animation:bottleBob 2.2s ease-in-out .4s infinite}
+.sk-log{background:linear-gradient(#FFF8E8,#F6E6C4);border:3px solid #C9A36A;color:#4A2E12}
+.sk-log h2{font-family:Georgia,"Times New Roman",serif}.sk-log .sk-ls b{background:#F1DFB8}
+.sk-log .sk-ok{background:linear-gradient(#9C6A36,#7A4E22);color:#FFF6E2;box-shadow:0 4px 0 #4F3014}
+.sk-star{background:linear-gradient(#22356A,#16234A);border:3px solid #E9C46A;color:#FFF4D6}
+.sk-star h2{color:#FFD873}.sk-star .sk-ls b{background:rgba(255,216,115,.18)}
+.sk-star .sk-ok{background:linear-gradient(#FFE08A,#FFD24D);color:#16234A;box-shadow:0 4px 0 #B8902F}
+.sk-star small{color:#C9D3F0}
+.sk-gull{background:linear-gradient(#FFFFFF,#EAF3F8);border:3px solid #C9D6E6;color:#2A3550}
+.sk-gull .sk-ls b{background:#E3ECF4}.sk-gull .sk-ok{background:linear-gradient(#5B6B8C,#4A5670);color:#fff;box-shadow:0 4px 0 #2F384D}
+.sk-gull .sk-art{animation:gullFly 2.4s ease-in-out .3s infinite}
+@keyframes gullFly{0%,100%{transform:translate(0,0)}50%{transform:translate(6px,-6px) rotate(-3deg)}}
 </style>
 </head>
 <body>
@@ -1145,8 +1171,8 @@ tr.srch-flash{animation:none}tr.srch-flash>td{animation:srchRow 2.4s ease}
 <script>
 (function(){
 /* Bump APP_VERSION and APP_UPDATED every time a new copy is uploaded. APP_UPDATED is always Eastern time (ET). */
-const APP_VERSION = "22.6";
-const APP_UPDATED = "Nov 26, 2026, 8:25 PM ET";
+const APP_VERSION = "23.0";
+const APP_UPDATED = "Nov 26, 2026, 10:05 PM ET";
 /* Entries stay editable for 48 hours, then lock. Unlock from the Save As window (⚙️ Settings → 🔒 Editing lock). */
 const LOCK_HOURS = 48, LOCK_MS = LOCK_HOURS*3600*1000;
 let editingUnlocked = false;                       // this device only; resets when the app is reopened
@@ -1813,7 +1839,7 @@ function renderHead(){
     <div class="eyebrow">${t.ship ? esc(t.ship) + "<br>" : ""}${esc(fmtRange(t.start,t.end))}</div>
     <h1>${esc(titleCase(t.name))}</h1>
     <div class="route">${route}</div>
-    ${t.ship && !tripDone(t) ? `<a class="cabbtn b3d" href="${esc(deckPlanUrl(t))}" target="_blank" rel="noopener" aria-label="${t.cabin ? "Cabin " + esc(t.cabin) + ": open" : "Open"} the ${esc(t.ship)} deck plan"><span class="cb-k" aria-hidden="true">${CABIN_ICON}</span><span>${t.cabin ? `<span class="cb-n">Cabin ${esc(t.cabin)}</span>${cabinDeck(t) ? ` <small>· Deck ${cabinDeck(t).n}</small>` : ""}` : `<span class="cb-n">Deck plan</span>`}</span><span class="cb-q" aria-hidden="true">↗</span></a>` : ""}
+    ${t.ship && !tripDone(t) ? `<a class="cabbtn b3d" href="${esc(deckPlanUrl(t))}" target="_blank" rel="noopener" aria-label="${t.cabin ? "Cabin " + esc(t.cabin) + ": open" : "Open"} the ${esc(t.ship)} deck plan"><span class="cb-k" aria-hidden="true">${CABIN_ICON}</span><span>${t.cabin ? `<span class="cb-n">${esc(t.cabin)}</span>` : `<span class="cb-n">Deck plan</span>`}</span><span class="cb-q" aria-hidden="true">↗</span></a>` : ""}
     <button type="button" class="srchbtn" data-search aria-label="Search everything">${SRCH_ICON}</button>`;
 }
 
@@ -2412,11 +2438,36 @@ const SK_BUOY = `<svg width="104" height="104" viewBox="0 0 100 100" aria-hidden
 const SK_MEDAL = `<svg width="100" height="118" viewBox="0 0 96 114" aria-hidden="true"><path d="M30 0h14l10 42H40zM52 0h14L56 42H42z" fill="#2B6CB0"/><path d="M36 0h4l10 42h-4zM58 0h4L52 42h-4z" fill="#fff" opacity=".8"/><circle cx="48" cy="74" r="36" fill="#E9B949"/><circle cx="48" cy="74" r="29" fill="#F7D97A" stroke="#C99528" stroke-width="2"/><path d="M48 54l6 13 14 1-11 9 4 14-13-8-13 8 4-14-11-9 14-1z" fill="#fff" opacity=".92"/><path class="shine" d="M30 62a22 22 0 0 1 14-14" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none"/><text x="48" y="108" text-anchor="middle" font-size="9" font-weight="800" fill="#7A5310" font-family="Arial">BRAVE SAILOR</text></svg>`;
 const SK_MINI_BUOY = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="37" fill="none" stroke="#F4F6F9" stroke-width="22"/><g fill="none" stroke="#E0453B" stroke-width="22"><path d="M50 13a37 37 0 0 1 26.2 10.8"/><path d="M87 50a37 37 0 0 1-10.8 26.2"/><path d="M50 87a37 37 0 0 1-26.2-10.8"/><path d="M13 50a37 37 0 0 1 10.8-26.2"/></g><circle cx="50" cy="50" r="48" fill="none" stroke="#B48A4E" stroke-width="3" stroke-dasharray="6 5"/></svg>`;
 const SK_MINI_MEDAL = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 95"><path d="M24 0h12l8 34H32zM44 0h12l-8 34H36z" fill="#2B6CB0"/><circle cx="40" cy="60" r="30" fill="#E9B949"/><circle cx="40" cy="60" r="23" fill="#F7D97A" stroke="#C99528" stroke-width="2"/><path d="M40 44l5 10 11 1-9 7 3 11-10-6-10 6 3-11-9-7 11-1z" fill="#fff"/></svg>`;
+const SK_KINDS = ["buoy", "medal", "bottle", "overboard", "log", "star", "gull"];
+// four more banners: Man overboard, Captain's Log, Shooting star, Seagull
+const SK_HAT = `<svg width="130" height="104" viewBox="0 0 130 104" aria-hidden="true"><path d="M2 70q16-10 32 0t32 0 32 0 32 0v32H2z" fill="#9FD6E8"/><path d="M2 80q16-9 32 0t32 0 32 0 32 0" fill="none" stroke="#5FAFCB" stroke-width="3"/><g transform="rotate(-10 65 52)"><path d="M30 60c0-20 15-34 35-34s35 14 35 34z" fill="#FFFFFF" stroke="#1F3556" stroke-width="3"/><rect x="22" y="56" width="86" height="12" rx="6" fill="#1F3556"/><path d="M57 40l8-6 8 6-8 6z" fill="#E9B949"/></g><g fill="#FFFFFF" stroke="#5FAFCB" stroke-width="2"><circle cx="20" cy="66" r="3"/><circle cx="112" cy="62" r="3.5"/><circle cx="100" cy="52" r="2"/></g></svg>`;
+const SK_LOG = `<svg width="120" height="104" viewBox="0 0 120 104" aria-hidden="true"><rect x="16" y="22" width="88" height="70" rx="6" fill="#7A4E22"/><path d="M22 26h38v62H26a4 4 0 0 1-4-4z" fill="#FFF3D6" stroke="#C9A36A" stroke-width="1.5"/><path d="M60 26h38v58a4 4 0 0 1-4 4H60z" fill="#FFF6E2" stroke="#C9A36A" stroke-width="1.5"/><path d="M60 26v62" stroke="#B48A4E" stroke-width="2"/><g stroke="#B48A4E" stroke-width="2" stroke-linecap="round"><path d="M28 38h26M28 46h22M28 54h26M28 62h18M66 38h26M66 46h20M66 54h24"/></g><path d="M88 6c10 8 14 22 8 34l-14 22-3-2 12-24c4-10 2-20-3-30z" fill="#F2F2F2" stroke="#8A8A8A" stroke-width="1.5"/><path d="M79 60l-2 6 5-3z" fill="#1F3556"/></svg>`;
+const SK_STAR = `<svg width="130" height="104" viewBox="0 0 130 104" aria-hidden="true"><rect x="4" y="4" width="122" height="96" rx="16" fill="#1B2A52"/><g fill="#FFFFFF"><circle cx="20" cy="22" r="1.4"/><circle cx="40" cy="14" r="1"/><circle cx="104" cy="20" r="1.5"/><circle cx="114" cy="44" r="1"/><circle cx="26" cy="56" r="1.2"/><circle cx="60" cy="30" r="1"/></g><path d="M22 70L92 26" stroke="url(#sktail)" stroke-width="5" stroke-linecap="round"/><defs><linearGradient id="sktail" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FFD873" stop-opacity="0"/><stop offset="1" stop-color="#FFD873"/></linearGradient></defs><path d="M96 14l5 10 11 1-8 7 2 11-10-6-10 6 2-11-8-7 11-1z" fill="#FFD873" stroke="#E9B949" stroke-width="1.5"/><path d="M4 84q15-7 30 0t31 0 30 0 31 0v10a6 6 0 0 1-6 6H10a6 6 0 0 1-6-6z" fill="#2E4A85"/></svg>`;
+const SK_GULL = `<svg width="130" height="104" viewBox="0 0 130 104" aria-hidden="true"><path d="M14 44c18-20 34-22 48-6 14-16 30-14 48 6-18-8-34-6-46 8l-4 2-4-2C44 38 30 36 14 44z" fill="#FFFFFF" stroke="#4A5670" stroke-width="2.5" stroke-linejoin="round"/><ellipse cx="62" cy="54" rx="14" ry="9" fill="#FFFFFF" stroke="#4A5670" stroke-width="2.5"/><circle cx="72" cy="51" r="1.8" fill="#1F2A3F"/><path d="M75 54l10 2-10 3z" fill="#F2A53A"/><g transform="rotate(14 92 70)"><rect x="80" y="56" width="24" height="32" rx="3" fill="#FFFFFF" stroke="#4A5670" stroke-width="2"/><text x="85" y="70" font-family="Arial" font-weight="800" font-size="10" fill="#D6455D">A</text><path d="M95 78c-2-3-6-1-6 1 0 3 6 6 6 6s6-3 6-6c0-2-4-4-6-1z" fill="#D6455D"/></g><path d="M8 92q18-8 36 0t38 0 38 0" fill="none" stroke="#9FD6E8" stroke-width="3"/></svg>`;
+const SK_MINI_DUCK = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 36"><path d="M6 22c0-6 6-9 14-8 2-6 6-9 11-8 5 1 7 6 4 10l-3 2c3 1 5 3 5 6 0 6-8 10-17 10S6 30 6 22z" fill="#FFD43B" stroke="#C9952A" stroke-width="1.5"/><path d="M33 12l6 1-6 3z" fill="#F08C2E"/><circle cx="30" cy="10" r="1.5" fill="#222"/></svg>`;
+const SK_MINI_PAGE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 38"><path d="M3 2h18l6 6v28H3z" fill="#FFF3D6" stroke="#B48A4E" stroke-width="1.5"/><path d="M7 14h16M7 20h14M7 26h16" stroke="#C9A36A" stroke-width="1.5"/></svg>`;
+const SK_MINI_STAR = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><path d="M20 2l5 11 12 1-9 8 3 12-11-6-11 6 3-12-9-8 12-1z" fill="#FFD873" stroke="#E9B949" stroke-width="1.5"/></svg>`;
+const SK_MINI_FEATHER = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 44"><path d="M12 2c8 8 9 22 0 34-9-12-8-26 0-34z" fill="#FFFFFF" stroke="#8C99B8" stroke-width="1.5"/><path d="M12 6v36" stroke="#8C99B8" stroke-width="1.5"/></svg>`;
+function cruiseDay(){ try { const t = trip(); if(!t || !t.start) return 1; return Math.max(1, Math.round((new Date(today() + "T12:00") - new Date(t.start + "T12:00")) / 864e5) + 1); } catch(e){ return 1; } }
+
+const SK_BOTTLE = `<svg width="120" height="104" viewBox="0 0 120 104" aria-hidden="true"><path d="M4 78q14-9 28 0t28 0 28 0 28 0v22H4z" fill="#BFE6EE"/><path d="M4 86q14-8 28 0t28 0 28 0 28 0" fill="none" stroke="#7FC4D4" stroke-width="2.5"/><g transform="rotate(-28 60 50)"><rect x="40" y="30" width="46" height="34" rx="14" fill="#CFEFE6" fill-opacity=".85" stroke="#2E8FA8" stroke-width="2.5"/><rect x="84" y="39" width="14" height="16" rx="4" fill="#CFEFE6" stroke="#2E8FA8" stroke-width="2.5"/><rect x="96" y="40" width="8" height="14" rx="2.5" fill="#B4793F" stroke="#7A4E22" stroke-width="2"/><g transform="translate(47 38)"><rect width="30" height="18" rx="3" fill="#FFF6DD" stroke="#C9A36A" stroke-width="1.5"/><path d="M5 6h20M5 11h14" stroke="#B48A4E" stroke-width="1.6" stroke-linecap="round"/><circle cx="25" cy="13" r="2.5" fill="#D6455D"/></g><path d="M46 36q6-4 14-4" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none" opacity=".8"/></g></svg>`;
+const SK_MINI_BOTTLE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 64"><rect x="8" y="20" width="24" height="40" rx="9" fill="#CFEFE6" stroke="#2E8FA8" stroke-width="3"/><rect x="13" y="8" width="14" height="14" rx="3" fill="#CFEFE6" stroke="#2E8FA8" stroke-width="3"/><rect x="14" y="1.5" width="12" height="8" rx="2" fill="#B4793F"/><rect x="13" y="30" width="14" height="18" rx="2" fill="#FFF6DD" stroke="#C9A36A" stroke-width="1.5"/></svg>`;
 function streakPop(st){
-  const kind = Math.random() < .5 ? "buoy" : "medal", name = esc(st.name), game = esc(st.game), n = STREAK_N;
-  const d = kind === "buoy"
-    ? {cls: "sk-buoy", art: SK_BUOY, h: `Hold on, ${name}!`, p: `Three games of ${game} lost in a row. We’re throwing you a lifebuoy: the tide is about to turn.`, b: "Next game is mine", col: ["#E0453B","#FFFFFF","#7FB8E6","#1F3556","#F4D35E"], mini: SK_MINI_BUOY, ratio: 1}
-    : {cls: "sk-medal", art: SK_MEDAL, h: "Brave Sailor Award", p: `Presented to <b>${name}</b> for losing three games of ${game} in a row with style. ${esc(st.winner)}, enjoy it while it lasts.`, b: "Accept the medal", col: ["#E9B949","#2B6CB0","#E0453B","#FFFFFF","#F7D97A"], mini: SK_MINI_MEDAL, ratio: 1.19};
+  const kind = st.kind || (SK_KINDS[Math.floor(Math.random() * SK_KINDS.length)]), name = esc(st.name), game = esc(st.game), n = STREAK_N;
+  const WIN = esc(st.winner);
+  const d = kind === "overboard"
+    ? {cls: "sk-over", art: SK_HAT, h: "Man overboard!", p: `<span><b>${name}</b> fell off the winning ship</span><span>three games in a row.</span><span>Throw a rope, ${WIN}!</span>`, b: "Climb back aboard", col: ["#FFD43B","#5FAFCB","#FFFFFF","#1F3556"], mini: SK_MINI_DUCK, ratio: .9}
+    : kind === "log"
+    ? {cls: "sk-log", art: SK_LOG, h: `Captain’s Log, Day ${cruiseDay()}`, p: `<span>Rough seas for <b>${name}</b>.</span><span>Three games of <i class="sk-g">${game}</i> lost.</span><span>Morale: still excellent.</span>`, b: "Sign the log", col: ["#C9A36A","#7A4E22","#FFF3D6","#1F3556"], mini: SK_MINI_PAGE, ratio: 1.27}
+    : kind === "star"
+    ? {cls: "sk-star", art: SK_STAR, h: `Make a wish,<br>${name}`, p: `<span>Three games in a row</span><span>is the bottom of the wave.</span><span>From here, it only goes up.</span>`, b: "Wishing on it", col: ["#FFD873","#FFFFFF","#9FC4FF","#E9B949"], mini: SK_MINI_STAR, ratio: 1}
+    : kind === "gull"
+    ? {cls: "sk-gull", art: SK_GULL, h: "A seagull stole your luck!", p: `<span>It’s been circling the ship</span><span>for three games, <b>${name}</b>.</span><span class="sk-dig">${WIN} is feeding it.</span>`, b: "Shoo!", col: ["#FFFFFF","#8C99B8","#9FD6E8","#F2A53A"], mini: SK_MINI_FEATHER, ratio: 1.8}
+    : kind === "bottle"
+    ? {cls: "sk-bottle", art: SK_BOTTLE, h: "Message in a bottle", p: `<span>Dear <b>${name}</b>,</span><span>three games of <i class="sk-g">${game}</i></span><span>drifted out to sea.</span><span>Your luck just washed ashore,</span><span>it’s on its way back to you.</span>`, b: "Uncork my luck", col: ["#2E8FA8","#FFFFFF","#E9C46A","#7FD0DA","#1F5E73"], mini: SK_MINI_BOTTLE, ratio: 1.6}
+    : kind === "buoy"
+    ? {cls: "sk-buoy", art: SK_BUOY, h: `Hold on, ${name}!`, p: `<span>Three games of <i class="sk-g">${game}</i></span><span>lost in a row.</span><span>We’re throwing you a lifebuoy,</span><span>the tide is about to turn.</span>`, b: "Next game is mine", col: ["#E0453B","#FFFFFF","#7FB8E6","#1F3556","#F4D35E"], mini: SK_MINI_BUOY, ratio: 1}
+    : {cls: "sk-medal", art: SK_MEDAL, h: "Brave Sailor Award", p: `<span>Presented to <b>${name}</b></span><span>for losing three games</span><span>of <i class="sk-g">${game}</i> in a row,</span><span>with style.</span><span class="sk-dig">${esc(st.winner)}, enjoy it while it lasts.</span>`, b: "Accept the medal", col: ["#E9B949","#2B6CB0","#E0453B","#FFFFFF","#F7D97A"], mini: SK_MINI_MEDAL, ratio: 1.19};
   document.querySelectorAll(".sk").forEach(x => x.remove());
   const el = document.createElement("div"); el.className = "sk";
   el.innerHTML = `<div class="sk-card ${d.cls}" role="dialog" aria-modal="true" aria-labelledby="skT"><span class="sk-art">${d.art}</span><h2 id="skT">${d.h}</h2><p>${d.p}</p>
